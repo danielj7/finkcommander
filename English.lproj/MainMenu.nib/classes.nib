@@ -11,7 +11,9 @@
                 refilter = id; 
                 runForceRemove = id; 
                 runNonSpecificCommand = id; 
+                runNonSpecificCommandInTerminal = id; 
                 runPackageSpecificCommand = id; 
+                runPackageSpecificCommandInTerminal = id; 
                 saveOutput = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 

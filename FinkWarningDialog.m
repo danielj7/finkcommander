@@ -41,7 +41,7 @@
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];
     }
     [removeWarningButton 
-		setStringValue:NSLocalizedString(@"Warn me before removing a package.", nil)];
+		setTitle:NSLocalizedString(@"Warn me before removing a package.", nil)];
     [removeWarningButton setState:YES];
     [NSApp runModalForWindow:[self window]];
 }
@@ -52,7 +52,7 @@
     [warningMessageField 
 		setStringValue:NSLocalizedString(@"Are you sure you want to terminate?", nil)];
     [removeWarningButton
-		setStringValue:NSLocalizedString(@"Warn me before terminating a command.", nil)];
+		setTitle:NSLocalizedString(@"Warn me before terminating a command.", nil)];
 	[removeWarningButton setState:YES];
     [NSApp runModalForWindow:[self window]];
 }

@@ -357,6 +357,16 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     parser = p;
 }
 
+-(NSTextField *)searchTextField
+{
+    return searchTextField;
+}
+
+-(NSPopUpButton *)searchPopUpButton
+{
+    return searchPopUpButton;
+}
+
 //--------------------------------------------------------------------------------
 #pragma mark APPLICATION AND WINDOW DELEGATES
 //--------------------------------------------------------------------------------
@@ -399,6 +409,21 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     userConfirmedQuit = YES; //flag to make sure we ask only once
     return YES;
 }
+
+//TBD:  Trying to resize search view when other toolbar items are resized
+-(void)windowDidUpdate:(NSNotification *)ignore
+{
+	if ([toolbar sizeMode] == NSToolbarSizeModeSmall &&
+		[[searchPopUpButton cell] controlSize] == NSRegularControlSize){
+		[[searchPopUpButton cell] setControlSize:NSSmallControlSize];
+		[[searchTextField cell] setControlSize:NSSmallControlSize];
+	}else if ([toolbar sizeMode] == NSToolbarSizeModeRegular &&
+			  [[searchPopUpButton cell] controlSize] == NSSmallControlSize){
+		[[searchPopUpButton cell] setControlSize:NSRegularControlSize];
+		[[searchTextField cell] setControlSize:NSRegularControlSize];
+	}
+}
+
 
 //--------------------------------------------------------------------------------
 #pragma mark MAIN MENU
@@ -643,7 +668,7 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 
 -(void)setupToolbar
 {
-    toolbar = [[NSToolbar alloc] initWithIdentifier: @"mainToolbar"];
+    toolbar = [[FinkToolbar alloc] initWithIdentifier: @"mainToolbar"];
     [toolbar setDelegate: self];
     [toolbar setAllowsUserCustomization: YES];
     [toolbar setAutosavesConfiguration: YES];
@@ -918,6 +943,35 @@ willBeInsertedIntoToolbar:(BOOL)flag
 {
     NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:NO];
     [self launchCommandWithArguments:args];
+}
+
+-(void)runCommandInTerminal:(NSString *)cmd
+{
+	NSAppleScript *script;
+	NSAppleEventDescriptor *descriptor;
+	NSDictionary *errord;
+
+	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
+	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
+	descriptor = [script executeAndReturnError:&errord];
+	if (! descriptor){
+		NSLog(@"Apple script failed to execute");
+		NSLog(@"Error dictionary:\n%@", [errord description]);
+	}	
+}
+
+-(IBAction)runPackageSpecificCommandInTerminal:(id)sender
+{
+	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:YES]
+						componentsJoinedByString:@" "];
+	[self runCommandInTerminal:cmd];
+}
+
+-(IBAction)runNonSpecificCommandInTerminal:(id)sender
+{
+	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:NO]
+						componentsJoinedByString:@" "];
+	[self runCommandInTerminal:cmd];	
 }
 
 -(IBAction)runForceRemove:(id)sender

@@ -111,7 +111,7 @@
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Update package descriptions and package manager from fink cvs repository</string>
+		<string>Update package descriptions from fink cvs repository</string>
 	</dict>
 	<key>FinkSelfUpdateItem</key>
 	<dict>

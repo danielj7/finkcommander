@@ -79,6 +79,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkTableViewController.h"
 #import "FinkTextViewController.h"
 #import "FinkSplitView.h"
+#import "FinkToolbar.h"
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
@@ -206,6 +207,8 @@ enum {
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
 -(void)setParser:(FinkOutputParser *)p;
+-(NSTextField *)searchTextField;
+-(NSPopUpButton *)searchPopUpButton;
 
 //Helper method used by appendOutput
 -(void)scrollToVisible:(NSNumber *)n;
@@ -213,19 +216,15 @@ enum {
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
 -(IBAction)checkForLatestVersionAction:(id)sender;
+-(IBAction)showPreferencePanel:(id)sender;
 -(IBAction)saveOutput:(id)sender;
+-(IBAction)updateTable:(id)sender;
 -(void)didEnd:(NSSavePanel *)sheet
 	  returnCode:(int)code
 	 contextInfo:(void *)contextInfo;
--(IBAction)runPackageSpecificCommand:(id)sender;
--(IBAction)runNonSpecificCommand:(id)sender;
--(IBAction)runForceRemove:(id)sender;
--(IBAction)terminateCommand:(id)sender;
--(IBAction)updateTable:(id)sender;
--(IBAction)showPreferencePanel:(id)sender;
--(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)showDescription:(id)sender;
-//  help menu items
+-(IBAction)terminateCommand:(id)sender;
+-(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)goToWebsite:(id)sender;
 -(IBAction)emailMaintainer:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
@@ -237,7 +236,6 @@ enum {
    willBeInsertedIntoToolbar:(BOOL)flag;
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
-// reapplies filter if filter popup menu changes 
 -(IBAction)refilter:(id)sender;
 
 //Process Control Methods
@@ -248,6 +246,11 @@ enum {
 			returnCode:(int)returnCode
 			contextInfo:(void *)contextInfo;
 // run the command
+-(IBAction)runPackageSpecificCommand:(id)sender;
+-(IBAction)runNonSpecificCommand:(id)sender;
+-(IBAction)runPackageSpecificCommandInTerminal:(id)sender;
+-(IBAction)runNonSpecificCommandInTerminal:(id)sender;
+-(IBAction)runForceRemove:(id)sender;
 -(void)launchCommandWithArguments:(NSMutableArray *)args;
 // AuthorizedExecutable delegate methods
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
