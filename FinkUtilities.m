@@ -85,8 +85,9 @@ void fixScript(void)
 		NSLog(@"Creating ~/Library/Application Support/FinkCommander directory");
 		[manager createDirectoryAtPath:fcpath attributes:nil];
 	}
-	
-	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){
+	//Update the FinkCommander.pl every time for now - till we version it
+	if(1){
+	// 	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){
 		NSString *rpath = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
 		NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath];
 		NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
@@ -95,7 +96,7 @@ void fixScript(void)
 		while((rangeOfBASEPATH = [scriptText rangeOfString:@"BASEPATH"]).length > 0){
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
-		NSLog(@"Writing table update script to %@", wpath);
+//		NSLog(@"Writing table update script to %@", wpath);
 		[scriptText writeToFile:wpath atomically:YES];
 		[defaults setBool:NO forKey:FinkBasePathFound];
 	}

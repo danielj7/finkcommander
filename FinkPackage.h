@@ -51,6 +51,7 @@ enum {
 	NSString *stable;
 	NSString *unstable;
 	NSString *category;
+	NSString *filename;
 	NSString *summary;
 	NSString *fulldesc;
 	NSString *weburl;
@@ -86,6 +87,9 @@ enum {
 
 -(NSString *)category;
 -(void)setCategory:(NSString *)s;
+
+-(NSString *)filename;
+-(void)setFilename:(NSString *)s;
 
 -(NSString *)summary;
 -(void)setSummary:(NSString *)s;

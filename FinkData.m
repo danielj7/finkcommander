@@ -267,8 +267,9 @@ See the header file, FinkData.h, for interface and license information.
 		[p setStable:[packageComponents objectAtIndex: 4]];
 		[p setUnstable:[packageComponents objectAtIndex: 5]];
 		[p setCategory:[packageComponents objectAtIndex: 6]];
-		[p setSummary:[packageComponents objectAtIndex: 7]];
-		[p setFulldesc:[packageComponents objectAtIndex: 8]];
+		[p setFilename:[packageComponents objectAtIndex: 7]];
+		[p setSummary:[packageComponents objectAtIndex: 8]];
+		[p setFulldesc:[packageComponents objectAtIndex: 9]];
 		
 		/* 	Many package have identical versions in the stable and
 			unstable branches. If unstable is listed first in

@@ -45,7 +45,7 @@ my ($configpath, $config);                  #used to scan pkgs
 my (@pkglist, $package);                    #list of pkg names, name of each
 my ($vo, $lversion);                        #PkgVersion object, version number
 my ($pname, $iflag, $description, $full);               #pkg data items
-my ($section, $lvinstalled, $lvstable, $lvunstable);    #ditto
+my ($section, $lvinstalled, $lvstable, $lvunstable, $lvfilename);    #ditto
 
 
 ### Sub: latest_version_for_tree ###
@@ -96,7 +96,7 @@ Fink::Package->require_packages();
 foreach $pname (sort @pkglist) {
     $package = Fink::Package->package_by_name($pname);   
     if ($package->is_virtual()) {
-      $lvstable = $lvunstable = $iflag = $section = " ";
+      $lvstable = $lvunstable = $lvfilename = $iflag = $section = " ";
       $description = "virtual package";
       $full = "virtual package";
     } else {
@@ -116,8 +116,14 @@ foreach $pname (sort @pkglist) {
 	    $iflag = "archived";
       } else {
         $iflag = " ";
+      }      
+      eval { #Post-0.19.0 fink
+      	  $lvfilename = $vo->get_filename() || " ";
+      };
+      if ($@) {
+	      $lvfilename = $vo->{_filename} || " ";
       }
   }
     print "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
-        "$lvunstable**\n$section**\n$description**\n$full\n";
+        "$lvunstable**\n$section**\n$lvfilename**\n$description**\n$full\n";
 }

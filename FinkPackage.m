@@ -158,6 +158,19 @@ See the header file, FinkPackage.h, for interface and license information.
 	category = s;
 }
 
+//Filename
+-(NSString *)filename;
+{
+	return filename;
+}
+
+-(void)setFilename:(NSString *)s;
+{
+	[s retain];
+	[filename release];
+	filename = s;
+}
+
 //Summary
 -(NSString *)summary;
 {
@@ -447,6 +460,7 @@ See the header file, FinkPackage.h, for interface and license information.
 	return [self name];
 }
 
+// This is slightly fragile. Should get the path from fink itself.
 -(NSString *)pathToPackageInTree:(NSString *)tree
 			withExtension:(NSString *)ext
 			version:(NSString *)fversion
@@ -456,38 +470,55 @@ See the header file, FinkPackage.h, for interface and license information.
 	NSString *fname = [self nameWithoutSplitoff:&foundSplitoff];
 	NSString *distPath = [FinkPackage pathToDists];
     NSString *pkgFileName, *thePath;
-    NSArray *components;
+    NSArray *components, *nameVariants;
+	NSEnumerator 		*theEnum;
 		
 	if (nil == fversion){
 		fversion = [tree isEqualToString:@"unstable"] ?
 					[self unstable] : [self stable];
 	}
 
-	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext];
-    if ([[self category] isEqualToString:@"crypto"]){
-		components = [NSArray arrayWithObjects:distPath, tree, @"crypto",
-			@"finkinfo", pkgFileName, nil];
-    }else{
-		components = [NSArray arrayWithObjects:distPath, tree, @"main",
-			@"finkinfo", [self category], pkgFileName, nil];
-    }
-	thePath = [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
-	
-	if (! foundSplitoff && 
-		[fname rangeOfString:@"-"].length > 0 && 
-		! [mgr fileExistsAtPath:thePath]){
-		NSMutableString *mutablePath = [[thePath mutableCopy] autorelease];
-		NSString *mutatedString;
-		NSRange rangeToLastDash = 
-			NSMakeRange(0, [fname rangeOfString:@"-" options:NSBackwardsSearch].location);
-		NSRange rangeOfName = [thePath rangeOfString:fname];
-		
-		fname = [fname substringWithRange:rangeToLastDash];
-		[mutablePath replaceCharactersInRange:rangeOfName withString:fname];
-		mutatedString = [mutablePath stringByResolvingSymlinksInPath];
-		if ([mgr fileExistsAtPath:mutablePath]){
-			thePath = mutatedString;
+	nameVariants = [NSArray arrayWithObjects:   
+						[NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext],
+						[NSString stringWithFormat:@"%@.%@", fname, ext],
+						nil];
+	theEnum = [nameVariants objectEnumerator];						
+	while(pkgFileName = [theEnum nextObject])
+	{
+		if ([[self category] isEqualToString:@"crypto"]){
+			components = [NSArray arrayWithObjects:distPath, tree, @"crypto",
+				@"finkinfo", pkgFileName, nil];
+		}else{
+			components = [NSArray arrayWithObjects:distPath, tree, @"main",
+				@"finkinfo", [self category], pkgFileName, nil];
 		}
+		thePath = [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
+		
+		if (! foundSplitoff && 
+			[fname rangeOfString:@"-"].length > 0 && 
+			! [mgr fileExistsAtPath:thePath]){
+			NSMutableString *mutablePath = [[thePath mutableCopy] autorelease];
+			NSString *mutatedString;
+			NSRange rangeToLastDash = 
+				NSMakeRange(0, [fname rangeOfString:@"-" options:NSBackwardsSearch].location);
+			NSRange rangeOfName = [thePath rangeOfString:fname];
+			
+			fname = [fname substringWithRange:rangeToLastDash];
+			[mutablePath replaceCharactersInRange:rangeOfName withString:fname];
+			mutatedString = [mutablePath stringByResolvingSymlinksInPath];
+			if ([mgr fileExistsAtPath:mutablePath]){
+				thePath = mutatedString;
+			}
+		}
+		if([mgr fileExistsAtPath:thePath]){
+			break;
+		}
+	}
+	
+	//Finally, if that failed, fall back to what fink said. Probably best, anyway.
+	if(![mgr fileExistsAtPath:thePath] && [filename length] > 4)
+	{
+		return filename;
 	}
 	return thePath;
 }
