@@ -1,9 +1,9 @@
 Create final binary:
-	Set new version number in Target:Application Settings and localized InfoPlist.strings
+	Set new version number in Target:Info.plist:Expert in both CFBundleShortVersionString and CFBundleVersion, as well as in localized InfoPlist.strings
 	Clean the targets
 	Compile with DEBUGGING undefined and "Deployment" selected
 	
-Download web site and update, including references in index.php and version.xml
+Download web site and update, including version references in index.php and version.xml
 
 run ~/FCFiles/mkpkgs.sh
 	

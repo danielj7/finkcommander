@@ -33,6 +33,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 #import "FinkPackage.h"
+#import "FinkUtilities.h"
 #import "SBString.h"
 
 @interface FinkDataController : NSObject

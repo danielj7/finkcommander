@@ -49,4 +49,4 @@ void fixPreferences(void);
 BOOL addEnvironmentVariable(NSString *key, NSString *value);
 NSDictionary *environmentSettingWithName(NSString *name);
 BOOL removeEnvironmentVariable(NSDictionary *setting);
-
+NSString *removeSplitoffIdentifier(NSString *pkgname);

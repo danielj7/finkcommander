@@ -302,20 +302,10 @@ See the header file, FinkDataController.h, for interface and license information
 	NSString *name = [pkg name];
 	NSString *pathToDists = [[[defaults objectForKey:FinkBasePath]
 								stringByAppendingPathComponent: @"/fink/dists"] retain];
-	NSString *splitoff;
-	NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
-								objectEnumerator];
     NSString *pkgFileName;
     NSArray *components;
-	NSRange r;
 
-	while (nil != (splitoff = [e nextObject])){
-		r = [name rangeOfString:splitoff];
-		if (r.length > 0){
-			name = [name substringToIndex:r.location];
-			break;
-		}
-	}
+	name = removeSplitoffIdentifier(name);
 	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", name, version, ext];
 
     if ([[pkg category] isEqualToString:@"crypto"]){

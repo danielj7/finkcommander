@@ -133,7 +133,8 @@ enum {
 enum {
 	FCWEB 		= 1000,
 	FCBUG 		= 1001,
-	FINKDOC 	= 1002
+	FINKDOC 	= 1002,
+	FINKBUG		= 1003
 };
 
 enum{
@@ -232,6 +233,7 @@ enum {
 -(IBAction)sendPositiveFeedback:(id)sender;
 -(IBAction)sendNegativeFeedback:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
+-(IBAction)openDocumentation:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

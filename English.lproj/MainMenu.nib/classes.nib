@@ -6,6 +6,7 @@
                 chooseTableColumn = id; 
                 endInteractionWindow = id; 
                 goToWebsite = id; 
+                openDocumentation = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
                 runForceRemove = id; 

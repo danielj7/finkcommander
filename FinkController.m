@@ -643,7 +643,29 @@ File: FinkController.m
 	[self sendEmailWithMessage:NEGATIVE];
 }
 
-//----------------------------------------------->Help Menu
+-(IBAction)openDocumentation:(id)sender
+{
+	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
+						[tableView selectedRow]];
+	NSFileManager *mgr = [NSFileManager defaultManager];
+	NSString *root = [[defaults objectForKey:FinkBasePath] 
+						stringByAppendingPathComponent:@"share/doc"];
+	NSString *path = [root stringByAppendingPathComponent:[pkg name]];
+	NSArray *pathContents;
+
+	path = removeSplitoffIdentifier(path);
+	if (![mgr fileExistsAtPath:path]){
+		NSBeep();  //Substitute alert sheet
+		return;
+	}
+	pathContents = [mgr directoryContentsAtPath:path];
+	if (nil != pathContents && [pathContents count] > 0){
+		path = [path stringByAppendingPathComponent:[pathContents objectAtIndex:0]];
+	}
+	[[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:root];
+}
+
+//----------------------------------------------->Help and Tools Menu
 #pragma mark Help Menu
 
 //Help menu internet access items
@@ -661,8 +683,11 @@ File: FinkController.m
 		case FINKDOC:
 			url = @"http://fink.sourceforge.net/doc/index.php";
 			break;
+		case FINKBUG:
+			url = @"http://sourceforge.net/tracker/?func=add&group_id=17203&atid=117203";
+			break;
     }
-    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
 }
 
 //--------------------------------------------------------------------------------
@@ -840,7 +865,8 @@ File: FinkController.m
 		[theItem action] == @selector(runForceRemove:)						||
 		[theItem action] == @selector(showDescription:)						||
 		[theItem action] == @selector(sendNegativeFeedback:)				||
-		[theItem action] == @selector(sendPositiveFeedback:))){
+		[theItem action] == @selector(sendPositiveFeedback:)				||
+		[theItem action] == @selector(openDocumentation:))){
 		return NO;
     }
     //disable Source and Binary menu items and table update if command is running
