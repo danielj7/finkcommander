@@ -166,6 +166,7 @@ enum {
 	BOOL pendingCommand;
 	BOOL passwordError;
 	NSMutableArray *lastParams;
+
 	IOTaskWrapper *finkTask;
 }
 
@@ -181,11 +182,8 @@ enum {
 -(void)setLastParams:(NSMutableArray *)a;
 -(void)setParser:(FinkOutputParser *)p;
 
+//Helper method used by appendOutput
 -(void)scrollToVisible:(NSNumber *)n;
-
-//Split view action methods
-//-(IBAction)collapseOutput:(id)sender;
-//-(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;

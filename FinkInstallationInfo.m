@@ -82,10 +82,13 @@ NSString *DEVTOOLS_TEST_PATH =
 	NSPipe *pipeFromStdout = [NSPipe pipe];
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
 	NSString *result;
+	NSScanner *versionScanner;
+	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
+		@"0123456789."];
+	
 
 	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
-		result = @"Developer Tools not installed";
-		return result;
+		return @"Developer Tools not installed";
 	}
 	[versionTask setLaunchPath: @"/usr/bin/cc"];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
@@ -94,10 +97,15 @@ NSString *DEVTOOLS_TEST_PATH =
 
 	result = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
 								encoding: NSMacOSRomanStringEncoding] autorelease];
-	result = [result strip];
-	result = [NSString stringWithFormat: @"gcc version: %@", result];
 	[versionTask release];
 	[taskStdout closeFile];
+
+	versionScanner = [NSScanner scannerWithString:result];
+	if (! [versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL]){
+		return @"Unable to determine gcc version";
+	}
+	[versionScanner scanCharactersFromSet:versionChars intoString:&result];
+	result = [NSString stringWithFormat: @"gcc version: %@", result];
 	return result;
 }
 
@@ -169,9 +177,9 @@ NSString *DEVTOOLS_TEST_PATH =
 	}
 	//make sure we're looking at the last line of the result
 	pathComponents = [pathToMake componentsSeparatedByString:@"\n"];
-	pathToMake = [pathComponents count] > 1 ? 
-					[pathComponents objectAtIndex: [pathComponents count] - 2]:
-					[pathComponents objectAtIndex:0];
+	pathToMake = [pathComponents count] > 1 								? 
+				 [pathComponents objectAtIndex: [pathComponents count] - 2] :
+				 [pathComponents objectAtIndex:0];
 	pathToMake = [pathToMake strip];
 	if (! [manager fileExistsAtPath:pathToMake]){
 		return error;
@@ -187,8 +195,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	[versionStdout closeFile];
 	//parse the result for the version number
 	versionScanner = [NSScanner scannerWithString:versionString];
-	[versionScanner scanUpToString:@"version " intoString:NULL];
-	[versionScanner scanString:@"version " intoString:NULL];
+	[versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL];
 	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&versionNumber]){
 		return error;
 	}

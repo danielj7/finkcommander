@@ -62,7 +62,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		//Set instance variables used to store information related to fink package data
 		packages = [[FinkDataController alloc] init];	// data used in table
 		[self setSelectedPackages: nil];    			// used to update package data
-		
+
 		//Set instance variables used to store objects and state information  
 		//needed to run fink and apt-get commands
 		commandIsRunning = NO;		
@@ -240,7 +240,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 	
 	NSLog(@"Interval for new version check: %d", interval);
-	NSLog(@"Last checked for new version: %@", lastCheckDate);
+	NSLog(@"Last checked for new version: %@", [lastCheckDate description]);
 	
 	if (interval && -([lastCheckDate timeIntervalSinceNow] / (24 * 60 * 60)) >= interval){
 		NSLog(@"Checking for FinkCommander update");
@@ -618,7 +618,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		sleep(1);
 
-		if ([[finkTask task] isRunning]){
+		if ([finkTask isRunning]){
 			int answer2 = NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
 					NSLocalizedString(@"TheCurrentProcess", nil),
 					NSLocalizedString(@"Quit", nil), 
@@ -951,7 +951,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self setLastParams: nil];
 	}
 
-	if (passwordError && [[finkTask task] isRunning]){
+	if (passwordError && [finkTask isRunning]){
 		[finkTask writeToStdin: password];
 	}
 }
@@ -1048,6 +1048,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self startProgressIndicatorAsIndeterminate:YES];
 	}
+
+
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
@@ -1056,21 +1058,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		 [executable contains: @"apt-get"])){
 		[params insertObject: @"-y" atIndex: 3];
 	}
-	if ([executable isEqualToString: @"apt-get"]){ //give apt-get a chance to fix broken dependencies
+	if ([executable isEqualToString: @"apt-get"]){ 
 		[params insertObject: @"-f" atIndex: 3];
 	}
 	pendingCommand = NO;
-
+	
 	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
 	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
-
-#ifdef DEBUGGING
-	NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
-#endif
-
-	// start the process asynchronously
-//	[self startProgressIndicatorAsIndeterminate:YES];
 	[finkTask startProcessWithArgs: params];
 }
 
@@ -1098,7 +1093,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	commandIsRunning = YES; 
 	[self displayCommand: args];
 	//prevent tasks run by consecutive notifications from tripping over each other
-	[self performSelector:@selector(runCommandWithParameters:) withObject:args afterDelay:1.0];
+	[self performSelector:@selector(runCommandWithParameters:) 
+		  withObject:args 
+		  afterDelay:1.0];
 }
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
@@ -1188,8 +1185,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			break;
 	}
 
-	output = [NSString stringWithFormat:@"%@", output];
-
 	[textView appendString:output];
 
 	//according to Moriarity example, we have to put off scrolling until next event loop
@@ -1213,7 +1208,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[cmd contains: @"dpkg"]				|| 
 			[cmd contains: @"update"];
 }
-
 
 -(void)processFinishedWithStatus:(int)status
 {

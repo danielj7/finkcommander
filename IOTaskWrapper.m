@@ -68,6 +68,11 @@
     [task launch];
 }
 
+-(BOOL)isRunning
+{
+	return [task isRunning];
+}
+
 -(void)stopProcess
 {
 	//make sure task is really finished before calling processFinishedWithStatus.

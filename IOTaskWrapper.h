@@ -74,6 +74,8 @@ Contact the author at sburrious@users.sourceforge.net.
 // Write data to process's standard input
 -(void)writeToStdin: (NSString *)s;
 
+-(BOOL)isRunning;
+
 // Stop the process and asynchronous feedback notifications.
 -(void)stopProcess;
 

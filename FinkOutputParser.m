@@ -37,9 +37,78 @@ File: FinkOutputParser.m
 	[super dealloc];
 }
 
-//------------------------------------------>Accessors and Related
+//------------------------------------------>Accessors
 
 -(float)increment{ return increment; }
+
+-(NSString *)currentPackage { return currentPackage; }
+
+-(void)setCurrentPackage:(NSString *)p
+{
+	[p retain];
+    [currentPackage release];
+    currentPackage = p;
+
+	NSLog(@"Set current package to %@", currentPackage);
+}
+
+
+//------------------------------------------>Set Up Installation Arrays and Dictionary
+
+//create array of packages to be installed
+-(void)addPackagesFromLine:(NSString *)line
+{
+	NSString *pname;
+	int i;
+
+    [packageList addObjectsFromArray:[[line strip] componentsSeparatedByString:@" "]];
+	for (i = 0; i < [packageList count]; i++){
+		pname = [packageList objectAtIndex:i];
+		if ([pname contains:@"-base"]){
+			int index = [pname rangeOfString:@"-"].location;
+			[packageList replaceObjectAtIndex:i
+						 withObject:[pname substringToIndex:index]];
+		}
+	}
+
+	NSLog(@"Package list: %@", packageList);
+}
+
+//set up array of increments and dictionary of package names matched with
+//the increment added so far for that package
+-(void)setupInstall
+{
+    NSEnumerator *e = [packageList objectEnumerator];
+    NSString *pname;
+    float cumulative[] = {
+		0.00,     //NONE
+		0.20,     //FETCH 		+ .20
+		0.25,     //UNPACK 		+ .05
+		0.40,     //CONFIGURE 	+ .15
+		0.90,     //COMPILE 	+ .50
+		0.95,     //BUILD 		+ .05
+		1.00};    //ACTIVATE 	+ .05
+    float perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
+    int i;
+
+    if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
+    while (pname = [e nextObject]){
+		[ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
+    }
+	
+    for (i = 0; i < 7; i++){
+		float newincrement = cumulative[i] * perpkg;
+
+		[increments insertObject: [NSNumber numberWithFloat: newincrement]
+								  atIndex:i];
+
+		NSLog(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
+    }
+    currentPhase = NONE;
+}
+
+
+//------------------------------------------>Set Package Name and Increment for Phase
 
 //set increment to a level that will bring the progress indicator up to date
 //if a previous phase has been skipped (e.g. b/c pkg was already fetched)
@@ -49,7 +118,8 @@ File: FinkOutputParser.m
 	float pkgTotal;
 	
 	if ([currentPackage isEqualToString:@"package"]){
-		pkgTotal = phaseTotal - [[increments objectAtIndex: currentPhase - 1] floatValue];
+		int index = currentPhase > 0 ? currentPhase - 1 : 0;
+		pkgTotal = phaseTotal - [[increments objectAtIndex: index] floatValue];
 	}else{
 		pkgTotal = [[ptracker objectForKey:currentPackage] floatValue];
 	}
@@ -66,16 +136,6 @@ File: FinkOutputParser.m
 	[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
 }
 
--(NSString *)currentPackage { return currentPackage; }
-
--(void)setCurrentPackage:(NSString *)p
-{
-	[p retain];
-    [currentPackage release];
-    currentPackage = p;
-	
-	NSLog(@"Set current package to %@", currentPackage);
-}
 
 //find longest name in packageList that matches a string in this line
 -(NSString *)packageNameFromLine:(NSString *)line
@@ -85,24 +145,16 @@ File: FinkOutputParser.m
     NSString *longestMatch = @"";
 	
 //	NSLog(@"Searching for package name in line:\n%@", line);
-
     while (candidate = [e nextObject]){
-		
 //		NSLog(@"Candidate = %@", candidate);
-		
 		if ([line containsCI:candidate]){
-		
 //			NSLog(@"Found %@ in line", candidate);
-
  			if ([candidate length] > [longestMatch length]){
 				longestMatch = candidate;
-				
 //				NSLog(@"Longest match so far: %@", longestMatch);
-
 			}
 		}
     }
-	
 	if ([longestMatch length] < 1){
 		longestMatch = @"package";
 	}
@@ -112,62 +164,8 @@ File: FinkOutputParser.m
     return longestMatch;
 }
 
--(void)addPackagesFromLine:(NSString *)line
-{
-	NSString *pname;
-	int i;
-	
-    [packageList addObjectsFromArray:[[line strip] componentsSeparatedByString:@" "]];
-	for (i = 0; i < [packageList count]; i++){
-		pname = [packageList objectAtIndex:i];
-		if ([pname contains:@"-base"]){
-			int index = [pname rangeOfString:@"-"].location;
-			[packageList replaceObjectAtIndex:i
-						 withObject:[pname substringToIndex:index]];
-		}
-	}
-	
-	NSLog(@"Package list: %@", packageList);
-}
 
-
-//------------------------------------------>Setup
-
--(void)setupInstall
-{
-    NSEnumerator *e = [packageList objectEnumerator];
-    NSString *pname;
-    float cumulative[] = {
-		0.00,     //NONE
-		0.20,     //FETCH 		+ .20
-		0.25,     //UNPACK 		+ .05
-		0.40,     //CONFIGURE 	+ .15
-		0.90,     //COMPILE 	+ .50
-		0.95,     //BUILD 		+ .05
-		1.00};    //ACTIVATE 	+ .05
-    float perpkg = (100.0 - STARTING_INCREMENT) / (float)[packageList count];
-    int i;
-	
-    if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
-    while (pname = [e nextObject]){
-		[ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
-    }
-    for (i = 0; i < 7; i++){
-		float newincrement = cumulative[i] * perpkg;
-		
-		NSLog(@"new increment = %f", newincrement);
-		
-		[increments insertObject: [NSNumber numberWithFloat: newincrement]
-					atIndex:i];
-		
-		NSLog(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
-
-    }
-    currentPhase = NONE;
-}
-
-
-//------------------------------------------>Parse
+//------------------------------------------>Parse Output
 
 -(int)parseLineOfOutput:(NSString *)line
 {
@@ -190,7 +188,7 @@ File: FinkOutputParser.m
 			[line contains: @"will be installed"]){
 			return NONE;
 		}
-		//done looking for package names
+		//not blank, list or intro; done looking for package names
 		readingPackageList = NO;
 		[self setupInstall];
 		if (ISPROMPT(line)){
@@ -208,10 +206,8 @@ File: FinkOutputParser.m
     }
 	
 	//Look for installation events
-	if (determinate && 
-		([line hasPrefix: @"wget"]  || 
-		[line hasPrefix: @"curl"]  ||
-		[line hasPrefix: @"axel"])){
+	if (determinate && FETCHSTARTED(line)){
+		NSLog(@"Fetch phase triggered by:\n%@", line);
 		NSString *name = [self packageNameFromLine:line];
 		//no action required if retrying failed download
 		if ([name isEqualToString:currentPackage]) return NONE;
@@ -220,34 +216,27 @@ File: FinkOutputParser.m
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if (determinate 				&&
-		([line hasPrefix:@"tar"]    ||
-		[line hasPrefix:@"bzip"]    ||
-		[line contains:@"/tar "]    ||
-		[line contains:@"/bzip2 "])){
+    if (determinate && UNPACKSTARTED(line)){
+		NSLog(@"Unpack phase triggered by:\n%@", line);
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		[self setIncrementForCurrentPhase];
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (determinate									&&
-		currentPhase != CONFIGURE 					&&
-		([[line strip] hasPrefix:@"./configure"] 	||
-		 [[line strip] hasPrefix:@"patch"])){
+    if (determinate	&& (currentPhase != CONFIGURE) && CONFIGURESTARTED(line)){
+		NSLog(@"Configure phase triggered by:\n%@", line);
 		[self setIncrementForCurrentPhase];
 		currentPhase = CONFIGURE;
 		return CONFIGURE;
     }
-    if (determinate								&&
-		currentPhase != COMPILE 				&&
-		([[line strip] hasPrefix: @"make"] 		||
-		 [[line strip] hasPrefix: @"gcc"]		||
-		 [[line strip] hasPrefix: @"building"])){
+    if (determinate	&& (currentPhase != COMPILE) && COMPILESTARTED(line)){
+		NSLog(@"Compile phase triggered by:\n%@", line);
 		[self setIncrementForCurrentPhase];
 		currentPhase = COMPILE;
 		return COMPILE;
     }
     if (determinate && [line contains: @"dpkg-deb -b"]){
+		NSLog(@"Build phase triggered by:\n%@", line);
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		//make sure we catch up if this file is archived
 		if (currentPhase < 1) currentPhase = COMPILE;
@@ -256,6 +245,7 @@ File: FinkOutputParser.m
 		return BUILD;
     }
     if (determinate && [line contains: @"dpkg -i"]){
+		NSLog(@"Activate phase triggered by:\n%@", line);
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		[self setIncrementForCurrentPhase];
 		currentPhase = ACTIVATE;

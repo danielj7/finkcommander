@@ -34,7 +34,26 @@ File: FinkOutputParser.h
 #import <Foundation/Foundation.h>
 #import "FinkGlobals.h"
 
+//Increment added to progress indicator at start
 #define STARTING_INCREMENT 5.0
+
+//Line parsing macros
+
+#define FETCHSTARTED(x) ([(x) hasPrefix: @"wget"]  		|| \
+						 [(x) hasPrefix: @"curl"]  		|| \
+						 [(x) hasPrefix: @"axel"])
+
+#define UNPACKSTARTED(x) ([(x) hasPrefix:@"tar"]    	|| \
+						  [(x) hasPrefix:@"bzip"]    	|| \
+						  [(x) contains:@"/tar "]    	|| \
+						  [(x) contains:@"/bzip2 "])
+
+#define CONFIGURESTARTED(x)	([[(x) strip] hasPrefix:@"./configure"] 	|| \
+							 [[(x) strip] hasPrefix:@"patch"])
+
+#define COMPILESTARTED(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
+							 [[(x) strip] containsPattern: @"gcc -[!E]?*"]	|| \
+							 [[(x) strip] hasPrefix: @"building"])
 
 #define ISPROMPT(x) ([(x) contains: @"you want to proceed?"]	|| \
 					 [(x) contains: @"Make your choice:"]		|| \
@@ -43,6 +62,7 @@ File: FinkOutputParser.h
 					 [(x) contains: @"[anonymous]"] 			|| \
 					 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
+//fink's --yes option does not work for these prompts:
 #define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || 	\
 								 [(x) contains: @"return to continue"] 				||	\
 								 [(x) contains: @"CVS password:"])
@@ -63,7 +83,7 @@ enum {
     PROMPT = 10,
 	PROMPT_AND_START = 11
 };
-
+ 
 
 @interface FinkOutputParser: NSObject
 {
