@@ -7,7 +7,7 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
-#define TESTING
+//#define TESTING
 
 #ifdef DEBUGGING
 #define BUFFERLEN 512
