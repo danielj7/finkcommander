@@ -36,9 +36,9 @@
     IBOutlet NSProgressIndicator *loadingIndicator;
 	IBOutlet NSBrowser *oldBrowser;
 
-	SBFileItemTree *tree;
+	SBFileItemTree *sbTree;
     SBOutlineViewController *oController;
-	SBBrowserView *browser;
+	SBBrowserView *sbBrowser;
     SBDateColumnController *mDateColumnController;
     NSMutableArray *fileList;
 	NSString  *_sbActiveView;
@@ -50,7 +50,5 @@
 		   windowName:(NSString *)wName;
 
 -(IBAction)switchViews:(id)sender;
-
-//-(void)finishedLoading:(NSNotification *)n;
 
 @end

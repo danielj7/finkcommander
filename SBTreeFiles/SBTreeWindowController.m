@@ -71,7 +71,7 @@ enum {
 	[outlineView sizeLastColumnToFit];
 
 	/* Set up the outline view controller */
-    oController = [[SBOutlineViewController alloc] initWithTree:tree
+    oController = [[SBOutlineViewController alloc] initWithTree:sbTree
 													view:outlineView];
 
 	/* Set up the controller for the date column */
@@ -85,13 +85,13 @@ enum {
 				inTableColumn:[outlineView tableColumnWithIdentifier:@"filename"]];
 
 	/* Substitute SBBrowserView with drag and drop for nib version */
-    browser = [[SBBrowserView alloc] initWithFrame:browserFrame];
-	[browser setAutoresizingMask:[oldBrowser autoresizingMask]];
-	[browser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
+    sbBrowser = [[SBBrowserView alloc] initWithFrame:browserFrame];
+	[sbBrowser setAutoresizingMask:[oldBrowser autoresizingMask]];
+	[sbBrowser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
 	[oldBrowser removeFromSuperview];
-	[browserSuperview addSubview:browser];
-    [browser release];
-    [browser setTree:tree];
+	[browserSuperview addSubview:sbBrowser];
+    [sbBrowser release];
+    [sbBrowser setTree:sbTree];
 }
 
 -(id)initWithFileList:(NSMutableArray *)fList
@@ -107,12 +107,12 @@ enum {
     self = [super init];
     if (nil != self){
 	
-		tree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
+		sbTree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
 		/*	Building the file tree can take some time; run in a separate
 			thread to avoid tying up the rest of the app */
 		treeBuildingThreadIsFinished = NO;
 		[NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
-									toTarget:tree
+									toTarget:sbTree
 								  withObject:fList];		
 
 		[NSBundle loadNibNamed:@"TreeView" owner:self];
@@ -149,7 +149,7 @@ enum {
 		NSBeep();
 		return NO;
 	}
-    [oController collapseItemAndChildren:[tree rootItem]];
+    [oController collapseItemAndChildren:[sbTree rootItem]];
     return YES;
 }
 
@@ -167,7 +167,7 @@ enum {
 	[self setActiveView:nil];
 	[mDateColumnController release];
 	[oController release];
-	[tree release];
+	[sbTree release];
 	
 	[super dealloc];
 }
@@ -199,10 +199,10 @@ enum {
 -(void)finishedLoading:(NSNotification *)n
 {
 	treeBuildingThreadIsFinished = YES;
-    if (nil == [tree rootItem]){
+    if (nil == [sbTree rootItem]){
 		[msgTextField setStringValue:@"Error:  No such package installed"];
     }else{
-		double size = (float)[tree totalSize];
+		double size = (float)[sbTree totalSize];
 		NSString *formatString = BYTE_FORMAT;
 		if (size > MEGABYTE){
 			size /= MEGABYTE;
@@ -213,10 +213,10 @@ enum {
 		}
 		[msgTextField setStringValue:
 			[NSString stringWithFormat:formatString,
-				[tree itemCount], size]];
+				[sbTree itemCount], size]];
     }
-    [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
-	[browser reloadColumn:0];
+    [outlineView reloadItem:[sbTree rootItem] reloadChildren:YES];
+	[sbBrowser reloadColumn:0];
 	[loadingIndicator stopAnimation:self];
     [loadingIndicator removeFromSuperview];
 }
@@ -229,13 +229,13 @@ enum {
 {
 	double newWidth = [[aNotification object] frame].size.width;
 	if (newWidth >= FIVE_COLUMN_WIDTH){
-		[browser setMaxVisibleColumns:5];
+		[sbBrowser setMaxVisibleColumns:5];
 	}else if (newWidth >= FOUR_COLUMN_WIDTH){
-		[browser setMaxVisibleColumns:4];
+		[sbBrowser setMaxVisibleColumns:4];
 	}else if (newWidth >= THREE_COLUMN_WIDTH){
-		[browser setMaxVisibleColumns:3];
+		[sbBrowser setMaxVisibleColumns:3];
 	}else{
-		[browser setMaxVisibleColumns:2];
+		[sbBrowser setMaxVisibleColumns:2];
 	}
 	[outlineView sizeLastColumnToFit];
 }

@@ -74,6 +74,9 @@
 	[task release];
     s = [[[NSString alloc] initWithData:d
 							encoding:NSMacOSRomanStringEncoding] autorelease];
+	//dpkg -L didn't work for this package
+	if ([s length] < 3) return nil;
+
     fileList = [[[s componentsSeparatedByString:@"\n"] mutableCopy] autorelease];
     [fileList removeObjectAtIndex:0]; /* "/." */
 
@@ -90,6 +93,11 @@
     SBTreeWindowController *newController;
 	NSString *windowTitle = pkgName;
 	int windowNumber = 1;
+	
+	if (nil == fileList){
+		NSBeep();
+		return;
+	}
 	
 	while ([[self windowTitles] containsObject:windowTitle]){
 		windowNumber++;
