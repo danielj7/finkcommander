@@ -316,7 +316,7 @@ enum {
     }
     [progressIndicator setIndeterminate:b];
     [progressIndicator setDoubleValue:0.0];
-    [progressIndicator setUsesThreadedAnimation: YES];
+    [progressIndicator setUsesThreadedAnimation:YES];
     [progressIndicator startAnimation: nil];
 }
 
@@ -367,6 +367,9 @@ enum {
     [splitView connectSubviews]; //connects instance variables to scroll views
     [splitView adjustSubviews];
 	[splitView setCollapseExpandMenuItem:collapseExpandMenuItem];
+	
+	[tableScrollView setBorderType:NSNoBorder];
+	[outputScrollView setBorderType:NSNoBorder];
 
     //Substitute FinkTableView for NSTableView
     tableView = [[FinkTableView alloc] initWithFrame:

@@ -25,8 +25,8 @@ See the header file, FinkTableView.h, for interface and license information.
 	[(id) isEqualToString:@"installed"]
 
 enum {
-    INFO =  101,
-    PATCH = 102
+    FINKINFO =  101,
+    FINKPATCH = 102
 };
 
 @implementation FinkTableView
@@ -138,14 +138,14 @@ enum {
     NSString *path, *tree;
     int senderTag = [sender tag];
     //YES if user double-clicked the package name in the table
-	BOOL shouldOpenBoth = senderTag != INFO && senderTag != PATCH;
+	BOOL shouldOpenBoth = senderTag != FINKINFO && senderTag != FINKPATCH;
     BOOL fileWasOpened;
 
 	Dprintf(@"Sender tag in openPackageFiles: %d", senderTag);
 
     while (nil != (pkg = [e nextObject])){
 		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
-		if (senderTag == PATCH){
+		if (senderTag == FINKPATCH){
 			path = [pkg pathToPackageInTree:tree withExtension:@"patch"];
 		}else{
 			path = [pkg pathToPackageInTree:tree withExtension:@"info"];
@@ -154,10 +154,10 @@ enum {
 		if (! fileWasOpened) [problemPaths addObject:path];
 		if (shouldOpenBoth){
 			path = [pkg pathToPackageInTree:tree withExtension:@"patch"];
-			/* We won't check the return value here.  Some packages
-			don't have patch files.  Letting the user know when the
-			info file could not be opened is sufficient if the user
-			chose to open both by double-clicking.  */
+			/* 	We won't check the return value here.  Some packages
+				don't have patch files.  Letting the user know when the
+				info file could not be opened is sufficient if the user
+				chose to open both by double-clicking.  */
 			openFileAtPath(path);
 		}
     }
