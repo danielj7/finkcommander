@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+	<title>FinkCommander Help--Frequently Asked Questions</title>
+	<meta name="generator" content="BBEdit 6.1.2+">
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>Frequently Asked Questions</h2>
+
+<p><strong>Please note</strong>: A more current version of this document
+may be available on the 
+<a href="http://finkcommander.sf.net/help/faq.php">FinkCommander web site</a>.
+</p>
+
+<p class="question">
+    Q1:  How do I respond to a prompt that appears in the command
+    output when the interaction dialog fails to appear?
+</p>
+<div class="answer">
+<p>
+    Select the <kbd>Tools:Interact with Fink...</kbd> menu item. 
+	Please consider <a
+    href="http://finkcommander.sourceforge.net/help/bugs.php">
+    submitting a bug report</a> as well, so the developers 
+    can add the prompt to the FinkCommander output parser.
+</p>
+<p>
+    Please note that these instructions apply to <em>all</em> prompts 
+    from Fink, even those that simply ask you to &quot;Press any key
+    to continue.&quot;  (<em>Don&#039;t</em> report that one; the 
+    developers know about
+    it and will fix it in the next release.)  The FinkCommander
+    output view is not a terminal, so pressing a key will accomplish
+    nothing.  You need to invoke the interaction dialog and click
+    submit to send a key entry signal to the Fink process.
+</p>
+</div>
+
+<p class="question">
+    Q2:	FinkCommander is failing to display some/all of the packages
+    in the table.  What&#039;s wrong?  How do I fix it?</p>
+<p class="answer">
+    In all likelihood, this is happening because you have installed
+    Perl 5.8.  We are working on a FAQ about perl 5.8 
+    compatibility.  In the meantime, you can find information on
+    this subject by searching the finkcommander-users, fink-users
+    and fink-dev mailing lists.</p>
+
+
+<p class="question">
+    Q3: I ran a command in Terminal using FinkCommander. Now every
+    time I open a new Terminal window, that same command runs. Why
+    does this happen? How do I fix it?</p>
+<div class="answer"> 
+<p>
+  This happens whenever you open the &quot;Window Settings&quot;
+  panel for a Terminal window that was opened to run a
+  specific command and then click the &quot;Use Settings As
+  Default&quot; button. The same thing would occur if, for
+  example, you clicked that button for a Terminal window
+  opened by BBEdit&#039;s &quot;Run in Terminal&quot; command.
+</p>
+<p>
+  To fix this, terminate the offending fink or apt-get
+  process and enter the following command in Terminal:
+</p>
+<p>
+<kbd>defaults write com.apple.Terminal ExecutionString</kbd>
+</p>
+<p>
+  If you can&#039;t get access to a functional Terminal window,
+  then open ~/Library/Preferences/com.apple.Terminal.plist
+  in any text editor and delete the text between the
+  &lt;string&gt;&lt;/string&gt; tags under the
+  &lt;key&gt;ExecutionString&lt;/key&gt; entry.
+</p>
+</div>
+
+</body>
+
+</html>
