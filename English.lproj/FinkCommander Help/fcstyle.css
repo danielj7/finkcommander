@@ -1,0 +1,29 @@
+
+body {	
+	margin-left: 5%;
+	margin-right: 5%;
+	background: white;
+}
+
+h1,h2,h3,h4 {
+	color: navy;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+dt {
+    color: navy;
+}
+
+a:link {
+	color: navy;
+}
+
+a:visited {
+	color: maroon;
+}
+
+a:active {
+	color: green;
+}
+
+	
