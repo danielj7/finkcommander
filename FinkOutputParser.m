@@ -49,7 +49,7 @@ File: FinkOutputParser.m
 	 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 //fink's --yes option does not work for these prompts:
-#define ISMANDATORY_PROMPT(x)	\
+#define ISMANDATORY_PROMPT(x)												\
 	([(x) contains:@"cvs.sourceforge.net's password:"]  || 					\
 	 [(x) contains:@"CVS password:"]					||					\
 	 [(x) contains:@"[default=N]?"] 					||					\

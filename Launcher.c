@@ -278,7 +278,7 @@ int repair_self()
     }else if (result){
 		fprintf(stderr, "/n/nWARNING:  Unable to modify Resource directory\n");
     }else{
-		fprintf(stderr, "/n/nERROR:  Self-repair failed.  Please be sure you are running FinkCommander from a directory and disk you are authorized to modify.\n");
+		fprintf(stderr, "/n/nERROR:  Self-repair failed.  Please be sure you are running FinkCommander from a directory and disk you are authorized to modify (e.g., not a disk image).\n");
     }
     return ! result;  //will be used as exit code; so return 0 if successful, 1 otherwise
 }

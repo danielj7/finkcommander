@@ -298,21 +298,23 @@
     [self writeData:[str dataUsingEncoding:NSASCIIStringEncoding]];
 }
 
-// Internal routine used to capture output asynchronously.
+// Internal routines used to capture output asynchronously.
 // If a delegate overrides the executableFinished:withStatus method,
 // it will be called when the command exits.
 //
 //  (void)executableFinished:(AuthorizedExecutable*)exe withStatus:(int)status;
 //
+
+//Helper method
 -(NSString *)stringFromOutputData:(NSData *)data
 {
 	NSString *outputString;
 	
 	NS_DURING
-		outputString = [NSString stringWithCString:[data bytes]];
+		outputString = [NSString stringWithCString:[data bytes] length:[data length]];
 		return outputString;	
 	NS_HANDLER
-		return @"FinkCommander Warning:  Unable to decode C string.\n";
+		return @"WARNING:  Unable to decode output for display.\n";
 	NS_ENDHANDLER
 	;
 }
@@ -364,7 +366,7 @@
         OSStatus err;
         NSPipe *stdinPipe = nil;
         NSPipe *stdoutPipe = nil;
-        NSPipe *stderrPipe = nil;
+        //NSPipe *stderrPipe = nil;
 
         [output setString:@""];
 
@@ -391,32 +393,36 @@
         NS_DURING
             stdoutPipe = [NSPipe pipe];
             stdinPipe = [NSPipe pipe];
-            stderrPipe = [NSPipe pipe];
+            //stderrPipe = [NSPipe pipe];
 
             stdinHandle = [stdinPipe fileHandleForWriting];
             [stdinHandle retain];
             stdoutHandle = [stdoutPipe fileHandleForReading];
             [stdoutHandle retain];
-            stderrHandle = [stderrPipe fileHandleForReading];
-            [stderrHandle retain];
+            //stderrHandle = [stderrPipe fileHandleForReading];
+            //[stderrHandle retain];
 
             [[NSNotificationCenter defaultCenter] 
 						addObserver:self 
 						selector:@selector(captureStdOut:)
 						name:NSFileHandleReadCompletionNotification
 						object:stdoutHandle];
+#ifdef UNDEF
             [[NSNotificationCenter defaultCenter] 
 						addObserver:self selector:@selector(captureStdErr:)
 						name:NSFileHandleReadCompletionNotification
 						object:stderrHandle];
+#endif
             [stdoutHandle readInBackgroundAndNotify];
-            [stderrHandle readInBackgroundAndNotify];
+            //[stderrHandle readInBackgroundAndNotify];
 
             task = [[NSTask alloc] init];
             [task retain];
             [task setStandardOutput:stdoutPipe];
             [task setStandardInput:stdinPipe];
-            [task setStandardError:stderrPipe];
+			//my change:
+			[task setStandardError:stdoutPipe];
+            //[task setStandardError:stderrPipe];
 
             [task setLaunchPath:[self authExecutable]];
             [task setArguments:[self arguments]];
@@ -465,14 +471,14 @@
     [task release];
 	[stdinHandle closeFile];
 	[stdoutHandle closeFile];
-	[stderrHandle closeFile];
+	//[stderrHandle closeFile];
     [stdinHandle release];
     [stdoutHandle release];
-    [stderrHandle release];
+    //[stderrHandle release];
     task = nil;
     stdoutHandle = nil;
     stdinHandle = nil;
-    stderrHandle = nil;
+    //stderrHandle = nil;
 	if ([[self delegate]
 				respondsToSelector:@selector(executableFinished:withStatus:)])
 	{
