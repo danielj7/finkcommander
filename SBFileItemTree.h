@@ -1,6 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "SBFileItem.h"
-#import "SBString.h"
+#import "SBDateColumnController.h"
+#import "FinkGlobals.h"
 
 @interface SBFileItemTree: NSWindowController
 {
@@ -11,6 +12,7 @@
 	
 	//Instance variables
 	SBFileItem *_sbrootItem;
+	SBDateColumnController *mDateColumnController;
 	NSString *_sbname;
 	unsigned long totalSize;
 	unsigned long itemCount;

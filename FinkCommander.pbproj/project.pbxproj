@@ -345,6 +345,7 @@
 				F5C94466039C68FB01A80164,
 				F5C94468039C68FB01A80164,
 				F5C94473039C75FC01A80164,
+				F5360E75039DB04B01A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,6 +417,7 @@
 				F5C94465039C68FB01A80164,
 				F5C94467039C68FB01A80164,
 				F5C94472039C75FC01A80164,
+				F5360E73039DB02901A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -649,6 +651,28 @@
 		};
 		F53369F70218261B01A80165 = {
 			fileRef = F53369F50218261B01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5360E72039DB02901A80164 = {
+			isa = PBXFileReference;
+			path = SBDateColumnController.m;
+			refType = 4;
+		};
+		F5360E73039DB02901A80164 = {
+			fileRef = F5360E72039DB02901A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5360E74039DB04B01A80164 = {
+			isa = PBXFileReference;
+			path = SBDateColumnController.h;
+			refType = 4;
+		};
+		F5360E75039DB04B01A80164 = {
+			fileRef = F5360E74039DB04B01A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1553,8 +1577,10 @@
 		};
 		F5C94460039C68BC01A80164 = {
 			children = (
-				F5C94470039C75FC01A80164,
 				F5C94471039C75FC01A80164,
+				F5C94470039C75FC01A80164,
+				F5360E74039DB04B01A80164,
+				F5360E72039DB02901A80164,
 				F5C94462039C68FB01A80164,
 				F5C94461039C68FB01A80164,
 				F5C94464039C68FB01A80164,

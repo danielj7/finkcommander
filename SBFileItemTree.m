@@ -52,8 +52,12 @@
 	
 	[outlineView setTarget:self];
 	[outlineView setDoubleAction:@selector(openSelectedFiles:)];
-	[dateCell setFormatter:dateFormat];
-	[mdateColumn setDataCell:dateCell];
+//	[dateCell setFormatter:dateFormat];
+//	[mdateColumn setDataCell:dateCell];
+	mDateColumnController = [[SBDateColumnController alloc] 
+								initWithColumn:mdateColumn
+								shortTitle:@"Modified"
+								longTitle:@"Date Modified"];
 }
 
 -(BOOL)windowShouldClose:(id)sender
@@ -82,6 +86,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_sbrootItem release];
 	[_sbname release];
+	[mDateColumnController release];
 	NSLog(@"Deallocating %@", [self description]);
 	[super dealloc];
 }
