@@ -22,6 +22,8 @@ d Dock icon customization: show status of command
 
 d Flag column
 
+Size new columns appropriately
+
 Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after launching
 	command in Terminal
 
