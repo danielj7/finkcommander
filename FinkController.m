@@ -37,10 +37,7 @@ See the header file, FinkController.h, for interface and license information.
 	{
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
-		
-		[defaults removeObjectForKey: FinkBasePath];
-		[defaults removeObjectForKey: FinkBasePathFound];
-		
+				
 		if (![defaults boolForKey: FinkBasePathFound]){
 			NSLog(@"Looking for fink base path");
 			utility = [[[FinkBasePathUtility alloc] init] autorelease];
