@@ -38,8 +38,6 @@
 #include "Debugging.h"
 #endif
 
-#define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
-
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;

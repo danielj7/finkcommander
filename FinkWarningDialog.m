@@ -73,7 +73,7 @@
     switch (command){
 		case REMOVE:
 			d = [NSDictionary
-			dictionaryWithObject:[NSNumber numberWithInt:NO]
+			dictionaryWithObject:[NSNumber numberWithInt:YES]
 					   forKey:FinkRunProgressIndicator];
 			[center postNotificationName:FinkRunCommandNotification
 							   object:[self arguments]

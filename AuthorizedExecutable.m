@@ -85,7 +85,7 @@
 // flags to determine if the 'authorization dialog' should be 
 // displayed.
 //
--(bool)checkAuthorizationWithFlags:(AuthorizationFlags) flags
+-(bool)checkAuthorizationWithFlags:(AuthorizationFlags)flags
 {
     AuthorizationRights rights;
     AuthorizationItem items[1];
@@ -249,7 +249,6 @@
 				withString:str];
     }
 }
-
 
 // This saves capture the program's stdout and either passes it to a delegate, if assigned,
 // or to the log method.

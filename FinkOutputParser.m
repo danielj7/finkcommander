@@ -215,7 +215,8 @@ File: FinkOutputParser.m
 //------------------------------------------>Parse Output
 
 -(int)parseLineOfOutput:(NSString *)line
-{
+{	
+	NSString *sline = [line strip];
 	//Look for package lists
 	if (installing && readingPackageList){
 		//lines listing pkgs to be installed start with a space
@@ -241,14 +242,14 @@ File: FinkOutputParser.m
 			}
 			return PROMPT;
 		}
-		if (installing && FETCHTRIGGER(line)){
+		if (installing && FETCHTRIGGER(sline)){
 			Dprintf(@"Fetch phase triggered by:\n%@", line);
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
 			currentPhase = FETCH;
 			return START_AND_FETCH;
 		}
-		if (installing && UNPACKTRIGGER(line)){
+		if (installing && UNPACKTRIGGER(sline)){
 			Dprintf(@"Unpack phase triggered by:\n%@", line);
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
@@ -272,7 +273,7 @@ File: FinkOutputParser.m
 		return NONE;
     }
 	//Look for installation events
-	if (installing && FETCHTRIGGER(line)){
+	if (installing && FETCHTRIGGER(sline)){
 		Dprintf(@"Fetch phase triggered by:\n%@", line);
 		NSString *name = [self packageNameFromLine:line];
 		//no action required if retrying failed download
@@ -282,20 +283,20 @@ File: FinkOutputParser.m
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if (installing && (currentPhase != UNPACK) && UNPACKTRIGGER(line)){
+    if (installing && (currentPhase != UNPACK) && UNPACKTRIGGER(sline)){
 		Dprintf(@"Unpack phase triggered by:\n%@", line);
 		[self setIncrementForLastPhase];
 		[self setCurrentPackage:[self packageNameFromLine:line]];		
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (installing	&& (currentPhase == UNPACK) && CONFIGURETRIGGER(line)){
+    if (installing	&& (currentPhase == UNPACK) && CONFIGURETRIGGER(sline)){
 		Dprintf(@"Configure phase triggered by:\n%@", line);
 		[self setIncrementForLastPhase];
 		currentPhase = CONFIGURE;
 		return CONFIGURE;
     }
-    if (installing	&& (currentPhase != COMPILE) && COMPILETRIGGER(line)){
+    if (installing	&& (currentPhase != COMPILE) && COMPILETRIGGER(sline)){
 		Dprintf(@"Compile phase triggered by:\n%@", line);
 		[self setIncrementForLastPhase];
 		currentPhase = COMPILE;
@@ -317,7 +318,7 @@ File: FinkOutputParser.m
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		currentPhase = ACTIVATE;
 		return ACTIVATE;
-    }	
+    }
 	//Look for password events
 	if ([line contains: @"Password:"]){
 		return PASSWORD_PROMPT;
@@ -329,7 +330,7 @@ File: FinkOutputParser.m
 	if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
 		Dprintf(@"Found prompt: %@", line);
 		return PROMPT;
-    }	
+    }
 	//Look for self-repair of tool 
 	if ([line contains:@"Running self-repair"]){
 		self_repair = YES;
@@ -352,12 +353,16 @@ File: FinkOutputParser.m
 
 -(int)parseOutput:(NSString *)output
 {
-    NSEnumerator *e = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
+    NSEnumerator *e;
     NSString *line;
     int signal = NONE;  //false when used as boolean value
+	
+	e  = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
 
-    while (line = [e nextObject]){
-		signal = [self parseLineOfOutput:line];
+//	NSLog(@"Retain count after components separated = %d", [output retainCount]);
+
+    while (nil != (line = [e nextObject])){		
+		signal = [self parseLineOfOutput:line];		
 		if (signal) return signal;
     }
     return signal;

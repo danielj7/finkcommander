@@ -34,6 +34,7 @@ File: FinkOutputParser.h
 */
 
 #import <Foundation/Foundation.h>
+#import "FinkUtilities.h"
 #import "FinkGlobals.h"
 
 //Increment added to progress indicator at start
@@ -52,26 +53,26 @@ File: FinkOutputParser.h
 #define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be *installed*"] || \
 							 [(x) contains:@"will be rebuilt"])
 
-#define FETCHTRIGGER(x) 	([[(x) strip] hasPrefix: @"wget -"]  					|| \
-							 [[(x) strip] hasPrefix: @"curl -"]  					|| \
-							 [[(x) strip] hasPrefix: @"axel -"])
+#define FETCHTRIGGER(x) 	([(x) hasPrefix: @"wget -"]  					|| \
+							 [(x) hasPrefix: @"curl -"]  					|| \
+							 [(x) hasPrefix: @"axel -"])
 
-#define UNPACKTRIGGER(x) 	(([[(x) strip] containsPattern:@"mkdir -p */src/*"]    	&& \
+#define UNPACKTRIGGER(x) 	(([(x) containsPattern:@"mkdir -p */src/*"]    	&& \
 							  ![(x) contains:@"root"])								|| \
-							 [[(x) strip] containsPattern:@"*/bin/tar -*"]			|| \
-							 [[(x) strip] containsPattern:@"*/bin/bzip2 -*"])
+							 [(x) containsPattern:@"*/bin/tar -*"]			|| \
+							 [(x) containsPattern:@"*/bin/bzip2 -*"])
 
-#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 				|| \
-							 [[(x) strip] hasPrefix:@"checking for"]				|| \
-							 [[(x) strip] hasPrefix:@"patching file"])
+#define CONFIGURETRIGGER(x)	([(x) hasPrefix:@"./configure"] 				|| \
+							 [(x) hasPrefix:@"checking for"]				|| \
+							 [(x) hasPrefix:@"patching file"])
 
-#define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]						&& \
+#define COMPILETRIGGER(x)	(([(x) hasPrefix: @"make"]						&& \
 							  ![(x) contains:@"makefile"])							|| \
-							 [[(x) strip] hasPrefix: @"Compiling"]					|| \
-							 [[(x) strip] containsPattern: @"g77 [- ]*"]			|| \
-							 [[(x) strip] containsPattern: @"g[c+][c+] -[!E]*"]		|| \
-							 [[(x) strip] containsPattern: @"cc -[!E]*"]			|| \
-							 [[(x) strip] containsPattern: @"c++ -[!E]*"])
+							 [(x) hasPrefix: @"Compiling"]					|| \
+							 [(x) containsPattern: @"g77 [- ]*"]			|| \
+							 [(x) containsPattern: @"g[c+][c+] -[!E]*"]		|| \
+							 [(x) containsPattern: @"cc -[!E]*"]			|| \
+							 [(x) containsPattern: @"c++ -[!E]*"])
 
 #define ISPROMPT(x) 		([(x) containsPattern: @"*proceed? \[*"]				|| \
 							 [(x) contains: @"Make your choice:"]					|| \

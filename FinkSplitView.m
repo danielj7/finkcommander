@@ -11,7 +11,7 @@ File: FinkSplitView.m
 
 -(id)initWithFrame:(NSRect)rect
 {
-	if (self = [super initWithFrame: rect]){
+	if (self = [super initWithFrame:rect]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
 		[self setIsPaneSplitter:YES];
@@ -23,7 +23,6 @@ File: FinkSplitView.m
 						selector: @selector(collapseOutput:)
 						name: FinkCollapseOutputView
 						object: nil];
-		
 	}
 	return self;
 }

@@ -38,20 +38,20 @@ Contact the author at sburrious@users.sourceforge.net.
 @interface FinkDataController : NSObject
 {
 	NSUserDefaults *defaults;
-	NSMutableArray *array;
+	NSArray *array;
 	NSDictionary *binaryPackages;
-	NSString *pathToDists;
 	NSDate *start;
 }
 
 //Accessors
--(NSMutableArray *)array;
--(void)setArray:(NSMutableArray *)a;
+-(NSArray *)array;
+-(void)setArray:(NSArray *)a;
+-(void)setBinaryPackages:(NSDictionary *)d;
 -(void)setStart:(NSDate *)d;
 
 //Update array to reflect latest package information.
 -(void)update;
--(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs;
+-(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree;
 -(int)installedPackagesCount;
 
 @end

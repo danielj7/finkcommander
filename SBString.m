@@ -35,9 +35,8 @@
 
 -(NSString *)strip
 {
-//	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
-    NSCharacterSet *nonWhitespaceSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
+    NSCharacterSet *nonWhitespaceSet = 
+			[[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
     int start;
     int length;
 	//find start of nonwhitespace chars in string
@@ -52,7 +51,6 @@
 	//use start and length to calculate range
 	//return string in that range
 	return [self substringWithRange: NSMakeRange(start, length)];
-	
 }
 
 @end

@@ -1,13 +1,13 @@
 SHORT TERM
 
-Add warning alert back to terminate command
+Flag column
 
-Customize warning alert for removal commands: check box to turn
-warning off
+Dock icon customization: show status of command
 
-Add execute command in Terminal option
+Show .info, .patch file contents; open in editor; copy contents to 
+clipboard
 
-New command: update fink from cvs (raise warning alert)
+New command: update fink from cvs (warning alert: experimental)
 
 Search output
 
@@ -18,8 +18,6 @@ Additional fink installation info:
 	   last apt-get update
 
 Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences
-
-Dock icon customization: show status of command
 
 Show info panel for fink installation; mirror information in email
 sig; Application->About Your Fink Installation... ?
@@ -47,5 +45,7 @@ Custom script suite
 Command to display a package's dependencies
 
 Dependency browser
+
+Use document architecture for multiple FC windows
 
 Try CamelBones again

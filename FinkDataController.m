@@ -22,8 +22,6 @@ int NAMESTART = 12;
     if (self = [super init])
 	{
 		defaults = [NSUserDefaults standardUserDefaults];
-		pathToDists = [[[defaults objectForKey:FinkBasePath] 
-			stringByAppendingPathComponent: @"/fink/dists"] retain];
 		[[NSNotificationCenter defaultCenter] 
 			addObserver: self
 			selector: @selector(completeUpdate:)
@@ -37,18 +35,17 @@ int NAMESTART = 12;
 {
     [array release];
     [binaryPackages release];
-	[pathToDists release];
     [start release];
     [super dealloc];
 }
 
 // Accessors
--(NSMutableArray *)array
+-(NSArray *)array
 {
     return array;
 }
 
--(void)setArray:(NSMutableArray *)a
+-(void)setArray:(NSArray *)a
 {
     [a retain];
     [array release];
@@ -79,8 +76,8 @@ int NAMESTART = 12;
 //  completUpdate: is called by notification after the asynchronous task
 //  called by update is competed.
 //
-//	getBinaryList: is a helper method used to fill to determine
-//  whether packages in the array are available in binary form.
+//	makeBinaryDictionary is a helper method used to determine
+//  the version of packages in the array that are available in binary form.
 //
 //  A series of methods between update: and completeUpdate: parse the output
 //  from the task to derive the package's full description, web url, maintainer name
@@ -110,6 +107,7 @@ int NAMESTART = 12;
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
 	while (pkginfo = [e nextObject]){
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
 		while (line = [f nextObject]){
 			if ([line contains:@"Package:"]){
@@ -124,6 +122,7 @@ int NAMESTART = 12;
 		if (pname && pversion){
 			[pkgs setObject:pversion forKey:pname];
 		}
+		[pool release];
 	}
 	
 	Dprintf(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
@@ -207,37 +206,6 @@ int NAMESTART = 12;
     return [NSArray arrayWithObjects: web, maint, email, nil];
 }
 
--(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree
-{
-	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
-	NSString *name = [pkg name];
-	NSString *splitoff;
-	NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil] 
-								objectEnumerator];
-    NSString *pkgFileName;
-    NSArray *components;
-	NSRange r;
-	
-	while (splitoff = [e nextObject]){
-		r = [name rangeOfString:splitoff];
-		if (r.length > 0){
-			name = [name substringToIndex:r.location];
-			break;
-		}
-	}
-	pkgFileName = [NSString stringWithFormat:@"%@-%@.info", name, version];
-
-    if ([[pkg category] isEqualToString:@"crypto"]){
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto", 
-			@"finkinfo", pkgFileName, nil]; 
-    }else{
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"main", 
-			@"finkinfo", [pkg category], pkgFileName, nil]; 
-    }
-
-	return [NSString pathWithComponents:components];
-}
-
 -(void)completeUpdate:(NSNotification *)n
 {
     NSDictionary *info = [n userInfo];
@@ -267,6 +235,7 @@ int NAMESTART = 12;
     e = [temp objectEnumerator];
 
     while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		p = [[FinkPackage alloc] init];
 		[p setName:[listRecord objectAtIndex: 0]];
 		[p setStatus:[listRecord objectAtIndex: 1]];
@@ -278,15 +247,6 @@ int NAMESTART = 12;
 		[p setSummary:[listRecord objectAtIndex: 7]];
 		[p setFulldesc:[listRecord objectAtIndex: 8]];
 
-		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
-			path = [self pathToPackage:p inTree:@"stable"];
-			if ([manager fileExistsAtPath:path]){
-				[p setStable:[p unstable]];
-				if (! [defaults boolForKey:FinkShowRedundantPackages]){
-					[p setUnstable:@" "];
-				}
-			}
-		}
 		if ([defaults boolForKey:FinkShowRedundantPackages] &&
 			[[p unstable] length] < 2 						&&
 			[[p stable] length] > 1){
@@ -306,8 +266,10 @@ int NAMESTART = 12;
 
 		[collector addObject: p];
 		[p release];
+		[pool release];
     }
-    [self setArray: collector];
+    [self setArray: [[collector copy] autorelease]];
+	[self setBinaryPackages: nil];
 
 	Dprintf(@"Fink package array completed after %f seconds",
 	   -[start timeIntervalSinceNow]);
@@ -317,27 +279,37 @@ int NAMESTART = 12;
 											object: nil];
 }
 
--(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs
+-(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree
 {
-    FinkPackage *pkg;
-    NSEnumerator *e = [pkgs objectEnumerator];
+	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
+	NSString *name = [pkg name];
+	NSString *pathToDists = [[[defaults objectForKey:FinkBasePath]
+								stringByAppendingPathComponent: @"/fink/dists"] retain];
+	NSString *splitoff;
+	NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
+								objectEnumerator];
+    NSString *pkgFileName;
+    NSArray *components;
+	NSRange r;
 
-    if ([cmd isEqualToString: @"install"]){
-		while (pkg = [e nextObject]){
-			[pkg setStatus: @"current"];
+	while (splitoff = [e nextObject]){
+		r = [name rangeOfString:splitoff];
+		if (r.length > 0){
+			name = [name substringToIndex:r.location];
+			break;
 		}
-    }else if ([cmd isEqualToString: @"remove"]){
-		while (pkg = [e nextObject]){
-			[pkg setStatus: @"archived"];
-		}
-    }else if ([cmd isEqualToString: @"update-all"]){
-		e = [[self array] objectEnumerator];
-		while (pkg = [e nextObject]){
-			if ([[pkg status] isEqualToString: @"outdated"]){
-				[pkg setStatus: @"current"];
-			}
-		}
+	}
+	pkgFileName = [NSString stringWithFormat:@"%@-%@.info", name, version];
+
+    if ([[pkg category] isEqualToString:@"crypto"]){
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",
+			@"finkinfo", pkgFileName, nil];
+    }else{
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"main",
+			@"finkinfo", [pkg category], pkgFileName, nil];
     }
+
+	return [NSString pathWithComponents:components];
 }
 
 -(int)installedPackagesCount
@@ -353,7 +325,6 @@ int NAMESTART = 12;
     }
     return count;
 }
-
 
 @end
 

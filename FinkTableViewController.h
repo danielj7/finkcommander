@@ -41,7 +41,7 @@ File: FinkTableViewController.h
 	NSUserDefaults *defaults;
 
 	NSMutableDictionary *columnState;
-	NSMutableArray *displayedPackages;
+	NSArray *displayedPackages;
 	NSArray *selectedObjectInfo;
 	
 	NSString *lastIdentifier;
@@ -52,8 +52,8 @@ File: FinkTableViewController.h
 //----------------------------------------------->Accessors
 -(NSString *)lastIdentifier;
 -(void)setLastIdentifier:(NSString *)s;
--(NSMutableArray *)displayedPackages;
--(void)setDisplayedPackages:(NSMutableArray *)a;
+-(NSArray *)displayedPackages;
+-(void)setDisplayedPackages:(NSArray *)a;
 -(NSArray *)selectedObjectInfo;
 -(void)setSelectedObjectInfo:(NSArray *)array;
 -(NSImage *)normalSortImage;

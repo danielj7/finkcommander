@@ -7,8 +7,6 @@ File: FinkTextViewController.m
 
 #import "FinkTextViewController.h"
 
-#define NEWSTORAGE
-
 @implementation FinkTextViewController
 
 -(id)initWithView:(NSTextView *)aTextView 

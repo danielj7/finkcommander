@@ -60,8 +60,8 @@ See the header file, FinkTableViewController.h, for interface and license inform
 	lastIdentifier = s;
 }
 
--(NSMutableArray *)displayedPackages {return displayedPackages;}
--(void)setDisplayedPackages:(NSMutableArray *)a
+-(NSArray *)displayedPackages {return displayedPackages;}
+-(void)setDisplayedPackages:(NSArray *)a
 {
 	[a retain];
 	[displayedPackages release];
@@ -283,9 +283,11 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 //basic sorting method
 -(void)sortTableAtColumn:(NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
-	[[self displayedPackages] sortUsingSelector:
-		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
+	NSArray *newArray = 
+		[[self displayedPackages] sortedArrayUsingSelector:
+			NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
+	[self setDisplayedPackages:newArray];
 	[self reloadData];
 }
 

@@ -116,5 +116,5 @@ foreach $pname (sort @pkglist) {
         $iflag = " ";
       }
   }
-  print "found: $lvstable\n----\n";
+  print "found: $lvstable\n";
 }

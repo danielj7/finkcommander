@@ -730,7 +730,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 {
     return [NSArray arrayWithObjects:
 	       FinkInstallSourceItem,
-	       FinkInstallBinaryItem,
+	       FinkTermInstallItem,
 	       FinkRemoveSourceItem,
 	       FinkSelfUpdateCVSItem,
 	       NSToolbarSeparatorItemIdentifier,
@@ -772,7 +772,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 					[subset addObject: pkg];
 				}
 			}
-			[tableView setDisplayedPackages:subset];
+			[tableView setDisplayedPackages:[[subset copy] autorelease]];
 		}
 		[tableView resortTableAfterFilter];
 
@@ -781,8 +781,8 @@ willBeInsertedIntoToolbar:(BOOL)flag
 			[tableView scrollToSelectedObject];
 		}
 		[self displayNumberOfPackages];
-		//in interaction dialogue, automatically select the radio button appropriate
-  //for the state of the text entry field
+	//in interaction dialogue, automatically select the radio button appropriate
+	//for the state of the text entry field
     }else if ([[aNotification object] tag] == INTERACTION){
 		if ([[interactionField stringValue] length]){
 			[interactionMatrix selectCellWithTag: USER_CHOICE];
@@ -1121,19 +1121,23 @@ willBeInsertedIntoToolbar:(BOOL)flag
     //Determine how much output is below the scroll view based on
     //the following calculation (in vertical pixels):
 
-    //Total document length
-    //Length above scroll view (y coord of visible portion)   -
-    //Length w/in scroll view 				      =
+    //Total document length									 -
+    //Length above scroll view (y coord of visible portion)  -
+    //Length w/in scroll view 				      			 =
     //----------------------------------------------------
     //Length below scroll view
 
     //This value is used to determine whether the user has scrolled up.
     //If so, the output view will not automatically scroll to the bottom.
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
 				    abs([[textViewController textView] bounds].size.height -
 			[[textViewController textView] visibleRect].origin.y -
 			[[textViewController textView] visibleRect].size.height)];
-    int signal = [parser parseOutput:output];
+    int signal;
+	
+	signal = [parser parseOutput:output];
+	
     if (commandTerminated) return;
     switch(signal)
     {
@@ -1195,12 +1199,14 @@ willBeInsertedIntoToolbar:(BOOL)flag
 			output = NSLocalizedString(@"SelfRepairFailed", nil);
 			break;
     }
+
     [textViewController appendString:output];
-    //According to Moriarity example, we have to put off scrolling until next event loop
-//    [self performSelector:@selector(scrollToVisible:)
-//					 withObject:pixelsBelowView
-//					 afterDelay:0.0];
-	[self scrollToVisible:pixelsBelowView];
+	//According to Moriarity example, we have to put off scrolling until next event loop
+    [self performSelector:@selector(scrollToVisible:)
+					 withObject:pixelsBelowView
+					 afterDelay:0.0];
+					 
+	[pool release];
 }
 
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number

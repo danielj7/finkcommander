@@ -7,6 +7,7 @@ File: FinkUtilities.m
 
 #import "FinkUtilities.h"
 
+
 //------------------------------------------------------------>Base Path Functions
 
 void findFinkBasePath(void)
