@@ -1,4 +1,3 @@
-
 RELEASE 0.4.0
 
 Target date: 09/07/2002
