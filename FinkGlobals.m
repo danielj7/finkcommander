@@ -16,19 +16,20 @@ NSString *FinkOutputPath = @"FinkOutputPath";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 NSString *FinkScrollToSelection = @"FinkScrollToSelection";
-NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
-NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
 NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
-NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
 NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
 NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 NSString *FinkWarnBeforeRemoving = @"FinkWarnBeforeRemoving";
 NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
-NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
+
+NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
+NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
+NSString *FinkLookedForProxy = @"FinkLookedForProxy";
+NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

@@ -26,7 +26,7 @@
 	NSString *whichPath;
 
 	//look in some possible install paths
-	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", @"/fink", homeDir,
+	e = [[NSArray arrayWithObjects: @"/sw", @"opt", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
         [homeDir stringByAppendingPathComponent: @"fink"],
         @"/usr/local/sw", @"/usr/local/fink",

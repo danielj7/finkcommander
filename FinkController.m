@@ -73,6 +73,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
+		utility = [[FinkBasePathUtility alloc] init];
 		if (! [defaults boolForKey: FinkBasePathFound]){
 			[utility findFinkBasePath];
 		}
