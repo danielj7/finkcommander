@@ -1,6 +1,6 @@
 NEXT RELEASE
 
-Menu, toolbar commands to e-mail package maintainer
+X Menu, toolbar commands to e-mail package maintainer
 
 Show info panel for fink installation; include:
 	fink version
@@ -10,15 +10,17 @@ Show info panel for fink installation; include:
 
 Check for new FinkCommander release
 
-Resize package inspector window properly
+X Optional warning before removing a package
 
-X  Save output to log files
+X Resize package inspector window properly
+
+X Save output to log files
+
+Command to update fink from cvs
 
 FUNCTIONALITY
 
 **Short Term
-
-Command to update fink from cvs
 
 Allow user to set environment variables
 

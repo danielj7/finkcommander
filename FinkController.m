@@ -42,6 +42,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysScrollToBottom];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkGiveEmailCredit];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkWarnBeforeRemoving];
 
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkPackagesInTitleBar];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
@@ -388,18 +389,19 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 
+
+//----------------------------------------------->Menu Actions
+//save output
+
 -(void)didEnd:(NSSavePanel *)sheet
-	returnCode:(int)code
-	contextInfo:(void *)contextInfo
+	  returnCode:(int)code
+	 contextInfo:(void *)contextInfo
 {
 	if (code = NSOKButton){
 		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
 		[odata writeToFile: [sheet filename] atomically: YES];
 	}
 }
-
-//----------------------------------------------->Menu Actions
-//save output
 
 -(IBAction)saveOutput:(id)sender
 {
@@ -548,20 +550,25 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
 }
 
+-(void)sendEmailForPackage:(FinkPackage *)pkg
+{
+	NSMutableString *url = 
+		[NSMutableString stringWithFormat: @"mailto:%@?subject=%@", [pkg email], [pkg name]];
+
+	if ([defaults boolForKey: FinkGiveEmailCredit]){
+		[url appendString: FinkCreditString];
+	}
+	
+	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+}
+
 -(IBAction)emailMaintainer:(id)sender
 {
-	NSMutableString *url = nil;
 	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
 	FinkPackage *pkg;
-	NSString *credit = @"&body=%0A%0A--%0AGenerated%20by%20FinkCommander";
 
 	while (pkg = [e nextObject]){
-		url = [NSMutableString stringWithFormat: @"mailto:%@?subject=%@",
-			[pkg email], [pkg name]];
-		if ([defaults boolForKey: FinkGiveEmailCredit]){
-			[url appendString: credit];
-		}
-		[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+		[self sendEmailForPackage: pkg];
 	}
 }
 
@@ -792,8 +799,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		FinkRemoveSourceItem,
 		FinkSelfUpdateCVSItem,
 		NSToolbarSeparatorItemIdentifier,
-		FinkDescribeItem,
 		FinkTerminateCommandItem,
+		FinkDescribeItem,
 		FinkEmailItem,
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
@@ -1070,7 +1077,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	[[NSNotificationCenter defaultCenter] 
 		postNotificationName: @"passwordWasEntered"
 		object: nil];
-	if (passwordError){
+	if (passwordError && [[finkTask task] isRunning]){
 		[finkTask writeToStdin: [self password]];
 	}
 }
@@ -1154,6 +1161,25 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		}
 	}
 
+	if ([[params objectAtIndex: 1] isEqualToString: @"remove"] && 
+		[defaults boolForKey: FinkWarnBeforeRemoving]){
+		int answer = NSRunCriticalAlertPanel(@"Caution",
+			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Uniphobe or by pressing \"Remove/Don't Warn\" below.)",
+			@"Don't Remove", @"Remove",  @"Remove/Don't Warn");
+		switch(answer){
+			case NSAlertDefaultReturn:
+				[self setCommandIsRunning: NO];
+				[self displayNumberOfPackages];
+				return;
+			case NSAlertOtherReturn:
+				[defaults setBool: NO forKey: FinkWarnBeforeRemoving];
+				if (preferences){
+					[preferences setWarnBeforeRemovingButtonState: NO];
+				}
+				break;
+		}
+	}
+
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
@@ -1164,8 +1190,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	}
 	//give apt-get a chance to fix broken dependencies
 	if ([executable isEqualToString: @"apt-get"]){
-		int i = [defaults boolForKey: FinkAlwaysChooseDefaults] ? 4 : 3;
-		[params insertObject: @"-f" atIndex: i];
+		[params insertObject: @"-f" atIndex: 3];
 	}
 
 #ifdef DEBUG	
@@ -1223,9 +1248,9 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 
 	if ([self commandIsRunning]){
 		NSRunAlertPanel(@"Sorry",
-			@"You will have to wait until the current command is complete before changing the fink.conf settings.",			 
+			@"You will have to wait until the current command is complete before changing the fink.conf settings.",
 			@"OK", nil, nil);									 
-			[preferences setFinkConfChanged: nil]; //sets to YES
+			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		return;
 	}
 
@@ -1334,11 +1359,12 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	NSString *output = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
 
-	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"mv"]){
+	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"chown"] &&
+		! [[self lastCommand] contains: @"mv"]){
 		NSBeep();
 	}
 	
-	// Make sure command was succesful before updating table
+	// Make sure command was successful before updating table
 	// Checking exit status is not sufficient for some fink commands, so check
 	// approximately last two lines for "failed"
 	[self setDisplayedPackages: [packages array]];

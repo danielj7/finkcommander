@@ -318,39 +318,47 @@ File: FinkConf.m
 }
 
 //completes process of writing changes to fink.conf file;
-//performed twice after receiving notifications that previous commands were completed;
+//performed 2-3 times after receiving notifications that previous commands were completed;
 //this implementation is necessary to prevent method calls from overlapping NSTask
 -(void)completeFinkConfUpdate:(NSNotification *)n
 {
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	NSString *basePath = [defaults objectForKey: FinkBasePath];
-
-	//if backup performed, write out temp fink.conf file and move to /sw/etc
+	NSFileManager *manager = [NSFileManager defaultManager];
+	//if backup performed, write out temp fink.conf file and change ownership to root admin
 	if ([[n object] contains: @"cp"]){
 		NSString *fconfString = [self stringFromDictionary];
-		NSFileManager *manager = [NSFileManager defaultManager];
 		NSString *backupFile = [NSString stringWithFormat: @"%@/etc/fink.conf~", basePath];
-		NSMutableArray *writeFinkConfArray = [NSMutableArray arrayWithObjects:
-			@"/bin/mv",
-			@"/private/tmp/fink.conf.tmp",
-			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
+		NSString *tempFile = @"/private/tmp/fink.conf.tmp";
+		NSMutableArray *chownCommandArray = [NSMutableArray arrayWithObjects:
+			@"/usr/sbin/chown",
+			@"root",
+			tempFile,
 			nil];
-
 #ifdef DEBUG
 		NSLog(@"%@", fconfString);
 #endif
-
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&
-			[fconfString writeToFile: @"/private/tmp/fink.conf.tmp" atomically: YES]){
-
+			[fconfString writeToFile: tempFile atomically: YES]){
+			[manager changeFileAttributes: [NSDictionary dictionaryWithObject: @"admin" 
+				forKey: NSFileGroupOwnerAccountName] atPath: tempFile];
 			[center postNotificationName: FinkConfChangeIsPending
-								  object: writeFinkConfArray];
+								  object: chownCommandArray];
 		}else{			
 			NSRunCriticalAlertPanel(@"Error",
 						   @"FinkCommander was unable to write changes to fink.conf.",
 						   @"OK", nil, nil);
 		}
+	//after ownership of temp file is set appropriately, move it to <finkpath>/etc
+	}else if ([[n object] contains:@"chown"]){
+		NSMutableArray *writeFinkConfArray = [NSMutableArray arrayWithObjects:
+			@"/bin/mv",
+			@"/private/tmp/fink.conf.tmp",
+			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
+			nil];
+		[center postNotificationName: FinkConfChangeIsPending
+			object: writeFinkConfArray];
 	//if fink.conf file trees parameter was changed, call index to make table data reflect
 	//new fink.conf settings
 	}else if (finkTreesChanged && [[n object] contains: @"mv"]){

@@ -188,6 +188,7 @@
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
 				F5D3F481025306EB01A80164,
+				F5DE3CD602CAE98601A80164,
 				F5C1B062026BFA2501A80164,
 			);
 			isa = PBXGroup;
@@ -271,7 +272,7 @@
 	<key>CFBundleHelpBookName</key>
 	<string>FinkCommander Help</string>
 	<key>CFBundleIconFile</key>
-	<string>Darwinfinch.icns</string>
+	<string>finkcommander.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sburrious.finkcommander</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -343,6 +344,7 @@
 				F5B9D9F702B3D67A01A8016B,
 				F57DA17C02B4680D01A8016B,
 				F5897AAB02C6E37B01A80166,
+				F5DE3CD702CAE98601A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -1051,6 +1053,17 @@
 		};
 		F5DE1D91022845A201A80164 = {
 			fileRef = F5DE1D8E022845A201A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DE3CD602CAE98601A80164 = {
+			isa = PBXFileReference;
+			path = finkcommander.icns;
+			refType = 4;
+		};
+		F5DE3CD702CAE98601A80164 = {
+			fileRef = F5DE3CD602CAE98601A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

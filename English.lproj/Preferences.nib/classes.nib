@@ -45,6 +45,7 @@
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
                 verboseOutputButton = NSButton; 
+                warnBeforeRemovingButton = NSButton; 
                 warnBeforeRunningButton = NSButton; 
             }; 
             SUPERCLASS = NSWindowController; 

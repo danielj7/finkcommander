@@ -159,6 +159,7 @@ enum {
 -(IBAction)showDescription:(id)sender;
 //  help menu items
 -(IBAction)internetAccess:(id)sender;
+-(void)sendEmailForPackage:(FinkPackage *)pkg;
 -(IBAction)emailMaintainer:(id)sender;
 
 //Toolbar Methods

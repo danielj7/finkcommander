@@ -31,12 +31,8 @@
 	[[textView window] setDelegate: self];
 }
 
--(BOOL)isHeading:(NSString *)s
-{
-    return ([s contains: @"Usage Notes:"]	||
-			[s contains: @"Web site:"] 		||
-			[s contains: @"Maintainer:"]);
-}
+//--------------------------------------------------------------->Text Display Methods
+
 
 //adds font attributes to headings, link attributes to urls and removes hard
 //returns within paragraphs to allow soft wrapping
@@ -90,8 +86,6 @@
 				[[[NSMutableAttributedString alloc] 
 					initWithString: [NSString stringWithFormat: @"%@ ", line]] autorelease]];
 	}
-	[desc appendAttributedString:
-		[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
 
 	//apply attributes to field names
 	while (field = [f nextObject]){
@@ -114,12 +108,11 @@
 		
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
-		NSString *credit = @"&body=%0A%0A--%0AGenerated%20by%20FinkCommander";
 		NSMutableString *mailurl = [NSMutableString 
 			stringWithFormat: @"mailto:%@?subject=%@", [p email], [p name]];
 
 		if ([defaults boolForKey: FinkGiveEmailCredit]){
-			[mailurl appendString: credit];
+			[mailurl appendString: FinkCreditString];
 		}
 		
 		r = [[desc string] rangeOfString: [p email]];
@@ -133,13 +126,14 @@
 
 -(void)displayDescriptions:(NSArray *)packages
 {
-	NSEnumerator *e = [packages objectEnumerator];
+	int i, count = [packages count];
 	FinkPackage *pkg;
 	NSString *nameVersion;
 
 	[textView setString: @""];
 
-	while (pkg = [e nextObject]){
+	for (i = 0; i < count; i++){
+		pkg = [packages objectAtIndex: i];
 		nameVersion = ([[pkg version] length] > 1) ? 
 			[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]] : [pkg name];
 		[[textView textStorage] appendAttributedString:
@@ -151,18 +145,27 @@
 						nil]] autorelease]];
 		[[textView textStorage] appendAttributedString:
 			[self formatDescriptionString: [pkg fulldesc] forPackage: pkg]];
-		[[textView textStorage] appendAttributedString:
-			[[[NSMutableAttributedString alloc] initWithString: @"\n"] autorelease]];
+		if (i != count - 1){  			//don't add newlines after last package
+			[[textView textStorage] appendAttributedString:
+				[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
+		}
 	}
 }
 
+//--------------------------------------------------------------->NSWindow Delegate Methods
+
+//Resize window when zoom button clicked
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 								defaultFrame:(NSRect)defaultFrame
 {	
+	float windowOffset = [[self window] frame].size.height 
+							- [[textView superview] frame].size.height;
 	float newHeight = [textView frame].size.height;	
 	NSRect stdFrame = 
 		[NSWindow contentRectForFrameRect:[sender frame] 
 							 styleMask:[sender styleMask]];
+
+	if (newHeight > stdFrame.size.height) {newHeight += windowOffset;}
 							 
 	stdFrame.origin.y += stdFrame.size.height;
 	stdFrame.origin.y -= newHeight;
@@ -174,6 +177,7 @@
 							 
 
 	if (stdFrame.size.height > defaultFrame.size.height){
+		stdFrame.size.width += (stdFrame.size.height - defaultFrame.size.height);	
 		stdFrame.size.height = defaultFrame.size.height;
 		stdFrame.origin.y = defaultFrame.origin.y;
 	}else if (stdFrame.origin.y < defaultFrame.origin.y){
@@ -183,5 +187,10 @@
 	return stdFrame;
 }
 
+//Prevent last selection from appearing when panel reopens
+-(void)windowWillClose:(NSNotification *)n
+{
+	[textView setString: @""];  
+}
 
 @end

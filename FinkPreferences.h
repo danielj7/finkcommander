@@ -47,6 +47,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *neverAskButton;
 	IBOutlet NSButton *scrollToBottomButton;
 	IBOutlet NSButton *warnBeforeRunningButton;
+	IBOutlet NSButton *warnBeforeRemovingButton;
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
@@ -100,5 +101,7 @@ File: FinkPreferences.h
 
 //set title bar image to reflect user's choice
 -(IBAction)setTitleBarImage:(id)sender;
+
+-(void)setWarnBeforeRemovingButtonState:(BOOL)b;
 
 @end

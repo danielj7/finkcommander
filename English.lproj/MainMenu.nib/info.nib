@@ -32,7 +32,9 @@
 	<string>2</string>
 	<key>IBOpenObjects</key>
 	<array>
+		<integer>29</integer>
 		<integer>663</integer>
+		<integer>524</integer>
 	</array>
 	<key>IBSystem Version</key>
 	<string>5S66</string>

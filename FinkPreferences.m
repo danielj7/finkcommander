@@ -57,6 +57,7 @@ File: FinkPreferences.m
 	[neverAskButton setState: [defaults boolForKey: FinkNeverAskForPassword]];
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
 	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
+	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
 	[self setTitleBarImage: nil];
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
@@ -165,7 +166,6 @@ File: FinkPreferences.m
 
 //---------------------------------------------------------------------->Actions
 
-
 -(IBAction)setPreferences:(id)sender
 {
 	[self setBasePath];
@@ -178,6 +178,7 @@ File: FinkPreferences.m
 	[defaults setBool: [neverAskButton state] 				forKey: FinkNeverAskForPassword];
 	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
 	[defaults setBool: [warnBeforeRunningButton state]	 	forKey: FinkWarnBeforeRunning];
+	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
 	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
 	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
@@ -208,6 +209,11 @@ File: FinkPreferences.m
 
 		[conf writeToFile];
 	}
+}
+
+-(void)setWarnBeforeRemovingButtonState:(BOOL)b
+{
+	[warnBeforeRemovingButton setState: b];
 }
 
 -(IBAction)setAndClose:(id)sender

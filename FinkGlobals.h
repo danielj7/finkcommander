@@ -41,3 +41,5 @@ extern NSString *FinkConfChangeIsPending;
 extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;
+
+extern NSString *FinkCreditString;
