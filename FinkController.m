@@ -597,6 +597,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSString *pgid = processGroupID(ppid);
 	[killTask setArguments:
 		[NSArray arrayWithObjects: @"--kill", pgid, nil]];
+	[killTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
 	[killTask authorizeWithQuery];
 	[killTask start];
 }
