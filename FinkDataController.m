@@ -7,8 +7,6 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
-//#define TESTING
-
 #ifdef DEBUGGING
 #define BUFFERLEN 512
 #endif //DEBUGGING
@@ -105,24 +103,21 @@ int NAMESTART = 12;
 		stringByAppendingPathComponent: @"/bin/apt-cache"]];
     [listCmd setArguments: [NSArray arrayWithObjects: @"dumpavail", nil]];
     [listCmd setStandardOutput: pipeIn];
-
     [listCmd launch];
-
 	d = [cmdStdout readDataToEndOfFile];
 	
-	if (DEBUGGING){
-		if (d) {
-			char buffer[BUFFERLEN];
-			[d getBytes:buffer length:BUFFERLEN-1]; //BUFFERLEN should be OK, but just to be safe
-			NSLog(@"Binary pkg data in buffer from notification:\n%s", buffer);
-		}else{
-			NSLog(@"Notification data buffer was empty");
-		}
+#ifdef DEBUGGING
+	if (d) {
+		char buffer[BUFFERLEN];
+		[d getBytes:buffer length:BUFFERLEN-1];
+		NSLog(@"Binary pkg data in buffer from notification:\n%s", buffer);
+	}else{
+		NSLog(@"Notification data buffer was empty");
 	}
+#endif
 	
-	output = [[[NSString alloc] initWithData:d encoding:NSASCIIStringEncoding] autorelease];
+	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanEncoding] autorelease];
     e = [[output componentsSeparatedByString: @"\n"] reverseObjectEnumerator];
-
     while (line = [e nextObject]){
 		if ([line contains:@"Package:"]){
 			line = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
@@ -163,14 +158,12 @@ int NAMESTART = 12;
     if (DEBUGGING) {
 		int slen, rlen;
 		NSLog(@"User's shell: %s", getenv("SHELL"));
-		NSLog(@"Default C string encoding: %d", [NSString defaultCStringEncoding]);
-		NSLog(@"Completed binary list after %f seconds", 
-		-[start timeIntervalSinceNow]);
+		NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
 		if (binaryPackages){
 			slen = [binaryPackages length];
 			rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
 			NSLog(@"Binary package string:\n%@", 
-		 [binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
+				[binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
 		}
     }
 }
@@ -237,43 +230,31 @@ int NAMESTART = 12;
     NSEnumerator *e;
     FinkPackage *p;
 
-#ifdef TESTING
-	int bufferlen = [d length];
-	char databuf[bufferlen + 10];
-	NSLog(@"Buffer length: %d", bufferlen);
-
-	[d getBytes:databuf length:bufferlen];
-	output = [NSString stringWithCString:databuf];
-	
-#else
 	output = [[[NSString alloc] initWithData:d
-								encoding:NSASCIIStringEncoding] autorelease];
+								encoding:NSMacOSRomanStringEncoding] autorelease];
 
-    if (DEBUGGING) {
-		NSLog(@"Read to end of file notification sent after %f seconds",
-		-[start timeIntervalSinceNow]);
-		NSLog(@"User info keys from notification:\n%@", [info allKeys]);
-		if (d) {
-			char buffer[BUFFERLEN];
-			[d getBytes:buffer length:BUFFERLEN-1]; //BUFFERLEN should be OK, but just to be safe
-			NSLog(@"Source pkg data in buffer from notification:\n%s", buffer);
-		}else{
-			NSLog(@"Notification data buffer was empty");
-		}
-		if (output) {
-			int olen = [output length];
-			int rlen = olen > 240 ? 240 : olen;
-			NSLog(@"Output string from data buffer:\n%@", [output substringWithRange:NSMakeRange(0, rlen)]);
-		}else{
-			NSLog(@"Output string from data buffer was empty");
-		}
-    }	
-#endif
+#ifdef DEBUGGING
+	NSLog(@"Read to end of file notification sent after %f seconds",
+	   -[start timeIntervalSinceNow]);
+	NSLog(@"User info keys from notification:\n%@", [info allKeys]);
+	if (d) {
+		char buffer[BUFFERLEN];
+		[d getBytes:buffer length:BUFFERLEN-1];
+		NSLog(@"Source pkg data in buffer from notification:\n%s", buffer);
+	}else{
+		NSLog(@"Notification data buffer was empty");
+	}
+	if (output) {
+		int olen = [output length];
+		int rlen = olen > 240 ? 240 : olen;
+		NSLog(@"Output string from data buffer:\n%@", [output substringWithRange:NSMakeRange(0, rlen)]);
+	}else{
+		NSLog(@"Output string from data buffer was empty");
+	}
+#endif //DEBUGGING
 
     temp = [NSMutableArray arrayWithArray:
 	       [output componentsSeparatedByString: @"\n----\n"]];
-
-    if (DEBUGGING && temp) {NSLog(@"Length of array from output string = %d", [temp count]);}
 
     [temp removeObjectAtIndex: 0];  // "Reading package info . . . "
     e = [temp objectEnumerator];
@@ -307,10 +288,10 @@ int NAMESTART = 12;
     }
     [self setArray: collector];
 
-    if (DEBUGGING){
-		NSLog(@"Fink package array completed after %f seconds",
-		-[start timeIntervalSinceNow]);
-    }
+#ifdef DEBUGGING
+	NSLog(@"Fink package array completed after %f seconds",
+	   -[start timeIntervalSinceNow]);
+#endif
 
     //notify FinkController that table needs to be updated
     [[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished

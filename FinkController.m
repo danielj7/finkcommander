@@ -62,11 +62,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set instance variables used to store information related to fink package data
 
-#ifndef USE_CAMELBONES
 		packages = [[FinkDataController alloc] init];		// data used in table
-#else
-		packages = [[FinkData alloc] init];
-#endif
 		[self setSelectedPackages: nil];    				// used to update package data
 		
 		//Set instance variables used to store objects and state information  
@@ -314,9 +310,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[progressViewHolder addSubview: progressView];
 		[progressIndicator setUsesThreadedAnimation: YES];
 		[progressIndicator startAnimation: nil];
-    }else{
-		LOGIFDEBUG(@"Called start PI while PI still running");
     }
+#ifdef DEBUGGING
+	NSLog(@"Called start PI while PI still running");
+#endif
 }
 
 -(void)stopProgressIndicator
@@ -324,9 +321,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     if ([progressView isDescendantOf: progressViewHolder]){
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
-    }else{
-		LOGIFDEBUG(@"Called stop PI when PI not running");
-    }
+#ifdef DEBUGGING
+	NSLog(@"Called stop PI when PI not running");
+#endif
+	}
 }
 
 //reset the interface--stop and remove progress indicator, revalidate

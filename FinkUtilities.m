@@ -59,10 +59,11 @@ void fixScript(void)
 		NSRange rangeOfBASEPATH;
 		
 		while((rangeOfBASEPATH = [scriptText rangeOfString:@"BASEPATH"]).length > 0){
-			LOGIFDEBUG(@"Replacing BASEPATH");
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
-		if (DEBUGGING) {NSLog(@"Script text:\n%@", scriptText);}
+#ifdef DEBUGGING
+		NSLog(@"Script text:\n%@", scriptText);
+#endif
 		NSLog(@"Writing table update script to %@", wpath);
 		[scriptText writeToFile:wpath atomically:YES];
 		[defaults setBool:NO forKey:FinkBasePathFound];
