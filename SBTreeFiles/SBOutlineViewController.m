@@ -56,6 +56,10 @@
     [super dealloc];
 }
 
+//----------------------------------------------------------
+#pragma mark ACCESSORS
+//----------------------------------------------------------
+
 -(NSString *)previousColumnIdentifier { return previousColumnIdentifier; }
 
 -(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier{
@@ -65,7 +69,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark NSOUTLINE DATA SOURCE METHODS
+#pragma mark NSOUTLINEVIEW DATA SOURCE METHODS
 //----------------------------------------------------------
 
 -(int)outlineView:(NSOutlineView *)outlineView 
@@ -105,7 +109,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark NSOUTLINE DELEGATE METHOD(S)
+#pragma mark NSOUTLINEVIEW DELEGATE METHOD(S)
 //----------------------------------------------------------
 
 - (void)outlineView:(NSOutlineView *)outlineView 

@@ -9,6 +9,10 @@
 
 @implementation SBTreeWindowManager
 
+//----------------------------------------------------------
+#pragma mark CREATION AND DESTRUCTION
+//----------------------------------------------------------
+
 -(id)init
 {
 	self = [super init];
@@ -28,6 +32,10 @@
     [super dealloc];
 }
 
+//----------------------------------------------------------
+#pragma mark ACCESSORS
+//----------------------------------------------------------
+
 -(NSString *)currentPackageName { return _sbcurrentPackageName; }
 
 -(void)setCurrentPackageName:(NSString *)newCurrentPackageName
@@ -40,6 +48,10 @@
 -(NSMutableArray *)windowControllers { return _sbWindowControllers; }
 
 -(NSMutableArray *)windowTitles { return _sbWindowTitles; }
+
+//----------------------------------------------------------
+#pragma mark CREATING AND DESTROYING SBTREEWINDOWCONTROLLERS
+//----------------------------------------------------------
 
 -(NSMutableArray *)fileListFromCommand:(NSArray *)args
 {

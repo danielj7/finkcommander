@@ -6,8 +6,6 @@
  */
  
 #import "SBBrowserMatrix.h"
-
-//#define USE_MODIFIER 1
  
 @implementation SBBrowserMatrix
 
@@ -16,44 +14,6 @@
     myBrowser = newBrowser;  //Don't retain parent object!
 }
 
-#ifdef USE_MODIFIER
-
--(void)mouseDown:(NSEvent *)theEvent
-{
-    int flags = [theEvent modifierFlags];
-	
-    if (flags & NSAlternateKeyMask){
-		NSArray *selectedCellCache = [self selectedCells];
-		NSCell *clickedCell;
-		NSPoint clickPoint = [theEvent locationInWindow];
-		int arow, acol;
-
-		clickPoint = [self convertPoint:clickPoint fromView:nil];
-		[self getRow:&arow column:&acol forPoint:clickPoint];
-		clickedCell = [self cellAtRow:arow column:acol];
-		/* 	If user option-clicks in previously selected area, drag 
-			selection. */		
-		if ([selectedCellCache containsObject:clickedCell]){
-			NSEnumerator *e = [selectedCellCache objectEnumerator];
-			NSCell *theCell;
-			int brow, bcol;
-				
-			while (nil != (theCell = [e nextObject])){
-				[self getRow:&brow column:&bcol ofCell:theCell];
-				[self setSelectionFrom:brow to:brow anchor:brow highlight:YES];
-			}
-		}else{
-			[self selectCellAtRow:arow column:acol];
-		}
-		[myBrowser mouseDown:theEvent];
-    }else{
-		[super mouseDown:theEvent];
-    }
-}
-
-#else
-/* 	Alternative version used to try to find a way to do drag and drop
-	without a modifier key while retaining browser functionality */
 -(void)mouseDown:(NSEvent *)theEvent
 {	
 	unsigned int eventMask = [theEvent modifierFlags];
@@ -61,7 +21,11 @@
 		[super mouseDown:theEvent];
 		return;
 	}
-	
+	/* 	After mouse down, if the next event is mouse up, then perform the normal
+		NSBrowserMatrix behavior.  I.e. select the cell receiving the click and if
+		the cell is a branch, send the delegate methods to populate the next column.
+		If the next event is mouse dragged, then drag the clicked item, plus any 
+		other items that had previously been part of the same selection. */
 	theEvent = [[self window] nextEventMatchingMask:
 				NSLeftMouseUpMask | NSLeftMouseDraggedMask];
 	if ([theEvent type] == NSLeftMouseDragged){
@@ -92,7 +56,5 @@
 		[super mouseDown:theEvent];
 	}
 }
-
-#endif
 
 @end

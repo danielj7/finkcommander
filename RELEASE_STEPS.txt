@@ -7,8 +7,6 @@ Download web site and update, including version references in index.php and vers
 
 run ~/FCFiles/mkpkgs.sh
 	
-Copy to G3 and test
-
 Upload each file
 	ftp upload.sourceforge.net
 	anonymous

@@ -1,7 +1,11 @@
 /*
  File: SBOutlineView.h
 
- 
+ Subclasses NSOutlineView primariy in order to allow drag and drop from
+ the outline view to other applications.  It also includes an action method
+ to open files or directories selected in the outline view.  This action
+ is connected to First Responsder in order to be accessible from the main
+ menu.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

@@ -13,12 +13,25 @@ enum {
 	SB_OUTLINE = 1
 };
 
-#define BYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.0f b", @"SBTree", \
-	"Formatter for browser window")
+//Other constants
+
+#define MEGABYTE	   1048576.0
+#define KILOBYTE		  1024.0
+
+#define THREE_COLUMN_WIDTH 525.0
+#define FOUR_COLUMN_WIDTH  700.0
+#define FIVE_COLUMN_WIDTH  875.0
+
+#define CLICK_THROUGH_GAP    5.0
+
+//Localized strings
+
+#define BYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.0f b", @"SBTree", 		\
+											   "Formatter for browser window")
 #define KILOBYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.1f KB", @"SBTree", \
-	"Formatter for browser window")
+												   "Formatter for browser window")
 #define MEGABYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.1f MB", @"SBTree", \
-	"Formatter for browser window")
+												   "Formatter for browser window")
 
 @implementation SBTreeWindowController
 
@@ -136,9 +149,6 @@ enum {
 		NSBeep();
 		return NO;
 	}
-	/*	The following is needed to release all items in a tree.  NSOutline
-		apparently retains an item when its parent is expanded and doesn't
-		release it until the parent is collapsed.  */	
     [oController collapseItemAndChildren:[tree rootItem]];
     return YES;
 }
@@ -146,10 +156,8 @@ enum {
 -(void)windowWillClose:(NSNotification *)n
 {
 	[NSApp sendAction:@selector(treeWindowWillClose:) to:nil from:self];
-	//[[tree rootItem] setChildren:nil];
 }
 
-/* 	This is not getting called, even when releasedWhenClosed is set to YES */
 -(void)dealloc
 {
 	Dprintf(@"Deallocating controller for window %@", [[self window] title]);
@@ -176,10 +184,8 @@ enum {
 		case SB_BROWSER:
 			identifier = @"browser";
 			break;
-		case SB_OUTLINE:
-			identifier = @"outline";
-			break;
 		default:
+			identifier = @"outline";
 			break;
 	}
 	[tabView selectTabViewItemWithIdentifier:identifier];
@@ -198,11 +204,11 @@ enum {
     }else{
 		double size = (float)[tree totalSize];
 		NSString *formatString = BYTE_FORMAT;
-		if (size > 1048576.0){
-			size /= 1048576.0;
+		if (size > MEGABYTE){
+			size /= MEGABYTE;
 			formatString = MEGABYTE_FORMAT;
-		}else if (size > 1024.0){
-			size /= 1024.0;
+		}else if (size > KILOBYTE){
+			size /= KILOBYTE;
 			formatString = KILOBYTE_FORMAT;
 		}
 		[msgTextField setStringValue:
@@ -222,11 +228,11 @@ enum {
 -(void)windowDidResize:(NSNotification *)aNotification
 {
 	double newWidth = [[aNotification object] frame].size.width;
-	if (newWidth >= 800.0){
+	if (newWidth >= FIVE_COLUMN_WIDTH){
 		[browser setMaxVisibleColumns:5];
-	}else if (newWidth >= 600.0){
+	}else if (newWidth >= FOUR_COLUMN_WIDTH){
 		[browser setMaxVisibleColumns:4];
-	}else if (newWidth >= 400.0){
+	}else if (newWidth >= THREE_COLUMN_WIDTH){
 		[browser setMaxVisibleColumns:3];
 	}else{
 		[browser setMaxVisibleColumns:2];
@@ -234,14 +240,17 @@ enum {
 	[outlineView sizeLastColumnToFit];
 }
 
-//Resize window vertically but not horizontally when zoom button is clicked.
+/* 	Resize window vertically but not horizontally when zoom button is clicked in 
+	outline view, and vice-versa in browser view. */
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 		defaultFrame:(NSRect)defaultFrame
 {
 	if ([[self activeView] isEqualToString:@"browser"]){
-		defaultFrame.size.height = [sender frame].size.height - 10.0;
+		defaultFrame.size.height = [sender frame].size.height;
 		defaultFrame.origin.y = [sender frame].origin.y;
 	}else{
+		defaultFrame.size.height = defaultFrame.size.height - CLICK_THROUGH_GAP;
+		defaultFrame.origin.y = defaultFrame.origin.y + CLICK_THROUGH_GAP;
 		defaultFrame.size.width = [sender frame].size.width;
 		defaultFrame.origin.x = [sender frame].origin.x;
 	}

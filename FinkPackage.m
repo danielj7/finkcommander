@@ -50,7 +50,6 @@ See the header file, FinkPackage.h, for interface and license information.
 		_pathToDists = [[[[NSUserDefaults standardUserDefaults]
 									objectForKey:@"FinkBasePath"]
 								stringByAppendingPathComponent: @"/fink/dists"] retain];
-		NSLog(@"Path to dists = %@", _pathToDists);
 	}
 	return _pathToDists;
 }
@@ -478,18 +477,18 @@ See the header file, FinkPackage.h, for interface and license information.
 		[fname rangeOfString:@"-"].length > 0 && 
 		! [mgr fileExistsAtPath:thePath]){
 		NSMutableString *mutablePath = [[thePath mutableCopy] autorelease];
+		NSString *mutatedString;
 		NSRange rangeToLastDash = 
 			NSMakeRange(0, [fname rangeOfString:@"-" options:NSBackwardsSearch].location);
 		NSRange rangeOfName = [thePath rangeOfString:fname];
 		
 		fname = [fname substringWithRange:rangeToLastDash];
 		[mutablePath replaceCharactersInRange:rangeOfName withString:fname];
-		mutablePath = [mutablePath stringByResolvingSymlinksInPath];
+		mutatedString = [mutablePath stringByResolvingSymlinksInPath];
 		if ([mgr fileExistsAtPath:mutablePath]){
-			thePath = mutablePath;
+			thePath = mutatedString;
 		}
 	}
-	
 	return thePath;
 }
 

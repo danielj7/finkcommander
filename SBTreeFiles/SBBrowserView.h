@@ -5,9 +5,6 @@
  It implements the lazy form of the NSBrowser delegate methods to 
  populate the browser with file names and icons.  It also subclasses
  NSBrowser in order to allow drag and drop behavior similar to Finder's.
- For drag and drop to work, the user must click outside the area of the
- selected files or hold down the option key when clicking and dragging.
- I haven't been able to figure out a way to avoid this.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

@@ -1,7 +1,8 @@
 /*
  File: SBDateColumn.h
 
-
+ Observes NSTableViewColumnDidResizeNotifications in order to adjust the date
+ format for its column in a manner similar to Finder.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

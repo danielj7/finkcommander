@@ -149,7 +149,8 @@ File SBFileItem.m
 	return [[self children] objectAtIndex:n];
 }
 
--(SBFileItem *)childWithAttribute:(SEL)attr value:(id)val
+//Helper for following methods
+-(SBFileItem *)childWithAttribute:(NSString *)attr value:(id)val
 {
 	NSEnumerator *e;
 	SBFileItem *item;
@@ -157,7 +158,7 @@ File SBFileItem.m
 	if (nil == [self children]) return nil;
 	e = [[self children] objectEnumerator];
 	while (nil != (item = [e nextObject])){
-		if ([[item performSelector:attr] isEqual:val]){
+		if ([[item valueForKey:attr] isEqual:val]){
 			return item;
 		}
 	}
@@ -166,24 +167,12 @@ File SBFileItem.m
 
 -(SBFileItem *)childWithPath:(NSString *)iPath
 {
-    NSEnumerator *e; 
-    SBFileItem *item;
-	
-	if (nil == [self children]) return nil;
-	
-	e = [[self children] objectEnumerator];
-
-    while (nil != (item = [e nextObject])){
-		if ([[item path] isEqualToString:iPath]){
-			return item;
-		}
-    }
-    return nil;
+	return [self childWithAttribute:@"path" value:iPath];
 }
 
 -(SBFileItem *)childWithFileName:(NSString *)fname
 {
-	return [self childWithAttribute:@selector(filename:) value:fname];
+	return [self childWithAttribute:@"filename" value:fname];
 }
 
 -(NSString *)pathToParent

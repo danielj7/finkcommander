@@ -38,6 +38,9 @@ communicates with:
 	a FinkInstallationInfo object (M) to format emails sent to package maintainers; 
 	instantiates and communicates with user interface elements defined in 
 	PackageInfo.nib (V) and in MyTextView (V).
+	
+*	an SBTreeWindowManager (C) object -- handles the creation and destruction of 
+	package file browser windows.
 
 FinkController also creates the FinkCommander toolbar and registers the "factory defaults" 
 for preferences set by FinkPreferences or programmatically.  The settings for each are 
@@ -48,7 +51,7 @@ the toolbar is resized.  There is currently no delegate method for this.
 Global variables, which are used solely to allow compiler checking for misspellings of 
 defaults and notification identifiers, are declared in FinkGlobals.h.  Functions that 
 do not fit well in the existing object model for FinkController are defined in 
-FinkUtilities.m. 
+FinkUtilities.m.
 
 Copyright (C) 2002, 2003  Steven J. Burr
 

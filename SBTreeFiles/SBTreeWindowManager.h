@@ -1,7 +1,9 @@
 /*
  File: SBTreeWindowManager.h
 
-
+ Creates and destroys package file browser windows.  Creates list of paths
+ by running dpkg -L and passes them on to the SBTreeWindowController, which
+ then creates an SBFileItemTree.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

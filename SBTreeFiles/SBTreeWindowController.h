@@ -1,7 +1,8 @@
 /*
  File: SBTreeWindowController.h
 
-
+ Creates the custom views and controllers, as well as the SBFileItemTree,
+ for a particular package file browser window.  
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

@@ -1,7 +1,9 @@
 /*
  File: SBOutlineViewController.h
 
-
+ Delegate and data source for the outline view.  Implements methods to 
+ display the items in the SBFileItemTree created by the parent 
+ SBTreeWindowController.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

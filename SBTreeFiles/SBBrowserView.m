@@ -26,7 +26,7 @@
 		[self setReusesColumns:YES];
 		[self setHasHorizontalScroller:YES];
 		[self setTitled:NO];
-    }
+	}
     return self;
 }
 
