@@ -31,8 +31,8 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "FinkGlobals.h"
 #import "FinkPackage.h"
-#import "FinkConf.h"
 #import "MyTextView.h"
 
 @interface FinkPackageInfo : NSWindowController 

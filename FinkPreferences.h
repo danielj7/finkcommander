@@ -32,6 +32,7 @@ File: FinkPreferences.h
  */
 
 #import <Cocoa/Cocoa.h>
+#import "FinkGlobals.h"
 #import "FinkConf.h"
 
 @interface FinkPreferences : NSWindowController

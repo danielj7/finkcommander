@@ -39,7 +39,7 @@ foreach $pname (sort @pkglist) {
       } elsif ($package->is_any_installed()) {
         $iflag = "outdated";
 	  } elsif ($vo->is_present()) {
-		$iflag = "archive";
+		$iflag = "archived";
 	  } else {
         $iflag = "  ";
       }

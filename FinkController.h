@@ -32,11 +32,12 @@ Contact the author at sburrious@users.sourceforge.net.
 */
 
 #import <Cocoa/Cocoa.h>
+
+#import "FinkGlobals.h"
 #import "FinkDataController.h"
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
-#import "FinkConf.h"
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
 #import "FinkProcessKiller.h"
@@ -49,9 +50,20 @@ enum {
 };
 
 enum {
-	FCWEB,
-	FCBUG,
-	FINKDOC
+	FCWEB = 1000,
+	FCBUG = 1001,
+	FINKDOC = 1002,
+	MAINTAINER = 1003
+};
+
+enum {
+	FILTER,
+	INTERACTION
+};
+
+enum {
+	DEFAULT,
+	USER_CHOICE
 };
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
@@ -103,6 +115,7 @@ enum {
 	//Authentication and Process Control
 	NSString *password;
 	BOOL pendingCommand;
+	BOOL passwordError;
 	NSMutableArray *lastParams;
 	IOTaskWrapper *finkTask;
 }
@@ -146,7 +159,7 @@ enum {
 -(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)showDescription:(id)sender;
 //  help menu items
--(IBAction)goToWebSite:(id)sender;
+-(IBAction)internetAccess:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;
@@ -187,6 +200,6 @@ enum {
 			returnCode:(int)returnCode
 			contextInfo:(void *)contextInfo;
 // run the command
--(void)runCommandWithParams:(NSMutableArray *)params;
+-(void)runCommandWithParameters:(NSMutableArray *)params;
 
 @end

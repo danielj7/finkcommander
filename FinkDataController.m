@@ -7,6 +7,12 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
+//Globals: placed here to make it easier to change values if fink output changes
+NSString *WEBKEY = @"Web site:";
+NSString *MAINTAINERKEY = @"Maintainer:";
+int URLSTART = 10;
+int NAMESTART = 12;
+
 @implementation FinkDataController
 
 //---------------------------------------------------------->The Ususal
@@ -17,7 +23,7 @@ See the header file, FinkDataController.h, for interface and license information
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
-		finkArray = [[NSMutableArray alloc] initWithCapacity: 1300];
+		array = [[NSMutableArray alloc] initWithCapacity: 1300];
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver: self
@@ -29,7 +35,7 @@ See the header file, FinkDataController.h, for interface and license information
 
 -(void)dealloc
 {
-	[finkArray release];
+	[array release];
 	[binaryPackages release];
 	[start release];
 	[super dealloc];
@@ -38,7 +44,14 @@ See the header file, FinkDataController.h, for interface and license information
 // Accessors
 -(NSMutableArray *)array
 {
-	return finkArray;
+	return array;
+}
+
+-(void)setArray:(NSMutableArray *)a
+{
+	[a retain];
+	[array release];
+	array = a;
 }
 
 -(void)setBinaryPackages:(NSString *)s
@@ -54,13 +67,17 @@ See the header file, FinkDataController.h, for interface and license information
 //
 //  update: is the "public" method.  It runs a custom perl script 
 //  in an NSTask to obtain a list of all package names and their installation 
-//  states and stores the information in FinkPackage instances in finkArray.
+//  states and stores the information in FinkPackage instances in array.
+//  completUpdate: is called by notification after the asynchronous task
+//  called by update is competed.
 //
 //	getBinaryList: is a helper method used to fill to determine
 //  whether packages in the array are available in binary form.
+//
+//  A series of methods between update: and completeUpdate: parse the output
+//  from the task to derive the package's full description, web url, maintainer name
+//  and maintainer email address.
 
-
-// Run  apt-cache to get list of packages available for binary install
 -(NSString *)getBinaryList
 {
 	NSTask *listCmd = [[NSTask alloc] init];
@@ -111,14 +128,68 @@ See the header file, FinkDataController.h, for interface and license information
 	//run task asynchronously; notification will trigger completeUpdate: method
 	[cmdStdout readToEndOfFileInBackgroundAndNotify];
 	
-	binaryPackages = [[self getBinaryList] retain]; //instance variable released by 
-													//completeUpdate
+	binaryPackages = [[self getBinaryList] retain]; 
+	
 #ifdef DEBUG
 	NSLog(@"Completed binary list after %f seconds",
 	   -[start timeIntervalSinceNow]);
 #endif //DEBUG
 }
 
+-(NSString *)parseWeburlFromString:(NSString *)s
+{
+	NSRange r;
+	if ([s length] <= URLSTART){
+		return @"";
+	}
+	r = NSMakeRange(URLSTART, [s length] - URLSTART);
+	return [s substringWithRange: r];
+}
+
+-(NSArray *)parseMaintainerInfoFromString:(NSString *)s
+{
+	NSString *name;
+	NSString *address;
+	int emailstart = [s rangeOfString: @"<"].location;
+	int emailend   = [s rangeOfString: @">"].location;
+
+	if (emailstart == NSNotFound || emailend == NSNotFound){
+		return [NSArray arrayWithObjects: @"", @"", nil];
+	}	
+	name = [s substringWithRange: NSMakeRange(NAMESTART, emailstart - NAMESTART - 1)];
+	address = [s substringWithRange:
+			NSMakeRange(emailstart + 1, emailend - emailstart - 1)];
+	return [NSArray arrayWithObjects: name, address, nil];
+}
+
+-(NSArray *)getDescriptionComponentsFromString:(NSString *)s
+{
+	NSString *line;
+	NSString *desc = @"";
+	NSString *web = @"";
+	NSString *maint = @"";
+	NSString *email = @"";
+	NSArray *lines = [s componentsSeparatedByString: @"\n"];
+	NSEnumerator *e = [lines objectEnumerator];
+
+	line = [e nextObject]; //discard--name-version: short desc
+
+	while (line = [e nextObject]){
+		line = [line strip];
+		if ([line contains: WEBKEY]){
+			web = [self parseWeburlFromString: line];
+		}else if ([line contains: MAINTAINERKEY]){
+			NSArray *info = [self parseMaintainerInfoFromString: line];
+			maint = [info objectAtIndex: 0];
+			email = [info objectAtIndex: 1];
+		}else if([line isEqualToString: @"."]){
+			desc = [NSString stringWithFormat: @"%@\n\n", desc];
+		}else{
+			desc = [NSString stringWithFormat: @"%@ %@", desc, line];
+		}
+	}
+	return [NSArray arrayWithObjects: web, maint, email, nil];
+}
 
 -(void)completeUpdate:(NSNotification *)n
 {
@@ -126,6 +197,7 @@ See the header file, FinkDataController.h, for interface and license information
 	NSString *output; 
 	NSMutableArray *temp;
 	NSArray *listRecord;
+	NSArray *components;
 	NSEnumerator *e;
 	FinkPackage *p;
 
@@ -139,7 +211,7 @@ See the header file, FinkDataController.h, for interface and license information
 								encoding: NSUTF8StringEncoding] autorelease];
 	temp = [NSMutableArray arrayWithArray:
 		    [output componentsSeparatedByString: @"\n----\n"]];
-	[finkArray removeAllObjects];
+	[array removeAllObjects];
 	[temp removeObjectAtIndex: 0];  // "Reading package info . . . "
 	e = [temp objectEnumerator];
 
@@ -156,6 +228,10 @@ See the header file, FinkDataController.h, for interface and license information
 			[p setUnstable: @"*"];
 		}
 		[p setFulldesc: [listRecord objectAtIndex: 6]];
+		components = [self getDescriptionComponentsFromString: [p fulldesc]];
+		[p setWeburl: [components objectAtIndex: 0]];
+		[p setMaintainer: [components objectAtIndex: 1]];
+		[p setEmail: [components objectAtIndex: 2]];
 		//make sure FULL name matches package on binary list
 		if ([binaryPackages contains:
 			[NSString stringWithFormat: @" %@#", [p name]]]){
@@ -163,7 +239,7 @@ See the header file, FinkDataController.h, for interface and license information
 		}else{
 			[p setBinary: @" "];
 		}
-		[finkArray addObject: p];
+		[array addObject: p];
 		[p release];
 	}
 
@@ -204,7 +280,7 @@ See the header file, FinkDataController.h, for interface and license information
 -(int)installedPackagesCount
 {
 	int count = 0;
-	NSEnumerator *e = [finkArray objectEnumerator];
+	NSEnumerator *e = [array objectEnumerator];
 	FinkPackage *pkg;
 
 	while (pkg = [e nextObject]){

@@ -35,7 +35,7 @@ Contact the author at sburrious@users.sourceforge.net.
 
 
 #import <Foundation/Foundation.h>
-#import "FinkConf.h"
+#import "FinkGlobals.h"
 
 @protocol IOTaskWrapperController
 

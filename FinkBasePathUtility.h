@@ -1,5 +1,5 @@
 /*
-File: FinkBasePathUtility.h
+ File: FinkBasePathUtility.h
 
  FinkCommander
 

@@ -31,20 +31,22 @@ Contact the author at sburrious@users.sourceforge.net.
 */
 
 #import <Cocoa/Cocoa.h>
+#import "FinkGlobals.h"
 #import "FinkPackage.h"
-#import "FinkConf.h"
+#import "SBString.h"
 
 @interface FinkDataController : NSObject
 {
-	NSMutableArray *finkArray;
+	NSMutableArray *array;
 	NSString *binaryPackages;
 	NSDate *start;
 }
 
 //Accessors
 -(NSMutableArray *)array;
+-(void)setArray:(NSMutableArray *)a;
 
-//Update finkArray to reflect latest package information.
+//Update array to reflect latest package information.
 -(void)update;
 -(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs;
 -(int)installedPackagesCount;

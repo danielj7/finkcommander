@@ -6,12 +6,11 @@
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
                 expandOutput = id; 
-                goToWebSite = id; 
+                internetAccess = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 refilter = id; 
                 runCommand = id; 
-                runCommandInTerminal = id; 
                 runUpdater = id; 
                 saveOutput = id; 
                 showDescription = id; 

@@ -1,8 +1,8 @@
 /*
-File: FinkBasePathUtility.m
+ File: FinkBasePathUtility.m
 
  See the header file, FinkBasePathUtility.h, for interface and license information.
-*/
+ */
 
 #import "FinkBasePathUtility.h"
 
@@ -24,7 +24,7 @@ File: FinkBasePathUtility.m
 	NSArray *args;
 	NSRange range;
 	NSString *whichPath;
-    
+
 	//look in some possible install paths
 	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
@@ -57,7 +57,7 @@ File: FinkBasePathUtility.m
 		[findTask setStandardOutput: pipeIn];
 		[findTask launch];
 		whichPath = [[[NSString alloc] initWithData: [cmdStdout readDataToEndOfFile]
-                                                    encoding: NSUTF8StringEncoding] autorelease];
+									 encoding: NSUTF8StringEncoding] autorelease];
 		//get the stuff before /bin/fink
 		range = [whichPath rangeOfString: @"/bin/fink"];
         if (range.length > 0){
@@ -74,10 +74,10 @@ File: FinkBasePathUtility.m
 -(void)fixScript
 {
 	NSString *pathToScript = [[NSBundle mainBundle] pathForResource:
-							 @"fpkg_list" ofType: @"pl"];
+																  @"fpkg_list" ofType: @"pl"];
 	NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile: pathToScript];
 	NSString *basePath = [[NSUserDefaults standardUserDefaults]
-	                     objectForKey: FinkBasePath];
+						 objectForKey: FinkBasePath];
 	NSFileHandle *scriptFile = [NSFileHandle fileHandleForWritingAtPath: pathToScript];
 	NSRange rangeOfBASEPATH;
 
