@@ -223,7 +223,7 @@ int repair_self()
             == errAuthorizationSuccess)
         {
 
-            /* Open tool exclusively, so noone can change it while we bless it */
+            /* Open tool exclusively, so no one can change it while we bless it */
             fd_tool = open(path_to_self, O_NONBLOCK|O_RDONLY|O_EXLOCK, 0);
 
             if ((fd_tool != -1) && (fstat(fd_tool, &st) == 0))
@@ -261,11 +261,9 @@ int launch_to_repair_self(AuthorizationRef* auth)
     char* path_to_self = getPathToMyself();
     if (path_to_self != NULL)
     {
-        /* Set our own stdin and stdout to be the communication channel
-        * with ourself. */
-
-        fprintf(stderr, "The tool that FinkCommander uses to run commands as root does not have the necessary permissions.\nBy entering your password you will give the tool the authorization it needs to repair itself.\nUnder some circumstances you may need to enter your password twice.\n");
-
+         fprintf(stderr, "Running self-repair");   /* signal to FinkOutputParser */
+		/* Set our own stdin and stdout to be the communication channel
+           with ourself. */
         if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe) == errAuthorizationSuccess)
         {
             /* Read from stdin and write to commPipe. */
@@ -290,7 +288,6 @@ int launch_to_repair_self(AuthorizationRef* auth)
 	 * AuthorizationExecuteWithPrivileges()
 	 */
     return result;
-
 }
 
 
@@ -299,28 +296,27 @@ main(int argc, char * const *argv)
 {
     AuthorizationRef auth;
     int result = 1;
-    
+
     /* The caller *must* pass in a valid AuthorizationExternalForm structure on stdin
-     * before they're allowed to go any further.
-     */
+		* before they're allowed to go any further.
+		*/
     if (! readAuthorization(&auth)){
         fprintf(stderr, "Failed to read authorization from stdin\n");
         exit(1);
     }
-    
+
     if (argc == 2 && 0 == strcmp(argv[1], "--self-repair")){
         result = repair_self();
-    }else{
-        if (geteuid() != 0){
-			/* If the effective uid isn't root's (0), then we need to reset
-			* the setuid bit on the executable, if possible.
-			*/
-            launch_to_repair_self(&auth);
-        }
+    }else if (geteuid() != 0){
+		/* If the effective uid isn't root's (0), then we need to reset
+		* the setuid bit on the executable, if possible.
+		*/
+		result = launch_to_repair_self(&auth);
+	}else{
         if (! authorizedToExecute(&auth, argv[1])){
             /* If the caller isn't authorized to run as root, then reset
-             * the effective uid before spawning command
-             */
+			* the effective uid before spawning command
+			*/
             seteuid(getuid());
         }
 		if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
@@ -343,7 +339,7 @@ main(int argc, char * const *argv)
 					fprintf(stderr, "Error:  FinkCommander was unable to determine the owner of %s.\nFor security reasons, FinkCommander will not run %s unless it can determine that it is owned by root.\n", argv[1], argv[1]);
 					break;
 				case cmdNotOwnedByRoot:
-					fprintf(stderr, "Error:  %s is not owned by root.\n", argv[1]);
+					fprintf(stderr, "Error:  %s is not owned by root.\nFor security reasons, FinkCommander will not run %s unless it is owned by root.\n", argv[1], argv[1]);
 					break;
 			}
 		}

@@ -36,7 +36,7 @@
 	<key>FinkInstallBinaryItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runCommand</string>
+		<string>runPackageSpecificCommand</string>
 		<key>Image</key>
 		<string>addbin</string>
 		<key>Label</key>
@@ -49,7 +49,7 @@
 	<key>FinkInstallSourceItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runCommand</string>
+		<string>runPackageSpecificCommand</string>
 		<key>Image</key>
 		<string>addsrc</string>
 		<key>Label</key>
@@ -75,7 +75,7 @@
 	<key>FinkRemoveBinaryItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runCommand</string>
+		<string>runPackageSpecificCommand</string>
 		<key>Image</key>
 		<string>delbin</string>
 		<key>Label</key>
@@ -88,7 +88,7 @@
 	<key>FinkRemoveSourceItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runCommand</string>
+		<string>runPackageSpecificCommand</string>
 		<key>Image</key>
 		<string>delsrc</string>
 		<key>Label</key>
@@ -103,7 +103,7 @@
 	<key>FinkSelfUpdateCVSItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runUpdater</string>
+		<string>runNonSpecificCommand</string>
 		<key>Image</key>
 		<string>cvs</string>
 		<key>Label</key>
@@ -116,7 +116,7 @@
 	<key>FinkSelfUpdateItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runUpdater</string>
+		<string>runNonSpecificCommand</string>
 		<key>Image</key>
 		<string>update</string>
 		<key>Label</key>
@@ -140,7 +140,7 @@
 	<key>FinkUpdateallItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runUpdater</string>
+		<string>runNonSpecificCommand</string>
 		<key>Image</key>
 		<string>updateall</string>
 		<key>Label</key>
@@ -155,7 +155,7 @@
 	<key>FinkUpdateBinaryItem</key>
 	<dict>
 		<key>Action</key>
-		<string>runUpdater</string>
+		<string>runNonSpecificCommand</string>
 		<key>Image</key>
 		<string>updatebin</string>
 		<key>Label</key>

@@ -362,6 +362,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 					nil);
 		return NO;
 	}
+
 	if ([pname contains:@"term-readkey-pm"]){
 		NSBeginAlertSheet(NSLocalizedString(@"Caution", nil),
 					NSLocalizedString(@"OK", nil),

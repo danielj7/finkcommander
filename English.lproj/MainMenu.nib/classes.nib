@@ -6,12 +6,12 @@
                 chooseTableColumn = id; 
                 emailMaintainer = id; 
                 endInteractionWindow = id; 
-                forceRemove = id; 
                 goToWebsite = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
-                runCommand = id; 
-                runUpdater = id; 
+                runForceRemove = id; 
+                runNonSpecificCommand = id; 
+                runPackageSpecificCommand = id; 
                 saveOutput = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 

@@ -51,8 +51,8 @@ File: FinkPreferences.h
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *scrollToBottomButton;
-	IBOutlet NSButton *warnBeforeRunningButton;
 	IBOutlet NSButton *warnBeforeRemovingButton;
+	IBOutlet NSButton *warnBeforeTerminatingButton;
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
@@ -68,7 +68,6 @@ File: FinkPreferences.h
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
-	IBOutlet NSButton *updateWithFinkButton;
 	
 	//widgets used to alter fink.conf
 	IBOutlet NSButton *useUnstableMainButton;
@@ -121,7 +120,5 @@ File: FinkPreferences.h
 
 //set title bar image to reflect user's choice
 -(IBAction)setTitleBarImage:(id)sender;
-
--(void)setWarnBeforeRemovingButtonState:(BOOL)b;
 
 @end

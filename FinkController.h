@@ -135,10 +135,12 @@ enum {
 	FINKDOC 	= 1002
 };
 
-enum {
-	SOURCE_COMMAND,
-	BINARY_COMMAND
+enum{
+    FINK,
+    APT_GET,
+    DPKG
 };
+
 
 enum {
 	FILTER,
@@ -187,7 +189,6 @@ enum {
 	AuthorizedExecutable *killTask;
 	NSUserDefaults *defaults;
 	NSToolbar *toolbar;
-	NSArray *selectedPackages;
 	NSMutableArray *lastParams;
 	NSString *lastCommand;
 	NSString *launcher;
@@ -200,8 +201,6 @@ enum {
 
 //Accessors
 -(FinkDataController *)packages;
--(NSArray *)selectedPackages;
--(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
 -(NSMutableArray *)lastParams;
@@ -218,9 +217,9 @@ enum {
 -(void)didEnd:(NSSavePanel *)sheet
 	  returnCode:(int)code
 	 contextInfo:(void *)contextInfo;
--(IBAction)runCommand:(id)sender;
--(IBAction)runUpdater:(id)sender;
--(IBAction)forceRemove:(id)sender;
+-(IBAction)runPackageSpecificCommand:(id)sender;
+-(IBAction)runNonSpecificCommand:(id)sender;
+-(IBAction)runForceRemove:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)showPreferencePanel:(id)sender;
@@ -249,7 +248,7 @@ enum {
 			returnCode:(int)returnCode
 			contextInfo:(void *)contextInfo;
 // run the command
--(void)runCommandWithParameters:(NSMutableArray *)params;
+-(void)launchCommandWithArguments:(NSMutableArray *)args;
 // AuthorizedExecutable delegate methods
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;

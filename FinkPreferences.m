@@ -94,11 +94,10 @@ File: FinkPreferences.m
 	
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
-	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
 	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
+	[warnBeforeTerminatingButton setState: [defaults boolForKey: FinkWarnBeforeTerminating]];
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
-	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
 	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];
@@ -247,13 +246,6 @@ File: FinkPreferences.m
 	}
 }
 
-//public method used to reflect the user's selection of "Remove/Don't Warn" in the
-//warning dialog
--(void)setWarnBeforeRemovingButtonState:(BOOL)b
-{
-	[warnBeforeRemovingButton setState:b];
-}
-
 //---------------------------------------------------------------------->Actions
 
 //Apply button
@@ -264,12 +256,11 @@ File: FinkPreferences.m
 	
 	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
 	
-	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
 	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
 	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
-	[defaults setBool: [warnBeforeRunningButton state]	 	forKey: FinkWarnBeforeRunning];
 	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
+	[defaults setBool: [warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
 	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
 	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];

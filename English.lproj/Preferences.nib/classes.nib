@@ -51,13 +51,12 @@
                 showRedundantPackagesButton = NSButton; 
                 tabView = NSTabView; 
                 titleBarImageView = NSImageView; 
-                updateWithFinkButton = NSButton; 
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
                 valueTextField = NSTextField; 
                 verboseOutputPopupButton = NSPopUpButton; 
                 warnBeforeRemovingButton = NSButton; 
-                warnBeforeRunningButton = NSButton; 
+                warnBeforeTerminatingButton = NSButton; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 

@@ -51,8 +51,8 @@ extern NSString *FinkFTPProxyVariable;
 extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
 extern NSString *FinkAlwaysScrollToBottom;
-extern NSString *FinkWarnBeforeRunning;
 extern NSString *FinkWarnBeforeRemoving;
+extern NSString *FinkWarnBeforeTerminating;
 extern NSString *FinkPackagesInTitleBar;
 extern NSString *FinkAutoExpandOutput;
 extern NSString *FinkGiveEmailCredit;
@@ -81,6 +81,7 @@ extern NSString *FinkRunCommandNotification;
 extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;
+extern NSString *FinkTerminateNotification;
 
 //UserInfo Keys
 extern NSString *FinkRunProgressIndicator;

@@ -37,12 +37,10 @@
 	<date>2002-08-01T03:07:31Z</date>
 	<key>FinkLookedForProxy</key>
 	<false/>
-	<key>FinkNeverAskForPassword</key>
-	<false/>
 	<key>FinkOutputPath</key>
 	<string></string>
 	<key>FinkOutputViewRatio</key>
-	<real>2.4424171554010284e-311</real>
+	<real>2.3448053490166259e-311</real>
 	<key>FinkPackageAttributes</key>
 	<array>
 		<string>name</string>
@@ -81,7 +79,7 @@
 	<array/>
 	<key>FinkWarnBeforeRemoving</key>
 	<true/>
-	<key>FinkWarnBeforeRunning</key>
-	<false/>
+	<key>FinkWarnBeforeTerminating</key>
+	<true/>
 </dict>
 </plist>

@@ -1041,6 +1041,8 @@
 		F55407F5035D334001A80170 = {
 			children = (
 				F55407F6035D334001A80170,
+				F5FECEAE035E6F3701A80169,
+				F5FECEAF035E6F4501A80169,
 			);
 			isa = PBXVariantGroup;
 			name = Dialogs.nib;
@@ -1563,6 +1565,18 @@
 		F5F8FA5D033196BF01A80166 = {
 			isa = PBXFileReference;
 			path = getpath.c;
+			refType = 4;
+		};
+		F5FECEAE035E6F3701A80169 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Dialogs.nib;
+			refType = 4;
+		};
+		F5FECEAF035E6F4501A80169 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Dialogs.nib;
 			refType = 4;
 		};
 	};

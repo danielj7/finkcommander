@@ -270,7 +270,6 @@ File: FinkOutputParser.m
 		readingPackageList = YES;
 		return NONE;
     }
-	
 	//Look for installation events
 	if (installing && FETCHTRIGGER(line)){
 		Dprintf(@"Fetch phase triggered by:\n%@", line);
@@ -318,7 +317,6 @@ File: FinkOutputParser.m
 		currentPhase = ACTIVATE;
 		return ACTIVATE;
     }	
-	
 	//Look for password events
 	if ([line contains: @"Password:"]){
 		return PASSWORD_PROMPT;
@@ -331,8 +329,12 @@ File: FinkOutputParser.m
 	if (ISMANDATORY_PROMPT(line)){
 		return MANDATORY_PROMPT;
     }
+	//Look for self-repair of tool
+	if ([line contains:@"Running self-repair"]){
+		return RUNNING_SELF_REPAIR;
+	}
 	if ([line contains:@"Self-repair done"]){
-		return SELF_REPAIR;
+		return SELF_REPAIR_COMPLETE;
 	} 
 	return NONE;
 }

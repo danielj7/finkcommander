@@ -20,8 +20,8 @@ NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
 NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
 NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
-NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 NSString *FinkWarnBeforeRemoving = @"FinkWarnBeforeRemoving";
+NSString *FinkWarnBeforeTerminating =  @"FinkWarnBeforeTerminating";
 NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
 NSString *FinkGiveEmailCredit = @"FinkGiveEmailCredit";
@@ -49,6 +49,7 @@ NSString *FinkRunCommandNotification = @"FinkRunCommandNotification";
 NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";
+NSString *FinkTerminateNotification = @"FinkTerminateNotification";
 
 NSString *FinkRunProgressIndicator = @"FinkRunProgressIndicator";
 

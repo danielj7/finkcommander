@@ -6,17 +6,17 @@
 
 -(id)init
 {
-	self = [super initWithWindowNibName:@"Dialogs"];
-	Dprintf(@"Warning window: %@", [self window]);
-	[self setWindowFrameAutosaveName: @"WarningDialog"];
-	defaults = [NSUserDefaults standardUserDefaults];
+    self = [super initWithWindowNibName:@"Dialogs"];
+    Dprintf(@"Warning window: %@", [self window]);
+    [self setWindowFrameAutosaveName: @"WarningDialog"];
+    defaults = [NSUserDefaults standardUserDefaults];
 	
-	return self;
+    return self;
 }
 
 -(void)dealloc
 {
-	[arguments release];
+    [arguments release];
 }
 
 -(NSMutableArray *)arguments 
@@ -26,44 +26,77 @@
 
 -(void)setArguments:(NSMutableArray *)newArguments 
 {
-	[newArguments retain];
-	[arguments release];
-	arguments = newArguments;
+    [newArguments retain];
+    [arguments release];
+    arguments = newArguments;
 }
 
 -(void)showRemoveWarningForArguments:(NSMutableArray *)args
 {
-	[self setArguments:args];
-	if ([args count] > 3){
+    command = REMOVE;
+    [self setArguments:args];
+    if ([args count] > 3){
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected packages?", nil)];
-	}else{
+    }else{
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];
-	}
-	[turnOffWarningButton setState:YES];
-	[NSApp runModalForWindow:[self window]];
+    }
+    [removeWarningButton 
+		setStringValue:NSLocalizedString(@"Warn me before removing a package.", nil)];
+    [removeWarningButton setState:YES];
+    [NSApp runModalForWindow:[self window]];
 }
 
+-(void)showTerminateWarning
+{
+    command = TERMINATE;
+    [warningMessageField 
+		setStringValue:NSLocalizedString(@"Are you sure you want to terminate?", nil)];
+    [removeWarningButton
+		setStringValue:NSLocalizedString(@"Warn me before terminating a command.", nil)];
+	[removeWarningButton setState:YES];
+    [NSApp runModalForWindow:[self window]];
+}
 
 -(IBAction)confirmAction:(id)sender
 {
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	NSDictionary *d = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:NO]
-									forKey:FinkRunProgressIndicator];
-
-	[center postNotificationName:FinkRunCommandNotification
-			object:[self arguments]
-			userInfo:d];
-	[defaults setBool:[turnOffWarningButton state] forKey:FinkWarnBeforeRemoving];
-	[NSApp stopModal];
-	[self close];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    NSDictionary *d;
+    switch (command){
+		case REMOVE:
+			d = [NSDictionary
+			dictionaryWithObject:[NSNumber numberWithInt:NO]
+					   forKey:FinkRunProgressIndicator];
+			[center postNotificationName:FinkRunCommandNotification
+							   object:[self arguments]
+							 userInfo:d];
+			[defaults setBool:[removeWarningButton state]
+					forKey:FinkWarnBeforeRemoving];
+			break;
+		case TERMINATE:
+			[center postNotificationName:FinkTerminateNotification
+							   object:nil];
+			[defaults setBool:[removeWarningButton state]
+					forKey:FinkWarnBeforeTerminating];
+    }
+    [NSApp stopModal];
+    [self close];
 }
 
 
 -(IBAction)cancelAction:(id)sender
 {
-	[defaults setBool:[turnOffWarningButton state] forKey:FinkWarnBeforeRemoving];
-	[NSApp stopModal];
-	[self close];
+    switch (command){
+		case REMOVE:
+			[defaults setBool:[removeWarningButton state] 
+				forKey:FinkWarnBeforeRemoving];
+			break;
+		case TERMINATE:
+			[defaults setBool:[removeWarningButton state] 
+				forKey:FinkWarnBeforeTerminating];
+			break;
+    }
+    [NSApp stopModal];
+    [self close];
 }
 
 
