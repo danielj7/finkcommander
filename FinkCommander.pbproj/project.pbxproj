@@ -805,6 +805,7 @@
 			refType = 4;
 		};
 		F53B4D0803100C5101A80164 = {
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Toolbar.plist;
