@@ -19,6 +19,7 @@ See the header file, FinkController.h, for interface and license information.
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	//set "factory defaults"
 	[defaultValues setObject: @"" forKey: FinkBasePath];
+	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkScrollToSelectedRow];
@@ -35,10 +36,11 @@ See the header file, FinkController.h, for interface and license information.
 {
 	NSEnumerator *e;
 	NSString *attribute;
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	if (self = [super init])
 	{
+		defaults = [NSUserDefaults standardUserDefaults];
+	
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
 
@@ -54,7 +56,7 @@ See the header file, FinkController.h, for interface and license information.
 		[self setLastCommand: @""];  
 
 		//variables used to display table
-		[self setLastIdentifier: @"name"];
+		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
 		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
 			
@@ -124,7 +126,7 @@ See the header file, FinkController.h, for interface and license information.
 {
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
-		
+				
 	if (![[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, context info
@@ -445,7 +447,7 @@ See the header file, FinkController.h, for interface and license information.
 	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
 		[item setLabel: @"Install Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Installs a package from source"];
+		[item setToolTip: @"Install a package from source"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"addsrc"]];
 		[item setTarget: self];
@@ -453,7 +455,7 @@ See the header file, FinkController.h, for interface and license information.
 	}else if ([itemIdentifier isEqualToString: FinkInstallBinaryItem]){
 		[item setLabel: @"Install Binary"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Installs a binary package"];
+		[item setToolTip: @"Install a binary package"];
 		[item setTag: 1]; 		//binary command
 		[item setImage: [NSImage imageNamed:@"addbin"]];
 		[item setTarget: self];
@@ -461,7 +463,7 @@ See the header file, FinkController.h, for interface and license information.
 	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
 		[item setLabel: @"Remove Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Deletes the files for a package, but retains the deb file for possible reintallation"];
+		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reintallation"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"delsrc"]];
 		[item setTarget: self];
@@ -469,7 +471,7 @@ See the header file, FinkController.h, for interface and license information.
 	}else if ([itemIdentifier isEqualToString: FinkRemoveBinaryItem]){
 		[item setLabel: @"Remove Binary"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Deletes the files for a package, but retains the deb file for possible reinstallation"];
+		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reinstallation"];
 		[item setTag: 1]; 		//binary command
 		[item setImage: [NSImage imageNamed:@"delbin"]];
 		[item setTarget: self];
@@ -606,7 +608,9 @@ See the header file, FinkController.h, for interface and license information.
 	}
 
 	// record currently selected column's identifier for next call to method
+	// and for future sessions
 	[self setLastIdentifier: identifier];
+	[defaults setObject: identifier forKey: FinkSelectedColumnIdentifier];
 
 	// reset visual indicators
 	if ([direction isEqualToString: @"reverse"]){
@@ -621,6 +625,18 @@ See the header file, FinkController.h, for interface and license information.
 	[self sortTableAtColumn: aTableColumn inDirection: direction];
 }
 
+-(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
+{
+	if ([[[[self displayPackages] objectAtIndex: rowIndex] name]
+		isEqualToString: @"tcsh"]){
+		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, //title, buttons
+					[self window], self, NULL,	NULL, nil,	 //window, del, SELs, c info
+					@"FinkCommander is unable to install that package.\n\tSee Help:FinkCommander Guide:Known Bugs",
+					nil);		//msg string params
+		return NO;
+	}
+	return YES;
+}
 
 //--------------------------------------------------------------------------------
 //		AUTHENTICATION AND PROCESS CONTROL

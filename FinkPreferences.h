@@ -43,6 +43,8 @@ extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
 extern NSString *FinkScrollToSelectedRow;
 extern NSString *FinkAlwaysChooseDefaults;
+extern NSString *FinkSelectedColumnIdentifier;
+extern NSString *FinkSelectedPopupMenuTitle;
 
 //Toolbar Items
 extern NSString *FinkInstallSourceItem;

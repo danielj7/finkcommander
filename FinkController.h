@@ -63,6 +63,7 @@ Contact the author at sburr@mac.com.
 	IBOutlet NSPopUpButton *searchPopUpButton;
 	IBOutlet NSTextField *searchTextField;
 
+	NSUserDefaults *defaults;
 	FinkDataController *packages;
 	NSMutableArray *displayPackages;
 	FinkPreferences *preferences;

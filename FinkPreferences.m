@@ -13,8 +13,11 @@ NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
+NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
+NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 
 //Global variables used in toolbar methods
+//(Should these be moved to FinkController?)
 NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
 NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
 NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";

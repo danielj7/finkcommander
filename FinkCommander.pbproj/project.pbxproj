@@ -308,7 +308,6 @@
 				F538C3C4023495CF01A80164,
 				F5BBDFB0023AF89301A80164,
 				F5BBDFB2023AF8A601A80164,
-				F5375A670246DDCA01A80164,
 				F5375A6E0246DE1901A80164,
 				F5D3F482025306EB01A80164,
 				F554F1DB0266AA4B01A80164,
@@ -316,6 +315,7 @@
 				F50C7FBC026BD8BD01A80164,
 				F50C7FBE026BD92B01A80164,
 				F5C1B063026BFA2501A80164,
+				F554F376026E607801A80165,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -391,7 +391,7 @@
 //F54
 		F50C7FBB026BD8BD01A80164 = {
 			isa = PBXFileReference;
-			path = delbin.tiff;
+			path = delsrc.tiff;
 			refType = 4;
 		};
 		F50C7FBC026BD8BD01A80164 = {
@@ -402,7 +402,7 @@
 		};
 		F50C7FBD026BD92B01A80164 = {
 			isa = PBXFileReference;
-			path = delsrc.tiff;
+			path = delbin.tiff;
 			refType = 4;
 		};
 		F50C7FBE026BD92B01A80164 = {
@@ -484,17 +484,6 @@
 		};
 		F53369F80218261B01A80165 = {
 			fileRef = F53369F60218261B01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5375A660246DDCA01A80164 = {
-			isa = PBXFileReference;
-			path = README.txt;
-			refType = 4;
-		};
-		F5375A670246DDCA01A80164 = {
-			fileRef = F5375A660246DDCA01A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -590,11 +579,22 @@
 		};
 		F554F1D80266AA4B01A80164 = {
 			isa = PBXFileReference;
-			path = addsrc.tiff;
+			path = addbin.tiff;
 			refType = 4;
 		};
 		F554F1DB0266AA4B01A80164 = {
 			fileRef = F554F1D80266AA4B01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F554F375026E607801A80165 = {
+			isa = PBXFileReference;
+			path = VERSION_HISTORY.txt;
+			refType = 4;
+		};
+		F554F376026E607801A80165 = {
+			fileRef = F554F375026E607801A80165;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -623,7 +623,7 @@
 		};
 		F59BDD90026817BF01A80164 = {
 			isa = PBXFileReference;
-			path = addbin.tiff;
+			path = addsrc.tiff;
 			refType = 4;
 		};
 		F59BDD91026817BF01A80164 = {
@@ -636,8 +636,8 @@
 			children = (
 				F5BBDFB1023AF8A601A80164,
 				F55057270231E5F701A80164,
-				F5375A660246DDCA01A80164,
 				F5BBDFAF023AF89301A80164,
+				F554F375026E607801A80165,
 			);
 			isa = PBXGroup;
 			name = Documentation;
