@@ -739,7 +739,7 @@ enum {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     NSString *sig = [installationInfo formattedEmailSig];
     FinkPackage *pkg;
-	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
+    NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
     if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
@@ -964,11 +964,13 @@ enum {
 				@"FinkRemoveSourceItem",
 				@"FinkRemoveBinaryItem",
 				@"FinkSelfUpdateItem",
+				@"FinkSelfUpdateRsyncItem",
 				@"FinkSelfUpdateCVSItem",
 				@"FinkUpdateallItem",
 				@"FinkUpdateBinaryItem",
 				@"FinkDescribeItem",
 				@"FinkTermInstallItem",
+				@"FinkTermRsyncItem",
 				@"FinkTermCvsItem",
 				@"FinkInteractItem",
 				@"FinkTerminateCommandItem",
@@ -985,7 +987,7 @@ enum {
 				@"FinkInstallBinaryItem",
 				@"FinkInstallSourceItem",
 				@"FinkRemoveSourceItem",
-				@"FinkSelfUpdateCVSItem",
+				@"FinkSelfUpdateRsyncItem",
 				NSToolbarSeparatorItemIdentifier,
 				@"FinkTerminateCommandItem",
 				@"FinkDescribeItem",
@@ -1013,12 +1015,17 @@ enum {
 		/* 	Used to store the subset of the packages array that matches the filter text */
 		NSMutableArray *subset = [NSMutableArray array];
 		NSEnumerator *e = [[packages array] objectEnumerator];
+                regex_t regex;
 		FinkPackage *pkg;
 
 		//Store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
 			[tableView storeSelectedObjectInfo];
-		}
+		} 
+                if ([defaults boolForKey: FinkAllowRegexFiltering]){                    
+                    regcomp(&regex, [filterText cString], REG_EXTENDED);
+                    // If regex construction fails it is no big deal really, probably in the middle of typing one like "Ben|"
+		}		
 
 		if ([filterText length] == 0){
 			[tableView setDisplayedPackages: [packages array]];
@@ -1026,6 +1033,10 @@ enum {
 			while (nil != (pkg = [e nextObject])){
 				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
 				/* 	If the value matches the filter term, add it to the subset */
+                                if([defaults boolForKey: FinkAllowRegexFiltering] && 
+                                    !regexec(&regex, [pkgAttribute cString], 0, 0, 0)){
+                                    [subset addObject: pkg];
+				} else 
 				if ([pkgAttribute contains:filterText]){
 					[subset addObject:pkg];
 				}

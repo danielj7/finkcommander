@@ -139,6 +139,19 @@
 		<key>ToolTip</key>
 		<string>Update package descriptions from fink cvs repository</string>
 	</dict>
+	<key>FinkSelfUpdateRsyncItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runNonSpecificCommand</string>
+		<key>Image</key>
+		<string>cvs</string>
+		<key>Label</key>
+		<string>Selfupdate-rsync</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Update package descriptions from fink rsync repository</string>
+	</dict>
 	<key>FinkSelfUpdateItem</key>
 	<dict>
 		<key>Action</key>
@@ -151,6 +164,21 @@
 		<integer>0</integer>
 		<key>ToolTip</key>
 		<string>Update package descriptions and package manager</string>
+	</dict>
+	<key>FinkTermRsyncItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runNonSpecificCommandInTerminal</string>
+		<key>Image</key>
+		<string>termcvs</string>
+		<key>Label</key>
+		<string>Selfupdate-rsync </string>
+		<key>PaletteLabel</key>
+		<string>Selfupdate-rsync in Terminal</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Run selfupdate-rsync command in Terminal</string>
 	</dict>
 	<key>FinkTermCvsItem</key>
 	<dict>

@@ -191,6 +191,8 @@ enum {
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
+	[allowRegexFilterButton setState: [defaults boolForKey: FinkAllowRegexFiltering]];
+
 	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];	
 	[self setTitleBarImage: self];  //action method
 	scrollBackLimit = [defaults integerForKey:FinkBufferLimit];
@@ -354,6 +356,7 @@ enum {
 	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
 	[defaults setBool: [warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
+	[defaults setBool: [allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
 	if ([checkForUpdateButton state]){
 		[defaults setInteger:[checkForUpdateIntervalTextField intValue]
 							   forKey:FinkCheckForNewVersionInterval];

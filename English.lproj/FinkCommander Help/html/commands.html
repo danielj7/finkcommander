@@ -66,17 +66,17 @@ installation is located.</em>
 			necessary to allow apt-get update to work.
 		</p></dd>
 	
-    <dt>Selfupdate, Selfupdate-cvs</dt>   
+    <dt>Selfupdate, Selfupdate-rsync, Selfupdate-cvs</dt>   
     <dd><p>This command automates the process of upgrading to a new fink
            release. It checks the fink website to see if a new version is
            available. It then downloads the package descriptions and updates
            the core packages, including fink itself. This command can upgrade
            to regular releases, but it can also setup your /sw/fink/dists
-           directory tree for direct CVS updates.  This means that you then
+           directory tree for direct rsync or CVS updates.  This means that you then
            will be able to access the very latest revisions of all packages.</p>
            
-           <p><em>Note:  Selfupdate-cvs automatically uses CVS to obtain the latest
-           revision.</em></p></dd>
+           <p><em>Note: Selfupdate-cvs automatically uses CVS to obtain the latest
+           revision. If you have trouble using CVS, try selfupdate-rsync.</em></p></dd>
     
     <dt>Update-all</dt>   
     <dd><p>This command updates all installed packages to the latest version.</p></dd>

@@ -19,6 +19,7 @@
             LANGUAGE = ObjC; 
             OUTLETS = {
                 addEnvironmentSettingButton = NSButton; 
+                allowRegexFilterButton = NSButton; 
                 alwaysChooseDefaultsButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 

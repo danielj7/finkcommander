@@ -70,6 +70,7 @@ File: FinkPreferences.h
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
+	IBOutlet NSButton *allowRegexFilterButton;
 	
 	//widgets used to alter fink.conf
 	IBOutlet NSButton *useUnstableMainButton;

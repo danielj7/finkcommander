@@ -53,6 +53,7 @@ extern NSString *FinkFTPProxyVariable;
 extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
 extern NSString *FinkAlwaysScrollToBottom;
+extern NSString *FinkAllowRegexFiltering;
 extern NSString *FinkWarnBeforeRemoving;
 extern NSString *FinkWarnBeforeTerminating;
 extern NSString *FinkPackagesInTitleBar;

@@ -76,6 +76,7 @@ Contact the author at sburrious@users.sourceforge.net.
 */
 
 #import <Cocoa/Cocoa.h>
+#include <regex.h>
 
 #import "FinkGlobals.h"
 #import "FinkData.h"

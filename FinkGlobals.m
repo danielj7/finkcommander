@@ -16,6 +16,7 @@ NSString *FinkOutputPath = @"FinkOutputPath";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 NSString *FinkScrollToSelection = @"FinkScrollToSelection";
+NSString *FinkAllowRegexFiltering = @"FinkAllowRegexFiltering";
 NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
 NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
 NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
