@@ -10,7 +10,7 @@
 #import "SBString.h"
 
 // comment out for release version:
-#define DEBUG
+//#define DEBUG
 
 //User Default Items
 //  Set by user
