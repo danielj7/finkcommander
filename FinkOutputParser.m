@@ -141,17 +141,17 @@ File: FinkOutputParser.m
     while (candidate = [e nextObject]){
 		if ([line containsCI:candidate]){
 			Dprintf(@"Found %@ in line", candidate);
- 			if ([candidate length] > [longestMatch length]){
+ 			if ([candidate length] > [best length]){
 				best = candidate;
-				Dprintf(@"Longest match so far: %@", longestMatch);
+				Dprintf(@"Longest match so far: %@", best);
 			}
 		}
     }
 	if ([best length] < 1){
-		bets = @"package";
+		best = @"package";
 	}
-	Dprintf(@"Returning package %@", longestMatch);
-    return longestMatch;
+	Dprintf(@"Returning package %@", best);
+    return best;
 }
 
 

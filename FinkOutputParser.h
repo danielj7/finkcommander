@@ -53,7 +53,7 @@ File: FinkOutputParser.h
 
 #define COMPILETRIGGER(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
 							 [[(x) strip] containsPattern: @"gcc -[!E]?*"]	|| \
-							 [[(x) strip] hasPrefix @"g77 -"]				|| \
+							 [[(x) strip] hasPrefix: @"g77 -"]				|| \
 							 [[(x) strip] hasPrefix: @"building"])
 
 #define ISPROMPT(x) ([(x) contains: @"you want to proceed?"]	|| \
