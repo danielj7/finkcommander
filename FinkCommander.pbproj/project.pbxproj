@@ -185,9 +185,8 @@
 				F57DA17B02B4680D01A8016B,
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
-				F54523C702F345DF01A80164,
 				F5DE3CD602CAE98601A80164,
-				F5C1B062026BFA2501A80164,
+				F56200A902FC768601A80164,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -330,7 +329,7 @@
 				F59BDD91026817BF01A80164,
 				F50C7FBC026BD8BD01A80164,
 				F50C7FBE026BD92B01A80164,
-				F5C1B063026BFA2501A80164,
+				F56200AA02FC768601A80164,
 				F53D651E0280296801A80164,
 				F53D652002802F3101A80164,
 				F542437C028CE53E01A80166,
@@ -346,7 +345,6 @@
 				F5DE3CD702CAE98601A80164,
 				F559D2C902CC2C6501A80164,
 				F513D60502DB42D70135C1EB,
-				F54523C802F345DF01A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 		};
@@ -783,17 +781,6 @@
 			settings = {
 			};
 		};
-		F54523C702F345DF01A80164 = {
-			isa = PBXFileReference;
-			path = scriptfile.txt;
-			refType = 4;
-		};
-		F54523C802F345DF01A80164 = {
-			fileRef = F54523C702F345DF01A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F546BA0402D8EA6B01A80165 = {
 			isa = PBXFileReference;
 			path = version.xml;
@@ -972,6 +959,20 @@
 			settings = {
 			};
 		};
+		F56200A902FC768601A80164 = {
+			children = (
+				F5C1B062026BFA2501A80164,
+			);
+			isa = PBXVariantGroup;
+			name = "FinkCommander Help";
+			refType = 4;
+		};
+		F56200AA02FC768601A80164 = {
+			fileRef = F56200A902FC768601A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F57DA17B02B4680D01A8016B = {
 			isa = PBXFileReference;
 			path = Credits.html;
@@ -1085,14 +1086,9 @@
 		F5C1B062026BFA2501A80164 = {
 			includeInIndex = 0;
 			isa = PBXFolderReference;
+			name = English;
 			path = "FinkCommander Help";
 			refType = 4;
-		};
-		F5C1B063026BFA2501A80164 = {
-			fileRef = F5C1B062026BFA2501A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5C523D802A326B701A80165 = {
 			isa = PBXFileReference;

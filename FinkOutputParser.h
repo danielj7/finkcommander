@@ -40,8 +40,9 @@ File: FinkOutputParser.h
 					 [(x) contains: @"[anonymous]"] || \
 					 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
-#define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || \
-								 [(x) contains: @"return to continue"])
+#define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || 	\
+								 [(x) contains: @"return to continue"] ||				\
+								 [(x) contains: @"CVS password:"])
 
 enum {
 	FC_NO_SIGNAL,

@@ -11,28 +11,21 @@
 
 <dl>
 
-    <dt>Running FinkCommander from Accounts Without Administrative Privileges</dt>
+    <dt>Running FinkCommander from accounts without administrative privileges</dt>
     <dd><p>Unfortunately, you can't do this at present.  FinkCommander uses
         sudo to run commands with root privileges, and I haven't found a way
         to pass an administrator's user name along with the password to sudo.
-        (And no, sudo -u <username> doesn't work.)<p></dd>
+        <p></dd>
 	
-    <dt>Automatic response to prompt failures</dt>
-    <dd><p>In some instances, Fink will not automatically respond to a prompt
-		when <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
-		is selected. When this occurs, select <kbd>Tools:Interact with Fink</kbd> to enter
-		a response.  <a href="details/fc_defaults.html">More detail</a>.
+    <dt>Interaction sheet display failure</dt>
+    <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.  
+		This sometimes occurs because Fink has not automatically responded to a prompt,
+		even though <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
+		is selected.  <a href="details/fc_defaults.html">More detail</a>.If you exprience this 
+		problem, select <kbd>Tools:Interact with Fink</kbd> to enter a response.  An optional 
+		Interact with Fink item is also available for the Toolbar.
     </p></dd>
 	
-    <dt>Incorrect error messages</dt>
-    <dd><p>FinkCommander sometimes reports possible errors in running a fink
-        command when none has in fact occurrred.  However, when a possible error
-        is detected, FinkCommander performs a full update of the table.  If the table
-        reflects what you would expect to see after a successful command (e.g., the
-        package you just installed from source is shown as <dfn>current</dfn>), then the 
-		error message was a false positive.  You don't need to worry about it.
-    </p></dd>
-    	
 	<dt>Apt-get update failure</dt>
 	<dd><p>If you receive an error message after running apt-get update, try running
 		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.

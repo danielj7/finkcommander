@@ -584,7 +584,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			url = @"http://finkcommander.sourceforge.net/";
 			break;
 		case FCBUG:
-			url = @"http://sourceforge.net/tracker/?group_id=48896&atid=454467";
+			url = @"http://finkcommander.sourceforge.net/pages/bugs.html";
 			break;
 		case FINKDOC:
 			url = @"http://fink.sourceforge.net/doc/index.php";
@@ -1023,14 +1023,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
-
-//	if (! [executable isEqualToString:@"fink"]){
-//		[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
-//	}
+	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
 
 #ifdef DEBUGGING
 	NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
-	NSLog(@"Environment for command =\n%@", [defaults objectForKey:FinkEnvironmentSettings]);
 #endif
 
 	// start the process asynchronously

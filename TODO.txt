@@ -1,39 +1,85 @@
-NEXT RELEASE
+
+RELEASE 0.3.3 (MacWorld CD Version)
+
+Target date: 08/03/2002
 
 x Optional limit on output buffer--bug fix
 
 x Allow user to set environment variables
 
-Automize check for new FinkCommander release
+x Fix Jaguar compatibility issue
 
-TESTING:  Check compatibility with existing installation, brand new installation
+x Automize check for new FinkCommander release (S)
+
+x Add support for multiple verbosity settings
+
+TESTING: Check compatibility with existing installation, brand new
+installation, various localizations
 
 
-FUNCTIONALITY
+RELEASE 0.3.4
 
-**Short Term
+Target date: 08/31/2002
 
-Allow user to specify administrator name in password entry sheet (if possible)
+French and Spanish localizations
 
-Show info panel for fink installation
+New commands: 
+	update fink from cvs
+	force removal: dpkg --remove --force-depends <pkg>
+	raise warning alerts for both
+	
+Jaguar bug fixes
 
-Command to update fink from cvs
 
-Use Camelbones and thread to gather package information
+RELEASE 0.4.0
 
-Add installed version instance variable to package objects; allow display in table; display in Package Inspector
+Target date: 10/15/2002
 
-Command inspector:  show currently running command with list of all packages subject to command (parse output to determine); show start time and duration; include refresh button
+(P) = Parsing group: requires finer parsing of command output
+(S) = Scheduling group: requires system for tracking dates of installs
+    and updates
 
-Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences or tool
+Run command in terminal option (with Jaguar's new AppleScript class); may need 
+to disable on systems running 10.1
 
-Run command in terminal option
+Command inspector: 
+show currently running command, list of all
+packages subject to command (including those added by fink or apt-get)
+in a table showing the status of each (e.g. "compiled," "upacked"),,
+when command started, how long command has been running; include
+refresh button (P)
 
-Find panel for output view
+Determinate progress bar and more detailed message text for fink
+command phases (P)
 
-Option to run command in Terminal as a solution to security concerns (waiting for Jaguar changes to dev tools)
+Add FinkPackage instance variables; allow display in table; display in
+Package Inspector (P): 
+	installed version 
+	date first installed
+	date last updated 
 
-**Long Term
+Collapse and expand output with double click (like Mail.app) (P)
+
+Additional fink installation info (P), (S):
+	   last selfupdate-cvs 
+	   last apt-get update
+
+Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences (S)
+
+Allow user to specify administrator name in password entry sheet (if
+possible)
+
+Show info panel for fink installation; mirror information in email sig
+
+Customize sound
+
+
+LONG TERM:
+
+Initial startup routine: selfupdate/selfupdate-cvs, apt-get update, scanpackages;
+panel that steps through process
+
+Dock icon customization: show status of command
 
 Custom script suite
 
@@ -41,20 +87,5 @@ Command to display a package's dependencies
 
 Dependency browser
 
-If feasible:  Redo authorization and command launch methods to use "correct" approach (see AuthSample)
-
-
-EASE OF USE
-
-Determinate progress bar and more detailed message text for fink command phases
-
-Put text of prompts and choices in the form of buttons in the interaction panel
-
-Localization strings
-
-Additional toolbar commands and icons
-
-
-COSMETICS
-
-X Better application icon
+If feasible: Redo authorization and command launch methods to use
+"correct" approach (see AuthSample)

@@ -25,6 +25,7 @@ File: FinkOutputParser.m
 -(void)dealloc
 {
     [command release];
+	[super dealloc];
 }
 
 
@@ -49,10 +50,11 @@ File: FinkOutputParser.m
 {
     NSEnumerator *e = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
     NSString *line;
-    int signal = FC_NO_SIGNAL;
+    int signal = FC_NO_SIGNAL;  //false when used as boolean value
 
     while (line = [e nextObject]){
-		if (signal = [self parseLineOfOutput:line]) return signal;
+		signal = [self parseLineOfOutput:line];
+		if (signal) return signal;
     }
     return signal;
 }

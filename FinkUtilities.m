@@ -45,13 +45,19 @@ void fixScript(void)
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *dpath = [NSHomeDirectory() stringByAppendingPathComponent:
+	NSString *aspath = [NSHomeDirectory() stringByAppendingPathComponent:
 						@"Library/Application Support"];
-	NSString *wpath = [dpath stringByAppendingPathComponent:@"FinkCommander.pl"];
+	NSString *fcpath = [aspath stringByAppendingPathComponent: @"FinkCommander"];
+	NSString *wpath = [fcpath stringByAppendingPathComponent:@"FinkCommander.pl"];
 						
-	if (! [manager fileExistsAtPath:dpath]){
+	if (! [manager fileExistsAtPath:aspath]){
 		NSLog(@"Creating ~/Library/Application Support directory");
-		[manager createDirectoryAtPath:dpath attributes:nil];
+		[manager createDirectoryAtPath:aspath attributes:nil];
+	}
+	
+	if (! [manager fileExistsAtPath:fcpath]){
+		NSLog(@"Creating ~/Library/Application Support/FinkCommander directory");
+		[manager createDirectoryAtPath:fcpath attributes:nil];
 	}
 	
 	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){

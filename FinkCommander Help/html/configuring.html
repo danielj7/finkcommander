@@ -10,8 +10,8 @@
 
 <h2>Configuring FinkCommander and Fink</h2>
 
-<p>The FinkCommander Preferences Panel is divided into five tab views: 
-Commander, Fink, Downloads, Path and Uniphobe.  
+<p>The FinkCommander Preferences Panel is divided into six tab views: 
+Commander, Fink, Downloads, Path, Display and Environment.  
 The Fink and Downloads tab views allow you to change the fink configuration
 settings stored in the <dfn>fink-basepath</dfn>/etc/fink.conf file.</p>
 
@@ -26,15 +26,6 @@ be self-evident.</p>
 	The instructions for doing so are described in a 
 	<a href="details/fc_sudoconfig.html">Fink FAQ</a> item.</p></dd>
 	
-	<dt>Scroll to the last selection after sorting the table</dt>
-	<dd><p>If this option is selected, the table will automatically scroll the 
-	last selection back to its previous position after you sort the table contents, just like
-	Mail.app.</p></dd>
-
-	<dt>Always update the table with Fink</dt>
-	<dd><p>This option causes FinkCommander to perform a full update of the table after
-	running any command that could affect the state of your packages.  
-	<a href="details/fc_tableupdate.html">More detail</a>.</p></dd>
 </dl>
 
 <h3>Fink</h3>
@@ -47,13 +38,13 @@ be self-evident.</p>
 
 	<dt>Keep the build directory</dt>
 	<dd><p>From the fink man page:  The default is false, fink  usually  removes the  source  
-	build directory after successfully building a package. If you want to keep the build directory, 
-	set this to  true.  Usually  only developers have any need for this
+	build directory after successfully building a package. If you want to keep the build 
+	directory, set this to  true.  Usually  only developers have any need for this
 	field.</p></dd>
 	
 	<dt>Keep the root directory</dt>
-	<dd><p>From the fink man page: Similar  to  the  KeepBuildDir  option,  this allows  developers  
-	to  keep the root directory around for debugging purposes.</p></dd>
+	<dd><p>From the fink man page: Similar  to  the  KeepBuildDir  option,  this allows  
+	developers to  keep the root directory around for debugging purposes.</p></dd>
 </dl>
 
 <h3>Downloads</h3>
@@ -64,19 +55,40 @@ be self-evident.</p>
 	a firewall.  What are the appropriate values?  Heck if I know.</p></dd>
 	
 	<dt>Download method</dt>
-	<dd><p>Mac OS X comes with curl, so it's the default.  You'll need to install wget, which of course 
-	you can do with fink, before switching.</p>
+	<dd><p>Mac OS X comes with curl, so it's the default.  You'll need to install wget or axel, 
+	which of course you can do with fink, before switching.</p>
 </dl>
 
 <dl>
 
-<h3>Path</h3>
+<h3>Paths</h3>
 <dl>
 	<dt>Path to Fink files</dt>
 	<dd><p>Only change the settings here if FinkCommander was unable to locate the
 	path to your Fink installation on startup.</p></dd>
 </dl>
-	
 
+<h3>Display</h3>
+<dl>
+	<dt>Limit output scrollback to ____ lines</dt>
+	<dd><p>Use this setting to keep FinkCommander from consuming horrendous amounts of
+	memory when performing long installs (e.g. gnome, kde).</p></dd>
+
+	<dt>Scroll to the last selection after sorting the table</dt>
+	<dd><p>If this option is selected, the table will automatically scroll the 
+	last selection back to its previous position after you sort the table contents, just like
+	Mail.app.</p></dd>
+
+	<dt>Always update the table with Fink</dt>
+	<dd><p>This option causes FinkCommander to perform a full update of the table after
+	running any command that could affect the state of your packages.  
+	<a href="details/fc_tableupdate.html">More detail</a>.</p></dd>
+</dl>
+
+<h3>Environment</h3>
+
+<p>Use this table to set environment variables needed for fink or apt-get to run on
+your system.  A few default settings are established for you.  If you lose functionality
+after making changes here, click <kbd>Restore</kbd> to bring back the default settings.</p>
 </body>
 </html>
