@@ -18,7 +18,7 @@ See the header file, FinkDataController.h, for interface and license information
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
-		finkArray = [[NSMutableArray alloc] initWithCapacity: 1100];
+		finkArray = [[NSMutableArray alloc] initWithCapacity: 1300];
 		basePath = [[defaults objectForKey: FinkBasePath] retain];
 	}
 
@@ -174,7 +174,7 @@ See the header file, FinkDataController.h, for interface and license information
 #endif //DEBUG
 
 	//notify FinkController that table needs to be updated
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"packageArrayIsFinished"
+	[[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished
 		object: nil];
 	
 }

@@ -35,8 +35,8 @@ File: FinkConf.h
 #import "SBString.h"
 
 //---------------------------------------------->Global Variables
-// eliminate for release version:
-//#define DEBUG
+// comment out for release version:
+// #define DEBUG
 
 //User Default Items
 extern NSString *FinkBasePath;
@@ -49,7 +49,6 @@ extern NSString *FinkSelectedPopupMenuTitle;
 extern NSString *FinkHTTPProxyVariable;
 extern NSString *FinkFTPProxyVariable;
 extern NSString *FinkLookedForProxy;
-extern NSString *FinkAutoUpdateTable;
 extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
 extern NSString *FinkAlwaysScrollToBottom;
@@ -58,6 +57,7 @@ extern NSString *FinkWarnBeforeRunning;
 //Notification Names
 extern NSString *FinkConfChangeIsPending;
 extern NSString *FinkCommandCompleted;
+extern NSString *FinkPackageArrayIsFinished;
 
 @interface FinkConf : NSObject 
 {

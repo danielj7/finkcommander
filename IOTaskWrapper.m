@@ -92,12 +92,8 @@
 
 -(void)stopProcess
 {
-	// Make sure task is really finished before calling processFinishedWithStatus.
-	// Otherwise sending terminationStatus message to task will raise error.
-	// Experimented with terminate and interrupt methods; didn't work in this context
-	while ([task isRunning]){
-		continue;
-	}
+	//make sure task is really finished before calling processFinishedWithStatus.
+	[task waitUntilExit];
 	
 	[controller processFinishedWithStatus: [task terminationStatus]];
     controller = nil;
@@ -126,7 +122,7 @@
 -(void)writeToStdin: (NSString *)s
 {
 	[[[task standardInput] fileHandleForWriting] writeData:
-		[NSData dataWithData: [s dataUsingEncoding: NSUTF8StringEncoding]]];
+		[s dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
 @end

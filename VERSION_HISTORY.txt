@@ -1,8 +1,24 @@
 VERSION HISTORY
 
-0.2.x	pending:
-
-
+0.3.0	5/12/2002:
+	
+	Fink.conf can now be modified using the Preferences panel
+	
+	Output window scrolling behavior now mimics Terminal.app:  Unless the user 
+	chooses "Scroll to the bottom . . ." in Preferences, the user can now scroll 
+	up to view previous output without having the scroller zip back down to the 
+	bottom every time new output is added
+	
+	Other new preference items: warn before running a command (as requested), never
+	ask for password (for users who have configured sudo accordingly), ask for 
+	password on startup
+	
+	All fields except version can now be filtered
+	
+	Additional available toolbar items:  selfupdate, apt-get update, selfupdate-cvs, 
+	describe, interact with Fink
+	
+	Help now includes instructions on running commands and on setting Preferences
 
 0.2.1a	4/27/2002:
 

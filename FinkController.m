@@ -36,12 +36,11 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysChooseDefaults];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAutoUpdateTable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysScrollToBottom];
@@ -96,6 +95,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
 		
+		userChoseToTerminate = NO;
+		
 		//Register for notifications that run commands
 		//  selector runs command if one is pending and password was entered 
 		[[NSNotificationCenter defaultCenter] addObserver: self
@@ -112,7 +113,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		//and resume normal state
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(refreshTable:)
-					name: @"packageArrayIsFinished"
+					name: FinkPackageArrayIsFinished
 					object: nil];
 					
 		return self;
@@ -150,6 +151,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
+	[scrollView setBorderType: NSNoBorder];
 	
 	[msgText setStringValue:
 		@"Updating table data…"];
@@ -257,7 +259,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 {
 	int answer;
 	
-	if ([self commandIsRunning]){
+	if ([self commandIsRunning] && ! userChoseToTerminate){
 		answer = NSRunCriticalAlertPanel(@"Warning!", 
 			@"Quitting now will interrupt a Fink process.",
 			@"Cancel", @"Quit", nil);
@@ -356,15 +358,17 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[self runCommandWithParams: args];
 }
 
-//this isn't working
 -(IBAction)terminateCommand:(id)sender
 {
+	[[finkTask task] terminate];
 	if ([[finkTask task] isRunning]){
-#ifdef DEBUG
-	NSLog(@"Found running task; trying to interrupt");
-#endif //DEBUG
-		[[finkTask task] interrupt];
-		[[finkTask task] terminate];
+		int answer = NSRunAlertPanel(@"Sorry",
+				@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander.\nWhat would you like to do?",
+				@"Quit", @"Continue", nil);
+		if (answer == NSAlertDefaultReturn){
+			userChoseToTerminate = YES;
+			[NSApp terminate: self];
+		}
 	}
 }
 
@@ -387,6 +391,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[preferences showWindow: self];
 }
 
+//help menu items
 -(IBAction)goToFinkCommanderWebSite:(id)sender
 {
 	[[NSWorkspace sharedWorkspace] openURL: 
@@ -1021,7 +1026,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
 		@"FinkCommander detected a possible failure message.\nCheck the output window for problems.",
 		nil);										//msg string params
-		[packages update];
+		[self updateTable: nil];
 	}
 	[[NSNotificationCenter defaultCenter]
 		postNotificationName: FinkCommandCompleted 

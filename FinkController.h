@@ -79,6 +79,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSImage *normalSortImage;
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
+	BOOL userChoseToTerminate;
 
 	//Authentication and Process Control
 	NSString *password;

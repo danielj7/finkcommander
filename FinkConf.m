@@ -19,7 +19,6 @@ NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
 NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";
-NSString *FinkAutoUpdateTable = @"FinkAutoUpdateTable";
 NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
 NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
@@ -28,6 +27,7 @@ NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 //Global variables identifying inter-object notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
 NSString *FinkCommandCompleted = @"FinkCommandCompleted";
+NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 
 //Globals for this file
 NSString *gProxyHTTP = @"ProxyHTTP";
