@@ -352,8 +352,8 @@
 				F57E59B603A998D701A80165,
 				FBD2DBD803BAA14500A80165,
 				FBC8655103BABC0400A80165,
-				FBCD45ED03C5FF1000A80164,
-				FBCD45EE03C5FF1000A80164,
+				FBCD472A03C6070000A80164,
+				FBCD472C03C6070E00A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2001,8 +2001,8 @@
 				F5CC7617039F174E01A80165,
 				F5CC7615039F174E01A80165,
 				F57E59B403A998D701A80165,
-				FBCD45EB03C5FF1000A80164,
-				FBCD45EC03C5FF1000A80164,
+				FBCD472B03C6070E00A80164,
+				FBCD472903C6070000A80164,
 				F5CC7619039F174E01A80165,
 				F5CC765C039F19D801A80165,
 				F5CC761B039F174E01A80165,
@@ -2119,30 +2119,6 @@
 			settings = {
 			};
 		};
-		FBCD45EB03C5FF1000A80164 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = SBBrowserCell.h;
-			refType = 4;
-		};
-		FBCD45EC03C5FF1000A80164 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = SBOutlineView.h;
-			refType = 4;
-		};
-		FBCD45ED03C5FF1000A80164 = {
-			fileRef = FBCD45EB03C5FF1000A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		FBCD45EE03C5FF1000A80164 = {
-			fileRef = FBCD45EC03C5FF1000A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		FBCD45EF03C5FF3100A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -2165,6 +2141,32 @@
 		};
 		FBCD45F203C5FF3100A80164 = {
 			fileRef = FBCD45F003C5FF3100A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBCD472903C6070000A80164 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = SBOutlineView.h;
+			path = SBTreeFiles/SBOutlineView.h;
+			refType = 4;
+		};
+		FBCD472A03C6070000A80164 = {
+			fileRef = FBCD472903C6070000A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBCD472B03C6070E00A80164 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = SBBrowserCell.h;
+			path = SBTreeFiles/SBBrowserCell.h;
+			refType = 4;
+		};
+		FBCD472C03C6070E00A80164 = {
+			fileRef = FBCD472B03C6070E00A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
