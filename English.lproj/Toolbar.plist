@@ -2,200 +2,239 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FinkDescribeItem</key>
+	<key>AllowedToolbarItems</key>
+	<array>
+		<string>NSToolbarSeparatorItemIdentifier</string>
+		<string>NSToolbarSeparatorItemIdentifier</string>
+		<string>NSToolbarSpaceItemIdentifier</string>
+		<string>NSToolbarFlexibleSpaceItemIdentifier</string>
+		<string>NSToolbarCustomizeToolbarItemIdentifier</string>
+		<string>FinkInstallSourceItem</string>
+		<string>FinkInstallBinaryItem</string>
+		<string>FinkRemoveSourceItem</string>
+		<string>FinkRemoveBinaryItem</string>
+		<string>FinkSelfUpdateItem</string>
+		<string>FinkSelfUpdateCVSItem</string>
+		<string>FinkUpdateallItem</string>
+		<string>FinkUpdateBinaryItem</string>
+		<string>FinkDescribeItem</string>
+		<string>FinkTermInstallItem</string>
+		<string>FinkTermCvsItem</string>
+		<string>FinkInteractItem</string>
+		<string>FinkTerminateCommandItem</string>
+		<string>FinkEmailItem</string>
+		<string>FinkFilterItem</string>
+	</array>
+	<key>DefaultToolbarItems</key>
+	<array>
+		<string>FinkInstallSourceItem</string>
+		<string>FinkTermInstallItem</string>
+		<string>FinkRemoveSourceItem</string>
+		<string>FinkSelfUpdateCVSItem</string>
+		<string>NSToolbarSeparatorItemIdentifier</string>
+		<string>FinkTerminateCommandItem</string>
+		<string>FinkDescribeItem</string>
+		<string>FinkEmailItem</string>
+		<string>NSToolbarFlexibleSpaceItemIdentifier</string>
+		<string>FinkFilterItem</string>
+	</array>
+	<key>ToolbarItemDefinitions</key>
 	<dict>
-		<key>Action</key>
-		<string>showPackageInfoPanel</string>
-		<key>Image</key>
-		<string>describe</string>
-		<key>Label</key>
-		<string>Inspector</string>
-		<key>PaletteLabel</key>
-		<string>Package Inspector</string>
-		<key>ToolTip</key>
-		<string>Show package inspector panel</string>
-	</dict>
-	<key>FinkEmailItem</key>
-	<dict>
-		<key>Action</key>
-		<string>emailMaintainer</string>
-		<key>Image</key>
-		<string>email</string>
-		<key>Label</key>
-		<string>Maintainer</string>
-		<key>PaletteLabel</key>
-		<string>Email Maintainer</string>
-		<key>ToolTip</key>
-		<string>Send email to package maintainer</string>
-	</dict>
-	<key>FinkFilterItem</key>
-	<dict>
-		<key>Label</key>
-		<string>Filter Table Data</string>
-	</dict>
-	<key>FinkInstallBinaryItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runPackageSpecificCommand</string>
-		<key>Image</key>
-		<string>addbin</string>
-		<key>Label</key>
-		<string>Install Binary</string>
-		<key>Tag</key>
-		<integer>1</integer>
-		<key>ToolTip</key>
-		<string>Install binary package(s)</string>
-	</dict>
-	<key>FinkInstallSourceItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runPackageSpecificCommand</string>
-		<key>Image</key>
-		<string>addsrc</string>
-		<key>Label</key>
-		<string>Install</string>
-		<key>PaletteLabel</key>
-		<string>Install Source</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Install package(s) from source</string>
-	</dict>
-	<key>FinkInteractItem</key>
-	<dict>
-		<key>Action</key>
-		<string>raiseInteractionWindow</string>
-		<key>Image</key>
-		<string>interact</string>
-		<key>Label</key>
-		<string>Interact</string>
-		<key>ToolTip</key>
-		<string>Raise interaction sheet (use if command has stalled)</string>
-	</dict>
-	<key>FinkRemoveBinaryItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runPackageSpecificCommand</string>
-		<key>Image</key>
-		<string>delbin</string>
-		<key>Label</key>
-		<string>Remove Binary</string>
-		<key>Tag</key>
-		<integer>1</integer>
-		<key>ToolTip</key>
-		<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
-	</dict>
-	<key>FinkRemoveSourceItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runPackageSpecificCommand</string>
-		<key>Image</key>
-		<string>delsrc</string>
-		<key>Label</key>
-		<string>Remove</string>
-		<key>PaletteLabel</key>
-		<string>Remove Source</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
-	</dict>
-	<key>FinkSelfUpdateCVSItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommand</string>
-		<key>Image</key>
-		<string>cvs</string>
-		<key>Label</key>
-		<string>Selfupdate-cvs</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Update package descriptions from fink cvs repository</string>
-	</dict>
-	<key>FinkSelfUpdateItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommand</string>
-		<key>Image</key>
-		<string>update</string>
-		<key>Label</key>
-		<string>Selfupdate</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Update package descriptions and package manager</string>
-	</dict>
-	<key>FinkTermCvsItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommandInTerminal</string>
-		<key>Image</key>
-		<string>termcvs</string>
-		<key>Label</key>
-		<string>Selfupdate-cvs</string>
-		<key>PaletteLabel</key>
-		<string>Selfupdate-cvs in Terminal</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Run selfupdate-cvs command in Terminal</string>
-	</dict>
-	<key>FinkTermInstallItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runPackageSpecificCommandInTerminal</string>
-		<key>Image</key>
-		<string>terminstall</string>
-		<key>Label</key>
-		<string>Install</string>
-		<key>PaletteLabel</key>
-		<string>Install in Terminal</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Run install command in Terminal</string>
-	</dict>
-	<key>FinkTerminateCommandItem</key>
-	<dict>
-		<key>Action</key>
-		<string>terminateCommand</string>
-		<key>Image</key>
-		<string>terminate</string>
-		<key>Label</key>
-		<string>Terminate</string>
-		<key>ToolTip</key>
-		<string>Terminate current command</string>
-	</dict>
-	<key>FinkUpdateBinaryItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommand</string>
-		<key>Image</key>
-		<string>updatebin</string>
-		<key>Label</key>
-		<string>Update</string>
-		<key>PaletteLabel</key>
-		<string>Apt-Get Update</string>
-		<key>Tag</key>
-		<integer>1</integer>
-		<key>ToolTip</key>
-		<string>Update binary package descriptions</string>
-	</dict>
-	<key>FinkUpdateallItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommand</string>
-		<key>Image</key>
-		<string>updateall</string>
-		<key>Label</key>
-		<string>Update-all</string>
-		<key>PaletteLabel</key>
-		<string>Update-all</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Update all packages from source</string>
+		<key>FinkDescribeItem</key>
+		<dict>
+			<key>Action</key>
+			<string>showPackageInfoPanel</string>
+			<key>Image</key>
+			<string>describe</string>
+			<key>Label</key>
+			<string>Inspector</string>
+			<key>PaletteLabel</key>
+			<string>Package Inspector</string>
+			<key>ToolTip</key>
+			<string>Show package inspector panel</string>
+		</dict>
+		<key>FinkEmailItem</key>
+		<dict>
+			<key>Action</key>
+			<string>emailMaintainer</string>
+			<key>Image</key>
+			<string>email</string>
+			<key>Label</key>
+			<string>Maintainer</string>
+			<key>PaletteLabel</key>
+			<string>Email Maintainer</string>
+			<key>ToolTip</key>
+			<string>Send email to package maintainer</string>
+		</dict>
+		<key>FinkFilterItem</key>
+		<dict>
+			<key>Label</key>
+			<string>Filter Table Data</string>
+		</dict>
+		<key>FinkInstallBinaryItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runPackageSpecificCommand</string>
+			<key>Image</key>
+			<string>addbin</string>
+			<key>Label</key>
+			<string>Install Binary</string>
+			<key>Tag</key>
+			<integer>1</integer>
+			<key>ToolTip</key>
+			<string>Install binary package(s)</string>
+		</dict>
+		<key>FinkInstallSourceItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runPackageSpecificCommand</string>
+			<key>Image</key>
+			<string>addsrc</string>
+			<key>Label</key>
+			<string>Install</string>
+			<key>PaletteLabel</key>
+			<string>Install Source</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Install package(s) from source</string>
+		</dict>
+		<key>FinkInteractItem</key>
+		<dict>
+			<key>Action</key>
+			<string>raiseInteractionWindow</string>
+			<key>Image</key>
+			<string>interact</string>
+			<key>Label</key>
+			<string>Interact</string>
+			<key>ToolTip</key>
+			<string>Raise interaction sheet (use if command has stalled)</string>
+		</dict>
+		<key>FinkRemoveBinaryItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runPackageSpecificCommand</string>
+			<key>Image</key>
+			<string>delbin</string>
+			<key>Label</key>
+			<string>Remove Binary</string>
+			<key>Tag</key>
+			<integer>1</integer>
+			<key>ToolTip</key>
+			<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
+		</dict>
+		<key>FinkRemoveSourceItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runPackageSpecificCommand</string>
+			<key>Image</key>
+			<string>delsrc</string>
+			<key>Label</key>
+			<string>Remove</string>
+			<key>PaletteLabel</key>
+			<string>Remove Source</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
+		</dict>
+		<key>FinkSelfUpdateCVSItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runNonSpecificCommand</string>
+			<key>Image</key>
+			<string>cvs</string>
+			<key>Label</key>
+			<string>Selfupdate-cvs</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Update package descriptions from fink cvs repository</string>
+		</dict>
+		<key>FinkSelfUpdateItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runNonSpecificCommand</string>
+			<key>Image</key>
+			<string>update</string>
+			<key>Label</key>
+			<string>Selfupdate</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Update package descriptions and package manager</string>
+		</dict>
+		<key>FinkTermCvsItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runNonSpecificCommandInTerminal</string>
+			<key>Image</key>
+			<string>termcvs</string>
+			<key>Label</key>
+			<string>Selfupdate-cvs</string>
+			<key>PaletteLabel</key>
+			<string>Selfupdate-cvs in Terminal</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Run selfupdate-cvs command in Terminal</string>
+		</dict>
+		<key>FinkTermInstallItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runPackageSpecificCommandInTerminal</string>
+			<key>Image</key>
+			<string>terminstall</string>
+			<key>Label</key>
+			<string>Install</string>
+			<key>PaletteLabel</key>
+			<string>Install in Terminal</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Run install command in Terminal</string>
+		</dict>
+		<key>FinkTerminateCommandItem</key>
+		<dict>
+			<key>Action</key>
+			<string>terminateCommand</string>
+			<key>Image</key>
+			<string>terminate</string>
+			<key>Label</key>
+			<string>Terminate</string>
+			<key>ToolTip</key>
+			<string>Terminate current command</string>
+		</dict>
+		<key>FinkUpdateBinaryItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runNonSpecificCommand</string>
+			<key>Image</key>
+			<string>updatebin</string>
+			<key>Label</key>
+			<string>Update</string>
+			<key>PaletteLabel</key>
+			<string>Apt-Get Update</string>
+			<key>Tag</key>
+			<integer>1</integer>
+			<key>ToolTip</key>
+			<string>Update binary package descriptions</string>
+		</dict>
+		<key>FinkUpdateallItem</key>
+		<dict>
+			<key>Action</key>
+			<string>runNonSpecificCommand</string>
+			<key>Image</key>
+			<string>updateall</string>
+			<key>Label</key>
+			<string>Update-all</string>
+			<key>PaletteLabel</key>
+			<string>Update-all</string>
+			<key>Tag</key>
+			<integer>0</integer>
+			<key>ToolTip</key>
+			<string>Update all packages from source</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

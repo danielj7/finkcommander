@@ -258,6 +258,8 @@ File: FinkPreferences.m
 	if ([checkForUpdateButton state]){
 		[defaults setInteger:[checkForUpdateIntervalTextField intValue]
 							   forKey:FinkCheckForNewVersionInterval];
+	}else{
+		[defaults setInteger:0 forKey:FinkCheckForNewVersionInterval];
 	}
 	
 	//Paths Tab
@@ -431,11 +433,11 @@ File: FinkPreferences.m
 	NSNumber *n;
 	NSString *name;
 	
-	while (n = [e nextObject]){
+	while (nil != (n = [e nextObject])){
 		[settingsToRemove addObject:[environmentKeyList objectAtIndex:[n intValue]]];
 	}
 	e = [settingsToRemove objectEnumerator];
-	while (name = [e nextObject]){
+	while (nil != (name = [e nextObject])){
 		[environmentSettings removeObjectForKey:name];
 	}
 	[self setEnvironmentKeys];

@@ -96,6 +96,7 @@ enum {
     BUILD,
     ACTIVATE,
 	//used only as signals
+	PGID,
     START_INSTALL,
     PASSWORD_PROMPT,
     PROMPT,
@@ -123,6 +124,7 @@ enum {
 
     float increment;
     int currentPhase;
+	int pgid;
 	BOOL installing;
     BOOL readingPackageList;
 	BOOL self_repair;
@@ -132,6 +134,8 @@ enum {
 	executable:(NSString *)exe;
 
 -(float)increment;
+
+-(int)pgid;
 
 -(NSString *)currentPackage;
 

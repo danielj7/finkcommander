@@ -36,7 +36,6 @@
 		089C165CFE840E0CC02AAC07 = {
 			children = (
 				089C165DFE840E0CC02AAC07,
-				F53B4D0B031033DD01A80164,
 				F53B4D0A031033D401A80164,
 			);
 			isa = PBXVariantGroup;
@@ -217,7 +216,6 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
-				F5CC37120304F26F01A80164,
 				F5CC37130304F27C01A80164,
 			);
 			isa = PBXVariantGroup;
@@ -539,12 +537,6 @@
 			settings = {
 			};
 		};
-		F5128EE703665ED601A80166 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Dialogs.nib;
-			refType = 4;
-		};
 		F5128EE803665EE101A80166 = {
 			isa = PBXFileReference;
 			name = German;
@@ -699,7 +691,6 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
-				F5CC37150304F29A01A80164,
 				F5CC37160304F2A201A80164,
 			);
 			isa = PBXVariantGroup;
@@ -785,7 +776,6 @@
 		F53B4D0503100C3501A80164 = {
 			children = (
 				F53B4CA303100C0E01A80164,
-				F53B4D0703100C4301A80164,
 				F53B4D0803100C5101A80164,
 			);
 			isa = PBXVariantGroup;
@@ -798,12 +788,6 @@
 			settings = {
 			};
 		};
-		F53B4D0703100C4301A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Toolbar.plist;
-			refType = 4;
-		};
 		F53B4D0803100C5101A80164 = {
 			fileEncoding = 10;
 			isa = PBXFileReference;
@@ -815,12 +799,6 @@
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/InfoPlist.strings;
-			refType = 4;
-		};
-		F53B4D0B031033DD01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/InfoPlist.strings;
 			refType = 4;
 		};
 		F53B4D41031079C801A80164 = {
@@ -1092,7 +1070,6 @@
 		F55407F5035D334001A80170 = {
 			children = (
 				F55407F6035D334001A80170,
-				F5128EE703665ED601A80166,
 				F5128EE803665EE101A80166,
 			);
 			isa = PBXVariantGroup;
@@ -1215,7 +1192,6 @@
 		F568C4A202FC9D6101A80164 = {
 			children = (
 				F568C4A302FC9D6101A80164,
-				F5CC37190304F2C601A80164,
 				F5D3EE420336DD8B01A80165,
 			);
 			isa = PBXVariantGroup;
@@ -1381,7 +1357,6 @@
 		F59FF425032134BD01A80175 = {
 			children = (
 				F57DA17B02B4680D01A8016B,
-				F59FF427032134CF01A80175,
 				F59FF428032134D901A80175,
 			);
 			isa = PBXVariantGroup;
@@ -1393,12 +1368,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F59FF427032134CF01A80175 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Credits.html;
-			refType = 4;
 		};
 		F59FF428032134D901A80175 = {
 			isa = PBXFileReference;
@@ -1514,35 +1483,16 @@
 			path = PackageInfo.nib;
 			refType = 4;
 		};
-		F5CC37120304F26F01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/MainMenu.nib;
-			refType = 4;
-		};
 		F5CC37130304F27C01A80164 = {
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/MainMenu.nib;
 			refType = 4;
 		};
-		F5CC37150304F29A01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Preferences.nib;
-			refType = 4;
-		};
 		F5CC37160304F2A201A80164 = {
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Preferences.nib;
-			refType = 4;
-		};
-		F5CC37190304F2C601A80164 = {
-			fileEncoding = 10;
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5D01DA703636C2C01A80165 = {

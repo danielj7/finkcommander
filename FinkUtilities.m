@@ -26,7 +26,7 @@ void findFinkBasePath(void)
         @"/opt/fink", @"/opt/sw", @"/usr/local/sw", @"/usr/local/fink",
         @"/usr/sw", @"/usr/fink", nil] objectEnumerator];
 
-	while (path = [e nextObject]){
+	while (nil != (path = [e nextObject])){
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject:path forKey:FinkBasePath];
@@ -161,7 +161,7 @@ NSString *processGroupID(NSString *ppid)
 	NSString *element;
 	NSString *pgid = nil;
 
-	while (line = [e nextObject]){
+	while (nil != (line = [e nextObject])){
 		if ([line contains: ppid] && [[line strip] hasSuffix:@"Launcher"]){
 			e1 = [[[line strip] componentsSeparatedByString:@" "] objectEnumerator];
 			Dprintf(@"Looking for group id in:\n  %@", line);

@@ -20,6 +20,7 @@ File: FinkOutputParser.m
 		readingPackageList = NO;
 		self_repair = NO;		
 		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
+		pgid = 0;
 		
 		if (installing){
 			packageList = [[NSMutableArray alloc] init];
@@ -45,6 +46,8 @@ File: FinkOutputParser.m
 //------------------------------------------>Accessors
 
 -(float)increment{ return increment; }
+
+-(int)pgid{ return pgid; }
 
 -(NSString *)currentPackage { return currentPackage; }
 
@@ -91,7 +94,7 @@ File: FinkOutputParser.m
 	 
 	e = [packageList objectEnumerator];
     if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
-    while (pname = [e nextObject]){
+    while (nil != (pname = [e nextObject])){
 		[ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
     }
 	
@@ -155,7 +158,7 @@ File: FinkOutputParser.m
 	e = [packageList objectEnumerator];
 	//first see if the line contains any of the names in the package list;
 	//if so, return the longest name that matches 
-    while (candidate = [e nextObject]){
+    while (nil != (candidate = [e nextObject])){
 		if ([line containsCI:candidate]){
  			if ([candidate length] > [best length]){
 				best = candidate;
@@ -193,7 +196,7 @@ File: FinkOutputParser.m
 				[packageList componentsJoinedByString:@" "]);
 		if ([fname length] > 0){
 			NSEnumerator *e = [packageList objectEnumerator];
-			while (candidate = [e nextObject]){
+			while (nil != (candidate = [e nextObject])){
 				if ([candidate contains:fname]){  //e.g. wget-ssl contains wget
 					Dprintf(@"Listed package %@ contains %@", candidate, fname);
 					if ([best length] < 1){
@@ -217,6 +220,12 @@ File: FinkOutputParser.m
 -(int)parseLineOfOutput:(NSString *)line
 {	
 	NSString *sline = [line strip];
+
+	//Read process group id for Launcher
+	if (!pgid && [line contains:@"PGID="]){
+		pgid = [[line substringFromIndex:5] intValue];
+		return PGID;
+	}
 	//Look for package lists
 	if (installing && readingPackageList){
 		//lines listing pkgs to be installed start with a space
@@ -358,8 +367,6 @@ File: FinkOutputParser.m
     int signal = NONE;  //false when used as boolean value
 	
 	e  = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
-
-//	NSLog(@"Retain count after components separated = %d", [output retainCount]);
 
     while (nil != (line = [e nextObject])){		
 		signal = [self parseLineOfOutput:line];		

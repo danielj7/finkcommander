@@ -18,7 +18,7 @@ See the header file, FinkTableViewController.h, for interface and license inform
 		NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
 		NSEnumerator *f = [[defaults objectForKey:FinkPackageAttributes] objectEnumerator];
 
-		while (identifier = [e nextObject]){
+		while (nil != (identifier = [e nextObject])){
 			[self addTableColumn:[self makeColumnWithName:identifier]];
 		}
 		[self setDelegate: self];
@@ -90,7 +90,7 @@ See the header file, FinkTableViewController.h, for interface and license inform
 	NSNumber *anIndex;
 	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
 
-	while (anIndex = [e nextObject]){
+	while (nil != (anIndex = [e nextObject])){
 		[pkgArray addObject:
 			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
 	}

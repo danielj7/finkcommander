@@ -12,6 +12,8 @@ NSString *WEBKEY = @"Web site:";
 NSString *MAINTAINERKEY = @"Maintainer:";
 int URLSTART = 10;
 int NAMESTART = 12;
+int PACKAGESTART = 9;
+int VERSIONSTART = 9;
 
 @implementation FinkDataController
 
@@ -106,16 +108,18 @@ int NAMESTART = 12;
 	[listCmd release];
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
-	while (pkginfo = [e nextObject]){
+	while (nil != (pkginfo = [e nextObject])){
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
-		while (line = [f nextObject]){
+		while (nil != (line = [f nextObject])){
 			if ([line contains:@"Package:"]){
-				pname = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
+				pname = [line substringWithRange: 
+								NSMakeRange(PACKAGESTART, [line length] - PACKAGESTART)];
 				continue;
 			}
 			if ([line contains:@"Version:"]){
-				pversion = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
+				pversion = [line substringWithRange:
+									NSMakeRange(VERSIONSTART, [line length] - VERSIONSTART)];
 				break;
 			}
 		}
@@ -193,7 +197,7 @@ int NAMESTART = 12;
 
     line = [e nextObject]; //discard--name-version: short desc
 
-    while (line = [e nextObject]){
+    while (nil != (line = [e nextObject])){
 		line = [line strip];
 		if ([line contains: WEBKEY]){
 			web = [self parseWeburlFromString: line];
@@ -230,11 +234,10 @@ int NAMESTART = 12;
 
     temp = [NSMutableArray arrayWithArray:
 	       [output componentsSeparatedByString: @"\n----\n"]];
-
     [temp removeObjectAtIndex: 0];  // "Reading package info . . . "
     e = [temp objectEnumerator];
 
-    while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
+    while (nil != (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"])){
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		p = [[FinkPackage alloc] init];
 		[p setName:[listRecord objectAtIndex: 0]];
@@ -292,7 +295,7 @@ int NAMESTART = 12;
     NSArray *components;
 	NSRange r;
 
-	while (splitoff = [e nextObject]){
+	while (nil != (splitoff = [e nextObject])){
 		r = [name rangeOfString:splitoff];
 		if (r.length > 0){
 			name = [name substringToIndex:r.location];
@@ -318,7 +321,7 @@ int NAMESTART = 12;
     NSEnumerator *e = [[self array] objectEnumerator];
     FinkPackage *pkg;
 
-    while (pkg = [e nextObject]){
+    while (nil != (pkg = [e nextObject])){
 		if ([[pkg status] contains: @"t"]){
 			count++;
 		}

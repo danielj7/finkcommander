@@ -7,23 +7,6 @@ File: FinkController.m
 
 #import "FinkController.h"
 
-//Global variables used in toolbar methods
-NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
-NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
-NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
-NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
-NSString *FinkDescribeItem = @"FinkDescribeItem";
-NSString *FinkSelfUpdateItem = @"FinkSelfUpdateItem";
-NSString *FinkSelfUpdateCVSItem = @"FinkSelfUpdateCVSItem";
-NSString *FinkUpdateBinaryItem = @"FinkUpdateBinaryItem";
-NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
-NSString *FinkFilterItem = @"FinkFilterItem";
-NSString *FinkInteractItem = @"FinkInteractItem";
-NSString *FinkEmailItem = @"FinkEmailItem";
-NSString *FinkUpdateallItem = @"FinkUpdateallItem";
-NSString *FinkTermInstallItem = @"FinkTermInstallItem";
-NSString *FinkTermCvsItem = @"FinkTermCvsItem";
-
 @implementation FinkController
 
 //--------------------------------------------------------------------------------
@@ -37,7 +20,7 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 
     NSDictionary *defaultValues = [NSDictionary dictionaryWithContentsOfFile:
 		[[NSBundle mainBundle] pathForResource:@"UserDefaults"
-												 ofType: @"plist"]];
+							   ofType: @"plist"]];
 
     [[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -77,7 +60,6 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 		//needed to run fink and apt-get commands
 		launcher = [[NSBundle mainBundle] pathForResource:@"Launcher" ofType:nil];
 		finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
-		killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
 		[finkTask setDelegate:self];
 		commandIsRunning = NO;
 		pendingCommand = NO;
@@ -276,7 +258,7 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 								forScrollView:outputScrollView];
 									
 	//Set state of View menu column items
-    while (col = [e nextObject]){
+    while (nil != (col = [e nextObject])){
 		int atag = [self tagFromAttributeName:col];
 		[[viewMenu itemWithTag:atag] setState:NSOnState];
     }
@@ -313,17 +295,10 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
     Dprintf(@"Interval for new version check: %d", interval);
     Dprintf(@"Last checked for new version: %@", [lastCheckDate description]);
 
-    if (interval && -([lastCheckDate timeIntervalSinceNow] / (24 * 60 * 60)) >= interval){
+    if (interval > 0 && -([lastCheckDate timeIntervalSinceNow] / 34560) >= interval){ //24*60*60
 		NSLog(@"Checking for FinkCommander update");
 		[self checkForLatestVersion:NO]; //don't notify if current
     }
-}
-
-//----------------------------------------------->Shutdown
-
--(void)applicationWillTerminate:(NSNotification*)anotification
-{
-    [finkTask unAuthorize];
 }
 
 //--------------------------------------------------------------------------------
@@ -400,6 +375,12 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
     return YES;
 }
 
+//make sure the authorization terminates at the end of each FC session
+-(void)applicationWillTerminate:(NSNotification*)anotification
+{
+    [finkTask unAuthorize];
+}
+
 //--------------------------------------------------------------------------------
 #pragma mark MAIN MENU
 //--------------------------------------------------------------------------------
@@ -440,9 +421,7 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 							   NSLocalizedString(@"No", nil), nil, latestVersion);
 		if (answer == NSAlertDefaultReturn){
 			[[NSWorkspace sharedWorkspace] openURL:
-				[NSURL URLWithString:
-					[NSString stringWithFormat:@"http://finkcommander.sourceforge.net",
-						latestVersion]]];
+				[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
 		}
     }else if (notifyWhenCurrent){
 		NSRunAlertPanel(NSLocalizedString(@"Current", nil),
@@ -532,7 +511,7 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 
     [[textViewController textView] setString: @""];
 
-    while (pkg = [e nextObject]){
+    while (nil != (pkg = [e nextObject])){
 		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
 			[pkg name],
 			[pkg version],
@@ -552,9 +531,11 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 
 -(void)runTerminateCommand:(NSNotification *)ignore
 {
-    NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
-    NSString *pgid = processGroupID(ppid);
+//    NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
+//    NSString *pgid = processGroupID(ppid);
+	NSString *pgid = [NSString stringWithFormat:@"%d", [parser pgid]];
 		
+	if (!killTask) 	killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
     [killTask setArguments:
 		[NSArray arrayWithObjects: @"--kill", pgid, nil]];
     [killTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
@@ -632,7 +613,7 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
     }
 
     [packageInfo setEmailSig: sig];
-    while (pkg = [e nextObject]){
+    while (nil != (pkg = [e nextObject])){
 		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
     }
 }
@@ -661,13 +642,17 @@ NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 //----------------------------------------------->Toolbar Delegates
 #pragma mark Toolbar Delegates
 
-//use Toolbar.plist file to populate toolbar
+/* 
+ * Use the Toolbar.plist file to populate the toolbar.
+ */
+
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
     itemForItemIdentifier:(NSString *)itemIdentifier
-willBeInsertedIntoToolbar:(BOOL)flag
+	willBeInsertedIntoToolbar:(BOOL)flag
 {
-    NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:
-		[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]];
+    NSDictionary *d = [[NSDictionary dictionaryWithContentsOfFile:
+							[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
+						objectForKey:@"ToolbarItemDefinitions"];
     NSDictionary *itemDict;
     NSString *value;
     NSNumber *tag;
@@ -693,7 +678,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
     if (tag = [itemDict objectForKey: @"Tag"]){
 		[item setTag: [tag intValue]];
     }
-    if ([itemIdentifier isEqualToString: FinkFilterItem]){
+    if ([itemIdentifier isEqualToString:@"FinkFilterItem"]){
 		[item setView: searchView];
 		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
 		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
@@ -703,43 +688,16 @@ willBeInsertedIntoToolbar:(BOOL)flag
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-    return [NSArray arrayWithObjects:
-	       NSToolbarSeparatorItemIdentifier,
-	       NSToolbarSpaceItemIdentifier,
-	       NSToolbarFlexibleSpaceItemIdentifier,
-	       NSToolbarCustomizeToolbarItemIdentifier,
-	       FinkInstallSourceItem,
-	       FinkInstallBinaryItem,
-	       FinkRemoveSourceItem,
-	       FinkRemoveBinaryItem,
-	       FinkSelfUpdateItem,
-	       FinkSelfUpdateCVSItem,
-		   FinkUpdateallItem,
-	       FinkUpdateBinaryItem,
-	       FinkDescribeItem,
-		   FinkTermInstallItem,
-		   FinkTermCvsItem,
-	       FinkInteractItem,
-	       FinkTerminateCommandItem,
-	       FinkEmailItem,
-	       FinkFilterItem,
-	       nil];
+    return [[NSDictionary dictionaryWithContentsOfFile:
+				[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
+			objectForKey:@"AllowedToolbarItems"];
 }
 
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
-    return [NSArray arrayWithObjects:
-	       FinkInstallSourceItem,
-	       FinkTermInstallItem,
-	       FinkRemoveSourceItem,
-	       FinkSelfUpdateCVSItem,
-	       NSToolbarSeparatorItemIdentifier,
-	       FinkTerminateCommandItem,
-	       FinkDescribeItem,
-	       FinkEmailItem,
-	       NSToolbarFlexibleSpaceItemIdentifier,
-	       FinkFilterItem,
-	       nil];
+    return [[NSDictionary dictionaryWithContentsOfFile:
+				[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
+			objectForKey:@"DefaultToolbarItems"];
 }
 
 //----------------------------------------------->Text Field Delegate
@@ -764,7 +722,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 		if ([filterText length] == 0){
 			[tableView setDisplayedPackages: [packages array]];
 		}else{
-			while (pkg = [e nextObject]){
+			while (nil != (pkg = [e nextObject])){
 				pkgAttribute = 
 					NSLocalizedString([[pkg performSelector: NSSelectorFromString(field)]
 												lowercaseString], nil);
@@ -896,7 +854,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 	//Put package names in argument array, if this is a package-specific command
     if (pkgSpec){
 		e  = [[tableView selectedPackageArray] objectEnumerator];
-		while (pkg = [e nextObject]){
+		while (nil != (pkg = [e nextObject])){
 			[args addObject: [pkg name]];
 		}
     }
@@ -983,9 +941,6 @@ willBeInsertedIntoToolbar:(BOOL)flag
 		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
 				  NSLocalizedString(@"YouMustWait", nil),
 				  NSLocalizedString(@"OK", nil), nil, nil);
-		if (preferences && [cmd isEqualToString:@"--write_fconf"]){
-			[preferences setFinkConfChanged: nil]; //action method; sets to YES
-		}
 		return;
 	}
 	if ([cmd contains:@"fink"]){
@@ -1197,6 +1152,10 @@ willBeInsertedIntoToolbar:(BOOL)flag
 			break;
 		case SELF_REPAIR_FAILED:
 			output = NSLocalizedString(@"SelfRepairFailed", nil);
+			break;
+		case PGID:
+			Dprintf(@"pgid for Launcher = %d", [parser pgid]);
+			output = @"";
 			break;
     }
 

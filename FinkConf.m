@@ -46,7 +46,7 @@ File: FinkConf.m
 	int split;
 
 	e = [[fconfString componentsSeparatedByString: @"\n"] objectEnumerator];
-	while(line = [e nextObject]){
+	while(nil != (line = [e nextObject])){
 		if ([line contains: @":"]){
 			split = [line rangeOfString: @":"].location;
 			[finkConfDict setObject: [line substringFromIndex: split + 2] // eliminate space 

@@ -120,7 +120,7 @@
 			autorelease]];
 	}
 
-	while (line = [e nextObject]){
+	while (nil != (line = [e nextObject])){
 		//remove linefeed within paragraphs to allow wrapping in text view
 		line = [line strip];
 		//in fink descriptions, paragraph breaks are signified by a period
@@ -186,7 +186,7 @@
 							   [NSFont systemFontOfSize:0], NSFontAttributeName,
 							   nil]] autorelease];
 	
-	while (vName = [e nextObject]){
+	while (nil != (vName = [e nextObject])){
 		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
 		if ([vNumber length] < 2) vNumber = @"None";
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];

@@ -1,15 +1,11 @@
 Create final binary:
 	Set new version number in Target:Application Settings and localized InfoPlist.strings
+	Clean the targets
 	Compile with DEBUGGING undefined and "Deployment" selected
 	
-Create disk images of package and binary
-	Run Disk Copy and make blank images: FinkCommanderPkg, FinkCommanderBin
-	Copy to images:  package/binary, VERSION_HISTORY.html, README.html, LICENSE.txt
-	Eject images
-	tar -cz FinkCommanderPkg/Bin -f finkcommander-<version>-pkg/bin.tgz
-	
-Create source tarball
-	tar -cz FinkCommander/ -f finkcommander-<version>-src.tgz
+Download web site and update, including references in index.php and version.xml
+
+run ~/FCFiles/mkpkgs.sh
 	
 Copy to G3 and test
 
@@ -25,8 +21,6 @@ Go to project admin and create new releases
 
 Download and test
 
-Change version number in text and links on FinkCommander home page
-
-scp version.xml sburrious@finkcommander.sourceforge.net:/home/groups/f/fi/finkcommander/htdocs/
+Upload web site
 
 Post announcement to FC SourceForge news, finkcommander-users, fink-users
