@@ -5,13 +5,9 @@ See the header file, FinkDataController.h, for interface and license information
 
 */
 
-//If you use UTF-8 encoding to encode data objects obtained by running shell commands
-//in a subprocess, as suggested by Apple's Moriarity example your code will break 
-//on Jaguar.  Jaguar uses bash as the default shell for ....  Bash does not support UTF-8 encoding.
-
 #import "FinkDataController.h"
 
-//#define TESTING
+#define TESTING
 
 #ifdef DEBUGGING
 #define BUFFERLEN 512
@@ -98,6 +94,7 @@ int NAMESTART = 12;
     //create pipe and file handle for reading from the task's standard output
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
+	NSData *d;
     NSString *output;
     NSEnumerator *e;
     NSString *line;
@@ -110,7 +107,20 @@ int NAMESTART = 12;
     [listCmd setStandardOutput: pipeIn];
 
     [listCmd launch];
-    output = [NSString stringWithCString: [[cmdStdout readDataToEndOfFile] bytes]];
+
+	d = [cmdStdout readDataToEndOfFile];
+	
+	if (DEBUGGING){
+		if (d) {
+			char buffer[BUFFERLEN];
+			[d getBytes:buffer length:BUFFERLEN-1]; //BUFFERLEN should be OK, but just to be safe
+			NSLog(@"Binary pkg data in buffer from notification:\n%s", buffer);
+		}else{
+			NSLog(@"Notification data buffer was empty");
+		}
+	}
+	
+	output = [[[NSString alloc] initWithData:d encoding:NSASCIIStringEncoding] autorelease];
     e = [[output componentsSeparatedByString: @"\n"] reverseObjectEnumerator];
 
     while (line = [e nextObject]){
@@ -131,17 +141,10 @@ int NAMESTART = 12;
 
     NSArray *args;
 
-#ifdef TESTING
-	args = [NSArray arrayWithObjects: @"-c", @"/usr/bin/perl",
-		[NSHomeDirectory() stringByAppendingPathComponent: 
-			@"Library/Application Support/FinkCommander.pl"], nil];
-    [listCmd setLaunchPath: @"/sw/bin/bash"];
-#else
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
 			@"Library/Application Support/FinkCommander.pl"], nil];
 	[listCmd setLaunchPath: @"/usr/bin/perl"];
-#endif
 
     [listCmd setArguments: args];
     [listCmd setStandardOutput: pipeIn];
@@ -166,7 +169,7 @@ int NAMESTART = 12;
 		if (binaryPackages){
 			slen = [binaryPackages length];
 			rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
-			NSLog(@"Binary package string (up to 240 chars):\n%@", 
+			NSLog(@"Binary package string:\n%@", 
 		 [binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
 		}
     }
@@ -225,7 +228,7 @@ int NAMESTART = 12;
 -(void)completeUpdate:(NSNotification *)n
 {
     NSDictionary *info = [n userInfo];
-    NSData *d;
+    NSData *d = [info objectForKey: NSFileHandleNotificationDataItem];
     NSString *output; 
     NSMutableArray *temp;
     NSMutableArray *collector = [NSMutableArray array];
@@ -234,10 +237,17 @@ int NAMESTART = 12;
     NSEnumerator *e;
     FinkPackage *p;
 
-    d = [info objectForKey: NSFileHandleNotificationDataItem];
+#ifdef TESTING
+	int bufferlen = [d length];
+	char databuf[bufferlen + 10];
+	NSLog(@"Buffer length: %d", bufferlen);
 
-	output = [[[NSString alloc] initWithData: d
-								encoding: NSUTF8StringEncoding] autorelease];
+	[d getBytes:databuf length:bufferlen];
+	output = [NSString stringWithCString:databuf];
+	
+#else
+	output = [[[NSString alloc] initWithData:d
+								encoding:NSASCIIStringEncoding] autorelease];
 
     if (DEBUGGING) {
 		NSLog(@"Read to end of file notification sent after %f seconds",
@@ -246,7 +256,7 @@ int NAMESTART = 12;
 		if (d) {
 			char buffer[BUFFERLEN];
 			[d getBytes:buffer length:BUFFERLEN-1]; //BUFFERLEN should be OK, but just to be safe
-			NSLog(@"Data in buffer from notification (up to 240 chars):\n%s", buffer);
+			NSLog(@"Source pkg data in buffer from notification:\n%s", buffer);
 		}else{
 			NSLog(@"Notification data buffer was empty");
 		}
@@ -258,6 +268,7 @@ int NAMESTART = 12;
 			NSLog(@"Output string from data buffer was empty");
 		}
     }	
+#endif
 
     temp = [NSMutableArray arrayWithArray:
 	       [output componentsSeparatedByString: @"\n----\n"]];
