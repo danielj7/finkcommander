@@ -64,7 +64,6 @@ extern NSString *FinkCheckForNewVersionInterval;
 extern NSString *FinkShowRedundantPackages;
 
 //  Set programmatically
-extern NSString *FinkPackageAttributes;
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;
 extern NSString *FinkOutputViewRatio;
@@ -73,6 +72,7 @@ extern NSString *FinkViewMenuSelectionStates;
 extern NSString *FinkTableColumnsArray;
 extern NSString *FinkExtendedVerbosity;
 extern NSString *FinkUsersArray;
+extern NSString *FinkColumnStateDictionary;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

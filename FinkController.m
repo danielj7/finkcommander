@@ -86,8 +86,8 @@ File: FinkController.m
 					name: FinkRunCommandNotification
 				  object: nil];
 
-		//Register for notification that another object needs to run
-		//a command with root privileges
+		//Register for notification that a command needs to be terminated;
+		//sent by FinkWarningDialog when user confirms termination
 		[center addObserver: self
 			 selector: @selector(runTerminateCommand:)
 				 name: FinkTerminateNotification
@@ -195,7 +195,7 @@ File: FinkController.m
     [progressIndicator startAnimation: nil];
 }
 
--(void)incrementPIBy:(float)inc
+-(void)incrementProgressIndicator:(float)inc
 {
     double progress = 100.0 - [progressIndicator doubleValue];
     //failsafe to make sure we don't go beyond 100
@@ -243,6 +243,8 @@ File: FinkController.m
     [splitView adjustSubviews];
 
     //Substitute FinkTableViewController for NSTableView
+	//N.B. It was a mistake to make FinkTableViewController
+	//a subclass of NSTableView
     tableView = [[FinkTableViewController alloc] initWithFrame:
 		NSMakeRect(0, 0, tableContentSize.width,
 			 tableContentSize.height)];
@@ -273,6 +275,8 @@ File: FinkController.m
 {
     NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 				    [tableView lastIdentifier]];
+	NSString *direction = [[defaults objectForKey:FinkColumnStateDictionary]
+							objectForKey:[tableView lastIdentifier]];
     NSString *basePath = [defaults objectForKey:FinkBasePath];
     int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
     NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
@@ -286,7 +290,9 @@ File: FinkController.m
     [self updateTable:nil];
 
     [tableView setHighlightedTableColumn:lastColumn];
-    [tableView setIndicatorImage:[tableView normalSortImage] inTableColumn:lastColumn];
+    [tableView setIndicatorImage: [tableView performSelector:
+				NSSelectorFromString([NSString stringWithFormat:@"%@SortImage", direction])]
+		inTableColumn:lastColumn];
 
     if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[splitView collapseOutput: nil];
@@ -794,7 +800,7 @@ File: FinkController.m
     if (commandIsRunning &&
 		([theItem action] == @selector(runPackageSpecificCommand:) 	||
 		[theItem action] == @selector(runNonSpecificCommand:) 		||
-		[theItem action] == @selector(forceRemove:)					||
+		[theItem action] == @selector(runForceRemove:)				||
 		[theItem action] == @selector(showDescription:)				||
 		[theItem action] == @selector(saveOutput:)					||
 		[theItem action] == @selector(updateTable:))){
@@ -1053,7 +1059,7 @@ File: FinkController.m
 -(void)startInstall
 {
     [self startProgressIndicatorAsIndeterminate:NO];
-    [self incrementPIBy:STARTING_INCREMENT];
+    [self incrementProgressIndicator:STARTING_INCREMENT];
 }
 
 -(void)setGUIForPhase:(int)phaseIndex
@@ -1068,7 +1074,7 @@ File: FinkController.m
     phaseString = [phases objectAtIndex:phaseIndex];
     [msgText setStringValue:[NSString stringWithFormat:
 		NSLocalizedString(phaseString, nil), pname]];
-    [self incrementPIBy:[parser increment]];
+    [self incrementProgressIndicator:[parser increment]];
 }
 
 -(void)interactIfRequired

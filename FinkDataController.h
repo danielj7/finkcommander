@@ -51,7 +51,11 @@ Contact the author at sburrious@users.sourceforge.net.
 
 //Update array to reflect latest package information.
 -(void)update;
--(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree;
+
+//Utilities
+-(NSString *)pathToPackage:(FinkPackage *)pkg
+			 inTree:(NSString *)tree
+			 withExtension:(NSString *)ext;
 -(int)installedPackagesCount;
 
 @end

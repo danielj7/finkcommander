@@ -33,7 +33,6 @@ NSString *FinkEnvironmentSettings = @"FinkEnvironmentSettings";
 NSString *FinkInitialEnvironmentHasBeenSet = @"FinkInitialEnvironmentHasBeenSet";
 NSString *FinkShowRedundantPackages = @"FinkShowRedundantPackages";
 
-NSString *FinkPackageAttributes = @"FinkPackageAttributes";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";
@@ -42,6 +41,7 @@ NSString *FinkViewMenuSelectionStates = @"FinkViewMenuSelectionStates";
 NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
 NSString *FinkExtendedVerbosity = @"FinkExtendedVerbosity";
 NSString *FinkUsersArray = @"FinkUsersArray";
+NSString *FinkColumnStateDictionary = @"FinkColumnStateDictionary";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

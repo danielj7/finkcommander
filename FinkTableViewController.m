@@ -14,9 +14,7 @@ See the header file, FinkTableViewController.h, for interface and license inform
 
 	if (self = [super initWithFrame: rect]){
 		NSString *identifier;
-		NSString *attribute;
 		NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
-		NSEnumerator *f = [[defaults objectForKey:FinkPackageAttributes] objectEnumerator];
 
 		while (nil != (identifier = [e nextObject])){
 			[self addTableColumn:[self makeColumnWithName:identifier]];
@@ -32,10 +30,7 @@ See the header file, FinkTableViewController.h, for interface and license inform
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
 		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
 		// dictionary used to record whether table columns are sorted in normal or reverse order
-		columnState = [[NSMutableDictionary alloc] init];
-		while (attribute = [f nextObject]){
-			[columnState setObject:@"normal" forKey:attribute];
-		}
+		columnState = [[defaults objectForKey:FinkColumnStateDictionary] mutableCopy];
 	}
 	return self;
 }
@@ -216,8 +211,8 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 }
 
 -(id)tableView:(NSTableView *)aTableView
-objectValueForTableColumn:(NSTableColumn *)aTableColumn
-						  row:(int)rowIndex
+	objectValueForTableColumn:(NSTableColumn *)aTableColumn
+	row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
 	FinkPackage *package = [[self displayedPackages] objectAtIndex: rowIndex];
@@ -321,6 +316,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 						? @"reverse" : @"normal";
 		//record new state for next click on this column
 		[columnState setObject: direction forKey: identifier];
+		[defaults setObject:[[columnState copy] autorelease]
+				  forKey:FinkColumnStateDictionary];
 		// otherwise, return sort order to previous state for selected column
 	}else{
 		direction = [columnState objectForKey: identifier];

@@ -1,5 +1,7 @@
 SHORT TERM
 
+Add "Any" filter item; make default
+
 Flag column
 
 Dock icon customization: show status of command

@@ -20,6 +20,29 @@
 	<true/>
 	<key>FinkCheckForNewVersionInterval</key>
 	<integer>7</integer>
+	<key>FinkColumnStateDictionary</key>
+	<dict>
+		<key>binary</key>
+		<string>normal</string>
+		<key>category</key>
+		<string>normal</string>
+		<key>installed</key>
+		<string>normal</string>
+		<key>maintainer</key>
+		<string>normal</string>
+		<key>name</key>
+		<string>normal</string>
+		<key>stable</key>
+		<string>normal</string>
+		<key>status</key>
+		<string>normal</string>
+		<key>summary</key>
+		<string>normal</string>
+		<key>unstable</key>
+		<string>normal</string>
+		<key>version</key>
+		<string>normal</string>
+	</dict>
 	<key>FinkEnvironmentSettings</key>
 	<dict>
 		<key>CVS_RSH</key>
@@ -40,7 +63,7 @@
 	<key>FinkOutputPath</key>
 	<string></string>
 	<key>FinkOutputViewRatio</key>
-	<real>2.3448053490166259e-311</real>
+	<real>3.4609751350643591e-311</real>
 	<key>FinkPackageAttributes</key>
 	<array>
 		<string>name</string>

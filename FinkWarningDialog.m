@@ -89,9 +89,9 @@
 			break;
 		case TERMINATE:
 			[center postNotificationName:FinkTerminateNotification
-							   object:nil];
+					object:nil];
 			[defaults setBool:[removeWarningButton state]
-					forKey:FinkWarnBeforeTerminating];
+					  forKey:FinkWarnBeforeTerminating];
     }
     [NSApp stopModal];
     [self close];

@@ -252,7 +252,7 @@ int VERSIONSTART = 9;
 		if ([defaults boolForKey:FinkShowRedundantPackages] &&
 			[[p unstable] length] < 2 						&&
 			[[p stable] length] > 1){
-			path = [self pathToPackage:p inTree:@"unstable"];
+			path = [self pathToPackage:p inTree:@"unstable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){
 				[p setUnstable:[p stable]];
 			}
@@ -283,13 +283,9 @@ int VERSIONSTART = 9;
 
 //---------------------------------------------------------->Utilities
 
-//TBD: Change to:
-//-(NSString *)pathToPackage:(FinkPackage *) 
-//			   fileType:(FinkFileType)type 
-//			   inTree:(FinkTree)tree;
-//create typedef enums for FinkFileType (FinkInfoType and FinkPatchType) 
-//and FinkTree (FinkStableTree and FinkUnstableTree)
--(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree
+-(NSString *)pathToPackage:(FinkPackage *)pkg 
+			   inTree:(NSString *)tree
+			   withExtension:(NSString *)ext
 {
 	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
 	NSString *name = [pkg name];
@@ -309,7 +305,7 @@ int VERSIONSTART = 9;
 			break;
 		}
 	}
-	pkgFileName = [NSString stringWithFormat:@"%@-%@.info", name, version];
+	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", name, version, ext];
 
     if ([[pkg category] isEqualToString:@"crypto"]){
 		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",

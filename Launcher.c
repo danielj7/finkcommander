@@ -160,14 +160,14 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 		}
 		if (rsize == -1){
 			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n",
-		   fromfile, errno, strerror(errno));
+				fromfile, errno, strerror(errno));
 			return 1;
 		}
 		/*	Write tofile  */
 		wsize = write(out_file, buffer, (unsigned int)rsize);
 		if (wsize == -1){
 			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n",
-		   tofile, errno, strerror(errno));
+				tofile, errno, strerror(errno));
 			return 1;
 		}
     }
