@@ -191,12 +191,12 @@ enum {
 	FinkWarningDialog *warningDialog;
 	FinkOutputParser *parser;
 	FinkTextViewController *textViewController;
+	FinkToolbar *toolbar;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;
 
 	//Other objects
 	NSUserDefaults *defaults;
-	NSToolbar *toolbar;
 	NSString *lastCommand;
 	NSString *launcher;
 
@@ -231,7 +231,6 @@ enum {
 -(IBAction)goToWebsite:(id)sender;
 -(IBAction)sendPositiveFeedback:(id)sender;
 -(IBAction)sendNegativeFeedback:(id)sender;
-//-(IBAction)emailMaintainer:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 
 //Toolbar Methods

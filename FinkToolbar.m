@@ -36,15 +36,28 @@ File: FinkFinkToolbar.h
 
 @implementation FinkToolbar
 
--(id)delegate
-{
-	return [super delegate];
+-(NSButton *)searchButton {
+    return searchButton;
+}
+
+-(void)setSearchButton:(NSButton *)newSearchButton{
+	[newSearchButton retain];
+	[searchButton release];
+	searchButton = newSearchButton;
+}
+
+-(NSTextField *)searchField {
+    return searchField;
+}
+
+-(void)setSearchField:(NSTextField *)newSearchField{
+	[newSearchField retain];
+	[searchField release];
+	searchField = newSearchField;
 }
 
 -(void)setSizeMode:(NSToolbarSizeMode)sizeMode
 {
-    id searchButton = [[self delegate] searchPopUpButton];
-    id searchField = [[self delegate] searchTextField];
     id searchView = [searchField superview];
     NSRect fFrame = [searchField frame];
     NSRect vFrame = [searchView frame];

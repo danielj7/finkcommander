@@ -13,7 +13,7 @@
 
 <ul>
 	<li><a href="#description">Overview</a></li>
-	<li><a href="#installation">Initial Startup</a></li>
+	<li><a href="#installation">Installation and Initial Startup</a></li>
 	<li><a href="#timeout">Changing the Authorization Timeout</a></li>
 	<li><a href="#license">License</a></li>
 </ul>
@@ -45,7 +45,13 @@ documentation for, future versions of FinkCommander.  Please send comments
 href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
 </p>
 
-<h3><a name="installation">Initial Startup</a></h3>
+<h3><a name="installation">Installation and Initial Startup</a></h3>
+
+<p>If you already have version 0.4.2 or later of FinkCommander installed, you 
+will need to drag it to the trash before replacing it with the new version.  
+This is due to the changes in the privileges of some of the internal files 
+described below.  For some reason you can delete an .app bundle containing files
+owned by root but you can't overwrite it!</p>
 
 <p>The first time you run a command in FinkCommander after installing a new 
 version, it will announce that it does not have the necessary permissions and 

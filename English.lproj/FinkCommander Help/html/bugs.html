@@ -10,16 +10,20 @@
 <h2>Known Bugs and Limitations</h2>
 
 <dl>
-	
     <dt>Interaction sheet display failure</dt>
     <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.  
-		This sometimes occurs because Fink has not automatically responded to a prompt,
+		This occurs because Fink has not automatically responded to a prompt,
 		even though <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
-		is selected.  <a href="details/fc_defaults.html">More detail</a>.  If you exprience this 
-		problem, select <kbd>Tools:Interact with Fink</kbd> to enter a response.  An optional 
-		Interact with Fink item is also available for the Toolbar.
+		is selected.  <a href="details/fc_defaults.html" target="_right">More detail</a>.  
+		If you experience this problem, select <kbd>Tools:Interact with Fink</kbd> to enter a
+		response.  An optional Interact with Fink item is also available for the Toolbar.
     </p></dd>
 	
+	<dt>Apt-get update failure</dt>
+	<dd><p>If you receive an error message after running apt-get update, try running
+		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.
+	</p></dd>
+
 	<dt>Atlas install problem</dt>
 	<dd><p>The atlas package install process includes a long interactive session where it's
 		necessary to answer several questions from the command line.  When FinkCommander reaches
@@ -29,16 +33,11 @@
 		to install atlas, you will need to do so in Terminal, either directly or by 
 		running <kdb>Source:Run in Terminal:Install</kbd> in FinkCommander.</p>
 	
-	<dt>Apt-get update failure</dt>
-	<dd><p>If you receive an error message after running apt-get update, try running
-		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.
-	</p></dd>
-        
-    <dt>Tcsh package problem</dt>
-    <dd><p>The selection of tcsh is disabled, because FinkCommander
-        stalls when trying to install this package.  Installing from
-        the command-line works fine.  Please file a <a
-        href="http://sourceforge.net/tracker/?group_id=48896&atid=454467"
+    <dt>Tcsh and term-readkey-pm package problems</dt>
+    <dd><p>Selection of tcsh or term-readkey-pm triggers a warning, because FinkCommander
+        stalls when trying to install these packages from source.  Installing the binary or 
+		installing source in the Terminal should work fine.  Please file a <a
+        href="http://finkcommander.sourceforge.net/pages/bugs.html"
         target="top">bug report</a> if you encounter the same problem
         with another package.
     </p></dd>  

@@ -4,6 +4,11 @@
 
 @interface FinkToolbar: NSToolbar
 {
+	NSButton *searchButton;
+	NSTextField *searchField;
 }
--(id)delegate;
+-(NSButton *)searchButton;
+-(void)setSearchButton:(NSButton *)newSearchButton;
+-(NSTextField *)searchField;
+-(void)setSearchField:(NSTextField *)newSearchField;
 @end

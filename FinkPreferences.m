@@ -16,11 +16,11 @@ File: FinkPreferences.m
 -(id)init
 {
 	self = [super initWithWindowNibName:@"Preferences"];
-	defaults = [NSUserDefaults standardUserDefaults];
-	conf = [[FinkConf alloc] init];
-	
-	[self setWindowFrameAutosaveName: @"Preferences"];
-
+	if (nil != self){
+		defaults = [NSUserDefaults standardUserDefaults];
+		conf = [[FinkConf alloc] init];
+		[self setWindowFrameAutosaveName: @"Preferences"];
+	}
 	return self;
 }
 
@@ -30,6 +30,7 @@ File: FinkPreferences.m
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", nil) atIndex:1];
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", nil) atIndex:2];
 	}
+	[environmentTableView setAutosaveName: @"FinkEnvironmentTableView"];
 }
 
 -(void)dealloc
@@ -79,6 +80,8 @@ File: FinkPreferences.m
 	NSString *outputPath;
 	int scrollBackLimit;
 	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
+	
+	Dprintf(@"Resetting preferences");
 	
 	/***  FinkCommander Preferences ***/
 
@@ -403,11 +406,16 @@ File: FinkPreferences.m
 				   textField:(NSTextField *)textField
 {
 	if (returnCode == NSOKButton){
-		[textField setStringValue: [openPanel filename]];
+		NSString *path = [[openPanel filenames] objectAtIndex:0];
+		Dprintf(@"Path chosen: %@", path);
+		[textField setStringValue: path];
+		Dprintf(@"Text field value: %@", [textField stringValue]);
 
 		[[NSNotificationCenter defaultCenter]
 				postNotificationName: NSControlTextDidChangeNotification
 							  object: textField];
+
+		Dprintf(@"Text field value after notification: %@", [textField stringValue]);
 	}
 }
 
@@ -458,13 +466,6 @@ File: FinkPreferences.m
 #pragma mark DELEGATE METHODS
 //--------------------------------------------------------------------------------
 
-/*** Window Delegates ***/
-
--(void)windowDidBecomeKey:(NSNotification *)ignore
-{
-	[self resetPreferences];
-}
-
 -(void)windowDidLoad
 {
 	[self resetPreferences];
@@ -476,6 +477,7 @@ File: FinkPreferences.m
 {
 	int textFieldID = [[aNotification object] tag];
 	NSString *tfString = [[aNotification object] stringValue];
+	Dprintf(@"In notification string value: %@", tfString);
 
 	//Select the button that corresponds to the altered text field.
 	//The text fields were given the indicated tag numbers in IB.
@@ -501,7 +503,8 @@ File: FinkPreferences.m
 			break;
 		case 4:
 			[outputPathButton setState:
-				([tfString length] > 0 ? 1 : 0)];
+				([tfString length] > 0 ? YES : NO)];
+			Dprintf(@"Button state: %d", [outputPathButton state]);
 			break;
 		case 5:
 			[self validateEnvironmentButtons];

@@ -15,7 +15,7 @@
 		<key>ToolTip</key>
 		<string>Show package inspector panel</string>
 	</dict>
-	<key>FinkNegativeEmailItem</key>
+	<key>FinkEmailItem</key>
 	<dict>
 		<key>Action</key>
 		<string>sendNegativeFeedback</string>

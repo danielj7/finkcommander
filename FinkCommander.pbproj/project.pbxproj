@@ -43,7 +43,7 @@
 			refType = 4;
 		};
 		089C165DFE840E0CC02AAC07 = {
-			fileEncoding = 10;
+			fileEncoding = 4;
 			isa = PBXFileReference;
 			name = English;
 			path = English.lproj/InfoPlist.strings;
@@ -305,7 +305,7 @@
 	<key>CFBundleSignature</key>
 	<string>Fcmd</string>
 	<key>CFBundleVersion</key>
-	<string>0.4.2</string>
+	<string>0.4.3</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSHumanReadableCopyright</key>
@@ -822,6 +822,7 @@
 			refType = 4;
 		};
 		F53B4D0A031033D401A80164 = {
+			fileEncoding = 4;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/InfoPlist.strings;
@@ -983,11 +984,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F546BA0402D8EA6B01A80165 = {
-			isa = PBXFileReference;
-			path = version.xml;
-			refType = 4;
 		};
 		F54A055E029C9F0101A80166 = {
 			children = (
@@ -1470,7 +1466,6 @@
 				F501F21202FDF20001A80164,
 				F5BBDFAF023AF89301A80164,
 				F54A669802DA8F3701A80165,
-				F546BA0402D8EA6B01A80165,
 			);
 			isa = PBXGroup;
 			name = Documentation;

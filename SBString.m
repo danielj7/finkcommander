@@ -68,44 +68,8 @@
 
 -(NSRange)rangeOfExpression:(NSString *)pat
 {
-	NSRange r = NSMakeRange(NSNotFound, 0); 	//start with no-match assumption
-	
-	regex_t expr;								//structure to store compiled regex
-	regmatch_t matches[1];		//array of ranges of matching pattern and subpatterns
-    size_t nmatch = 1;			//number of subpattern ranges to store in matches
-	
-	char s[[self length]+1];	//C strings to hold text and pattern
-	char p[[self length]+1];
-	char errmsg[MAXBUF];		//used by regerror to write regex error msg
-	int comperr;
-    int result;
-
-	strcpy(s, [self UTF8String]);
-	strcpy(p, [pat UTF8String]);
-
-	//Compile regular expression into the struct expr
-	comperr = regcomp(&expr, p, REG_EXTENDED);
-	if (comperr){
-		//read compilation error message into errmsg and print
-		regerror(comperr, &expr, errmsg, MAXBUF);
-		NSLog(@"Error compiling regular expression:\n%s", errmsg);
-		return r;
-	}
-	//Search for compiled regex in s; returns 0 if match found
-	result  = regexec(&expr, s, nmatch, matches, 0);
-	if (result != 0){
-		if(result != REG_NOMATCH){
-			regerror(result, &expr, errmsg, MAXBUF);
-			NSLog(@"Error executing regular expression:\n%s", errmsg);
-		}
-		return r;
-	}
-	//Use fields of regmatch_t struct to determine range of pattern found
-	r.location = matches[0].rm_so;
-	r.length = matches[0].rm_eo - matches[0].rm_so;
-	
-	regfree(&expr);  //regcomp dynamically allocates memory to the regex_t struct
-	return r;
+	return [self rangeOfExpression:pat 
+			inRange:NSMakeRange(0, [pat length])];
 }
 
 -(NSRange)rangeOfExpression:(NSString *)pat

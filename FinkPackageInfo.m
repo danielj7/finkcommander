@@ -58,10 +58,10 @@
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg
 { 
 	NSString *body = [@"&body=%0A%0A" stringByAppendingString:emailSig];
-	NSURL *mailURL = [NSURL URLWithString: 
-						[NSString stringWithFormat: 
+	NSString *urlString = [NSString stringWithFormat: 
 								@"mailto:%@?subject=%@-%@%@", [pkg email], [pkg name], 
-								[pkg version], body]];
+								[pkg version], body];
+	NSURL *mailURL = [NSURL URLWithString:urlString];
 	return mailURL;
 }
 
@@ -149,10 +149,11 @@
 		
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
+		NSURL *murl = [self mailURLForPackage:p];
 		r = [[desc string] rangeOfString:[p email]];
 		[desc addAttributes:urlAttributes range:r];
 		[desc addAttribute:NSLinkAttributeName
-				value:[self mailURLForPackage:p]
+				value:murl
 				range:r];
 	}
 	return desc;

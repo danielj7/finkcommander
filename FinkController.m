@@ -564,7 +564,7 @@ File: FinkController.m
 -(IBAction)showPackageInfoPanel:(id)sender
 {
     FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-    NSString *sig = [info installationInfo];
+    NSString *sig = [info formattedEmailSig];
 
     if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
@@ -611,8 +611,9 @@ File: FinkController.m
 		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
     }
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
-		NSString *msg = [pkgNames count] > 1 ? NSLocalizedString(@"UnnecessaryPositiveFeedbackPlural", nil) :
-		NSLocalizedString(@"UnnecessaryPositiveFeedbackSingular", nil);
+		NSString *msg = [pkgNames count] > 1 ? 
+						NSLocalizedString(@"UnnecessaryPositiveFeedbackPlural", nil) :
+						NSLocalizedString(@"UnnecessaryPositiveFeedbackSingular", nil);
 		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
 					NSLocalizedString(@"OK", nil), nil, nil,
 					window, self, NULL, NULL, nil,
@@ -674,6 +675,8 @@ File: FinkController.m
     [toolbar setAllowsUserCustomization: YES];
     [toolbar setAutosavesConfiguration: YES];
     [toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
+	[toolbar setSearchField:searchTextField];
+	[toolbar setSearchButton:searchPopUpButton];
     [window setToolbar: toolbar];
 }
 
@@ -751,7 +754,7 @@ File: FinkController.m
 				@"FinkInteractItem",
 				@"FinkTerminateCommandItem",
 				@"FinkPositiveEmailItem",
-				@"FinkNegativeEmailItem",
+				@"FinkEmailItem",
 				@"FinkFilterItem",		
 				nil];
 }
@@ -766,7 +769,7 @@ File: FinkController.m
 				NSToolbarSeparatorItemIdentifier,
 				@"FinkTerminateCommandItem",
 				@"FinkPositiveEmailItem",
-				@"FinkNegativeEmailItem",
+				@"FinkEmailItem",
 				NSToolbarFlexibleSpaceItemIdentifier,
 				@"FinkFilterItem",
 				nil];
@@ -938,16 +941,18 @@ File: FinkController.m
 
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender
 {
-	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:YES]
-						componentsJoinedByString:@" "];
-	[self launchCommandInTerminal:cmd];
+	NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:YES];
+	
+	if ([sender tag] == APT_GET) [args insertObject:@"sudo" atIndex:0];
+	[self launchCommandInTerminal:[args componentsJoinedByString:@" "]];
 }
 
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender
 {
-	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:NO]
-						componentsJoinedByString:@" "];
-	[self launchCommandInTerminal:cmd];
+	NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:NO];
+	
+	if ([sender tag] == APT_GET) [args insertObject:@"sudo" atIndex:0];
+	[self launchCommandInTerminal:[args componentsJoinedByString:@" "]];
 }
 
 -(void)launchCommandInTerminal:(NSString *)cmd
