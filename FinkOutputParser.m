@@ -330,7 +330,10 @@ File: FinkOutputParser.m
     } 
 	if (ISMANDATORY_PROMPT(line)){
 		return PROMPT;
-    } 
+    }
+	if ([line contains:@"Self-repair done"]){
+		return SELF_REPAIR;
+	} 
 	return NONE;
 }
 

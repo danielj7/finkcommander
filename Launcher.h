@@ -1,5 +1,5 @@
 /*
-File: Launcher.h
+ File: Launcher.h
 
  FinkCommander
 
@@ -7,11 +7,17 @@ File: Launcher.h
  that automates the downloading, patching, compilation and installation of
  Unix software on Mac OS X.
 
- This file, Launcher.c and getpath.c are used to build the Launcher tool
+ This file, Launcher.c and getpath.c are used to build the setuid root Launcher tool which runs 
+ fink and apt-get commands, terminates those commands at the request of the user and
+ writes changes to fink.conf.
 
  Created by David Love on Thu Jul 18 2002.
  Copyright (c) 2002 Cashmere Software, Inc.
  Released to Steven J. Burr on August 21, 2002, under the Gnu General Public License.
+ 
+ I've made some changes to David's code.  If you see anything in here that doesn't make sense:
+ (a) You can safely assume it's my modification, not the original code.
+ (b) Let me know.
  
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

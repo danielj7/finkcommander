@@ -27,9 +27,9 @@ File: Launcher.c
 
 static AuthorizationExternalForm extAuth;
 
-// Read the incoming authorization and check to see if it's 
-// alright.
-//
+/* 
+ * Read the incoming authorization byte blob and make sure it's valid 
+ */ 
 bool readAuthorization(AuthorizationRef *auth)
 {
     bool result = FALSE;
@@ -43,7 +43,6 @@ bool readAuthorization(AuthorizationRef *auth)
     fflush(stdout);
     return result;
 }
-
 
 bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
 {
@@ -62,44 +61,68 @@ bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
     return result;
 }
 
+
+/* 
+ * Determine if the command is one we really want to run as root
+*/
+int isauthorizedcmd(char * const *cmd, int args)
+{
+    struct stat st;
+
+    /* Test program name */
+    if (!strstr(cmd[1], "/bin/fink")		&&
+		!strstr(cmd[1], "/bin/apt-get")		&&
+		!strstr(cmd[1], "/bin/dpkg")){
+		return 0;
+    }
+	/* Make sure program is owned by root, so it could not have been installed or
+	   replaced by an ordinary user */
+    if (stat(cmd[1], &st) != 0) return 0;
+    if (st.st_uid != 0) return 0;
+    return 1;
+}
+
+
+/*
+ * Perform an authorized command
+*/
 int perform(const char* cmd, char * const *argv)
 {
-   int status;
-   int result = 1;
-   int pid;
+	int status;
+	int result = 1;
+	int pid;
 
-   pid = fork();
-   if (pid == 0) 
-   {
-       /* If this is the child process, then try to exec cmd
+	pid = fork();
+	if (pid == 0) {
+		/* If this is the child process, then try to exec cmd
         */
-       if (execvp(cmd, argv) == -1)
-       {
-           fprintf(stderr, "Execution failed.  errno=%d (%s)\n", errno, strerror(errno));
-       } 
-   }
-   else if (pid == -1)
-   {
-       fprintf(stderr, "fork() failed.  errno=%d (%s)", errno, strerror(errno));
-   }
-   else  {
-       fflush(stderr);
-       waitpid(pid,&status,0);
-       if (WIFEXITED(status))
-       {
-           result = WEXITSTATUS(status);
-       }
-       else if (WIFSIGNALED(status))
-       {
-           result = WTERMSIG(status)+32;
-       }
-   }
-   return result;
+
+		setuid(geteuid()); //set ruid = euid to avoid perl's taint mode
+
+		if (execvp(cmd, argv) == -1){
+			fprintf(stderr, "Execution failed.  errno=%d (%s)\n", errno, strerror(errno));
+		}
+	}
+	else if (pid == -1)
+	{
+		fprintf(stderr, "fork() failed.  errno=%d (%s)", errno, strerror(errno));
+	}
+	else  {
+		fflush(stderr);
+		waitpid(pid,&status,0);
+		if (WIFEXITED(status))
+		{
+			result = WEXITSTATUS(status);
+		}
+		else if (WIFSIGNALED(status))
+		{
+			result = WTERMSIG(status)+32;
+		}
+	}
+	return result;
 }
 
 /* 
- *  mycopy
- *
  *  Copy function used by write_fconf 
  */
 int mycopy(const char *fromfile, const char *tofile, bool create)
@@ -144,8 +167,6 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 }
 
 /*
- *  write_fconf
- *
  *  Back up fink.conf to fink.conf~.
  *  Read in fink.conf.tmp (created by FinkConf object).
  *  Write contents to fink.conf.
@@ -170,14 +191,14 @@ int write_fconf(char *basepath)
 	return result;
 }
 
-
+/*  
+ * Self repair code.  We ran ourselves using
+ * AuthorizationExecuteWithPrivileges() so we need to make
+ * ourselves setuid root to avoid the need for this the next time
+ * around. 
+ */
 int repair_self()
 {
-   /*  Self repair code.  We ran ourselves using
-       AuthorizationExecuteWithPrivileges() so we need to make
-       ourselves setuid root to avoid the need for this the next time
-       around. */
-
     AuthorizationRef auth;
     struct stat st;
     int fd_tool;
@@ -203,12 +224,11 @@ int repair_self()
                 fchmod(fd_tool, (st.st_mode & (~(S_IWGRP|S_IWOTH))) | S_ISUID);
 
                 close(fd_tool);
-                fprintf(stderr, "Tool self-repair done.\n");
+                fprintf(stderr, "Self-repair done.\n"); //signal to FC
                 result = TRUE;
             }
         }
-        else
-        {
+        else{
             fprintf(stderr, "I need administrator permissions to fix the permissions on this application.\n");
         }
         free(path_to_self);
@@ -216,10 +236,10 @@ int repair_self()
     return result;
 }
 
-
-// This is take almost directly from Apple's example code and will
-// attempt to reset the launcher's setuid permissions if necessary.
-//
+/*
+ * This is taken almost directly from Apple's example code and will
+ * attempt to reset the launcher's setuid permissions if necessary.
+ */
 int launch_to_repair_self(AuthorizationRef* auth)
 {
     int status;
@@ -233,7 +253,7 @@ int launch_to_repair_self(AuthorizationRef* auth)
         /* Set our own stdin and stdout to be the communication channel
         * with ourself. */
 
-        fprintf(stderr, "Tool about to self-exec through AuthorizationExecuteWithPrivileges.\n");
+        fprintf(stderr, "The authorized tool is about to re-execute itself in order to self-repair.\n");
 
         if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe) == errAuthorizationSuccess)
         {
@@ -248,7 +268,7 @@ int launch_to_repair_self(AuthorizationRef* auth)
             /* Wait for the child of AuthorizationExecuteWithPrivileges to exit. */
             if (wait(&status) != -1 && WIFEXITED(status))
             {
-                fprintf(stderr,"exited with  status %d, WEXITSTATUS(status) %d\n",status,WEXITSTATUS(status));
+                fprintf(stderr,"The tool exited with status %d, WEXITSTATUS(status) %d\n", status, WEXITSTATUS(status));
                 result = WEXITSTATUS(status);
             }
         }
@@ -256,8 +276,8 @@ int launch_to_repair_self(AuthorizationRef* auth)
     }
 
     /* Exit with the same exit code as the child spawned by
-        * AuthorizationExecuteWithPrivileges()
-        */
+	 * AuthorizationExecuteWithPrivileges()
+	 */
     return result;
 
 }
@@ -280,22 +300,18 @@ main(int argc, char * const *argv)
     if (argc == 2 && 0 == strcmp(argv[1], "--self-repair")){
         result = repair_self();
     }else{
-        /* If the effective uid isn't root's (0), then we need to reset 
-         * the setuid bit on the executable, if possible.
-         */
         if (geteuid() != 0){
+			/* If the effective uid isn't root's (0), then we need to reset
+			* the setuid bit on the executable, if possible.
+			*/
             launch_to_repair_self(&auth);
-        }else{
-            setuid(geteuid());
         }
-		
         if (! authorizedToExecute(&auth, argv[1])){
             /* If the caller isn't authorized to run as root, then reset
              * the effective uid before spawning command
              */
             seteuid(getuid());
         }
-
 		if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
 			/* Kill command being run by Launcher in another process */
 			pid_t pid = (pid_t)strtol(argv[2], nil, 10);
@@ -306,10 +322,14 @@ main(int argc, char * const *argv)
 			result = write_fconf(argv[2]);
 		}else{
 			/* Run a fink or apt-get command */
-			result = perform(argv[1], &argv[1]);
+			if (isauthorizedcmd(argv, argc)){
+				result = perform(argv[1], &argv[1]);
+			}else{
+				fprintf(stderr, "WARNING:  An attempt was made to use the Launcher tool in "
+								"FinkCommander to run an unauthorized command: %s", argv[1]);
+			}
 		}
     }
-	
     exit(result);
 }
 

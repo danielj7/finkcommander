@@ -38,7 +38,7 @@ http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 Authentication is currently handled by having the user enter his password in a secure text field and passing it to the IOTaskWrapper object.  This is not the correct way of doing it, according to Apple, but I am having difficulty seeing how to use Apple's preferred authentication method in FinkCommander.
 
 Feasibility of implementing through Obj C-Perl bridge:
-I am sceptical, to say the lease.  Discussions on the Omni-Web and Apple mailing lists for Cocoa developers indicate that a running process cannot change its own authorization.  Instead, it must execute a subprocess with administrator privileges using the Security Framework.  This would seem to suggest that FinkCommander cannot use the Obj C-Perl bridge to call a fink subroutine with administrator privileges.  
+I am sceptical, to say the least.  Discussions on the Omni-Web and Apple mailing lists for Cocoa developers indicate that a running process cannot change its own authorization.  Instead, it must execute a subprocess with administrator privileges using the Security Framework.  This would seem to suggest that FinkCommander cannot use the Obj C-Perl bridge to call a fink subroutine with administrator privileges.  
 An alternative that probably would work would be for FinkCommander to use the authorization to give itself root privleges, but this is also frowned upon.
 
 (3)	 Sending stdout from running command to text view in real time

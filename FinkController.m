@@ -391,7 +391,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)updateTable:(id)sender
 {
 	[self startProgressIndicatorAsIndeterminate:YES];
-	[msgText setStringValue: NSLocalizedString(@"UpdatingTable", nil)];
+	[msgText setStringValue:NSLocalizedString(@"UpdatingTable", nil)];
 	commandIsRunning = YES;
 
 	[packages update];
@@ -1088,10 +1088,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		case NONE:
 			break;
 		case PASSWORD_PROMPT:
-			Dprintf(@"Received password prompt");
-			output = @"";
-			[finkTask log:
-				NSLocalizedString(@"The authorized executable has been repaired.\nPlease re-execute the command.", nil)];
+			output = NSLocalizedString(@"Password error.  Please try again.", nil);
 			[finkTask writeToStdin:@"\n"];
 			break;
 		case PROMPT:
@@ -1129,6 +1126,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		case ACTIVATE:
 			[self setGUIForPhase:ACTIVATE];
 			break;
+		case SELF_REPAIR:
+			output = NSLocalizedString(@"Error:\nThe tool used to run fink commands lost its administrative 	privileges and had to repair itself.\nPlease re-try the command.", nil);
+			break;
 	}
 	[textView appendString:output];
 	//according to Moriarity example, we have to put off scrolling until next event loop
@@ -1137,7 +1137,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			afterDelay:0.0];
 }
 
-//-(void)processFinishedWithStatus:(int)status
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
 	int status = [number intValue];
