@@ -11,8 +11,11 @@
 	if (nil != (self = [super init])){
 		NSFileManager *mgr = [NSFileManager defaultManager];
 		NSDictionary *fattrs;
-		BOOL isDir, valid = [mgr fileExistsAtPath:p isDirectory:&isDir];
+		BOOL isDir, valid;
 		NSArray *arr;
+
+		p = [p stringByStandardizingPath];
+		valid = [mgr fileExistsAtPath:p isDirectory:&isDir];
 
 		if (valid){
 			fattrs = [mgr fileAttributesAtPath:p traverseLink:YES];

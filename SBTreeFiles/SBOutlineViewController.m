@@ -151,7 +151,7 @@
     while (nil != (rownum = [e nextObject])){
 		item = [outlineView itemAtRow:[rownum intValue]];
 		if (nil != [item children]) continue;  //skip directories
-		stnddpath = [[item path] stringByStandardizingPath];
+		stnddpath = [item path];  //now standardized when item created
 		if ([stnddpath hasSuffix:@".html"]){
 			NSURL *fileURL = [NSURL fileURLWithPath:stnddpath];
 			successful = [ws openURL:fileURL];

@@ -65,7 +65,7 @@
 		[self setShortTitle:stitle];
 		[self setLongTitle:ltitle];
 		
-		Dprintf(@"SBDCC initialized for column %@", [[self column] identifier]);
+		//Dprintf(@"SBDCC initialized for column %@", [[self column] identifier]);
 
 		[[NSNotificationCenter defaultCenter]
 			addObserver:self
