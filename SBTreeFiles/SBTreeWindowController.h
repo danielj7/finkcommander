@@ -1,9 +1,18 @@
 /*
  File: SBTreeWindowController.h
 
- Creates the custom views and controllers, as well as the SBFileItemTree,
- for a particular package file browser window.  
-
+ Serves as the window controller for a particular package file browser window
+ and creates the following model objects, custom views and controllers:
+ 
+ *	An SBFileItemTree (M), a tree-structured collection of SBFileItems (M);
+	
+ *	An SBOutlineViewController (C), which connects the SBFileItemTree to the
+	custom SBOutlineView;
+	
+ *  An SBBrowserView (V/C), which uses delegate methods to display the SBFileItem
+	tree in a browser view and customizes the view's behavior with the help of
+	an SBBrowserMatrix (V);
+ 
  Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify

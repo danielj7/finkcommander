@@ -1,7 +1,7 @@
 /*
 File: FinkTextViewController.h
 
- FinkTextViewController's sole raison d'etre (at the time of this writing) is
+ FinkTextViewController's sole raison d'etre is
  to implement a limited scrollback buffer for the fink command output
  text displayed by FinkCommander.  A subclass rather than a category
  was used in order to track the number of calls to the appendString

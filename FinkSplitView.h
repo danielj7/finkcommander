@@ -8,7 +8,8 @@
  Unix software on Mac OS X.
 
  FinkSplitView is a subclass of NSSplitView that allows the user to collapse 
- or expand the bottom portion of the split view when the divider is double clicked.
+ or expand the bottom portion of the split view when the divider is double clicked
+ or a menu command is chosen.
 
  Copyright (C) 2002, 2003  Steven J. Burr
 

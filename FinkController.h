@@ -40,7 +40,9 @@ communicates with:
 	PackageInfo.nib (V) and in MyTextView (V).
 	
 *	an SBTreeWindowManager (C) object -- handles the creation and destruction of 
-	package file browser windows.
+	package file browser windows.  The objects created by SBTreeWindowManager have a 
+	different prefix and are in a separate subdirectory and Project Builder group 
+	(SBTreeFiles), because I thought they might prove useful in other projects. 
 
 FinkController also creates the FinkCommander toolbar and registers the "factory defaults" 
 for preferences set by FinkPreferences or programmatically.  The settings for each are 

@@ -53,6 +53,7 @@ File: FinkOutputParser.m
 	([(x) contains:@"cvs.sourceforge.net's password:"]  || 					\
 	 [(x) contains:@"CVS password:"]					||					\
 	 [(x) contains:@"[default=N]?"] 					||					\
+	 [(x) contains:@"either license?"]					||					\
 	 [(x) containsExpression:@"(key|return) to continue\.?$"]) 				
 
 

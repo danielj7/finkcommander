@@ -21,8 +21,6 @@
 
  */
 
-
-
 #import <Cocoa/Cocoa.h>
 #import "SBUtilities.h"
 #import "SBFileItem.h"

@@ -148,7 +148,7 @@
     return [self checkAuthorizationWithFlags:kAuthorizationFlagExtendRights| kAuthorizationFlagInteractionAllowed];
 }
 
-// accessor for the Luancher program
+// accessor for the Launcher program
 //
 - (NSString*)authExecutable
 {
@@ -304,6 +304,19 @@
 //
 //  (void)executableFinished:(AuthorizedExecutable*)exe withStatus:(int)status;
 //
+-(NSString *)stringFromOutputData:(NSData *)data
+{
+	NSString *outputString;
+	
+	NS_DURING
+		outputString = [NSString stringWithCString:[data bytes]];
+		return outputString;	
+	NS_HANDLER
+		return @"FinkCommander Warning:  Unable to decode C string.\n";
+	NS_ENDHANDLER
+	;
+}
+
 -(void)captureStdOut:(NSNotification*)notification
 {
     NSData *inData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
@@ -414,7 +427,7 @@
 				  length:sizeof(AuthorizationExternalForm)]];
 
         NS_HANDLER
-            [self log:[NSString stringWithFormat:@"TODO: Failed while trying to launch helper program"]];
+            [self log:[NSString stringWithFormat:@"Failed while trying to launch helper program"]];
             [self stop];
         NS_ENDHANDLER
         ;

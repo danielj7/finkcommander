@@ -41,6 +41,7 @@ File: SBString.h
 //Search for compiled regular expression in string;
 //preferable to previous methods for repeated use of
 //the same expression (I think).
+-(BOOL)containsCompiledExpression:(regex_t *)re;
 -(NSRange)rangeOfCompiledExpression:(regex_t *)re;
 -(NSRange)rangeOfCompiledExpression:(regex_t *)re
 		inRange:(NSRange)range;
@@ -53,7 +54,7 @@ File: SBString.h
 
 @end
 
-//Convenience function for use with rangeOfCompiledExpression methods.
+//Convenience function for use with CompiledExpression methods.
 //The user must call regfree(&expr) sometime after its use.
 int compiledExpressionFromString(NSString *string, regex_t *expr);
 

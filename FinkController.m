@@ -870,7 +870,7 @@ enum {
 			url = @"http://finkcommander.sourceforge.net/";
 			break;
 		case FCBUG:
-			url = @"http://finkcommander.sourceforge.net/pages/bugs.html";
+			url = @"http://finkcommander.sourceforge.net/help/bugs.php";
 			break;
 		case FINKDOC:
 			url = @"http://fink.sourceforge.net/doc/index.php";
