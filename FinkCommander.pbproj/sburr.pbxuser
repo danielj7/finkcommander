@@ -59,7 +59,7 @@
 							Frame = "{{0, 0}, {647, 239}}";
 						};
 						Tab3 = {
-							Frame = "{{0, 0}, {629, 176}}";
+							Frame = "{{0, 0}, {647, 176}}";
 						};
 						TabCount = 4;
 					};
@@ -91,7 +91,7 @@
 					};
 					TabCount = 5;
 				};
-				WindowLocation = "{11, 0}";
+				WindowLocation = "{1, -2}";
 			};
 		};
 		wantsIndex = 1;

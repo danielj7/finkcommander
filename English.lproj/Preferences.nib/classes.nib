@@ -5,6 +5,7 @@
             CLASS = FinkPreferences; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                alwaysChooseDefaultsButton = NSButton; 
                 basePathTextField = NSTextField; 
                 pathChoiceMatrix = NSMatrix; 
                 scrollToSelectionButton = NSButton; 
