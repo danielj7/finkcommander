@@ -31,7 +31,7 @@ File: FinkPreferences.h
 
  */
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 #import "FinkConf.h"
 
 @interface FinkPreferences : NSWindowController
@@ -65,6 +65,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *fetchAltDirButton;
 	IBOutlet NSTextField *fetchAltDirTextField;
 	IBOutlet NSMatrix *downloadMethodMatrix;
+	IBOutlet NSMatrix *rootMethodMatrix;
 	
 	NSUserDefaults *defaults;
 	FinkConf *conf;

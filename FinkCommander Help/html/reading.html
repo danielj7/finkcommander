@@ -3,10 +3,11 @@
 <html lang="en">
 <head>
 	<title>FinkCommander Help--Reading the Table</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
-<h2>Getting Information on Packages from the Table</h2>
+<h2>Reading the Table</h2>
 
 <h3>Unstable</h3>
 
@@ -18,7 +19,16 @@ installed.</p>
 <h3>Version</h3>
 
 <p>The number in the version column represents the most
-recent available version of the package.</p>
+recent available version of the package, taking into account whether
+you have <a href="configuring.html#unstable">enabled</a> the installation of 
+unstable packages.</p>
+
+<h3>Binary</h3>
+
+<p>In general, packages with an asterisk in the binary column can
+be installed with the <kbd>Binary:Install</kbd> command.  
+See <a href="running.html#binary">Running Commands/Source v. 
+Binary</a> for more details.</p>
 
 <h3>Finding Packages</h3>
 
@@ -35,15 +45,15 @@ that can be applied to most of the fields in the table.  (I didn't
 think anyone would want to filter by version number.)  The filter
 works incrementally, so that as you type or delete characters, the
 contents of the table change to include only those packages that
-satisfy your search criteria.  The package count at the bottom of the
-window also changes to reflect the table contents.</p></li>
+satisfy your search criteria.  The package count also changes to 
+reflect the table contents.</p></li>
 </ol>
 
 <p>By combining the use of sorting and filtering, you can effectively
 search the table with two criteria.</p>
 
 <p>The table colums, by the way, can be resized and moved, and any
-such changes you make will be saved between runtimes.</p>
+changes you make will be saved between runtimes.</p>
 
 </body>
 </html>

@@ -73,6 +73,18 @@ File: FinkPreferences.m
 	}
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
+	
+	if ([[conf downloadMethod] isEqualToString: @"curl"]){
+		[downloadMethodMatrix selectCellWithTag: 0];
+	}else{
+		[downloadMethodMatrix selectCellWithTag: 1];
+	}
+	
+	if ([[conf rootMethod] isEqualToString: @"sudo"]){
+		[rootMethodMatrix selectCellWithTag: 0];
+	}else{
+		[rootMethodMatrix selectCellWithTag: 1];
+	}
 
 	ftpProxy = [conf useFTPProxy];
 	[ftpProxyButton setState: (ftpProxy != nil ? YES : NO)];
@@ -105,6 +117,15 @@ File: FinkPreferences.m
 		[conf setDownloadMethod: @"curl"];
 	}else{
 		[conf setDownloadMethod: @"wget"];
+	}
+}
+
+-(void)setRootMethod
+{
+	if ([[rootMethodMatrix selectedCell] tag] == 0){
+		[conf setRootMethod: @"sudo"];
+	}else{
+		[conf setRootMethod: @"su"];
 	}
 }
 
@@ -168,6 +189,7 @@ File: FinkPreferences.m
 		[conf setKeepRootDir: [keepRootDirectoryButton state]];
 
 		[self setDownloadMethod];
+		[self setRootMethod];
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
 		[self setFetchAltDir];

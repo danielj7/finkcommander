@@ -33,10 +33,12 @@
 #import <Cocoa/Cocoa.h>
 #import "FinkPackage.h"
 #import "FinkConf.h"
+#import "MyTextView.h"
 
 @interface FinkPackageInfo : NSWindowController 
 {
 	IBOutlet NSTextView *textView;
+	IBOutlet NSScrollView *scrollView;
 
 	NSUserDefaults *defaults;
 }

@@ -20,6 +20,11 @@
 	return self;
 }
 
+-(void)awakeFromNib
+{
+	textView = [MyTextView myTextViewToReplace: textView in: scrollView];
+}
+
 -(BOOL)isHeading:(NSString *)s
 {
     return ([s contains: @"Usage Notes:"]	||
@@ -45,7 +50,8 @@
 	NSString *line;
 	NSString *field;
 	NSString *url;
-	NSRange r;	
+	NSRange r;	      //general purpose range variable
+	
 	//start attributed string with colon, which will follow name and version,
 	//then newline and formatted Desc field
 	NSMutableAttributedString *desc = [[[NSMutableAttributedString alloc]
@@ -83,7 +89,7 @@
 	[desc appendAttributedString:
 		[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
 
-	//apply attributes face to field names
+	//apply attributes to field names
 	while (field = [f nextObject]){
 		r = [[desc string] rangeOfString: field];
 		if (r.length > 0){
@@ -120,14 +126,16 @@
 		int start;							//start of mail url
 		int len;							//length of mail url
 		
+		//look for angle bracket marking beginning of email address after Maintainer: field
 		r = [[desc string] rangeOfString: @"<" options: 0 
 							range: NSMakeRange(fnend, [[desc string] length] - fnend - 1)];
 		start = r.length > 0 ? r.location + 1 : 0;  	//0 == start of mail address not found
-		
+		//look for angle bracket marking end of email address after start
 		r = [[desc string] rangeOfString: @">" options: 0
 							range: NSMakeRange(start, [[desc string] length] - start - 1)];
 		len = r.length > 0 ? r.location - start : 0;  //0 == end of mail address not found
 
+		//if start and end found, apply link attributes
 		if (start > 0 && len > 0){
 			r = NSMakeRange(start, len);
 			url = [NSString stringWithFormat: @"mailto:%@",
@@ -157,8 +165,8 @@
 						[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]]
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
 						[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
-						[NSColor colorWithDeviceCyan:1.0 magenta:1.0 yellow:0.0 black:0.3 alpha:1.0],
-								NSForegroundColorAttributeName,  //dark blue
+						[NSColor colorWithDeviceCyan:1.0 magenta:1.0 yellow:0.0 black:0.3 alpha:1.0],				//dark blue
+								NSForegroundColorAttributeName,  
 						nil]] autorelease]];	
 		
 		[[textView textStorage] appendAttributedString:

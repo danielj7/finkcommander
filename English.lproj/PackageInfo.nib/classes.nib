@@ -3,7 +3,7 @@
         {
             CLASS = FinkPackageInfo; 
             LANGUAGE = ObjC; 
-            OUTLETS = {textView = NSTextView; }; 
+            OUTLETS = {scrollView = NSScrollView; textView = NSTextView; }; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }

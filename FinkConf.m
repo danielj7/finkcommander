@@ -261,6 +261,21 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 }
 
 
+-(NSString *)rootMethod
+{
+	NSString *method = [finkConfDict objectForKey: @"RootMethod"];
+	if (method != nil){
+		return method;
+	}
+	return @"sudo"; //default
+}
+
+-(void)setRootMethod:(NSString *)s
+{
+	[finkConfDict setObject:s forKey: @"RootMethod"];
+}
+
+
 -(NSString *)fetchAltDir
 {
 	return [finkConfDict objectForKey: @"FetchAltDir"];
@@ -350,6 +365,10 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 			@"/private/tmp/fink.conf.tmp",
 			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
 			nil];
+
+#ifdef DEBUG
+		NSLog(@"%@", fconfString);
+#endif
 		
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&

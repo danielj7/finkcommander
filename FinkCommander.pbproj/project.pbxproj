@@ -22,6 +22,7 @@
 				F5DE1D8E022845A201A80164,
 				F569E33802498D1101A80164,
 				F576358B0298AE4E01A80166,
+				F5B9D9E402B1D61C01A8016B,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -273,11 +274,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.3.1</string>
+	<string>0.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.3.1</string>
+	<string>0.4.0</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSMainNibFile</key>
@@ -302,6 +303,7 @@
 				F536C0400280F24501A80164,
 				F576358C0298AE4E01A80166,
 				F5C523DA02A326B701A80165,
+				F5B9D9ED02B2B13501A8016B,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -312,11 +314,8 @@
 				080E96DCFE201CFB7F000001,
 				089C165EFE840E0CC02AAC07,
 				F5314640022C801601A80164,
-				F55057280231E5F701A80164,
 				F538C3C3023495CF01A80164,
 				F538C3C4023495CF01A80164,
-				F5BBDFB0023AF89301A80164,
-				F5BBDFB2023AF8A601A80164,
 				F5375A6E0246DE1901A80164,
 				F5D3F482025306EB01A80164,
 				F554F1DB0266AA4B01A80164,
@@ -324,7 +323,6 @@
 				F50C7FBC026BD8BD01A80164,
 				F50C7FBE026BD92B01A80164,
 				F5C1B063026BFA2501A80164,
-				F554F376026E607801A80165,
 				F53D651E0280296801A80164,
 				F53D652002802F3101A80164,
 				F542437C028CE53E01A80166,
@@ -333,6 +331,7 @@
 				F50A222A0296AB2901A80166,
 				F51E884F02A1D1CE01A80165,
 				F5C523DE02A33E0A01A80165,
+				F5B9D9EB02B232D501A8016B,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -351,6 +350,7 @@
 				F576358D0298AE4E01A80166,
 				F54A055F029CA39401A80166,
 				F5C523DB02A326B701A80165,
+				F5B9D9E502B1D61C01A8016B,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -635,6 +635,7 @@
 				F50C7FBB026BD8BD01A80164,
 				F50C7FBD026BD92B01A80164,
 				F53D651F02802F3101A80164,
+				F5B9D9EA02B232D501A8016B,
 				F53D651D0280296801A80164,
 				F50A22290296AB2801A80166,
 				F51E884E02A1D1CE01A80165,
@@ -742,6 +743,7 @@
 				F5DE1D8F022845A201A80164,
 				F569E33702498D1101A80164,
 				F576358A0298AE4E01A80166,
+				F5B9D9EC02B2B13501A8016B,
 			);
 			isa = PBXGroup;
 			name = Headers;
@@ -758,12 +760,6 @@
 			path = LICENSE.txt;
 			refType = 4;
 		};
-		F55057280231E5F701A80164 = {
-			fileRef = F55057270231E5F701A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F554F1D80266AA4B01A80164 = {
 			isa = PBXFileReference;
 			path = addbin.tiff;
@@ -771,17 +767,6 @@
 		};
 		F554F1DB0266AA4B01A80164 = {
 			fileRef = F554F1D80266AA4B01A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F554F375026E607801A80165 = {
-			isa = PBXFileReference;
-			path = VERSION_HISTORY.txt;
-			refType = 4;
-		};
-		F554F376026E607801A80165 = {
-			fileRef = F554F375026E607801A80165;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -841,12 +826,44 @@
 			settings = {
 			};
 		};
+		F5B9D9E402B1D61C01A8016B = {
+			isa = PBXFileReference;
+			path = MyTextView.m;
+			refType = 4;
+		};
+		F5B9D9E502B1D61C01A8016B = {
+			fileRef = F5B9D9E402B1D61C01A8016B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5B9D9EA02B232D501A8016B = {
+			isa = PBXFileReference;
+			path = hand.tiff;
+			refType = 4;
+		};
+		F5B9D9EB02B232D501A8016B = {
+			fileRef = F5B9D9EA02B232D501A8016B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5B9D9EC02B2B13501A8016B = {
+			isa = PBXFileReference;
+			path = MyTextView.h;
+			refType = 4;
+		};
+		F5B9D9ED02B2B13501A8016B = {
+			fileRef = F5B9D9EC02B2B13501A8016B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5BBDFAC023AF87D01A80164 = {
 			children = (
 				F5BBDFB1023AF8A601A80164,
 				F55057270231E5F701A80164,
 				F5BBDFAF023AF89301A80164,
-				F554F375026E607801A80165,
 			);
 			isa = PBXGroup;
 			name = Documentation;
@@ -857,22 +874,10 @@
 			path = TODO.txt;
 			refType = 4;
 		};
-		F5BBDFB0023AF89301A80164 = {
-			fileRef = F5BBDFAF023AF89301A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F5BBDFB1023AF8A601A80164 = {
 			isa = PBXFileReference;
 			path = DESIGN.txt;
 			refType = 4;
-		};
-		F5BBDFB2023AF8A601A80164 = {
-			fileRef = F5BBDFB1023AF8A601A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5C1B062026BFA2501A80164 = {
 			isa = PBXFolderReference;

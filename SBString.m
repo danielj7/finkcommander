@@ -35,8 +35,7 @@
 
 -(NSString *)strip
 {
-    NSCharacterSet *nonWhitespaceSet = [[NSCharacterSet 
-       whitespaceAndNewlineCharacterSet] invertedSet];
+    NSCharacterSet *nonWhitespaceSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
     int start;
     int length;
     
@@ -44,13 +43,13 @@
     start = [self rangeOfCharacterFromSet:nonWhitespaceSet].location;
 
     if (start == NSNotFound){
-	return self;
+		return self;
     }
  
     //find last nonwhitespace char; use it to calculate length
     //of substring between beginning and ending whitespace
-    length = [self rangeOfCharacterFromSet: nonWhitespaceSet
-	    options: NSBackwardsSearch].location - start + 1;
+    length = [self rangeOfCharacterFromSet: nonWhitespaceSet 
+					options: NSBackwardsSearch].location - start + 1;
 
     //use start and length to calculate range
     //return string in that range

@@ -60,7 +60,7 @@ enum {
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
 	IBOutlet NSProgressIndicator *progressIndicator;
-	IBOutlet NSMenuItem *indexMenuItem;
+	IBOutlet NSMenu *tableContextMenu;
 	
 	//password entry window outlets
 	IBOutlet NSWindow *pwdWindow;
@@ -92,6 +92,7 @@ enum {
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
 	BOOL userChoseToTerminate;
+	NSArray *selectedObjectInfo;	
 
 	//Authentication and Process Control
 	NSString *password;
@@ -119,8 +120,12 @@ enum {
 -(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
+-(NSArray *)selectedObjectInfo;
+-(void)setSelectedObjectInfo:(NSArray *)array;
 
-//Experimental Action Methods
+-(void)scrollToVisible:(NSNumber *)n;
+
+//Split view action methods
 -(IBAction)collapseOutput:(id)sender;
 -(IBAction)expandOutput:(id)sender;
 

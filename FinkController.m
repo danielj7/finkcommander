@@ -158,6 +158,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
+	[tableView setMenu: tableContextMenu];
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self collapseOutput: nil];
@@ -190,19 +191,19 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 //helper used in several methods
 -(void)displayNumberOfPackages
-{
-	if (! [self commandIsRunning]){
-		if ([defaults boolForKey: FinkPackagesInTitleBar]){
-			[msgText setStringValue: @"Done"];		
-			[[self window] setTitle: [NSString stringWithFormat: 
-				@"Packages: %d Displayed, %d Installed",
-				[[self displayedPackages] count], [packages installedPackagesCount]]];
-		}else{
-			[[self window] setTitle: @"FinkCommander"];
-			[msgText setStringValue: [NSString stringWithFormat:
-				@"%d packages (%d installed)",
-				[[self displayedPackages] count], [packages installedPackagesCount]]];
+{	
+	if ([defaults boolForKey: FinkPackagesInTitleBar]){				
+		[[self window] setTitle: [NSString stringWithFormat: 
+			@"Packages: %d Displayed, %d Installed",
+			[[self displayedPackages] count], [packages installedPackagesCount]]];
+		if (! [self commandIsRunning]){
+			[msgText setStringValue: @"Done"];
 		}
+	}else if (! [self commandIsRunning]){
+		[[self window] setTitle: @"FinkCommander"];
+		[msgText setStringValue: [NSString stringWithFormat:
+			@"%d packages (%d installed)",
+			[[self displayedPackages] count], [packages installedPackagesCount]]];
 	}
 }
 
@@ -271,6 +272,18 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	pendingCommand = b;
 }
 
+-(NSArray *)selectedObjectInfo
+{
+    return selectedObjectInfo;
+}
+
+-(void)setSelectedObjectInfo:(NSArray *)array
+{
+    [array retain];
+    [selectedObjectInfo release];
+    selectedObjectInfo = array;
+}
+
 
 //--------------------------------------------------------------------------------
 //		APPLICATION AND WINDOW DELEGATES
@@ -312,6 +325,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	userChoseToTerminate = YES;
 	return YES;
 }
+
 
 //--------------------------------------------------------------------------------
 //		MENU COMMANDS AND HELPERS
@@ -718,7 +732,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
-		FinkInteractItem,
+		NSToolbarSeparatorItemIdentifier,
+		FinkDescribeItem,
 		FinkTerminateCommandItem,
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
@@ -741,11 +756,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		NSMutableArray *subset = [NSMutableArray array];
 		NSEnumerator *e = [[packages array] objectEnumerator];
 		FinkPackage *pkg;
+
+		//deselect rows so automatic scrolling doesn't interfere with filter
+		[tableView deselectAll: self];
 		if ([filterText length] == 0){
 			[self setDisplayedPackages: [packages array]];
 		}else{
-			//deselect rows so automatic scrolling doesn't interfere with filter
-			[tableView deselectAll: self];
 			while (pkg = [e nextObject]){
 				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
 				if ([pkgAttribute contains: filterText]){
@@ -777,6 +793,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
 					  forKey: FinkOutputViewRatio];
+//	if (![defaults boolForKey: FinkAlwaysScrollToBottom]){
+//		[self scrollToVisible: [NSNumber numberWithFloat: 0.0]];
+//	}
 }
 
 //--------------------------------------------------------------------------------
@@ -785,29 +804,64 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 //----------------------------------------------->Helper Methods
 
+//store information needed to scroll back to selection after sort
+-(void)storeSelectedObjectInfo
+{
+    int selectionIndex = [tableView selectedRow];
+
+	if (selectionIndex >= 0){
+		int topRowIndex =  [tableView rowAtPoint: 
+								[[tableView superview] bounds].origin]; 
+		int offset = selectionIndex - topRowIndex;
+		FinkPackage *selectedObject = [[self displayedPackages] 
+										objectAtIndex: selectionIndex];
+
+		[self setSelectedObjectInfo:
+			[NSArray arrayWithObjects: 
+				selectedObject, 
+				[NSNumber numberWithInt: offset],
+				nil]];
+	}else{
+		[self setSelectedObjectInfo: nil];
+	}
+}
+
+//scroll back to selection after sort
+-(void)scrollToSelectedObject
+{
+	if ([self selectedObjectInfo]){
+		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
+		int selection = [[self displayedPackages] indexOfObject: selectedObject];
+
+		if (selection != NSNotFound){
+			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
+			NSPoint offsetRowOrigin = [tableView rectOfRow: selection - offset].origin;
+			NSClipView *contentView = [tableView superview];
+			NSPoint target = [contentView constrainScrollPoint: offsetRowOrigin];
+	
+			[contentView scrollToPoint: target];
+			[tableScrollView reflectScrolledClipView: contentView];
+			[tableView selectRow: selection byExtendingSelection: NO];
+		}
+	}
+}
+
+
 //helper used in refreshTable and in didClickTableColumn: delegate method
 -(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
-	FinkPackage *pkg = nil;
-	int indexBeforeSort;
-	int indexAfterSort = 0;
-	BOOL shouldScroll = [defaults boolForKey: FinkScrollToSelection];
-
-	indexBeforeSort = [tableView selectedRow]; //returns -1 if none
-	if (indexBeforeSort >= 0 && shouldScroll){
-		pkg = [[packages array] objectAtIndex: [tableView selectedRow]];
+	if ([defaults boolForKey: FinkScrollToSelection]){
+		[self storeSelectedObjectInfo];
 	}
-
+	
 	// sort data source
 	[[self displayedPackages] sortUsingSelector:
 		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
 	[tableView reloadData];
 
-	if (indexBeforeSort >= 0 && shouldScroll){
-		indexAfterSort = [[packages array] indexOfObject: pkg];
-		[tableView scrollRowToVisible: indexAfterSort];
-		[tableView selectRow: indexAfterSort byExtendingSelection: NO];
+	if ([defaults boolForKey: FinkScrollToSelection]){
+		[self scrollToSelectedObject];
 	}
 }
 
@@ -1065,7 +1119,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(void)scrollToVisible:(NSNumber *)n
 {
-	if ([n floatValue] <= 3.0 || 
+	if ([n floatValue] <= 100.0 || 
 		[defaults boolForKey: FinkAlwaysScrollToBottom]){
 		[textView scrollRangeToVisible:	
 			NSMakeRange([[textView string] length], 0)];

@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<title>FinkCommander Help--Running Commands</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -39,7 +40,7 @@ running commands will be disabled.</p>
 by the table will appear in the lower left-hand corner of the 
 window.</p>
 
-<h3>Source vs. Binary</h3>
+<h3><a name="binary">Source vs. Binary</a></h3>
 
 <p>The commands under the <kbd>Source</kbd> menu are run by the fink
 package manager.  The commands under the <kbd>Binary</kbd> menu are
@@ -50,8 +51,8 @@ menu names.</p>
 <p>This dichotomy, however, does not always hold true.  For
 example, if you install a source code package,
 remove it and then reinstall it before a newer version becomes
-available, fink will use the dpkg command to reinstall a compressed
-binary package that it has installed on your system.</p>
+available, the fink package manager will use the dpkg command to 
+reinstall a compressed binary package that it has stored on your system.</p>
 
 <p>Note that some packages that are identified in the table as
 binary cannot be installed by apt-get.  

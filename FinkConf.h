@@ -91,6 +91,8 @@ extern NSString *FinkPackageArrayIsFinished;
 -(void)setUseFTPProxy:(NSString *)s;
 -(NSString *)downloadMethod;
 -(void)setDownloadMethod:(NSString *)s;
+-(NSString *)rootMethod;
+-(void)setRootMethod:(NSString *)s;
 -(NSString *)fetchAltDir;
 -(void)setFetchAltDir:(NSString *)s;
 -(void)setFinkTreesChanged:(BOOL)b;

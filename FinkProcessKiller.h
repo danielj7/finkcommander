@@ -39,6 +39,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "FinkConf.h"
 #import "SBString.h"
 #include <unistd.h>
 #include <sys/types.h>
