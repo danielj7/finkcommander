@@ -49,7 +49,7 @@ File: FinkOutputParser.h
 
 //Line parsing macros
 
-#define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be installed*"] || \
+#define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be *installed*"] || \
 							 [(x) contains:@"will be rebuilt"])
 
 #define FETCHTRIGGER(x) 	([[(x) strip] hasPrefix: @"wget -"]  					|| \

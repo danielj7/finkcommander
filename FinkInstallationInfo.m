@@ -110,8 +110,8 @@ File: FinkInstallationInfo.m
 	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
 		return @"Developer Tools not installed";
 	}
-	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
 	
+	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
 	result = [self numericVersionFromString:result];
 	if (!result) return @"Unable to determine gcc version";
 	return [NSString stringWithFormat: @"gcc version: %@", result];

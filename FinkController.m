@@ -1077,21 +1077,19 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore
-{	
-	//total document length (in pixels) 						- 
-	//length above scroll view (y coord of visible portion) 	- 
-	//length w/in scroll view 									= 
+{
+	//total document length (in pixels) 						-
+	//length above scroll view (y coord of visible portion) 	-
+	//length w/in scroll view 									=
 	//length below scroll view
 	//used to determine whether the user has scrolled up; if so the output view
 	//will not autoscroll to the bottom
-	NSNumber *pixelsBelowView = [NSNumber numberWithFloat: 
-									abs([textView bounds].size.height -
-										[textView visibleRect].origin.y - 
-										[textView visibleRect].size.height)];
+	NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
+		abs([textView bounds].size.height -
+	  [textView visibleRect].origin.y -
+	  [textView visibleRect].size.height)];
 	int signal = [parser parseOutput:output];
-	
 	if (commandTerminated) return;
-
 	switch(signal)
 	{
 		case NONE:
@@ -1144,9 +1142,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 	[textView appendString:output];
 	//according to Moriarity example, we have to put off scrolling until next event loop
-	[self performSelector:@selector(scrollToVisible:) 
-			withObject:pixelsBelowView 
-			afterDelay:0.0];
+	[self performSelector:@selector(scrollToVisible:)
+						   withObject:pixelsBelowView
+						   afterDelay:0.0];
 }
 
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
