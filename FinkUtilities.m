@@ -175,7 +175,7 @@ void terminateProcessWithPID(NSString *pid)
 			arguments: [NSArray arrayWithObjects: @"-S", @"kill", @"-KILL", pid, nil]];
 }
 
-void terminateChildProcesses(void)
+void terminateChildProcesses()
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
 	NSString *cpid = childOfProcess(ppid);

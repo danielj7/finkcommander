@@ -36,7 +36,7 @@ File: FinkGlobals.h
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
 
-#define DEBUGGING
+//#define DEBUGGING
 
 //User Default Items
 //  Set by user
@@ -70,6 +70,7 @@ extern NSString *FinkOutputViewRatio;
 extern NSString *FinkLookedForProxy;
 extern NSString *FinkViewMenuSelectionStates;
 extern NSString *FinkTableColumnsArray;
+extern NSString *FinkExtendedVerbosity;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

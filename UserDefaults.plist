@@ -25,6 +25,8 @@
 		<key>CVS_RSH</key>
 		<string>ssh</string>
 	</dict>
+	<key>FinkExtendedVerbosity</key>
+	<false/>
 	<key>FinkGiveEmailCredit</key>
 	<true/>
 	<key>FinkHTTPProxyVariable</key>

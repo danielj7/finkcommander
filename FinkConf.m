@@ -113,8 +113,24 @@ File: FinkConf.m
 
 -(BOOL)extendedVerboseOptions
 {
-	return [[finkConfDict objectForKey:@"Verbose"] 
-				rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].length > 0;
+	if ([defaults boolForKey:FinkExtendedVerbosity]){
+		return YES;
+	}else{
+		FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
+		NSString *fversion = [info finkVersion];
+		NSString *pmversion = [[fversion componentsSeparatedByString:@"\n"] objectAtIndex:0];
+		NSScanner *vscan = [NSScanner scannerWithString:pmversion];
+		int vnum;
+
+		[vscan scanUpToString:@"0." intoString:nil];
+		[vscan scanString:@"0." intoString:nil];
+		[vscan scanInt:&vnum];
+		if (vnum > 9){
+			[defaults setBool:YES forKey:FinkExtendedVerbosity];
+			return YES;
+		}
+	}
+	return NO;
 }
 
 -(int)verboseOutput

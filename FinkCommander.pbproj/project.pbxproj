@@ -134,6 +134,13 @@
 				4A9504CDFFE6A4B311CA0CBA,
 			);
 			isa = PBXProject;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Spanish,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA;
 			projectDirPath = "";
 			targets = (
@@ -427,6 +434,11 @@
 //F52
 //F53
 //F54
+		F501F21202FDF20001A80164 = {
+			isa = PBXFileReference;
+			path = RELEASE_STEPS.txt;
+			refType = 4;
+		};
 		F50A22290296AB2801A80166 = {
 			isa = PBXFileReference;
 			path = terminate.tiff;
@@ -699,6 +711,12 @@
 			isa = PBXFileReference;
 			name = French;
 			path = French.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F53DA0DD02FCF29E01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F54147C202C18B7301A80165 = {
@@ -985,6 +1003,7 @@
 			children = (
 				F568C4A302FC9D6101A80164,
 				F53DA0DC02FCEC1D01A80164,
+				F53DA0DD02FCF29E01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;
@@ -1095,9 +1114,10 @@
 			children = (
 				F5BBDFB1023AF8A601A80164,
 				F55057270231E5F701A80164,
+				F501F21202FDF20001A80164,
 				F5BBDFAF023AF89301A80164,
-				F546BA0402D8EA6B01A80165,
 				F54A669802DA8F3701A80165,
+				F546BA0402D8EA6B01A80165,
 			);
 			isa = PBXGroup;
 			name = Documentation;

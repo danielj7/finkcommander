@@ -433,6 +433,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 	FinkPackage *pkg;
 
+	int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil),
+							  NSLocalizedString(@"RunningForceRemove", nil),
+							  NSLocalizedString(@"Yes", nil),
+							  NSLocalizedString(@"No", nil), nil);
+
+	if (answer == NSAlertAlternateReturn){
+		return;
+	}
+	
 	while (pkg = [e nextObject]){
 		[pkgNames addObject: [pkg name]];
 	}
@@ -996,11 +1005,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	if ([password length] < 1 && 
 		! [defaults boolForKey: FinkNeverAskForPassword]){
-		[self setLastParams: params];
+		[self setLastParams:params];
 		pendingCommand = YES;
 		commandIsRunning = NO;
 		[self displayNumberOfPackages];
-		[self raisePwdWindow: self];
+		[self raisePwdWindow:self];
 		return;
 	}
 	if ([defaults boolForKey: FinkWarnBeforeRunning]){

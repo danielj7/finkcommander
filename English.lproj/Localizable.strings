@@ -60,6 +60,9 @@
 
 "FinkCommanderDetected" = "FinkCommander detected a possible failure message.\nCheck the output window for problems.";
 
+	/* Added 8/4/02 */
+"RunningForceRemove" = "Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?"
+
 /* FinkPreferences.m */
 
 "Low" = "Low";

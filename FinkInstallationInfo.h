@@ -36,6 +36,7 @@ File: FinkController.h
 @interface FinkInstallationInfo : NSObject {
 }
 
+-(NSString *)finkVersion;
 -(NSString *)getInstallationInfo;
 
 @end

@@ -11,9 +11,9 @@
 <body>
 <h2>The Fink and Apt-Get Commands</h2>
 
-<h3>Fink</h3>
+<h3>Fink (Source Menu)</h3>
 
-<em>Except for the notes, the following consists of excerpts from the fink manual.
+<em>The following consists primarily of excerpts from the fink manual.
 To see the complete version, open Terminal and type &quot;fink man&quot; at the
 prompt.</em>
 
@@ -57,17 +57,7 @@ prompt.</em>
            can re-install the package later without going through the compile
            process again. If you need the disk space, you can remove the .deb
            from the /sw/fink/dists tree.</p></dd>    
-    
-    <dt>Describe</dt>   
-    <dd><p>This command displays a description of the package you name on the
-           command line.</p>
-           
-           <p><em>Note:  The <kbd>Tools:Show Package Info</kbd> and Toolbar info
-           commands provide the same information as the describe command in a 
-           separate window with active links to the package web site and
-           maintainer e-mail address.</em></p></dd>
-           
-    
+        
     <dt>Selfupdate, Selfupdate-cvs</dt>   
     <dd><p>This command automates the process of upgrading to a new fink
            release. It checks the fink website to see if a new version is
@@ -82,14 +72,44 @@ prompt.</em>
     
     <dt>Update-all</dt>   
     <dd><p>This command updates all installed packages to the latest version.</p></dd>
-    
-    <dt>Index</dt>   
-    <dd><p>Rebuilds the package cache. You should not normally need to execute
-           this manually, fink should auto-detect when it needs to be updated.</p></dd>
+	
+	<dt>Force Remove</dt>
+	<dd><p>	Force Remove will remove the selected package, even if other packages depend on it.  
+			It should only be used as a last resort to resolve otherwise irreconcilable dependency 
+			problems.</p></dd>  
+			
+	<dt>Utilities Submenu</dt>
+	
+	<dl>
+	
+		<dt>Cleanup</dt>
+		<dd><p>Available only in version 0.9.12.cvs or later of the package manager.  Removes outdated
+			.deb archives and broken links.
+			</p></dd>
+		
+		<dt>Index</dt>   
+		<dd><p>Rebuilds the package cache. You should not normally need to execute
+			this manually, fink should auto-detect when it needs to be updated.</p></dd>
+			
+		<dt>Scanpackages</dt>
+		<dd><p>Creates the files (Packages.gz in the binary-darwin-powerpc directory of each tree)
+			necessary to allow apt-get update to work.
+			</p></dd>
+	
+		<dt>Describe</dt>   
+		<dd><p>This command displays a description of the package you name on the
+			command line.  Instead of calling the fink describe command, it provides
+			the same information from a cache maintained by FinkCommander.</p>
+			
+			<p><em>Note:  The <kbd>Tools:Show Package Info</kbd> and Toolbar info
+			commands provide the same information as the describe command in a 
+			separate window with active links to the package web site and
+			maintainer e-mail address.</em></p></dd>
+	</dl>
 
 </dl>
 
-<h3>Apt-Get</h3>
+<h3>Apt-Get (Binary Menu)</h3>
 
 <em>Excerpts from the apt-get man page</em>
 

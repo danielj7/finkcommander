@@ -38,6 +38,7 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
 NSString *FinkViewMenuSelectionStates = @"FinkViewMenuSelectionStates";
 NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
+NSString *FinkExtendedVerbosity = @"FinkExtendedVerbosity";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

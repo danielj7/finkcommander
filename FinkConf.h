@@ -35,6 +35,7 @@ File: FinkConf.h
 
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
+#import "FinkInstallationInfo.h"
 
 //---------------------------------------------->Global Variables
 

@@ -19,16 +19,10 @@ File: FinkTextViewController.m
 
 -(int)numberOfLinesInString:(NSString *)s
 {
-	NSScanner *lineScanner = [NSScanner scannerWithString:s];
-	NSCharacterSet *returnSet = [NSCharacterSet characterSetWithCharactersInString: @"\n"];
-	int numlines = 0;
+	NSArray *slines = [s componentsSeparatedByString:@"\n"];
+	int numlines = [slines count];
 	
-	while (! [lineScanner isAtEnd]){
-		[lineScanner scanUpToCharactersFromSet:returnSet intoString:NULL];
-		[lineScanner scanString:@"\n" intoString:NULL];
-		numlines++;
-	}
-	return numlines;
+	return numlines - 1;
 }
 
 -(NSRange)rangeOfLinesAtTopOfView:(int)numlines
@@ -47,7 +41,6 @@ File: FinkTextViewController.m
 	return NSMakeRange(0, lastReturn);
 }
 
-
 -(void)appendString:(NSString *)s
 {
 	if (bufferLimit > 0){
@@ -57,9 +50,9 @@ File: FinkTextViewController.m
 		lines += [self numberOfLinesInString:s];
 		overflow = lines - bufferLimit;
 		if (overflow > 10){
-			r = [self rangeOfLinesAtTopOfView:overflow];		
+			r = [self rangeOfLinesAtTopOfView:overflow];
 			[[self textStorage] deleteCharactersInRange:r];
-			lines = 0;
+			lines -= overflow;
 		}
 	}
 	
