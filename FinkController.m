@@ -41,6 +41,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysScrollToBottom];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkGiveEmailCredit];
 
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkPackagesInTitleBar];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
@@ -532,7 +533,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)internetAccess:(id)sender
 {
 	NSString *url = nil;
-	FinkPackage *pkg; 
 
 	switch ([sender tag]){
 		case FCWEB:
@@ -544,13 +544,25 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		case FINKDOC:
 			url = @"http://fink.sourceforge.net/doc/index.php";
 			break;
-		case MAINTAINER:
-			pkg = [[self displayedPackages] objectAtIndex: [tableView selectedRow]];
-			url = [NSString stringWithFormat: @"mailto:%@", [pkg email]];
-			break;
 	}
-	[[NSWorkspace sharedWorkspace] openURL: 
-		[NSURL URLWithString: url]];
+	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+}
+
+-(IBAction)emailMaintainer:(id)sender
+{
+	NSMutableString *url = nil;
+	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+	FinkPackage *pkg;
+	NSString *credit = @"&body=%0A%0A--%0AGenerated%20by%20FinkCommander";
+
+	while (pkg = [e nextObject]){
+		url = [NSMutableString stringWithFormat: @"mailto:%@?subject=%@",
+			[pkg email], [pkg name]];
+		if ([defaults boolForKey: FinkGiveEmailCredit]){
+			[url appendString: credit];
+		}
+		[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+	}
 }
 
 //formerly menu items for testing purposes; now used to implement the
@@ -601,7 +613,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([tableView selectedRow] == -1 						&&
 	    ([theItem action] == @selector(runCommand:)  		||
 		 [theItem action] == @selector(showDescription:)	||
-		([theItem action] == @selector(internetAccess:) && [theItem tag] == MAINTAINER))){
+		 [theItem action] == @selector(emailMaintainer:))){
 		return NO;
 	}
 	//disable Source and Binary menu items and table update if command is running
@@ -737,10 +749,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[item setLabel: @"Maintainer"];
 		[item setPaletteLabel: @"Email maintainer"];
 		[item setToolTip: @"Send email to package maintainer"];
-		[item setTag: MAINTAINER];
 		[item setImage: [NSImage imageNamed: @"email"]];
 		[item setTarget: self];
-		[item setAction: @selector(internetAccess:)];
+		[item setAction: @selector(emailMaintainer:)];
 	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
 		[item setLabel:@"Filter Table Data"];
 		[item setPaletteLabel:[item label]];

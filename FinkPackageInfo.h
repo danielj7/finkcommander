@@ -34,6 +34,7 @@
 #import "FinkGlobals.h"
 #import "FinkPackage.h"
 #import "MyTextView.h"
+#include <math.h>
 
 @interface FinkPackageInfo : NSWindowController 
 {

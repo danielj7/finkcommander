@@ -28,6 +28,7 @@
 -(void)awakeFromNib
 {
 	textView = [MyTextView myTextViewToReplace: textView in: scrollView];
+	[[textView window] setDelegate: self];
 }
 
 -(BOOL)isHeading:(NSString *)s
@@ -113,7 +114,13 @@
 		
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
-		NSString *mailurl = [NSString stringWithFormat: @"mailto:%@", [p email]];	
+		NSString *credit = @"&body=%0A%0A--%0AGenerated%20by%20FinkCommander";
+		NSMutableString *mailurl = [NSMutableString 
+			stringWithFormat: @"mailto:%@?subject=%@", [p email], [p name]];
+
+		if ([defaults boolForKey: FinkGiveEmailCredit]){
+			[mailurl appendString: credit];
+		}
 		
 		r = [[desc string] rangeOfString: [p email]];
 		[desc addAttributes: urlAttributes range: r];
@@ -148,5 +155,33 @@
 			[[[NSMutableAttributedString alloc] initWithString: @"\n"] autorelease]];
 	}
 }
+
+-(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
+								defaultFrame:(NSRect)defaultFrame
+{	
+	float newHeight = [textView frame].size.height;	
+	NSRect stdFrame = 
+		[NSWindow contentRectForFrameRect:[sender frame] 
+							 styleMask:[sender styleMask]];
+							 
+	stdFrame.origin.y += stdFrame.size.height;
+	stdFrame.origin.y -= newHeight;
+	stdFrame.size.height = newHeight;
+
+	stdFrame = 
+		[NSWindow frameRectForContentRect:stdFrame 
+							 styleMask:[sender styleMask]];
+							 
+
+	if (stdFrame.size.height > defaultFrame.size.height){
+		stdFrame.size.height = defaultFrame.size.height;
+		stdFrame.origin.y = defaultFrame.origin.y;
+	}else if (stdFrame.origin.y < defaultFrame.origin.y){
+		stdFrame.origin.y = defaultFrame.origin.y;
+	}
+
+	return stdFrame;
+}
+
 
 @end

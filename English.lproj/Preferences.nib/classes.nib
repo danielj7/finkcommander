@@ -26,6 +26,7 @@
                 fetchAltDirTextField = NSTextField; 
                 ftpProxyButton = NSButton; 
                 ftpProxyTextField = NSTextField; 
+                giveEmailCreditButton = NSButton; 
                 httpProxyButton = NSButton; 
                 httpProxyTextField = NSTextField; 
                 keepBuildDirectoryButton = NSButton; 

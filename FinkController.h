@@ -52,8 +52,7 @@ enum {
 enum {
 	FCWEB = 1000,
 	FCBUG = 1001,
-	FINKDOC = 1002,
-	MAINTAINER = 1003
+	FINKDOC = 1002
 };
 
 enum {
@@ -160,6 +159,7 @@ enum {
 -(IBAction)showDescription:(id)sender;
 //  help menu items
 -(IBAction)internetAccess:(id)sender;
+-(IBAction)emailMaintainer:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;
@@ -170,7 +170,6 @@ enum {
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
 // reapplies filter if filter popup menu changes 
 -(IBAction)refilter:(id)sender;
-
 
 //Table Methods
 //  data source methods
@@ -184,7 +183,6 @@ enum {
 //  helper
 -(void)sortTableAtColumn: (NSTableColumn *)aTableColumn 
 		inDirection:(NSString *)direction;
-
 
 //Process Control Methods
 // sheet methods for password window

@@ -3,6 +3,7 @@
         {
             ACTIONS = {
                 collapseOutput = id; 
+                emailMaintainer = id; 
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
                 expandOutput = id; 

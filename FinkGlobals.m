@@ -3,7 +3,6 @@
 //  FinkCommander
 //
 //  Created by Steven Burr on Wed Jun 19 2002.
-//  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
 //
 
 #import "FinkGlobals.h"
@@ -25,6 +24,7 @@ NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 NSString *FinkWarnBeforeRemoving = @"FinkWarnBeforeRemoving";
 NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
+NSString *FinkGiveEmailCredit = @"FinkGiveEmailCredit";
 
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";

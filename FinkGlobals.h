@@ -29,6 +29,7 @@ extern NSString *FinkWarnBeforeRunning;
 extern NSString *FinkWarnBeforeRemoving;
 extern NSString *FinkPackagesInTitleBar;
 extern NSString *FinkAutoExpandOutput;
+extern NSString *FinkGiveEmailCredit;
 //  Set programmatically
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;

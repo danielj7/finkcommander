@@ -6,7 +6,6 @@ File: FinkPreferences.m
  */
 #import "FinkPreferences.h"
 
-
 @implementation FinkPreferences
 
 //--------------------------------------------------------------->Startup and Shutdown
@@ -63,6 +62,7 @@ File: FinkPreferences.m
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
+	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
 	
 	//Fink Preferences
 	[useUnstableMainButton setState: [conf useUnstableMain]];
@@ -180,6 +180,7 @@ File: FinkPreferences.m
 	[defaults setBool: [warnBeforeRunningButton state]	 	forKey: FinkWarnBeforeRunning];
 	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
 	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
+	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];

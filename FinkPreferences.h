@@ -49,6 +49,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *warnBeforeRunningButton;
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
+	IBOutlet NSButton *giveEmailCreditButton;
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
