@@ -17,7 +17,7 @@ See the header file, FinkController.h, for interface and license information.
 +(void)initialize
 {
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
-	
+	//set "factory defaults"
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
@@ -72,9 +72,7 @@ See the header file, FinkController.h, for interface and license information.
 			[columnState setObject: @"normal" forKey: attribute];
 		}
 		
-		[self setCommandIsRunning: NO];
-		
-#ifndef REFACTOR
+		[self setCommandIsRunning: NO];		
 		[self setPassword: nil];
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];		
@@ -84,7 +82,6 @@ See the header file, FinkController.h, for interface and license information.
 					selector: @selector(runCommandWithPassword:)
 					name: @"passwordWasEntered"
 					object: nil];
-#endif //REFACTOR
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(refreshTable:)
 					name: @"packageArrayIsFinished"
@@ -96,6 +93,7 @@ See the header file, FinkController.h, for interface and license information.
 //----------------------------------------------->Dealloc
 -(void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[packages release];
 	[selectedPackages release];
 	[preferences release];
@@ -105,11 +103,8 @@ See the header file, FinkController.h, for interface and license information.
 	[columnState release];
 	[reverseSortImage release];
 	[normalSortImage release];
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-#ifndef REFACTOR
 	[lastParams release];
 	[password release];
-#endif //REFACTOR	
 	[finkTask release];
 	[super dealloc];
 }
@@ -136,25 +131,54 @@ See the header file, FinkController.h, for interface and license information.
 		NSLog(@"If you know the path, try setting it in Preferences and then run File: Update Table");
 	}
 	[packages update];
-	[tableView reloadData];
 	[tableView setHighlightedTableColumn: lastColumn];
 	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
 }
 
-
-//helper used for 1st time in next method
+//helper used in several methods
 -(void)displayNumberOfPackages
 {
 	[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
 		[[packages array] count]]];
 }
 
+//helper used in refreshTable and table sorting delegate method
+-(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
+{
+	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
+		FinkScrollToSelectedRow];
+	FinkPackage *pkg = nil;
+	int row = [tableView selectedRow];
+	int newrow;
+
+	if (scrollToSelection && row >= 0){
+		pkg = [[packages array] objectAtIndex: row];
+	}
+
+	// sort data source; reload table; reset visual indicators
+	[[packages array] sortUsingSelector:
+		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
+			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
+	[tableView reloadData];
+
+	if (scrollToSelection && row >= 0){
+		newrow = [[packages array] indexOfObject: pkg];
+		[tableView selectRow: newrow byExtendingSelection: NO];
+		[tableView scrollRowToVisible: newrow];
+	}
+}
+
+
 //method called when FinkDataController is finished updating package
 -(void)refreshTable:(NSNotification *)ignore
 {
-	[tableView reloadData];
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
+	[self sortTableAtColumn: lastColumn inDirection: direction];
 }
 
 
@@ -193,7 +217,6 @@ See the header file, FinkController.h, for interface and license information.
 	commandIsRunning = b;
 }
 
-#ifndef REFACTOR
 -(NSString *)password {return password;}
 -(void)setPassword:(NSString *)s
 {
@@ -214,7 +237,7 @@ See the header file, FinkController.h, for interface and license information.
 {
 	pendingCommand = b;
 }
-#endif //REFACTOR
+
 
 //--------------------------------------------------------------------------------
 //		WINDOW METHODS
@@ -225,8 +248,6 @@ See the header file, FinkController.h, for interface and license information.
 {
     return YES;
 }
-
-
 
 //--------------------------------------------------------------------------------
 //		MENU COMMANDS AND HELPERS
@@ -274,10 +295,6 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	[self setSelectedPackages: pkgs];
 
-#ifdef DEBUG
-	NSLog(@"selectedPackages contains %d items", [selectedPackages count]);
-#endif //DEBUG
-
 	//set up args array to run the command
 	while(anIndex = [e2 nextObject]){
 		[args addObject: [[[packages array] objectAtIndex: [anIndex intValue]] name]];
@@ -303,7 +320,7 @@ See the header file, FinkController.h, for interface and license information.
 {
 	[msgText setStringValue: @"Updating table data . . . "]; //time lag here
 	[self setCommandIsRunning: YES];
-	[packages update];
+	[packages update]; //calls refreshTable by notification
 }
 
 -(IBAction)showPreferencePanel:(id)sender
@@ -325,11 +342,11 @@ See the header file, FinkController.h, for interface and license information.
 		return NO;
 	}
 	//disable Source and Binary menu items if command is running
-	if (([self commandIsRunning])
+	if ([self commandIsRunning]
 	 &&
 	 ([[[menuItem menu] title] isEqualToString: @"Source"] ||
-   [[[menuItem menu] title] isEqualToString: @"Binary"] ||
-   [[menuItem title] isEqualToString: @"Update table"])){
+	  [[[menuItem menu] title] isEqualToString: @"Binary"] ||
+      [[menuItem title] isEqualToString: @"Update table"])){
 		return NO;
 	}
 	return YES;
@@ -359,8 +376,6 @@ See the header file, FinkController.h, for interface and license information.
 
 
 //----------------------------------------------->Delegate Method
-
-
 //sort table columns
 -(void)tableView:(NSTableView *)aTableView
     mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn
@@ -369,16 +384,7 @@ See the header file, FinkController.h, for interface and license information.
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
 	NSString *direction;
-	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
-		FinkScrollToSelectedRow];
-	FinkPackage *pkg =  nil;
-	int row = [aTableView selectedRow];
-	int newrow;
 
-	if (scrollToSelection && row >= 0){
-		pkg = [[packages array] objectAtIndex: row];
-	}
-	
 	// remove sort direction indicator from last selected column
 	[tableView setIndicatorImage: nil inTableColumn: lastColumn];
 	
@@ -396,11 +402,7 @@ See the header file, FinkController.h, for interface and license information.
 	// record currently selected column's identifier for next call to method
 	[self setLastIdentifier: identifier];
 
-	// sort data source; reload table; reset visual indicators
-	[[packages array] sortUsingSelector:
-		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
-			[identifier capitalizedString]])]; // e.g. reverseCompareByName:
-	[tableView reloadData];	
+	// reset visual indicators
 	if ([direction isEqualToString: @"reverse"]){
 		[tableView setIndicatorImage: reverseSortImage
 				 inTableColumn: aTableColumn];
@@ -410,13 +412,8 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	[tableView setHighlightedTableColumn: aTableColumn];
 	
-	if (scrollToSelection && row >= 0){
-		newrow = [[packages array] indexOfObject: pkg];
-		[tableView selectRow: newrow byExtendingSelection: NO];
-		[tableView scrollRowToVisible: newrow];
-	}
+	[self sortTableAtColumn: aTableColumn inDirection: direction];
 }
-
 
 //--------------------------------------------------------------------------------
 //		AUTHENTICATION AND PROCESS CONTROL
@@ -482,6 +479,7 @@ See the header file, FinkController.h, for interface and license information.
 -(void)runCommandWithPassword:(NSNotification *)note
 {
 	if ([self pendingCommand]){
+		[self setCommandIsRunning: YES];
 		[self displayCommand: [self lastParams]];
 		[self runCommandWithParams: [self lastParams]];
 	}
@@ -491,43 +489,43 @@ See the header file, FinkController.h, for interface and license information.
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
 
 //helper
-- (void)scrollToVisible:(id)ignore
+-(void)scrollToVisible:(id)ignore
 {
 	[textView scrollRangeToVisible:
 		NSMakeRange([[textView string] length], 0)];
 }
 
-- (void)appendOutput:(NSString *)output
+-(void)appendOutput:(NSString *)output
 {
-		NSAttributedString *lastOutput;
-		lastOutput = [[[NSAttributedString alloc] initWithString:
-			output] autorelease];
+	NSAttributedString *lastOutput;
+	lastOutput = [[[NSAttributedString alloc] initWithString:
+		output] autorelease];
 
-		//TBD:  respond as specified by user; right now this just enters a return
-		//[i.e. the default] any time Fink asks for a response 
-		if ([[lastOutput string] rangeOfString: @"]"].length > 0){
-			[finkTask writeToStdin: @"\n"];
-		}
-		
-		//prevent crash or repeated calls to run selfupdate-cvs if user has
-		//core developer access to fink CVS repository
-		if([[lastOutput string] rangeOfString:
-			 @"cvs.sourceforge.net's password:"].length > 0){
-			[[finkTask task] terminate];
-			[finkTask stopProcess];
-		}
-		
-		//look for password error message from sudo; if it's received, enter a 
-		//return to terminate the process, then notify the user
-		if([[lastOutput string] rangeOfString: @"Sorry, try again."].length > 0){
-			NSLog(@"Detected password error.");
-			[finkTask writeToStdin: @"\n"];
-			[finkTask stopProcess];
-			[self setPassword: nil];
-		}
+	//TBD:  respond as specified by user; right now this just enters a return
+	//[i.e. the default] any time Fink asks for a response 
+//	if ([output rangeOfString: @"]"].length > 0){
+//		[finkTask writeToStdin: @"\n"];
+//	}
+	
+	//prevent crash or repeated calls to run selfupdate-cvs if user has
+	//core developer access to fink CVS repository
+	if([output rangeOfString:
+			@"cvs.sourceforge.net's password:"].length > 0){
+		[[finkTask task] terminate];
+		[finkTask stopProcess];
+	}
+	
+	//look for password error message from sudo; if it's received, enter a 
+	//return to terminate the process, then notify the user
+	if([output rangeOfString: @"Sorry, try again."].length > 0){
+		NSLog(@"Detected password error.");
+		[finkTask writeToStdin: @"\n"];
+		[finkTask stopProcess];
+		[self setPassword: nil];
+	}
 
-		[[textView textStorage] appendAttributedString: lastOutput];		
-		[self performSelector: @selector(scrollToVisible:) withObject: nil afterDelay: 0.0];
+	[[textView textStorage] appendAttributedString: lastOutput];		
+	[self performSelector: @selector(scrollToVisible:) withObject: nil afterDelay: 0.0];
 }
 
 -(void)processStarted

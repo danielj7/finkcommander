@@ -1,11 +1,9 @@
-//
-//  FinkPreferences.m
-//  FinkCommander
-//
-//  Created by Steven Burr on Sun Mar 17 2002.
-//  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
-//
+/*
+File: FinkPreferences.m
 
+ See the header file, FinkPreferences.h, for interface and license information.
+
+ */
 #import "FinkPreferences.h"
 
 NSString *FinkBasePath = @"FinkBasePath";
@@ -15,6 +13,8 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 
 @implementation FinkPreferences
 
+//--------------------------------------------------------------->Startup and Shutdown
+
 -(id)init
 {
 	self = [super initWithWindowNibName: @"Preferences"];
@@ -22,18 +22,15 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 	return self;
 }
 
--(void)windowDidLoad
+//helper to set or reset state of preference widgets
+-(void)resetPreferences
 {
 	NSString *basePath;
 	
 	basePath = [defaults objectForKey: FinkBasePath];
-
-#ifdef DEBUG
-	NSLog(@"FinkBasePath = %@", basePath);
-#endif
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
-		[basePathTextField setStringValue: @" "];
+		[basePathTextField setStringValue: @""];
 	}else{
 		[pathChoiceMatrix selectCellWithTag: 1];
 		[basePathTextField setStringValue: basePath];
@@ -43,20 +40,38 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelectedRow]];
 }
 
--(IBAction)setPreferences:(id)sender
-{	
+-(void)windowDidLoad
+{
+	[self resetPreferences];
+}
+
+//---------------------------------------------------------------------->Helpers
+
+-(void)setBasePath
+{
 	if ([[pathChoiceMatrix selectedCell] tag] == 0){
 		[defaults setObject: @"/sw" forKey: FinkBasePath];
 	}else{
 		[defaults setObject: [basePathTextField stringValue] forKey: FinkBasePath];
 	}
+}
+
+//---------------------------------------------------------------------->Actions
+
+
+-(IBAction)setPreferences:(id)sender
+{
+	[self setBasePath];
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelectedRow];
+	
+	[self close];
 }
 
 -(IBAction)cancel:(id)sender
 {
+	[self resetPreferences];
 	[self close];
 }
 

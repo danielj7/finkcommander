@@ -37,8 +37,9 @@
 	NSRange range;
 	NSString *whichPath;
 
-	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", @"/usr/X11R6",
-		@"/usr", nil] objectEnumerator];
+	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local",
+		[NSString stringWithFormat: @"%@/sw", NSHomeDirectory()],
+		@"/usr/X11R6", @"/usr", nil] objectEnumerator];
 
 	//look in some possible install paths
 	while (path = [e nextObject]){
