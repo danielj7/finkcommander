@@ -383,7 +383,7 @@ File: FinkConf.m
 	//new fink.conf settings
 	}else if (finkTreesChanged && [[n object] contains: @"mv"]){
 		NSMutableArray *indexCommandArray = [NSMutableArray arrayWithObjects:
-			@"fink",
+			[[defaults objectForKey:FinkBasePath] stringByAppendingPathComponent:@"/bin/fink"],
 			@"index",
 			nil];
 		[self setFinkTreesChanged: NO];
