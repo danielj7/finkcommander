@@ -24,6 +24,7 @@ File: FinkController.m
 {
 	NSEnumerator *e;
 	NSString *path;
+    NSString *homeDir = NSHomeDirectory();
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	BOOL pathFound = NO;
@@ -35,12 +36,14 @@ File: FinkController.m
 	NSArray *args;
 	NSRange range;
 	NSString *whichPath;
-
-	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local",
-		[NSString stringWithFormat: @"%@/sw", NSHomeDirectory()],
-		@"/usr/X11R6", @"/usr", nil] objectEnumerator];
-
+    
 	//look in some possible install paths
+	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", homeDir,
+		[homeDir stringByAppendingPathComponent: @"sw"],
+        [homeDir stringByAppendingPathComponent: @"fink"],
+        @"/usr/local/sw", @"/usr/local/fink",
+        @"/usr/sw", @"/usr/fink", nil] objectEnumerator];
+
 	while (path = [e nextObject]){
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
@@ -66,17 +69,19 @@ File: FinkController.m
 		[findTask setStandardOutput: pipeIn];
 		[findTask launch];
 		whichPath = [[[NSString alloc] initWithData: [cmdStdout readDataToEndOfFile]
-															 encoding: NSUTF8StringEncoding] autorelease];
+                                                    encoding: NSUTF8StringEncoding] autorelease];
 		//get the stuff before /bin/fink
 		range = [whichPath rangeOfString: @"/bin/fink"];
-		path = [whichPath substringWithRange: NSMakeRange(0, range.location)];
-		if([manager isReadableFileAtPath:
-			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
-			[defaults setObject: path forKey: FinkBasePath];
-			[defaults setBool: YES forKey: FinkBasePathFound];
+        if (range.length > 0){
+            path = [whichPath substringWithRange: NSMakeRange(0, range.location)];
+            if([manager isReadableFileAtPath:
+                [path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
+                [defaults setObject: path forKey: FinkBasePath];
+                [defaults setBool: YES forKey: FinkBasePathFound];
 #ifdef DEBUG			
-			NSLog(@"Found basepath %@ using call to which command", path);
+                NSLog(@"Found basepath %@ using call to which command", path);
 #endif //DEBUG
+            }
 		}
 	}
 }
