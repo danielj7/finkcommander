@@ -123,9 +123,86 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 }
 
 
+-(NSString *)stringFromDictionary
+{
+    NSMutableString *fconfString = [NSMutableString stringWithString:
+		@"# Fink configuration, initially created by bootstrap.pl\n"];
+	NSEnumerator *e;
+    NSString *k;
+
+    [finkConfDict setObject: [[finkConfDict objectForKey: @"Trees"] 
+								componentsJoinedByString: @" "]
+				  forKey: @"Trees"];
+
+    e = [finkConfDict keyEnumerator];
+    while (k = [e nextObject]){
+		[fconfString appendString: 
+		   [NSString stringWithFormat:
+				@"%@: %@\n", k, [finkConfDict objectForKey: k]]];
+    }
+
+    [finkConfDict setObject: [[finkConfDict objectForKey: @"Trees"]
+								componentsSeparatedByString: @" "]
+				  forKey: @"Trees"];
+
+    return fconfString;
+}
+
 -(void)writeToFile
 {
-	NSLog(@"Stub for writing to file: %@", finkConfDict);
+    NSString *fconfString = [self stringFromDictionary];
+	NSLog(@"New configuration: %@", fconfString);
+
+#ifdef UNDEF
+	//NEED TO ADD PIPES TO STDOUT & STDIN TO DETECT REQUEST FOR AND WRITE PASSWORD
+	//OR USE IOTASKWRAPPER
+    NSTask *backupTask = [[NSTask alloc] init];
+    NSTask *writeTask = [[NSTask alloc] init];
+    NSString *basePath = [defaults objectForKey: FinkBasePath];
+    int error;
+
+    // Back up existing fink.conf; check for successful completion
+    [backupTask setLaunchPath: @"/usr/bin/sudo"];
+    [backupTask setArguments: 
+		[NSArray arrayWithObjects: @"-S",
+			@"/bin/cp", 
+			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
+			[NSString stringWithFormat: @"%@/etc/fink.conf.bak", basePath],
+			nil]];
+    [backupTask launch];
+    while ([backupTask isRunning]){
+		continue;
+    }
+    error = [backupTask terminationStatus];
+    [backupTask release];
+    if (error){
+		NSRunCriticalAlertPanel(@"Error", 
+			@"FinkCommander was unable to create a backup for fink.conf.\nFink.conf has not been altered.",
+			@"OK", nil, nil);
+		return;
+    }
+
+    // Write new settings to file; check again
+    [writeTask setLaunchPath: @"/usr/bin/sudo"];
+    [writeTask setArguments:
+		[NSArray arrayWithObjects: @"-S", @"/bin/echo", 
+			[NSString stringWithFormat: @"%@>%@/etc/fink.conf", 
+				fconfString, basePath],
+			nil]];
+    [writeTask launch];
+    while ([writeTask isRunning]){
+		continue;
+    }
+    error = [writeTask terminationStatus];
+    [writeTask release];
+    if (error){
+       	NSRunCriticalAlertPanel(@"Error", 
+				@"FinkCommander was unable to write changes to fink.conf.",
+				@"OK", nil, nil);
+    }
+	
+#endif //UNDEF
+
 }
 
 @end

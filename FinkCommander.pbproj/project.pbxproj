@@ -27,6 +27,8 @@
 				F569E33802498D1101A80164,
 				F54436B8027F6AD501A80164,
 				F54436B9027F6AD501A80164,
+				F536C03E0280F24501A80164,
+				F536C03F0280F24501A80164,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -296,6 +298,7 @@
 				F5375A690246DDDC01A80164,
 				F569E33902498D1101A80164,
 				F54436BA027F6AD501A80164,
+				F536C0400280F24501A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -337,6 +340,7 @@
 				F5375A6B0246DDEB01A80164,
 				F569E33A02498D1101A80164,
 				F54436BB027F6AD501A80164,
+				F536C0410280F24501A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -491,6 +495,28 @@
 		};
 		F53369F80218261B01A80165 = {
 			fileRef = F53369F60218261B01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F536C03E0280F24501A80164 = {
+			isa = PBXFileReference;
+			path = SBString.h;
+			refType = 4;
+		};
+		F536C03F0280F24501A80164 = {
+			isa = PBXFileReference;
+			path = SBString.m;
+			refType = 4;
+		};
+		F536C0400280F24501A80164 = {
+			fileRef = F536C03E0280F24501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F536C0410280F24501A80164 = {
+			fileRef = F536C03F0280F24501A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

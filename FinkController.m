@@ -287,7 +287,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	int answer;
 	
 	if ([self commandIsRunning]){
-		answer = NSRunCriticalAlertPanel(@"Warning!", @"Quitting now will interrupt a Fink process.",
+		answer = NSRunCriticalAlertPanel(@"Warning!", 
+			@"Quitting now will interrupt a Fink process.",
 			@"Cancel", @"Quit", nil);
 		if (answer == NSAlertDefaultReturn){
 			return NO;
@@ -318,7 +319,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 //----------------------------------------------->Helpers
 
-//display running command above table
+//display running command below table
 -(void)displayCommand:(NSArray *)params
 {
 	[msgText setStringValue: [NSString stringWithFormat: @"Running %@É",
@@ -720,6 +721,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	return YES;
 }
 
+//allows selection of table cells for copying, unlike setting
+//the column to be non-editable
 -(BOOL)textShouldBeginEditing:(NSText *)textObject
 {
 	return NO;
@@ -832,10 +835,12 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
 
--(void)scrollToVisible:(id)ignore
+-(void)scrollToVisible:(NSNumber *)n
 {
-	[textView scrollRangeToVisible:
-		NSMakeRange([[textView string] length], 0)];
+	if ([n floatValue] <= 3.0){
+		[textView scrollRangeToVisible:	
+			NSMakeRange([[textView string] length], 0)];
+	}
 }
 
 -(void)appendOutput:(NSString *)output
@@ -843,7 +848,10 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	NSAttributedString *lastOutput;
 	BOOL alwaysChooseDefaultSelected = [[NSUserDefaults standardUserDefaults]
 		boolForKey: FinkAlwaysChooseDefaults];
-
+	NSNumber *theTest = [NSNumber numberWithFloat: 
+		abs([textView bounds].size.height - [textView visibleRect].origin.y 
+			- [textView visibleRect].size.height)];
+	
 	lastOutput = [[[NSAttributedString alloc] initWithString:
 		output] autorelease];
 
@@ -876,7 +884,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 	[[textView textStorage] appendAttributedString: lastOutput];
 	//according to Moriarity example, have to put off scrolling until next event loop
-	[self performSelector: @selector(scrollToVisible:) withObject: nil afterDelay: 0.0];
+	[self performSelector: @selector(scrollToVisible:) withObject: theTest 
+		afterDelay: 0.0];
 }
 
 -(void)processStarted

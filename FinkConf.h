@@ -31,7 +31,7 @@ File: FinkConf.h
 
  */
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 //---------------------------------------------->Global Variables
 // eliminate for release version:
