@@ -22,6 +22,7 @@
             OUTLETS = {
                 addEnvironmentSettingButton = NSButton; 
                 alwaysChooseDefaultsButton = NSButton; 
+                askOnStartupButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
                 checkForUpdateButton = NSButton; 
@@ -39,6 +40,7 @@
                 keepBuildDirectoryButton = NSButton; 
                 keepRootDirectoryButton = NSButton; 
                 nameTextField = NSTextField; 
+                neverAskButton = NSButton; 
                 outputPathButton = NSButton; 
                 outputPathTextField = NSTextField; 
                 passiveFTPButton = NSButton; 
