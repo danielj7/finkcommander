@@ -2,11 +2,15 @@
     IBClasses = (
         {
             ACTIONS = {
+                bringBackMainWindow = id; 
                 checkForLatestVersionAction = id; 
                 chooseTableColumn = id; 
+                collapseExpandOutput = id; 
                 endInteractionWindow = id; 
                 goToWebsite = id; 
                 openDocumentation = id; 
+                openHelpInWebBrowser = id; 
+                openPackageFileViewer = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
                 runForceRemove = id; 
@@ -20,12 +24,16 @@
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 
+                sortByPackageElement = id; 
                 terminateCommand = id; 
+                toggleFlags = id; 
                 updateTable = id; 
             }; 
             CLASS = FinkController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                collapseExpandMenuItem = NSMenuItem; 
+                columnsMenu = NSMenu; 
                 interactionField = NSTextField; 
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 
@@ -42,12 +50,17 @@
                 tableScrollView = NSScrollView; 
                 tableView = id; 
                 textView = NSTextView; 
-                viewMenu = NSMenu; 
                 window = NSWindow; 
+                windowMenu = NSMenu; 
             }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+        {
+            ACTIONS = {openPackageFiles = id; openSelectedFiles = id; toggleFlags = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
     ); 
     IBVersion = 1; 
 }

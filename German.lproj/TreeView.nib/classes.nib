@@ -1,0 +1,31 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {openSelectedFiles = id; }; 
+            CLASS = SBFileItemTree; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                loadingIndicator = NSProgressIndicator; 
+                msgTextField = NSTextField; 
+                outlineView = NSOutlineView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            ACTIONS = {switchViews = id; }; 
+            CLASS = SBTreeWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                loadingIndicator = NSProgressIndicator; 
+                msgTextField = NSTextField; 
+                oldBrowser = NSBrowser; 
+                outlineScrollView = NSScrollView; 
+                outlineView = id; 
+                tabView = NSTabView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
