@@ -22,9 +22,10 @@
                 oldBrowser = NSBrowser; 
                 outlineScrollView = NSScrollView; 
                 outlineView = id; 
+                sbTreeWindow = NSWindow; 
                 tabView = NSTabView; 
             }; 
-            SUPERCLASS = NSWindowController; 
+            SUPERCLASS = NSObject; 
         }
     ); 
     IBVersion = 1; 

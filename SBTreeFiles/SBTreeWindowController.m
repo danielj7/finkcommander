@@ -103,6 +103,8 @@ enum {
 								  withObject:fList];		
 
 		[NSBundle loadNibNamed:@"TreeView" owner:self];
+		
+		Dprintf(@"Window name should be: %@", wName);
 
 		[[self window] setTitle:wName];
 		[[self window] setReleasedWhenClosed:YES];
@@ -232,43 +234,18 @@ enum {
 	[outlineView sizeLastColumnToFit];
 }
 
-#ifdef UNDEF
 //Resize window vertically but not horizontally when zoom button is clicked.
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 		defaultFrame:(NSRect)defaultFrame
 {
-
 	if ([[self activeView] isEqualToString:@"browser"]){
-		return defaultFrame;
+		defaultFrame.size.height = [sender frame].size.height - 10.0;
+		defaultFrame.origin.y = [sender frame].origin.y;
 	}else{
-		float windowOffset = [[self window] frame].size.height
-			- [[outlineView superview] frame].size.height;
-		float newHeight = [outlineView frame].size.height;
-		NSRect stdFrame =
-			[NSWindow contentRectForFrameRect:[sender frame]
-					  styleMask:[sender styleMask]];
-
-		if (newHeight > stdFrame.size.height) {newHeight += windowOffset;}
-
-		stdFrame.origin.y += stdFrame.size.height;
-		stdFrame.origin.y -= newHeight;
-		stdFrame.size.height = newHeight;
-
-		stdFrame =
-			[NSWindow frameRectForContentRect:stdFrame
-					  styleMask:[sender styleMask]];
-
-		//if new height would exceed default frame height,
-		//zoom vertically and horizontally
-		if (stdFrame.size.height > defaultFrame.size.height){
-			stdFrame = defaultFrame;
-			//otherwise zoom vertically just enough to accomodate new height
-		}else if (stdFrame.origin.y < defaultFrame.origin.y){
-			stdFrame.origin.y = defaultFrame.origin.y;
-		}
-		return stdFrame;
+		defaultFrame.size.width = [sender frame].size.width;
+		defaultFrame.origin.x = [sender frame].origin.x;
 	}
+	return defaultFrame;
 }
-#endif
 
 @end
