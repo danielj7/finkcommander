@@ -1,6 +1,5 @@
 FUNCTIONALITY
 
-Allow user to summon interaction sheet
 Add command to display package's dependencies
 Add preferences:
 	Change fink.conf, including addition of unstable tree

@@ -27,7 +27,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Contact the author at sburr@mac.com.
+Contact the author at sburrious@users.sourceforge.net.
 
 */
 
@@ -35,8 +35,17 @@ Contact the author at sburr@mac.com.
 #import "FinkDataController.h"
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
+#import "FinkConf.h"
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
+
+//Global Variables for Toolbar Items
+extern NSString *FinkInstallSourceItem;
+extern NSString *FinkInstallBinaryItem;
+extern NSString *FinkRemoveSourceItem;
+extern NSString *FinkRemoveBinaryItem;
+extern NSString *FinkTerminateCommandItem;
+extern NSString *FinkFilterItem;
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
@@ -124,6 +133,8 @@ Contact the author at sburr@mac.com.
 -(IBAction)runUpdater:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
+-(IBAction)goToFinkCommanderWebSite:(id)sender;
+-(IBAction)goToFinkWebSite:(id)sender;
 
 
 -(IBAction)showPreferencePanel:(id)sender;

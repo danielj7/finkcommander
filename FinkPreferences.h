@@ -27,52 +27,38 @@ File: FinkPreferences.h
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
- Contact the author at sburr@mac.com.
+ Contact the author at sburrious@users.sourceforge.net.
 
  */
 
 #import <AppKit/AppKit.h>
-
-// eliminate for release version:
-//#define DEBUG 
-
-//---------------------------------------------->Global Variables
-//User Default Items
-extern NSString *FinkBasePath;
-extern NSString *FinkBasePathFound;
-extern NSString *FinkUpdateWithFink;
-extern NSString *FinkAlwaysChooseDefaults;
-extern NSString *FinkScrollToSelection;
-extern NSString *FinkSelectedColumnIdentifier;
-extern NSString *FinkSelectedPopupMenuTitle;
-extern NSString *FinkHTTPProxyVariable;
-extern NSString *FinkLookedForProxy;
-
-//Toolbar Items
-extern NSString *FinkInstallSourceItem;
-extern NSString *FinkInstallBinaryItem;
-extern NSString *FinkRemoveSourceItem;
-extern NSString *FinkRemoveBinaryItem;
-extern NSString *FinkTerminateCommandItem;
-extern NSString *FinkFilterItem;
-
+#import "FinkConf.h"
 
 @interface FinkPreferences : NSWindowController 
 {
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
-	IBOutlet NSButton *updateWithFinkButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
-	IBOutlet NSButton *scrollToSelectionButton;
 	IBOutlet NSButton *httpProxyButton;
 	IBOutlet NSTextField *httpProxyTextField;
 	
+	IBOutlet NSButton *scrollToSelectionButton;
+	IBOutlet NSButton *updateWithFinkButton;
+	
+	IBOutlet NSButton *useUnstableMainButton;
+	IBOutlet NSButton *useUnstableCryptoButton;
+	IBOutlet NSButton *verboseOutputButton;
+	
 	NSUserDefaults *defaults;
+	FinkConf *conf;
+	
 	BOOL pathChoiceChanged;
+	BOOL finkConfChanged;
 }
 
 -(IBAction)setPreferences:(id)sender;
 -(IBAction)cancel:(id)sender;
 -(IBAction)setPathChoice:(id)sender;
+-(IBAction)setFinkConfChanged:(id)sender;
 
 @end

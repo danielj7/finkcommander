@@ -7,6 +7,15 @@ See the header file, FinkController.h, for interface and license information.
 
 #import "FinkController.h"
 
+//Global variables used in toolbar methods
+NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
+NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
+NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
+NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
+NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
+NSString *FinkFilterItem = @"FinkFilterItem";
+
+
 @implementation FinkController
 
 //--------------------------------------------------------------------------------
@@ -409,6 +418,19 @@ See the header file, FinkController.h, for interface and license information.
 	[preferences showWindow: self];
 }
 
+-(IBAction)goToFinkCommanderWebSite:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL: 
+		[NSURL URLWithString: @"http://finkcommander.sourceforge.net/"]];
+}
+
+-(IBAction)goToFinkWebSite:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL: 
+		[NSURL URLWithString: @"http://fink.sourceforge.net/doc/index.php"]];
+}
+
+
 //----------------------------------------------->Menu Item Delegate
 
 //Disable menu item selections
@@ -670,6 +692,11 @@ See the header file, FinkController.h, for interface and license information.
 		return NO;
 	}
 	return YES;
+}
+
+-(BOOL)textShouldBeginEditing:(NSText *)textObject
+{
+	return NO;
 }
 
 //--------------------------------------------------------------------------------

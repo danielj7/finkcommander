@@ -6,26 +6,6 @@ File: FinkPreferences.m
  */
 #import "FinkPreferences.h"
 
-//Global variables used throughout FinkCommander source code to set 
-//user defaults.
-NSString *FinkBasePath = @"FinkBasePath";
-NSString *FinkBasePathFound = @"FinkBasePathFound";
-NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
-NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
-NSString *FinkScrollToSelection = @"FinkScrollToSelection";
-NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
-NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
-NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
-NSString *FinkLookedForProxy = @"FinkLookedForProxy";
-
-//Global variables used in toolbar methods
-//(Should these be moved to FinkController?)
-NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
-NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
-NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
-NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
-NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
-NSString *FinkFilterItem = @"FinkFilterItem";
 
 @implementation FinkPreferences
 
@@ -35,9 +15,17 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 {
 	self = [super initWithWindowNibName: @"Preferences"];
 	defaults = [NSUserDefaults standardUserDefaults];
+	conf = [[FinkConf alloc] init];
+	
 	[self setWindowFrameAutosaveName: @"Preferences"];
 
 	return self;
+}
+
+-(void)dealloc
+{
+	[conf release];
+	[super dealloc];
 }
 
 //helper to set or reset state of preference widgets
@@ -47,6 +35,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	NSString *basePath;
 	NSString *proxy = [defaults objectForKey: FinkHTTPProxyVariable];
 	
+	//General preferences
 	basePath = [defaults objectForKey: FinkBasePath];
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
@@ -55,17 +44,19 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		[pathChoiceMatrix selectCellWithTag: 1];
 		[basePathTextField setStringValue: basePath];
 	}
-
-	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
-	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
-	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
-	if ([proxy length] > 0){
-		[httpProxyButton setState: YES];
-	}else{
-		[httpProxyButton setState: NO];
-	}
-	[httpProxyTextField setStringValue: [defaults objectForKey: FinkHTTPProxyVariable]];
 	pathChoiceChanged = NO;
+	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+	[httpProxyButton setState: ([proxy length] > 0 ? YES : NO)];
+	[httpProxyTextField setStringValue: [defaults objectForKey: FinkHTTPProxyVariable]];
+	
+	//Table Preferences
+	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
+	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
+	
+	//Fink Preferences
+	[useUnstableMainButton setState: [conf useUnstableMain]];
+	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
+	[verboseOutputButton setState: [conf verboseOutput]];
 }
 
 -(void)windowDidLoad
@@ -107,6 +98,13 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
 	}
+
+	if (finkConfChanged){
+		[conf setUseUnstableMain: [useUnstableMainButton state]];
+		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
+		[conf setVerboseOutput: [verboseOutputButton state]];
+		[conf writeToFile];
+	}
 	
 	[self close];
 }
@@ -121,6 +119,12 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 {
 	pathChoiceChanged = YES;
 }
+
+-(IBAction)setFinkConfChanged:(id)sender
+{
+	finkConfChanged = YES;
+}
+
 
 //---------------------------------------------------------------------->Delegate Methods
 //automatically select alternate path radio button if user starts to type in 

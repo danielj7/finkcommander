@@ -98,6 +98,7 @@ File: FinkController.m
 
 	while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
 		[scriptText replaceCharactersInRange: rangeOfBASEPATH withString: basePath];
+		NSLog(@"Found and replaced BASEPATH in script");
 	}
 
 	[scriptFile truncateFileAtOffset: 0];

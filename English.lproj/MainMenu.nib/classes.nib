@@ -4,6 +4,8 @@
             ACTIONS = {
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
+                goToFinkCommanderWebSite = id; 
+                goToFinkWebSite = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 refilter = id; 

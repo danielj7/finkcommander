@@ -25,6 +25,8 @@
 				F5DE1D8E022845A201A80164,
 				F569E33702498D1101A80164,
 				F569E33802498D1101A80164,
+				F54436B8027F6AD501A80164,
+				F54436B9027F6AD501A80164,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -293,6 +295,7 @@
 				F5DE1D90022845A201A80164,
 				F5375A690246DDDC01A80164,
 				F569E33902498D1101A80164,
+				F54436BA027F6AD501A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -331,6 +334,7 @@
 				F5DE1D91022845A201A80164,
 				F5375A6B0246DDEB01A80164,
 				F569E33A02498D1101A80164,
+				F54436BB027F6AD501A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -567,6 +571,28 @@
 			isa = PBXGroup;
 			name = Images;
 			refType = 4;
+		};
+		F54436B8027F6AD501A80164 = {
+			isa = PBXFileReference;
+			path = FinkConf.h;
+			refType = 4;
+		};
+		F54436B9027F6AD501A80164 = {
+			isa = PBXFileReference;
+			path = FinkConf.m;
+			refType = 4;
+		};
+		F54436BA027F6AD501A80164 = {
+			fileRef = F54436B8027F6AD501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F54436BB027F6AD501A80164 = {
+			fileRef = F54436B9027F6AD501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		F55057270231E5F701A80164 = {
 			isa = PBXFileReference;

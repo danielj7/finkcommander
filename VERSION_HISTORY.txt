@@ -1,5 +1,20 @@
 VERSION HISTORY
 
+0.2.x	pending:
+
+
+
+0.2.1a	4/27/2002:
+
+	Fixed bug preventing use of apt-get from behind firewall
+
+0.2.1	4/24/2002:
+
+	Added menu item allowing user to summon interaction sheet
+	
+	Fixed bug causing crash on startup if Fink not installed in one of 
+	certain directories
+	
 0.2.0	4/20/2002:
 	
 	First binary release

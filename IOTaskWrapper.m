@@ -34,14 +34,20 @@
 		if ([proxy length] > 0){
 			[environment setObject: proxy forKey: @"http_proxy"];
 		}else if (! [defaults boolForKey: FinkLookedForProxy]){
+#ifdef DEBUG
 			NSLog(@"Looking for http_proxy environment variable");
+#endif //DEBUG
 			if (proxyEnv = getenv("http_proxy")){
 				proxy = [NSString stringWithCString: proxyEnv];
+#ifdef DEBUG
 				NSLog(@"Found http_proxy variable: %@", proxy);
+#endif //DEBUG
 				[environment setObject: proxy  forKey: @"http_proxy"];
 				[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
 			}else {
+#ifdef DEBUG
 				NSLog(@"Proxy environment variable not found");
+#endif //DEBUG
 			}
 			[defaults setBool: YES forKey: FinkLookedForProxy];
 		}
