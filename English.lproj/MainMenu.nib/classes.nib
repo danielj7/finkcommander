@@ -2,7 +2,9 @@
     IBClasses = (
         {
             ACTIONS = {
+                endInteractionWindow = id; 
                 endPwdWindow = id; 
+                raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 runCommand = id; 
                 runUpdater = id; 
@@ -12,6 +14,9 @@
             CLASS = FinkController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                interactionField = NSTextField; 
+                interactionMatrix = NSMatrix; 
+                interactionWindow = NSWindow; 
                 msgText = id; 
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 

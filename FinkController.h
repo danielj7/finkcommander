@@ -29,7 +29,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Contact the author at sburr@mac.com.
 
-
 */
 
 #import <Cocoa/Cocoa.h>
@@ -38,7 +37,6 @@ Contact the author at sburr@mac.com.
 #import "FinkPreferences.h"
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
-#include <unistd.h>
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
@@ -51,6 +49,11 @@ Contact the author at sburr@mac.com.
 	//password entry window outlets
 	IBOutlet NSWindow *pwdWindow;
 	IBOutlet NSSecureTextField *pwdField;
+	
+	//interaction window outlets
+	IBOutlet NSWindow *interactionWindow;
+	IBOutlet NSMatrix *interactionMatrix;
+	IBOutlet NSTextField *interactionField;
 
 	FinkDataController *packages;
 	FinkPreferences *preferences;
@@ -98,6 +101,12 @@ Contact the author at sburr@mac.com.
 -(void)sheetDidEnd:(NSWindow *)sheet
 	   returnCode:(int)returnCode
 	   contextInfo:(void *)contextInfo;
+	   
+-(IBAction)raiseInteractionWindow:(id)sender;
+-(IBAction)endInteractionWindow:(id)sender;
+-(void)interactionSheetDidEnd:(NSWindow *)sheet
+        returnCode:(int)returnCode
+		contextInfo:(void *)contextInfo;
 
 -(IBAction)runCommand:(id)sender;
 -(IBAction)runUpdater:(id)sender;

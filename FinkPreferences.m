@@ -10,6 +10,7 @@ NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
+NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 
 @implementation FinkPreferences
 
@@ -38,6 +39,7 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelectedRow]];
+	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 }
 
 -(void)windowDidLoad
@@ -65,6 +67,7 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelectedRow];
+	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
 	
 	[self close];
 }

@@ -22,6 +22,7 @@ See the header file, FinkController.h, for interface and license information.
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkScrollToSelectedRow];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysChooseDefaults];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 #ifdef DEBUG
@@ -361,7 +362,6 @@ See the header file, FinkController.h, for interface and license information.
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-//	[self displayNumberOfPackages];
 	return [[packages array] count];
 }
 
@@ -421,8 +421,6 @@ See the header file, FinkController.h, for interface and license information.
 
 //----------------------------------------------->Password Entry Sheet Methods
 
-//Administrator Password Entry Sheet
-
 -(IBAction)raisePwdWindow:(id)sender
 {
 	[NSApp beginSheet: pwdWindow
@@ -448,6 +446,35 @@ See the header file, FinkController.h, for interface and license information.
 														   object: nil];
 }
 
+//----------------------------------------------->Interaction Sheet Methods
+
+-(IBAction)raiseInteractionWindow:(id)sender
+{
+	[NSApp beginSheet: interactionWindow
+	   modalForWindow: [self window]
+		modalDelegate: self
+	   didEndSelector: @selector(interactionSheetDidEnd:returnCode:contextInfo:)
+		  contextInfo: nil];
+}
+
+-(IBAction)endInteractionWindow:(id)sender
+{
+	[interactionWindow orderOut: sender];
+	[NSApp endSheet:interactionWindow returnCode: 1];
+
+}
+
+-(void)interactionSheetDidEnd:(NSWindow *)sheet
+				   returnCode:(int)returnCode
+						contextInfo:(void *)contextInfo
+{
+	if ([[interactionMatrix selectedCell] tag] == 0){
+		[finkTask writeToStdin: @"\n"];
+	}else{
+		[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
+			[interactionField stringValue]]];
+	}
+}
 
 //----------------------------------------------->Process Commands
 
@@ -488,7 +515,23 @@ See the header file, FinkController.h, for interface and license information.
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
 
-//helper
+//helpers
+-(BOOL)scanForNumberPrompt:(NSString *)s
+{
+	NSCharacterSet *openingSet = [NSCharacterSet characterSetWithCharactersInString: @"?:"];
+	NSCharacterSet *numberSet = [NSCharacterSet decimalDigitCharacterSet];
+	NSScanner *numberPromptScanner = [NSScanner scannerWithString: s];
+
+	if ([numberPromptScanner scanUpToCharactersFromSet: openingSet intoString: nil] &&
+		[numberPromptScanner scanCharactersFromSet: openingSet intoString: nil]     &&
+		[numberPromptScanner scanString: @"[" intoString: nil]						&&
+		[numberPromptScanner scanCharactersFromSet: numberSet intoString: nil]		&&
+		[numberPromptScanner scanString: @"]" intoString: nil]){
+		return YES;
+	}
+	return NO;
+}
+
 -(void)scrollToVisible:(id)ignore
 {
 	[textView scrollRangeToVisible:
@@ -498,25 +541,28 @@ See the header file, FinkController.h, for interface and license information.
 -(void)appendOutput:(NSString *)output
 {
 	NSAttributedString *lastOutput;
+	BOOL alwaysChooseDefaultSelected = [[NSUserDefaults standardUserDefaults]
+		boolForKey: FinkAlwaysChooseDefaults];
+
 	lastOutput = [[[NSAttributedString alloc] initWithString:
 		output] autorelease];
 
-	//TBD:  respond as specified by user; right now this just enters a return
-	//[i.e. the default] any time Fink asks for a response 
-//	if ([output rangeOfString: @"]"].length > 0){
-//		[finkTask writeToStdin: @"\n"];
-//	}
-	
-	//prevent crash or repeated calls to run selfupdate-cvs if user has
-	//core developer access to fink CVS repository
-	if([output rangeOfString:
-			@"cvs.sourceforge.net's password:"].length > 0){
-		[[finkTask task] terminate];
-		[finkTask stopProcess];
+	//interaction
+	if ([output rangeOfString: @"Password:"].length > 0){
+		[finkTask writeToStdin: [self password]];
+	}
+	if ( ! alwaysChooseDefaultSelected        &&
+		 ([self scanForNumberPrompt: output]  ||
+		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0)){
+		[self raiseInteractionWindow: self];
+	}
+	if ([output rangeOfString:           //handle non-anonymous cvs
+			@"cvs.sourceforge.net's password:"].length > 0){ 
+		[self raiseInteractionWindow: self];
 	}
 	
 	//look for password error message from sudo; if it's received, enter a 
-	//return to terminate the process, then notify the user
+	//return to make sure process terminates
 	if([output rangeOfString: @"Sorry, try again."].length > 0){
 		NSLog(@"Detected password error.");
 		[finkTask writeToStdin: @"\n"];

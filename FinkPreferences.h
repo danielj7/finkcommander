@@ -36,10 +36,12 @@ File: FinkPreferences.h
 // eliminate for release version:
 #define DEBUG 
 
+//global variables
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
 extern NSString *FinkScrollToSelectedRow;
+extern NSString *FinkAlwaysChooseDefaults;
 
 @interface FinkPreferences : NSWindowController 
 {
@@ -47,6 +49,7 @@ extern NSString *FinkScrollToSelectedRow;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *updateWithFinkButton;
 	IBOutlet NSButton *scrollToSelectionButton;
+	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	
 	NSUserDefaults *defaults;
 }
