@@ -744,6 +744,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		 [theItem action] == @selector(terminateCommand:))){
 		return NO;
 	}
+        // no output to save if lastCommand is null, prevents (null) filename
+        if ([self lastCommand] == 0 		&& 
+                 [theItem action] == @selector(saveOutput:)){
+                return NO;
+        }
 	if ([theItem action] == @selector(copy:)) return NO;
 	return YES;
 }
