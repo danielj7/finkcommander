@@ -1,33 +1,24 @@
-VERSION 0.5; Target release date: 1/31/03:
+VERSION 0.5.1 (bug fix); target release date = 3/1/03
 
-Fix perl script
+Fix bugs in Environment table
+	Crash on setting same item more than once
+	Items disappear during editing
 
-d Automatically add ftp_proxy to environment variables
+Update perl script whenever base path is set in Preferences
 
-d No error warning on clicking Cancel in authorization dialog
+Warn that fink may not be installed when basepath can't be found
 
-d Package file browser
-	d Add Browser view
-	d Add buttons to switch from outline to browser (modeled on Finder's)
-	d Add drag and drop of file icons
-	d Open selected files (File menu, double click, drag and drop)
-	
-d Open .info and .patch files for selected packages in table via
-	File menu
-	Drag and drop
-	Double click (.info only)
-	 
-d Go to package documentation in Finder
+Warn not to change Window Settings and make default when running in Terminal
 
-d Submit fink bug report command
+VERSION 0.5.2:
 
-d Dock icon customization: show status of command
+Contextual menu for package file browser
 
-d Flag column
-
-d Size new columns appropriately
+Add "Any" filter item; make default
 
 SHORT TERM:
+
+Mark for action; use flag column? or add new column?
 
 Custom command dialog
 
@@ -35,16 +26,12 @@ Warning dialog for first run of command in Terminal
 
 Command to show man page for packages
 
-Contextual menu to package file browser
-
 Command queue
 
-Catch and display cvs errors during selfupdate-cvs
+Catch and highlight cvs errors during selfupdate-cvs
 
 Show info panel for fink installation; mirror information in email
 sig; Application->About Your Fink Installation... ?
-
-Add open and open with commands for file menu to open .deb files directly in package browser
 
 Search output
 
@@ -53,8 +40,6 @@ i Regex support in filter and output search (wrote wrapper as NSString category)
 Additional fink installation info:
 	   last selfupdate-cvs 
 	   last apt-get update
-
-Add "Any" filter item; make default
 
 New command: update fink from cvs (warning alert: experimental)
 

@@ -90,8 +90,7 @@ File: FinkPreferences.h
 		
 	NSUserDefaults *defaults;
 	FinkConf *conf;
-	NSMutableDictionary *environmentSettings;
-	NSMutableArray *environmentKeyList;
+	NSMutableArray *environmentArray;
 
 	BOOL pathChoiceChanged;
 	BOOL autoExpandChanged;

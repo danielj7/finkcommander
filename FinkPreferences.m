@@ -16,13 +16,13 @@ enum {
 
 /* Text field tags */
 enum {
-	FINK_BASEPATH = 0,
 	HTTP_PROXY = 1,
 	FTP_PROXY = 2,
 	FETCH_ALT_DIR = 3,
 	OUTPUT_PATH = 4,
 	ENVIRONMENT_SETTING = 5,
-	PERL_PATH = 6
+	PERL_PATH = 6,
+	FINK_BASEPATH = 7
 };
 
 @implementation FinkPreferences
@@ -38,6 +38,7 @@ enum {
 		defaults = [NSUserDefaults standardUserDefaults];
 		conf = [[FinkConf alloc] init];  //Object representing the user's fink.conf settings
 		[self setWindowFrameAutosaveName: @"Preferences"];
+		environmentArray = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -56,14 +57,75 @@ enum {
 -(void)dealloc
 {
 	[conf release];
-	[environmentSettings release];
-	[environmentKeyList release];
+	[environmentArray release];
 	[super dealloc];
 }
 
 //--------------------------------------------------------------------------------
 #pragma mark GENERAL HELPERS
 //--------------------------------------------------------------------------------
+
+/* 	Transform environment settings in defaults into series of 
+	two-item dictionaries (name/value) and place them in environmentArray */
+-(void)readEnvironmentDefaultsIntoArray
+{
+	NSDictionary *environmentSettings = [defaults objectForKey:FinkEnvironmentSettings];
+	NSEnumerator *e = [environmentSettings keyEnumerator];
+	NSString *name;
+	NSMutableDictionary *setting;
+	
+	[environmentArray removeAllObjects];
+	while (nil != (name = [e nextObject])){
+		setting = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+				name, @"name", [environmentSettings objectForKey:name], @"value", nil];
+		[environmentArray addObject:setting];
+	}
+}
+
+-(void)addEnvironmentKey:(NSString *)name
+	value:(NSString *)value
+{
+	NSMutableDictionary *newSetting = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		name, @"name", value, @"value", nil];
+	NSMutableDictionary *setting;
+	NSString *key;
+	int i, limit = [environmentArray count];
+
+	//Make sure we have no duplicate keys
+	for (i=0; i<limit; i++){
+		setting = [environmentArray objectAtIndex:i];
+		key = [setting objectForKey:@"name"];
+		if ([key isEqualToString:name]){
+			Dprintf(@"Found setting for %@", name);
+			[environmentArray removeObjectAtIndex:i];
+			break;
+		}
+	}
+	
+	[environmentArray addObject:newSetting];
+	[environmentTableView reloadData];
+}
+
+/* 	Aggregate the dictionaries in environmentArray into a single dictionary and
+	write it to defaults */
+-(void)writeEnvironmentArrayIntoDefaults
+{
+	NSMutableDictionary *environmentSettings = [NSMutableDictionary dictionaryWithCapacity:
+													[environmentArray count]];
+	NSEnumerator *e = [environmentArray objectEnumerator];
+	NSMutableDictionary *setting;
+	NSDictionary *newSettings;
+	NSString *name, *value;
+	
+	while (nil != (setting = [e nextObject])){
+		name = [setting objectForKey:@"name"];
+		value = [setting objectForKey:@"value"];
+		[environmentSettings setObject:value forKey:name];
+	}
+	newSettings = [environmentSettings copy];
+	[defaults setObject:newSettings forKey:FinkEnvironmentSettings];
+	[newSettings release];
+}
 
 -(void)validateEnvironmentButtons
 {
@@ -77,19 +139,6 @@ enum {
 	[deleteEnvironmentSettingButton setEnabled:deleteEnabled];
 }
 
-//Get Environment settings from user defaults
--(void)setEnvironment
-{
-    [environmentSettings release];
-    environmentSettings = 
-		[[defaults objectForKey:FinkEnvironmentSettings] mutableCopy];
-}
-
--(void)setEnvironmentKeys
-{
-    [environmentKeyList release];
-    environmentKeyList = [[environmentSettings allKeys] mutableCopy];
-}
 
 //Set preferences to reflect existing defaults and fink.conf settings.
 //Used on startup and by cancel button.
@@ -101,6 +150,8 @@ enum {
 	NSString *downloadMethod;
 	NSString *basePath;
 	NSString *outputPath;
+	NSMutableDictionary *environmentSettings = [[[defaults objectForKey:FinkEnvironmentSettings]
+													mutableCopy] autorelease];
 	int scrollBackLimit;
 	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
 	
@@ -148,9 +199,6 @@ enum {
 		[scrollBackLimitTextField setIntValue: scrollBackLimit];
 	}
 	
-	//Environment Tab
-	[self setEnvironment];
-
 	/***  Fink Settings in fink.conf ***/
 
 	finkConfChanged = NO;
@@ -176,6 +224,7 @@ enum {
 		httpProxy = [conf useHTTPProxy];
 		if (httpProxy){
 			[environmentSettings setObject:httpProxy forKey:@"http_proxy"];
+			[defaults setObject:environmentSettings forKey:FinkEnvironmentSettings];
 		}else{
 			httpProxy = @"";
 		}
@@ -188,6 +237,7 @@ enum {
 		ftpProxy = [conf useFTPProxy];
 		if (ftpProxy){
 			[environmentSettings setObject:ftpProxy forKey:@"ftp_proxy"];
+			[defaults setObject:environmentSettings forKey:FinkEnvironmentSettings];
 		}else{
 			ftpProxy = @"";
 		}
@@ -204,9 +254,10 @@ enum {
 		[downloadMethodMatrix selectCellWithTag:2];
 	}
 
-	/***  Environment Tab Again (make sure consistent with fink.conf) ***/
-	[self setEnvironmentKeys];
-	[environmentTableView reloadData];	
+	/***  Environment Tab  ***/
+	
+	[self readEnvironmentDefaultsIntoArray];
+	[environmentTableView reloadData];
 }
 
 //--------------------------------------------------------------------------------
@@ -272,7 +323,7 @@ enum {
 	if ([httpProxyButton state] == NSOnState){
 		NSString *proxy = [httpProxyTextField stringValue];
 		[conf setUseHTTPProxy: proxy];
-		[environmentSettings setObject:proxy forKey:@"http_proxy"];
+		[self addEnvironmentKey:@"http_proxy" value:proxy];
 	}else{
 		[conf setUseHTTPProxy: nil];
 	}
@@ -283,7 +334,7 @@ enum {
 	if ([ftpProxyButton state] == NSOnState){
 		NSString *proxy = [ftpProxyTextField stringValue];
 		[conf setUseFTPProxy:proxy];
-		[environmentSettings setObject:proxy forKey:@"ftp_proxy"];
+		[self addEnvironmentKey:@"ftp_proxy" value:proxy];
 	}else{
 		[conf setUseFTPProxy: nil];
 	}
@@ -335,8 +386,7 @@ enum {
 	}
 	
 	//Environment Tab
-	[defaults setObject: environmentSettings forKey: FinkEnvironmentSettings];
-	[environmentTableView reloadData];
+	[self writeEnvironmentArrayIntoDefaults];
 
 	/***  Fink Settings in fink.conf ***/
 	
@@ -484,30 +534,22 @@ enum {
 {
 	NSString *name = [nameTextField stringValue];
 	NSString *value = [valueTextField stringValue];
-
-	[environmentSettings setObject:value forKey:name];
-	[self setEnvironmentKeys];
-	[environmentTableView reloadData];
+	[self addEnvironmentKey:name value:value];
 	[nameTextField setStringValue:@""];
 	[valueTextField setStringValue:@""];
-	[self validateEnvironmentButtons];
+	[self validateEnvironmentButtons];	
 }
 
 -(IBAction)removeEnvironmentSettings:(id)sender
 {
 	NSEnumerator *e = [environmentTableView selectedRowEnumerator];
-	NSMutableArray *settingsToRemove = [NSMutableArray array];
 	NSNumber *n;
-	NSString *name;
+	int row;
 	
 	while (nil != (n = [e nextObject])){
-		[settingsToRemove addObject:[environmentKeyList objectAtIndex:[n intValue]]];
+		row = [n intValue];
+		[environmentArray removeObjectAtIndex:row];
 	}
-	e = [settingsToRemove objectEnumerator];
-	while (nil != (name = [e nextObject])){
-		[environmentSettings removeObjectForKey:name];
-	}
-	[self setEnvironmentKeys];
 	[environmentTableView reloadData];
 	[self validateEnvironmentButtons];
 }
@@ -515,8 +557,7 @@ enum {
 -(IBAction)restoreEnvironmentSettings:(id)sender
 {
 	setInitialEnvironmentVariables();
-	[self setEnvironment];
-	[self setEnvironmentKeys];
+	[self readEnvironmentDefaultsIntoArray];
 	[environmentTableView reloadData];	
 	[self validateEnvironmentButtons];
 }
@@ -534,9 +575,9 @@ enum {
 //NSTextField delegate method; automatically set button state to match text input
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
-	int textFieldID = [[aNotification object] tag];
-	NSString *tfString = [[aNotification object] stringValue];
-	Dprintf(@"In notification string value: %@", tfString);
+	NSTextField *tField = [aNotification object];
+	int textFieldID = [tField tag];
+	NSString *tfString = [tField stringValue];
 
 	//Select the button that corresponds to the altered text field.
 	//The text fields were given the indicated tag numbers in IB.
@@ -563,12 +604,15 @@ enum {
 		case OUTPUT_PATH:
 			[outputPathButton setState:
 				([tfString length] > 0 ? YES : NO)];
-			Dprintf(@"Button state: %d", [outputPathButton state]);
 			break;
 		case ENVIRONMENT_SETTING:
 			[self validateEnvironmentButtons];
+			break;
+		default:
+			break;
 	}
 }
+
 
 //Environment table view delegate
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
@@ -576,13 +620,14 @@ enum {
 	[self validateEnvironmentButtons];
 }
 
+
 //--------------------------------------------------------------------------------
 #pragma mark ENVIRONMENT TABLE DATA SOURCE METHODS
 //--------------------------------------------------------------------------------
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [environmentKeyList count];
+	return [environmentArray count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
@@ -590,12 +635,7 @@ enum {
 	row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	NSString *name = [environmentKeyList objectAtIndex:rowIndex];
-	NSString *columnValue = [identifier isEqualToString:@"name"] ? 
-							name :
-							[environmentSettings objectForKey:name];
-
-	return columnValue;
+	return [[environmentArray objectAtIndex:rowIndex] objectForKey:identifier];
 }
 
 -(void)tableView:(NSTableView *)aTableView 
@@ -604,19 +644,7 @@ enum {
 		row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	NSString *name = [environmentKeyList objectAtIndex:rowIndex];
-
-	
-	if ([identifier isEqualToString:@"value"]){
-		//User has edited value field for exsting key
-		[environmentSettings setObject:anObject forKey:name];
-	}else{
-		//User has overwritten existing key
-		NSString *value = [environmentSettings objectForKey:name];
-		[environmentSettings removeObjectForKey:name];
-		[environmentSettings setObject:value forKey:anObject];
-	}
-	[self setEnvironmentKeys];
+	[[environmentArray objectAtIndex:rowIndex] setObject:anObject forKey:identifier];
 }
 
 @end

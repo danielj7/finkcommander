@@ -530,7 +530,7 @@ enum {
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
     NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
-		infoDictionary] objectForKey:@"CFBundleVersion"];
+		infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSDictionary *latestVersionDict =
 		[NSDictionary dictionaryWithContentsOfURL:
 			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
