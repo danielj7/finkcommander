@@ -207,6 +207,7 @@ File: FinkController.m
 //is updated or a command is completed
 -(void)resetInterface:(NSNotification *)ignore
 {
+	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
     [self stopProgressIndicator];
     [self displayNumberOfPackages];
     commandIsRunning = NO;
@@ -1045,6 +1046,7 @@ File: FinkController.m
     [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
 											  executable:exec]];
     [self displayCommand: args];
+	[NSApp setApplicationIconImage:[NSImage imageNamed:@"finkcommanderatwork"]];
 
     [finkTask setArguments:args];
     [finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];

@@ -1,5 +1,7 @@
 SHORT TERM
 
+Submit fink bug report command
+
 Add "Any" filter item; make default
 
 Flag column

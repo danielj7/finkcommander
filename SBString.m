@@ -69,45 +69,60 @@
 -(NSRange)rangeOfExpression:(NSString *)pat
 {
 	return [self rangeOfExpression:pat 
-			inRange:NSMakeRange(0, [pat length])];
+			inRange:NSMakeRange(0, [self length])];
 }
 
 -(NSRange)rangeOfExpression:(NSString *)pat
 		inRange:(NSRange)range
 {
 	NSRange r = NSMakeRange(NSNotFound, 0);
-	NSString *searchString = [self substringWithRange:range];
 	regex_t expr;
-	regmatch_t matches[1];
-    size_t nmatch = 1;
-	char s[[self length]+1];
-	char p[[self length]+1];
+	char p[[pat length]+1];
 	char errmsg[MAXBUF];
 	int comperr;
-    int result;
 	
-	strcpy(s, [searchString UTF8String]);
-	strcpy(p, [pat UTF8String]);
-	
+	strcpy(p, [pat UTF8String]);	
 	comperr = regcomp(&expr, p, REG_EXTENDED);
 	if (comperr){
 		regerror(comperr, &expr, errmsg, MAXBUF);
 		NSLog(@"Error compiling regular expression:\n%s", errmsg);
 		return r;
 	}
-	result  = regexec(&expr, s, nmatch, matches, 0);
+	r = [self rangeOfCompiledExpression:&expr
+			inRange:range];
+	regfree(&expr);
+	return r;
+}
+
+-(NSRange)rangeOfCompiledExpression:(regex_t *)re
+{
+	return [self rangeOfCompiledExpression:re
+			inRange:NSMakeRange(0, [self length])];
+}
+
+-(NSRange)rangeOfCompiledExpression:(regex_t *)re
+	inRange:(NSRange)range
+{
+	NSRange r = NSMakeRange(NSNotFound, 0);
+	NSString *searchString = [self substringWithRange:range];
+	regmatch_t matches[1];
+	size_t nmatch = 1;
+	char s[[self length]+1];
+	char errmsg[MAXBUF];
+	int result;
+	
+	strcpy(s, [searchString UTF8String]);
+	result = regexec(re, s, nmatch, matches, 0);
 	if (result != 0){
 		if(result != REG_NOMATCH){
-			regerror(result, &expr, errmsg, MAXBUF);
+			regerror(result, re, errmsg, MAXBUF);
 			NSLog(@"Error executing regular expression:\n%s", errmsg);
 		}
 		return r;
 	}
 	//Add location of substring searhced to determine location within string
-	r.location = matches[0].rm_so + range.location;  
+	r.location = matches[0].rm_so + range.location;
 	r.length = matches[0].rm_eo - matches[0].rm_so;
-	
-	regfree(&expr);
 	return r;
 }
 
@@ -132,3 +147,23 @@
 }
 
 @end
+
+int compiledExpressionFromString(NSString *string, regex_t *expr)
+{
+	char s[[string length]+1];
+	char errmsg[MAXBUF];
+	int comperr;
+	
+	strcpy(s, [string UTF8String]);
+	comperr = regcomp(expr, s, REG_EXTENDED);
+	if (comperr){
+		regerror(comperr, expr, errmsg, MAXBUF);
+		NSLog(@"Error compiling regular expression:\n%s", errmsg);
+	}
+	return comperr;
+}
+
+
+
+
+

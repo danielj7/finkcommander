@@ -38,7 +38,21 @@ File: SBString.h
 -(NSRange)rangeOfExpression:(NSString *)pat
 		inRange:(NSRange)range;
 		
+//Search for compiled regular expression in string;
+//preferable to previous methods for repeated use of
+//the same expression (I think).
+-(NSRange)rangeOfCompiledExpression:(regex_t *)re;
+-(NSRange)rangeOfCompiledExpression:(regex_t *)re
+		inRange:(NSRange)range;
+
 //Strip leading and trailing whitespace from string
 -(NSString *)strip;
 
 @end
+
+//Convenience function for use with rangeOfCompiledExpression methods.
+//Must call regfree(&expr) sometime after use.
+int compiledExpressionFromString(NSString *string, regex_t *expr);
+
+
+

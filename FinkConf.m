@@ -56,7 +56,7 @@ File: FinkConf.m
 	[finkConfDict setObject: [NSMutableArray arrayWithArray:
 								[[finkConfDict objectForKey: @"Trees"] 
 									componentsSeparatedByString: @" "]]
-				  forKey: @"Trees"];				
+				  forKey: @"Trees"];
 }
 
 
