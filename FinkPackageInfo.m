@@ -30,7 +30,7 @@
 	self = [super initWithWindowNibName:@"PackageInfo"];
 	defaults = [NSUserDefaults standardUserDefaults];
 	[self setWindowFrameAutosaveName: @"PackageInfo"];
-	[[self window] setTitle:NSLocalizedString(@"Package Info", nil)];
+	[[self window] setTitle:NSLocalizedString(@"Package Info", @"Window title")];
 	[self setEmailSig:@""];
 
 	return self;
@@ -178,7 +178,7 @@
 								autorelease];
 	
 	while (nil != (vName = [versionNameEnumerator nextObject])){
-		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
+		vNumber = [pkg valueForKey:[vName lowercaseString]];
 		if ([vNumber length] < 2) vNumber = @"None";
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
 		[description appendAttributedString:

@@ -12,7 +12,7 @@
  email addresses.  It uses the GPL'd MyTextView class created by Hoshi Takanori to display the 
  familiar "hand" cursor over links.
 
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

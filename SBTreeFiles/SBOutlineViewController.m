@@ -1,3 +1,9 @@
+/*
+ File SBOutlineViewController.m
+
+ See header file SBOutlineViewController.h for license and interface information.
+
+ */
 
 #import "SBOutlineViewController.h"
 

@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FinkBrowseItem</key>
+	<dict>
+		<key>Action</key>
+		<string>openPackageFileViewer</string>
+		<key>Image</key>
+		<string>browse</string>
+		<key>Label</key>
+		<string>Browse</string>
+		<key>PaletteLabel</key>
+		<string>Package Browser</string>
+		<key>ToolTip</key>
+		<string>Open package file browser</string>
+	</dict>
 	<key>FinkDescribeItem</key>
 	<dict>
 		<key>Action</key>
@@ -27,19 +40,6 @@
 		<string>Negative Feedback</string>
 		<key>ToolTip</key>
 		<string>Tell the maintainer that a package is not working</string>
-	</dict>
-	<key>FinkPositiveEmailItem</key>
-	<dict>
-		<key>Action</key>
-		<string>sendPositiveFeedback</string>
-		<key>Image</key>
-		<string>posemail</string>
-		<key>Label</key>
-		<string>Positive</string>
-		<key>PaletteLabel</key>
-		<string>Positive Feedback</string>
-		<key>ToolTip</key>
-		<string>Tell the maintainer that an unstable package is working for you</string>
 	</dict>
 	<key>FinkFilterItem</key>
 	<dict>
@@ -84,6 +84,19 @@
 		<string>Interact</string>
 		<key>ToolTip</key>
 		<string>Raise interaction sheet (use if command has stalled)</string>
+	</dict>
+	<key>FinkPositiveEmailItem</key>
+	<dict>
+		<key>Action</key>
+		<string>sendPositiveFeedback</string>
+		<key>Image</key>
+		<string>posemail</string>
+		<key>Label</key>
+		<string>Positive</string>
+		<key>PaletteLabel</key>
+		<string>Positive Feedback</string>
+		<key>ToolTip</key>
+		<string>Tell the maintainer that an unstable package is working for you</string>
 	</dict>
 	<key>FinkRemoveBinaryItem</key>
 	<dict>

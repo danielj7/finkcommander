@@ -12,7 +12,7 @@ fink package, including its name, version and category.  The class provides
 methods for comparing packages by each attribute for use in sorting an array
 of packages.
 
-Copyright (C) 2002  Steven J. Burr
+Copyright (C) 2002, 2003  Steven J. Burr
 
 This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -109,8 +109,6 @@ enum {
  * Comparison Methods
  */
 
-//-(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y;
-
 -(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByName:(FinkPackage *)pkg;
 
@@ -154,8 +152,10 @@ enum {
  * Querying the Package
  */
 
+//Package name without -dev, -shlibs or -bin
 -(NSString *)nameWithoutSplitoff;
 
+//Tree is stable or unstable; ext is info or patch
 -(NSString *)pathToPackageInTree:(NSString *)tree
 			withExtension:(NSString *)ext;
 

@@ -1,4 +1,4 @@
-VERSION 0.5; Target release date: 1/14/03:
+VERSION 0.5; Target release date: 1/31/03:
 
 i Package file browser
 	i Fix instability
@@ -28,10 +28,12 @@ Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after la
 	command in Terminal
 
 New toolbar items for:
-	Package browser
+	d Package browser
 	Fink bug report
 
 SHORT TERM:
+
+Command queue
 
 Catch and display cvs errors during selfupdate-cvs
 

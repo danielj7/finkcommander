@@ -55,6 +55,7 @@ File: FinkOutputParser.m
 	 [(x) contains: @"Pick one:"]					|| 						\
 	 [(x) containsCI: @"[y/n]"] 					|| 						\
 	 [(x) contains: @"[anonymous]"] 				||					 	\
+	 [(x) contains: @"[root]"]						||						\
 	 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 //fink's --yes option does not work for these prompts:
@@ -66,6 +67,21 @@ File: FinkOutputParser.m
 
 
 @implementation FinkOutputParser
+
+//------------------------------------------>Accessors
+
+-(float)increment{ return increment; }
+
+-(int)pgid{ return pgid; }
+
+-(NSString *)currentPackage { return currentPackage; }
+
+-(void)setCurrentPackage:(NSString *)p
+{
+	[p retain];
+    [currentPackage release];
+    currentPackage = p;
+}
 
 //------------------------------------------>Create and Destroy
 
@@ -100,24 +116,6 @@ File: FinkOutputParser.m
 	
 	[super dealloc];
 }
-
-//------------------------------------------>Accessors
-
--(float)increment{ return increment; }
-
--(int)pgid{ return pgid; }
-
--(NSString *)currentPackage { return currentPackage; }
-
--(void)setCurrentPackage:(NSString *)p
-{
-	[p retain];
-    [currentPackage release];
-    currentPackage = p;
-
-	Dprintf(@"Setting new current package to %@", currentPackage);
-}
-
 
 //------------------------------------------>Set Up Installation Arrays and Dictionary
 

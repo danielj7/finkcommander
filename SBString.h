@@ -4,7 +4,7 @@ File: SBString.h
  Category extending NSString class with a number of useful methods.
  Includes wrappers for fnmatch.h and regex.h functions.
  
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ File: SBString.h
 @end
 
 //Convenience function for use with rangeOfCompiledExpression methods.
-//Must call regfree(&expr) sometime after use.
+//The user must call regfree(&expr) sometime after its use.
 int compiledExpressionFromString(NSString *string, regex_t *expr);
 
 

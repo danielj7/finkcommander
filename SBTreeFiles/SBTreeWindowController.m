@@ -1,4 +1,9 @@
+/*
+ File SBTreeWindowController.m
 
+ See header file SBTreeWindowController.h for license and interface information.
+
+ */
 
 #import "SBTreeWindowController.h"
 
@@ -28,27 +33,18 @@ enum {
 		   windowName:(NSString *)wName
 {
     self = [super initWithWindowNibName:@"TreeView"];
-    if (nil != self){
-		
+    if (nil != self){		
 		tree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
 		[self setFileList:fList];  //Needed in windowDidLoad to build tree
 		[[self window] setTitle:wName];
-		[[self window] setReleasedWhenClosed:YES];
 		[self setActiveView:@"outline"];
 		
-		Dprintf(@"Registering for notification %@", [[self window] title]);
 		[[NSDistributedNotificationCenter defaultCenter]
 			addObserver:self
 			selector:@selector(finishedLoading:)
 			name:@"SBTreeCompleteNotification"
 			object:[[self window] title]
 			suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
-
-		[[NSNotificationCenter defaultCenter] 
-			addObserver:self 
-			selector:@selector(applicationWillTerminate:)
-			name:NSApplicationWillTerminateNotification
-			object:nil];
 	}
     return self;
 }
@@ -102,6 +98,20 @@ browser; tell the tree object to build its data structure.  */
 			  withObject:[self fileList]];
 }
 
+-(void)windowDidResize:(NSNotification *)aNotification
+{
+	double newWidth = [[aNotification object] frame].size.width;
+	if (newWidth >= 800.0){
+		[browser setMaxVisibleColumns:5];
+	}else if (newWidth >= 600.0){
+		[browser setMaxVisibleColumns:4];
+	}else if (newWidth >= 400.0){
+		[browser setMaxVisibleColumns:3];
+	}else{
+		[browser setMaxVisibleColumns:2];
+	}
+}
+
 -(BOOL)windowShouldClose:(id)sender
 {
     /*	The following is needed to release all items in a tree.  NSOutline
@@ -112,29 +122,21 @@ browser; tell the tree object to build its data structure.  */
 		return NO;
 	}
     [oController collapseItemAndChildren:[tree rootItem]];
+	[browser removeFromSuperview];
+	[outlineView removeFromSuperview];
     return YES;
 }
 
 -(void)windowWillClose:(NSNotification *)n
 {
-    //We have no more need for the data structure
-    [[tree rootItem] setChildren:nil];
-
-}
-
--(void)applicationWillTerminate:(NSNotification *)n
-{
-    [[self window] performClose:self];
+	[[tree rootItem] setChildren:nil];
+	[fileList release];
 }
 
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
-    [oController release];
-	[browser release];
-    [fileList release];
-    [tree release];
 }
 
 //----------------------------------------------------------
@@ -190,7 +192,6 @@ browser; tell the tree object to build its data structure.  */
     [loadingIndicator setUsesThreadedAnimation:YES];
     [loadingIndicator startAnimation:self];
 }
-
 
 -(void)finishedLoading:(NSNotification *)n
 {

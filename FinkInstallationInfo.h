@@ -11,7 +11,7 @@ File: FinkInstallationInfo.h
  development tools.  The information it provides is used primarily to create
  the email sig for reports to package maintainers.
 
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

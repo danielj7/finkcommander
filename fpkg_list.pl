@@ -12,7 +12,7 @@
 #installed packages and print the data in a long list.  This list is then
 #parsed by FinkData to create an array of FinkPackage objects. 
 #
-#Copyright (C) 2002  Steven J. Burr
+#Copyright (C) 2002, 2003  Steven J. Burr
 #
 #This program is free software; you may redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -32,23 +32,25 @@
 #
 
 
-### Declarations ###
-
+### Import Modules ###
+require 5.006;  # perl 5.6.0 or newer required
 use strict;
 use lib "BASEPATH/lib/perl5";
 use lib "BASEPATH/lib/perl5/darwin";
 use Fink::Services;
 use Fink::Package;
+
+### Declarations ###
 my ($configpath, $config);                  #used to scan pkgs
 my (@pkglist, $package);                    #list of pkg names, name of each
-my ($vo, $lversion);                        #PkgVersion object, version num
+my ($vo, $lversion);                        #PkgVersion object, version number
 my ($pname, $iflag, $description, $full);               #pkg data items
 my ($section, $lvinstalled, $lvstable, $lvunstable);    #ditto
 
 
 ### Sub: latest_version_for_tree ###
 
-#find the latest version (V) of a package that appears in a particular tree
+# find the latest version (V) of a package that appears in a particular tree
 
 sub latest_version_for_tree {       
     my ($mypkg, $mytree) = @_;   #Parameters: Package object, tree as string
@@ -65,6 +67,8 @@ sub latest_version_for_tree {
     if (! defined(@tree_versions)) { return " " ;}
     return &Fink::Services::latest_version(@tree_versions); #latest V in tree
 }
+
+### Sub: latest_installed_version ###
 
 sub latest_installed_version {
     my $mypkg = shift;

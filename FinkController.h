@@ -50,7 +50,7 @@ defaults and notification identifiers, are declared in FinkGlobals.h.  Functions
 do not fit well in the existing object model for FinkController are defined in 
 FinkUtilities.m. 
 
-Copyright (C) 2002  Steven J. Burr
+Copyright (C) 2002, 2003  Steven J. Burr
 
 This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -194,17 +194,16 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)runPackageSpecificCommand:(id)sender;
 -(IBAction)runNonSpecificCommand:(id)sender;
 -(IBAction)runForceRemove:(id)sender;
--(void)launchCommandWithArguments:(NSMutableArray *)args;
+//-(void)launchCommandWithArguments:(NSMutableArray *)args;
 #ifndef OSXVER101
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender;
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender;
--(void)launchCommandInTerminal:(NSString *)cmd;
+//-(void)launchCommandInTerminal:(NSString *)cmd;
 #endif
 
 //AuthorizedExecutable delegate methods
 -(void)scrollToVisible:(NSNumber *)n;  //helper method used by captureOutput
--(void)captureStdOut:(NSString *)output forExecutable:(id)ignore;
--(void)captureStdErr:(NSString *)output forExecutable:(id)ignore;
+-(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;
 
 @end

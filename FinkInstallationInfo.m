@@ -131,9 +131,12 @@ File: FinkInstallationInfo.m
 								usingArgument:nil];
 	if (nil != sysVerString){
 		sysVerString = [self numericVersionFromString:sysVerString];
+		if (nil != sysVerString){
+			return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
+		}
 	}
-
-	return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
+	
+	return @"Unable to determine Mac OS X version";
 }
 
 -(NSString *)gccVersion

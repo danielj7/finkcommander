@@ -1,4 +1,9 @@
+/*
+ File SBTreeWindowManager.m
 
+ See header file SBTreeWindowManager.h for license and interface information.
+
+ */
 
 #import "SBTreeWindowManager.h"
 
@@ -8,7 +13,13 @@
 {
 	self = [super init];
 	if (nil != self){
-		_sbWindows = [[NSMutableArray alloc] init];
+		_sbWindowControllers = [[NSMutableArray alloc] init];
+		_sbWindowTitles = [[NSMutableArray alloc] init];
+		[[NSNotificationCenter defaultCenter] 
+				addObserver: self
+				selector: @selector(windowWillClose:)
+				name: NSWindowWillCloseNotification
+				object: nil];
 	}
 	return self;
 }
@@ -16,7 +27,8 @@
 -(void)dealloc
 {
     [_sbcurrentPackageName release];
-	[_sbWindows release];
+	[_sbWindowControllers release];
+	[_sbWindowTitles release];
     [super dealloc];
 }
 
@@ -29,7 +41,9 @@
     _sbcurrentPackageName = newCurrentPackageName;
 }
 
--(NSMutableArray *)windows { return _sbWindows; }
+-(NSMutableArray *)windowControllers { return _sbWindowControllers; }
+
+-(NSMutableArray *)windowTitles { return _sbWindowTitles; }
 
 -(NSMutableArray *)fileListFromCommand:(NSArray *)args
 {
@@ -65,23 +79,26 @@
 {
     NSMutableArray *fileList = [self fileListFromCommand:
 			[NSArray arrayWithObjects: @"/sw/bin/dpkg", @"-L", pkgName, nil]];
-    SBTreeWindowController *tcontroller;
+    SBTreeWindowController *newController;
 	NSString *windowTitle = pkgName;
 	int windowNumber = 1;
-		
-	while ([[self windows] containsObject:windowTitle]){
+	
+	while ([[self windowTitles] containsObject:windowTitle]){
 		windowNumber++;
-		if (windowNumber > 1){
-			windowTitle = [NSString stringWithFormat:@"%@ (%d)", pkgName, windowNumber];
-		}		
+		windowTitle = [NSString stringWithFormat:@"%@ (%d)", pkgName, windowNumber];
 	}
-	[[self windows] addObject:windowTitle];
-		
-	tcontroller = [[SBTreeWindowController alloc]
+	[[self windowTitles] addObject:windowTitle];			
+	
+	newController = [[SBTreeWindowController alloc]
 							initWithFileList:fileList
 							windowName:windowTitle];
-    [tcontroller showWindow:self];
+    [newController showWindow:self];
 }
+
+/*-(void)windowWillClose:(NSNotification *)aNotification
+{
+	id controller = [[aNotification object] windowController];
+}*/
 
 @end
 

@@ -15,7 +15,7 @@ File: FinkOutputParser.h
  FinkOutputParser also reads and stores the process group id for a command for possible
  later use in terminating the command.
 
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -43,8 +43,9 @@ File: FinkOutputParser.h
 
 #define STARTING_INCREMENT 5.0
 
+/* 	Constants used to signal FinkController that the output requires a GUI event */
 enum {
-    //used for signals, to track phases, as indices in increments array
+    //Used for signals, to track phases, as indices in increments array
     NONE,
     FETCH,
     UNPACK,
@@ -52,7 +53,7 @@ enum {
     COMPILE,
     BUILD,
     ACTIVATE,
-	//used only as signals
+	//Used only as signals
 	PGID,
     START_INSTALL,
     PASSWORD_PROMPT,
@@ -95,8 +96,6 @@ enum {
 -(int)pgid;
 
 -(NSString *)currentPackage;
-
--(void)setCurrentPackage:(NSString *)p;
 
 -(int)parseOutput:(NSString *)output;
 

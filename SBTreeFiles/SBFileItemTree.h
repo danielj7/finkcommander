@@ -1,3 +1,25 @@
+/*
+ File: SBFileItemTree.h
+
+ An SBFileItemTree models a directory tree for selected files in
+ the file system.  Given a list of file paths, the buildTreeFromFileList
+ method immediately creates a complete tree data structure consisting of
+ SBFileItems representing each of the paths.  A lazy method would reduce
+ memory consumption but would slow down the display.  
+ 
+ Copyright (C) 2002, 2003  Steven J. Burr
+
+ This program is free software; you may redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ */
 
 #import <Cocoa/Cocoa.h>
 #import "SBFileItem.h"
@@ -21,33 +43,49 @@ extern void alertProblemPaths(NSArray *);
 }
 
 /*
-	Initialization
-*/
+ *	Initialization
+ */
 -(id)initWithFileArray:(NSMutableArray *)flist
 				  name:(NSString *)aName;
 
 /*
-	Accessors
-*/
+ *	Accessors
+ */
 
+// Total size in bytes of all files in the tree
 -(unsigned long)totalSize;
+//Total number of file items (excluding directories)
 -(unsigned long)itemCount;
 
+// Top level directory
 - (SBFileItem *)rootItem;
 - (void)setRootItem:(SBFileItem *)newRootItem;
 
+/*	String used to identify a tree in a Distributed Objects
+	notification (see below).  The string should be unique within an 
+	application to make sure notification receivers correctly
+	identify the tree object.  */
 -(NSString *)name;
 -(void)setName:(NSString *)newName;
 
+
 /*
-	Tree Building
-*/
+ *	Building the Tree
+ *
+ *	Designed to run in a separate thread.  Posts an
+ *	"SBTreeCompleteNotification" on completion with the tree's
+ *	name as the object.
+ */
+
 -(void)buildTreeFromFileList:(NSMutableArray *)flist;
 
 
 /*
-	Sorting the Tree
-*/
+ *	Sorting the Tree
+ *
+ * 	The arguments should be an SBFileItem attribute (filename, size, mdate) and
+ *	either @"ascending" or @"descending".
+ */
 
 -(void)sortTreeByElement:(NSString *)element
     inOrder:(NSString *)order;

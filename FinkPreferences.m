@@ -46,8 +46,8 @@ enum {
 {
 	//This is a bit anachronistic
 	if ([conf extendedVerboseOptions]){
-		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", nil) atIndex:1];
-		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", nil) atIndex:2];
+		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", @"Verbosity level for Fink") atIndex:1];
+		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", @"Verbosity level for Fink") atIndex:2];
 	}
 	[environmentTableView setAutosaveName: @"FinkEnvironmentTableView"];
 }
@@ -424,7 +424,7 @@ enum {
 	[panel setCanChooseDirectories: YES];
 	[panel setCanChooseFiles: NO];
 	[panel setAllowsMultipleSelection: NO];
-	[panel setPrompt: NSLocalizedString(@"Choose", nil)];
+	[panel setPrompt: NSLocalizedString(@"Choose", @"Title for panel asking user to choose a directory")];
 	
 	[panel beginSheetForDirectory:directory
 		file: nil

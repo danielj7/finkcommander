@@ -12,7 +12,7 @@ File: FinkTableView.h
  the table view when the user clicks the table header cells and for returning
  an array of the FinkPackage objects selected in the table.
 
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

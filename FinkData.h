@@ -10,7 +10,7 @@ Unix software on Mac OS X.
 The FinkData class obtains information about installed and available fink 
 packages and stores the information in an array of FinkPackage instances.
 
-Copyright (C) 2002  Steven J. Burr
+Copyright (C) 2002, 2003  Steven J. Burr
 
 This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,16 +44,14 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSDate *start;
 }
 
-//Singleton
+/* 	Singleton class method 
+	For possible use in a future multi-window version of FC */
 +(FinkData *)sharedData;
 
-//Accessors
+/* Public accessor -- an array of FinkPackage instances */
 -(NSArray *)array;
--(void)setArray:(NSArray *)a;
--(void)setBinaryPackages:(NSDictionary *)d;
--(void)setStart:(NSDate *)d;
 
-//Update array to reflect latest package information.
+/* Update the array to reflect latest package information. */
 -(void)update;
 
 //Utilities

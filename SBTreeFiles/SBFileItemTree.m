@@ -1,4 +1,9 @@
+/*
+ File SBFileItemTree.m
 
+ See header file SBFileItemTree.h for license and interface information.
+
+ */
 
 #import "SBFileItemTree.h"
 
@@ -176,6 +181,8 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     [self addItemToTree:item];
 }
 
+/* 	This method runs in a separate thread to prevent the building of the tree from
+	stalling the whole application */
 -(void)buildTreeFromFileList:(NSMutableArray *)flist
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -252,7 +259,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     }
 }
 
-/* Provides entry to recursive sort messages sent to each item's children */
+/* Provides entry to recursive sort method defined above */
 -(void)sortTreeByElement:(NSString *)element
     inOrder:(NSString *)order
 {

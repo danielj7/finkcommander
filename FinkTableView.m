@@ -10,6 +10,7 @@ See the header file, FinkTableView.h, for interface and license information.
 #pragma mark MACROS
 //----------------------------------------------------------
 
+//Column widths
 #define MAX_FLAG_WIDTH 30.0
 #define MAX_STATUS_WIDTH 90.0
 #define MAX_CATEGORY_WIDTH 90.0
@@ -240,7 +241,6 @@ See the header file, FinkTableView.h, for interface and license information.
 #pragma mark ACTION
 //----------------------------------------------------------
 
-
 -(IBAction)openPackageFiles:(id)sender
 {
 	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
@@ -348,7 +348,10 @@ See the header file, FinkTableView.h, for interface and license information.
 	NSString *identifier = [aTableColumn identifier];
 	FinkPackage *package = [[self displayedPackages] objectAtIndex:rowIndex];
 	if ([identifier isEqualToString:@"status"]){
-		return NSLocalizedString([package valueForKey:identifier], nil);
+		NSString *pkgStatus = [package status];
+		return [[NSBundle mainBundle] localizedStringForKey:pkgStatus
+									  value:pkgStatus
+									  table:@"Programmatic"];
 	}
 	if ([identifier isEqualToString:@"flagged"]){
 		int flag = [[package valueForKey:identifier] intValue];
@@ -363,13 +366,13 @@ See the header file, FinkTableView.h, for interface and license information.
 //----------------------------------------------------------
 
 /* 	The following two methods are used to scroll back to the previously selected row
-after the table is sorted.  It works almost the same way Mail does, except
-that only the latest selection is preserved.  For the filter, sorting and
-scrolling methods to work together, information on the selected object must
-be stored and then the rows must be deselected before the filter is applied
-and before the table is sorted. */
+	after the table is sorted.  It works almost the same way Mail does, except
+	that only the latest selection is preserved.  For the filter, sorting and
+	scrolling methods to work together, information on the selected object must
+	be stored and then the rows must be deselected before the filter is applied
+	and before the table is sorted. */
 
-//store information needed to scroll back to selection after filter/sort
+//Store information needed to scroll back to selection after filter/sort
 -(void)storeSelectedObjectInfo
 {
 	FinkPackage *selectedObject;
@@ -497,7 +500,7 @@ and before the table is sorted. */
 					LS_OK,
 					nil, nil,
 					[self window], self, NULL,	NULL, nil,
-					[NSString stringWithFormat:NSLocalizedString(@"FinkCommander is unable to install %@ from source.  Please install the binary or use the Source:Run in Terminal menu command to install %@.", nil), pname, pname],
+					[NSString stringWithFormat:NSLocalizedString(@"FinkCommander is unable to install %@ from source.  Please install the binary or use the Source:Run in Terminal menu command to install %@.", @"Alert sheet message"), pname, pname],
 					nil);
 	}
 	return YES;

@@ -410,6 +410,7 @@
 				FBCD47CF03C60D9A00A80164,
 				FBCD47D003C60D9A00A80164,
 				FBCD47D203C60DB000A80164,
+				FB84A70B03C93AF400A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1682,6 +1683,7 @@
 				F5F99D8603AC1F8D01A80165,
 				F5CB063C03B03E5E01A80165,
 				F50EC0D503A0464101A80165,
+				FB84A70903C93AF400A80164,
 				F5C9446D039C6BE201A80164,
 				F5F99DB803AD5AC401A80165,
 				F5F99DB603AD4F4D01A80165,
@@ -1933,7 +1935,7 @@
 			};
 		};
 		F5D3EE420336DD8B01A80165 = {
-			fileEncoding = 10;
+			fileEncoding = 4;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Localizable.strings;
@@ -2009,8 +2011,8 @@
 			children = (
 				F50EC36503A0559001A80165,
 				F5CC7617039F174E01A80165,
-				F5CC7615039F174E01A80165,
 				F57E59B403A998D701A80165,
+				F5CC7615039F174E01A80165,
 				FBCD472B03C6070E00A80164,
 				FBCD472903C6070000A80164,
 				F5CC7619039F174E01A80165,
@@ -2026,8 +2028,8 @@
 			children = (
 				F50EC36603A0559001A80165,
 				F5CC7618039F174E01A80165,
-				F5CC7616039F174E01A80165,
 				F57E59B503A998D701A80165,
+				F5CC7616039F174E01A80165,
 				FBCD45EF03C5FF3100A80164,
 				FBCD45F003C5FF3100A80164,
 				F5CC761A039F174E01A80165,
@@ -2074,8 +2076,37 @@
 //FB2
 //FB3
 //FB4
+		FB84A70903C93AF400A80164 = {
+			children = (
+				FB84A70A03C93AF400A80164,
+				FB84A70F03C93D9C00A80164,
+			);
+			isa = PBXVariantGroup;
+			name = Localizable.strings;
+			path = "";
+			refType = 4;
+		};
+		FB84A70A03C93AF400A80164 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = English;
+			path = SBTreeFiles/English.lproj/Localizable.strings;
+			refType = 4;
+		};
+		FB84A70B03C93AF400A80164 = {
+			fileRef = FB84A70903C93AF400A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FB84A70F03C93D9C00A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = SBTreeFiles/German.lproj/Localizable.strings;
+			refType = 4;
+		};
 		FBB8F6D903BFE6D000A8016B = {
-			fileEncoding = 4;
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = English;
 			path = English.lproj/Programmatic.strings;
@@ -2097,7 +2128,7 @@
 			};
 		};
 		FBB8F6DD03BFE6FF00A8016B = {
-			fileEncoding = 4;
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Programmatic.strings;

@@ -1,4 +1,10 @@
+/*
+ File SBBrowserView.m
 
+ See header file SBBrowserView.h for license and interface information.
+
+*/
+ 
 #import "SBBrowserView.h"
 
 @implementation SBBrowserView
@@ -27,7 +33,6 @@
 -(void)dealloc
 {
 	[tree release];
-
 	[super dealloc];
 }
 
@@ -45,7 +50,6 @@
     [newTree retain];
     [tree release];
     tree = newTree;
-	//[self setTitle:[[tree rootItem] path] ofColumn:0];
 }
 
 //----------------------------------------------------------

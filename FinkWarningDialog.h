@@ -10,7 +10,7 @@
  FinkWarningDialog is the controller for a view (Dialogs.nib) that allows
  the user to turn off a warning by clicking a check box type button.
 
- Copyright (C) 2002  Steven J. Burr
+ Copyright (C) 2002, 2003  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

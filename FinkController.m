@@ -268,16 +268,16 @@ enum {
 {
     if ([defaults boolForKey: FinkPackagesInTitleBar]){
 		[window setTitle: [NSString stringWithFormat:
-			NSLocalizedString(@"Packages: %d Displayed, %d Installed", nil),
+			NSLocalizedString(@"Packages: %d Displayed, %d Installed", @"Main window title"),
 			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
 		if (! commandIsRunning){
-			[msgText setStringValue: NSLocalizedString(@"Done", nil)];
+			[msgText setStringValue: NSLocalizedString(@"Done", @"Status bar message")];
 		}
     }else if (! commandIsRunning){
 		[window setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
-			NSLocalizedString(@"%d packages (%d installed)", nil),
+			NSLocalizedString(@"%d packages (%d installed)", @"Status bar message"),
 			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
     }
@@ -287,7 +287,8 @@ enum {
 -(void)displayCommand:(NSArray *)params
 {
     [msgText setStringValue: 
-		[NSString stringWithFormat: NSLocalizedString(@"Running %@", nil),
+		[NSString stringWithFormat: NSLocalizedString(@"Running %@", 
+			@"Status bar message indicating a command is running"),
 		[params componentsJoinedByString: @" "]]];
 }
 
@@ -405,7 +406,8 @@ enum {
 		NSBeginAlertSheet(NSLocalizedString(@"Unable to Locate Fink", @"Alert sheet title"),
 					LS_OK, nil,	nil, //title, buttons
 					window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
-					NSLocalizedString(@"Try setting the path to Fink manually in Preferences.", @"Alert sheet message"), nil);
+					NSLocalizedString(@"Try setting the path to Fink manually in Preferences.", 
+										@"Alert sheet message"), nil);
     }
     [self updateTable:nil];
 
@@ -513,7 +515,7 @@ enum {
     [preferences showWindow:self];
 }
 
-//helper; separated from action method because also called on schedule
+//Helper; separated from action method because also called on schedule
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
     NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
@@ -540,9 +542,10 @@ enum {
 				[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
 		}
     }else if (notifyWhenCurrent){
-		NSRunAlertPanel(NSLocalizedString(@"Current", nil),
-				  NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", nil),
-				  LS_OK, nil, nil);
+		NSRunAlertPanel(
+				NSLocalizedString(@"Current", @"Title of update alert panel when the current version of FC is installed"),
+				NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", @"Message of update alert panel when the current version of FC is installed"),
+				LS_OK, nil, nil);
     }
     [defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
 }
@@ -756,9 +759,9 @@ enum {
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 ? 
 						NSLocalizedString(@"Your selection includes the following stable packages:\n\n\t%@\n\nStable packages are known to work properly, so sending positive feedback about them is unnecessary.", 
-								@"Alert message") :
+								@"Alert message, plural version") :
 						NSLocalizedString(@"Your selection includes the following stable package:\n\n\t%@\n\nStable packages are known to work properly, so sending positive feedback about them is unnecessary.", 
-								@"Alert message");
+								@"Alert message, singular version");
 		NSBeginAlertSheet(LS_ERROR,
 					LS_OK, nil, nil,
 					window, self, NULL, NULL, nil,
@@ -767,8 +770,8 @@ enum {
 	}
 	if (typeOfFeedback == NEGATIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 	?
-				NSLocalizedString(@"You do not have the latest version of the following packages:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest versions, you should install and try them before sending negative feedback.", nil) 	:
-				NSLocalizedString(@"You do not have the latest version of the following package:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest version, you should install and try it before sending negative feedback.", @"Alert message");
+				NSLocalizedString(@"You do not have the latest version of the following packages:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest versions, you should install and try them before sending negative feedback.", @"Alert message, plural version")  :
+				NSLocalizedString(@"You do not have the latest version of the following package:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest version, you should install and try it before sending negative feedback.", @"Alert message, singular version");
  		NSBeginAlertSheet(LS_WARNING,
  					LS_OK, nil, nil,
  					window, self, NULL, NULL, nil,
@@ -794,7 +797,7 @@ enum {
 		[tableView selectedRow]];
 	
 	if (! [[pkg status] contains:@"u"]){
-		NSBeep();//Substitute alert sheet?
+		NSBeep();
 		return;
 	}
 	[treeManager openNewOutlineForPackageName:[pkg name]];
@@ -959,6 +962,7 @@ enum {
 				@"FinkTermCvsItem",
 				@"FinkInteractItem",
 				@"FinkTerminateCommandItem",
+				@"FinkBrowseItem",
 				@"FinkPositiveEmailItem",
 				@"FinkEmailItem",
 				@"FinkFilterItem",		
@@ -970,12 +974,12 @@ enum {
 	return 	[NSArray arrayWithObjects:
 				@"FinkInstallBinaryItem",
 				@"FinkInstallSourceItem",
-				@"FinkTermInstallItem",
 				@"FinkRemoveSourceItem",
 				@"FinkSelfUpdateCVSItem",
 				NSToolbarSeparatorItemIdentifier,
 				@"FinkTerminateCommandItem",
 				@"FinkDescribeItem",
+				@"FinkBrowseItem",
 				@"FinkPositiveEmailItem",
 				@"FinkEmailItem",
 				NSToolbarFlexibleSpaceItemIdentifier,
@@ -1010,10 +1014,7 @@ enum {
 			[tableView setDisplayedPackages: [packages array]];
 		}else{
 			while (nil != (pkg = [e nextObject])){
-				/* 	Translate the attribute string into a selector and apply it to 
-					the selected package to get the value */
-				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)]
-									lowercaseString];
+				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
 				/* 	If the value matches the filter term, add it to the subset */
 				if ([pkgAttribute contains:filterText]){
 					[subset addObject:pkg];
@@ -1123,7 +1124,9 @@ enum {
 #pragma mark RUNNING AUTHORIZED COMMANDS
 //================================================================================
 
-/*** Helper for Menu and Toolbar Commands ***/
+/*
+ *	Helper for Menu and Toolbar Commands 
+ */
 
 -(NSMutableArray *)argumentListForCommand:(id)sender
 					packageSpecific:(BOOL)pkgSpec
@@ -1178,9 +1181,27 @@ enum {
     return args;
 }
 
-/*** Run-in-Terminal Methods ***/
+/*
+ *	Run-in-Terminal Methods 
+ */
 
 #ifndef OSXVER101
+
+//Helper
+-(void)launchCommandInTerminal:(NSString *)cmd
+{
+	NSAppleScript *script;
+	NSAppleEventDescriptor *descriptor;
+	NSDictionary *errord;
+
+	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
+	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
+	descriptor = [script executeAndReturnError:&errord];
+	if (! descriptor){
+		NSLog(@"Apple script failed to execute");
+		NSLog(@"Error dictionary:\n%@", [errord description]);
+	}
+}
 
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender
 {
@@ -1198,24 +1219,34 @@ enum {
 	[self launchCommandInTerminal:[args componentsJoinedByString:@" "]];
 }
 
--(void)launchCommandInTerminal:(NSString *)cmd
-{
-	NSAppleScript *script;
-	NSAppleEventDescriptor *descriptor;
-	NSDictionary *errord;
-
-	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
-	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
-	descriptor = [script executeAndReturnError:&errord];
-	if (! descriptor){
-		NSLog(@"Apple script failed to execute");
-		NSLog(@"Error dictionary:\n%@", [errord description]);
-	}
-}
-
 #endif /* ! OSXVER101 */
 
-/*** Run-in-FinkCommander Methods ***/
+/*
+ *	Run-in-FinkCommander Methods 
+ */
+
+//Helper
+-(void)launchCommandWithArguments:(NSMutableArray *)args
+{
+    NSString *exec = [args objectAtIndex:0];
+
+    pendingCommand = NO; 	//no command waiting in line
+    toolIsBeingFixed = NO;
+    commandIsRunning = YES;
+    [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
+											  executable:exec]];
+    [self displayCommand: args];
+	[NSApp setApplicationIconImage:[NSImage imageNamed:@"finkcommanderatwork"]];
+
+    [finkTask setArguments:args];
+    [finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+    [finkTask authorizeWithQuery];
+    [finkTask start];
+	[textViewController setLimits];
+    [[textViewController textView]
+		replaceCharactersInRange:NSMakeRange(0, [[textView string] length])
+					  withString:@""];
+}
 
 -(IBAction)runPackageSpecificCommand:(id)sender
 {
@@ -1243,7 +1274,7 @@ enum {
     NSMutableArray *args;
     int answer = 
 		NSRunCriticalAlertPanel(LS_WARNING,
-								NSLocalizedString(@"Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?", nil),
+								NSLocalizedString(@"Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?", @"Alert panel message"),
 								LS_REMOVE, LS_CANCEL, nil);
     if (answer == NSAlertAlternateReturn) return;
 
@@ -1262,7 +1293,7 @@ enum {
 
     if (commandIsRunning && !toolIsBeingFixed){
 		NSRunAlertPanel(LS_SORRY,
-				  NSLocalizedString(@"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.", nil),
+				  NSLocalizedString(@"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.", @"Alert panel message"),
 				  LS_OK, nil, nil);
 		return;
 	}
@@ -1278,28 +1309,6 @@ enum {
     [self performSelector:@selector(launchCommandWithArguments:)
 					 withObject:args
 					 afterDelay:1.0];
-}
-
--(void)launchCommandWithArguments:(NSMutableArray *)args
-{
-    NSString *exec = [args objectAtIndex:0];
-
-    pendingCommand = NO; 	//no command waiting in line
-    toolIsBeingFixed = NO;
-    commandIsRunning = YES;
-    [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
-											  executable:exec]];
-    [self displayCommand: args];
-	[NSApp setApplicationIconImage:[NSImage imageNamed:@"finkcommanderatwork"]];
-
-    [finkTask setArguments:args];
-    [finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
-    [finkTask authorizeWithQuery];
-    [finkTask start];
-	[textViewController setLimits];
-    [[textViewController textView] 
-		replaceCharactersInRange:NSMakeRange(0, [[textView string] length])
-		withString:@""];
 }
 
 //================================================================================
@@ -1385,13 +1394,13 @@ enum {
     }
 }
 
-//Scroll to the latest addition to output if user has selected the option
-//to always do so, or if the scroll thumb is at or near the bottom
+/*	Scroll to the latest addition to output if user has selected the option
+	to always do so, or if the scroll thumb is at or near the bottom */
 -(void)scrollToVisible:(NSNumber *)pixelsBelowView
 {
-    //Window or splitview resizing often results in some gap between
-    //the scroll thumb and the bottom, so the test shouldn't be whether
-    //there are 0 pixels below the scroll view
+    /*	Window or splitview resizing often results in some gap between
+    	the scroll thumb and the bottom, so the test shouldn't be whether
+		there are 0 pixels below the scroll view */
     if ([pixelsBelowView floatValue] <= 100.0 ||
 		[defaults boolForKey: FinkAlwaysScrollToBottom]){
 		[[textViewController textView] scrollRangeToVisible:
@@ -1402,6 +1411,7 @@ enum {
 -(void)processOutput:(NSString *)output
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
     /* Determine how much output is below the scroll view based on
        the following calculation (in vertical pixels):
 
@@ -1417,9 +1427,8 @@ enum {
 		abs([[textViewController textView] bounds].size.height 			-
 			[[textViewController textView] visibleRect].origin.y 		-
 			[[textViewController textView] visibleRect].size.height)];
-    int signal;
-	
-	signal = [parser parseOutput:output];
+
+    int signal = [parser parseOutput:output];
 	
     if (commandTerminated) return;
     switch(signal)
@@ -1482,7 +1491,6 @@ enum {
 			output = NSLocalizedString(@"\nThe tool used to run Fink commands as root was unable to repair itself.\n", @"Error message that may be displayed in output view");
 			break;
 		case PGID:
-			Dprintf(@"pgid for Launcher = %d", [parser pgid]);
 			output = @"";
 			break;
     }
@@ -1500,12 +1508,7 @@ enum {
  * Delegate Methods
  */
 
--(void)captureStdOut:(NSString *)output forExecutable:(id)ignore
-{
-	[self processOutput:output];
-}
-
--(void)captureStdErr:(NSString *)output forExecutable:(id)ignore
+-(void)captureOutput:(NSString *)output forExecutable:(id)ignore
 {
 	[self processOutput:output];
 }
@@ -1521,9 +1524,9 @@ enum {
     Dprintf(@"Finishing command %@ with status %d", lastCommand, status);
     NSBeep();
 
-    // Make sure command was successful before updating table.
-    // Checking exit status is not sufficient for some fink commands, so check
-    // approximately last two lines for "failed."
+    /*	Make sure command was successful before updating table.
+     	Checking exit status is not sufficient for some fink commands, so check
+		approximately last two lines for "failed." */
     [tableView setDisplayedPackages:[packages array]];
     if (status == 0 && ! [last2lines containsCI: @"failed"]){
 		if (CMD_REQUIRES_UPDATE(lastCommand) && ! commandTerminated){
@@ -1536,7 +1539,7 @@ enum {
 			[splitView expandOutputToMinimumRatio:0.0];
 			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,
 					 window, self, NULL, NULL, nil,
-					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", nil),
+					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", @"Alert sheet message"),
 					 nil);
 		}
 		[self updateTable: nil];

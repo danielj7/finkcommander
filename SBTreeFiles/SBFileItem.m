@@ -1,3 +1,10 @@
+/*
+File SBFileItem.m
+
+ See header file SBFileItem.h for license and interface information.
+
+*/
+
 #import "SBFileItem.h"
 
 @implementation SBFileItem

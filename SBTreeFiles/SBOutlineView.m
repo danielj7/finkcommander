@@ -1,4 +1,10 @@
+/*
+ File SBOutlineView.m
 
+ See header file SBOutlineView.h for license and interface information.
+
+ */
+ 
 #import "SBOutlineView.h"
 
 #define SB_COLUMNS [NSDictionary dictionaryWithObjectsAndKeys:	\
