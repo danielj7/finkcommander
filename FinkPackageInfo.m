@@ -7,11 +7,15 @@
 
 #import "FinkPackageInfo.h"
 
+//medium gray
+#define SHORTDESCCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.8 alpha:1.0]
+//medium gray
+#define VERSIONCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.8 alpha:1.0]
 //dark green
-#define URLCOLOR [NSColor colorWithDeviceCyan:1.0 magenta:0.0 yellow:1.0 black:0.4 alpha:1.0]
+#define URLCOLOR [NSColor colorWithDeviceCyan:0.6 magenta:0.0 yellow:0.6 black:0.5 alpha:1.0]
 //dark blue
-#define HEADINGCOLOR [NSColor colorWithDeviceCyan:1.0 magenta:1.0 yellow:0.0 black:0.3 alpha:1.0]
-
+#define HEADINGCOLOR [NSColor colorWithDeviceCyan:0.4 magenta:0.4 yellow:0.0 black:0.4 alpha:1.0]
+#define MAINHEADINGFONT [NSFont boldSystemFontOfSize:[NSFont systemFontSize]+2.0]
 
 @implementation FinkPackageInfo
 
@@ -28,7 +32,7 @@
 
 -(void)awakeFromNib
 {
-	textView = [MyTextView myTextViewToReplace: textView in: scrollView];
+	textView = [MyTextView myTextViewToReplace:textView in:scrollView];
 	[[textView window] setDelegate: self];
 }
 
@@ -91,21 +95,17 @@
 									[NSNumber numberWithInt: NSSingleUnderlineStyle],
 											NSUnderlineStyleAttributeName,
 									nil];
+	NSMutableAttributedString *desc = 	
+			[[[NSMutableAttributedString alloc]
+					initWithString: @""
+						   attributes: [NSDictionary dictionaryWithObjectsAndKeys:
+							   [NSFont systemFontOfSize:0], NSFontAttributeName,
+							   nil]] autorelease];
 	NSString *line;
 	NSString *field;
 	NSRange r;	      //general purpose range variable
 	
-	//start attributed string with colon, which will follow name and version,
-	//then newline and formatted Desc field
-	NSMutableAttributedString *desc = 
-		[[[NSMutableAttributedString alloc]
-				initWithString: [NSString stringWithFormat: @":\n%@", 
-									[e nextObject]] //Desc
-				attributes: [NSDictionary dictionaryWithObjectsAndKeys:
-					[NSFont systemFontOfSize: 0], NSFontAttributeName,
-					[NSColor darkGrayColor], NSForegroundColorAttributeName,
-					nil]] autorelease];
-
+	[e nextObject];   //discard summary; already included
 	//test second line for period or DescDetail
 	line = [[e nextObject]  strip];
 	if (! line) return desc;
@@ -147,7 +147,7 @@
 		r = [[desc string] rangeOfString: field];
 		if (r.length > 0){
 			[desc addAttribute: NSForegroundColorAttributeName 
-				  value: [NSColor darkGrayColor] 
+				  value: HEADINGCOLOR 
 				  range: r];
 		}
 	}
@@ -172,30 +172,75 @@
 	return desc;
 }
 
+-(NSAttributedString *)formatVersionsForPackage:(FinkPackage *)pkg
+{
+	NSEnumerator *e = [[NSArray arrayWithObjects: @"Installed", @"Unstable", @"Stable",
+		@"Binary", nil] objectEnumerator];
+	NSString *vName;
+	NSString *vNumber;
+	NSMutableAttributedString *desc =
+		[[[NSMutableAttributedString alloc]
+				initWithString: @""
+				attributes: [NSDictionary dictionaryWithObjectsAndKeys:
+							   [NSFont systemFontOfSize:0], NSFontAttributeName,
+							   nil]] autorelease];
+	
+	while (vName = [e nextObject]){
+		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
+		if ([vNumber length] < 2) vNumber = @"None";
+		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
+		[desc appendAttributedString:
+			[[[NSMutableAttributedString alloc]
+					initWithString: [NSString stringWithFormat: @"\n%@:", vName]
+					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
+									[NSFont systemFontOfSize:0], NSFontAttributeName,
+									HEADINGCOLOR, NSForegroundColorAttributeName,
+									nil]] autorelease]];
+		[desc appendAttributedString:
+			[[[NSMutableAttributedString alloc]
+				initWithString: [NSString stringWithFormat: @"\t%@", vNumber]
+					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
+									[NSFont systemFontOfSize:0], NSFontAttributeName,
+									VERSIONCOLOR, NSForegroundColorAttributeName,
+									nil]] autorelease]];
+	}	
+	return desc;
+}
+
 -(void)displayDescriptions:(NSArray *)packages
 {
 	int i, count = [packages count];
 	FinkPackage *pkg;
-	NSString *nameVersion;
+	NSString *pname;
+	NSString *psummary;
 
 	[textView setString: @""];
 
 	for (i = 0; i < count; i++){
 		pkg = [packages objectAtIndex: i];
-		nameVersion = ([[pkg version] length] > 1) ? 
-			[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]] : [pkg name];
+		pname = [NSString stringWithFormat:@"%@\n", [pkg name]];
+		psummary = [NSString stringWithFormat:@"%@\n", [pkg summary]];
 		[[textView textStorage] appendAttributedString:
 			[[[NSAttributedString alloc] 
-					initWithString: nameVersion
+					initWithString: pname
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
-										[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
+										MAINHEADINGFONT, NSFontAttributeName,
 										HEADINGCOLOR, NSForegroundColorAttributeName,
 										nil]] autorelease]];
+		[[textView textStorage] appendAttributedString:
+			[[[NSAttributedString alloc]
+					initWithString: psummary
+						attributes: [NSDictionary dictionaryWithObjectsAndKeys:
+										[NSFont systemFontOfSize:0], NSFontAttributeName,
+										SHORTDESCCOLOR, NSForegroundColorAttributeName,
+										nil]] autorelease]];
+		[[textView textStorage] appendAttributedString:
+			[self formatVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:
 			[self formatDescriptionString: [pkg fulldesc] forPackage: pkg]];
 		if (i != count - 1){  			//don't add newlines after last package
 			[[textView textStorage] appendAttributedString:
-				[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
+				[[[NSMutableAttributedString alloc] initWithString: @"\n\n\n"] autorelease]];
 		}
 	}
 }

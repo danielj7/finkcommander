@@ -8,7 +8,7 @@ Comments on the feasibility of implementing particular features with an Obj C-Pe
 
 OBJECTIVE C-PERL BRIDGE
 
-A bridge (Camelbones) is now available.  I have downloaded the framework and written a prototype application that uses the bridge rather than IPC to gather information for the FC table.  I will eventually incorporate the framework and this something like this code into FC.  At the moment, I'm having a hard time seeing how I could go much farther with this.  See notes below.
+A bridge (Camelbones) is now available.  I have downloaded the framework and written a prototype application that uses the bridge rather than IPC to gather information for the FC table.  I hope to eventually incorporate the framework and this something like this code into FC.  At the moment, I'm having a hard time seeing how I could go much farther with this.  See notes below.
 
 TYPES OF INTERACTION BETWEEN FC AND FP
 
@@ -23,7 +23,7 @@ Status in current FinkCommander:
 Implemented through NSTask and NSPipe in the FinkDataController class
  
 Feasibility of Implementing through Obj C-Perl bridge:
-Should not be a problem.  It's simply a matter of gaining better mastery of the Camelbones API and adding the Camelbones Framework to FC, so that users don't have to install it separately.
+I have attempted this once, with less than satisfactory results.  One implementation resulted in duplicate table entries every time the table was updated.  The other failed to update the table after its initial creation.
 
 (2)  Executing Fink or Apt-get Commands
 

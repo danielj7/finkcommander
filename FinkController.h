@@ -115,9 +115,10 @@ enum {
 	USER_CHOICE
 };
 
-@interface FinkController : NSWindowController <IOTaskWrapperController>
+@interface FinkController : NSObject <IOTaskWrapperController>
 {
 	//main window outlets
+	IBOutlet NSWindow *window;
 	IBOutlet id tableView;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;

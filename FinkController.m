@@ -46,8 +46,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		
 		defaults = [NSUserDefaults standardUserDefaults];
-			
-		[self setWindowFrameAutosaveName: @"MainWindow"];
+		
 		[NSApp setDelegate: self];
 
 		//Set base path default, if necessary; write base path into perl script used
@@ -61,7 +60,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 
 		//Set instance variables used to store information related to fink package data
-
 		packages = [[FinkDataController alloc] init];	// data used in table
 		[self setSelectedPackages: nil];    			// used to update package data
 		
@@ -222,7 +220,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([basePath length] <= 1 ){
 		NSBeginAlertSheet(NSLocalizedString(@"UnableToLocate", nil),	
 				NSLocalizedString(@"OK", nil), nil,	nil, //title, buttons
-				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
+				window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				NSLocalizedString(@"TrySetting", nil), nil);
 	}
 	[self updateTable:nil];
@@ -249,14 +247,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(void)displayNumberOfPackages
 {	
 	if ([defaults boolForKey: FinkPackagesInTitleBar]){				
-		[[self window] setTitle: [NSString stringWithFormat: 
+		[window setTitle: [NSString stringWithFormat: 
 			NSLocalizedString(@"PackagesDisplayed", nil),
 			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
 		if (! commandIsRunning){
 			[msgText setStringValue: NSLocalizedString(@"Done", nil)];
 		}
 	}else if (! commandIsRunning){
-		[[self window] setTitle: @"FinkCommander"];
+		[window setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
 			NSLocalizedString(@"packagesInstalled", nil),
 			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
@@ -584,7 +582,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[panel setRequiredFileType: @"txt"];
 	[panel beginSheetForDirectory: savePath
 		file: fileName
-		modalForWindow: [self window]
+		modalForWindow: window
 		modalDelegate: self
 		didEndSelector: @selector(didEnd:returnCode:contextInfo:)
 		contextInfo: nil];
@@ -793,7 +791,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     [toolbar setAllowsUserCustomization: YES];
     [toolbar setAutosavesConfiguration: YES];
 	[toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
-    [[self window] setToolbar: toolbar]; 
+    [window setToolbar: toolbar]; 
 }
 
 //reapply filter if popup selection changes
@@ -964,7 +962,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)raisePwdWindow:(id)sender
 {
 	[NSApp beginSheet: pwdWindow
-	   modalForWindow: [self window]
+	   modalForWindow: window
 		modalDelegate: self
 	   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
 		  contextInfo: nil];
@@ -1003,7 +1001,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self expandOutput: nil];
 	}
 	[NSApp beginSheet: interactionWindow
-	   modalForWindow: [self window]
+	   modalForWindow: window
 		modalDelegate: self
 	   didEndSelector: @selector(interactionSheetDidEnd:returnCode:contextInfo:)
 		  contextInfo: nil];
@@ -1077,9 +1075,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				[self displayNumberOfPackages];
 				return;
 			case NSAlertOtherReturn:
-				[defaults setBool: NO forKey: FinkWarnBeforeRemoving];
+				[defaults setBool:NO forKey:FinkWarnBeforeRemoving];
 				if (preferences){
-					[preferences setWarnBeforeRemovingButtonState: NO];
+					[preferences setWarnBeforeRemovingButtonState:NO];
 				}
 				break;
 		}
@@ -1241,7 +1239,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),		//title
 			NSLocalizedString(@"OK", nil), nil,	nil, 			//buttons
-			[self window], self, NULL, NULL, nil,	 			//window, delegate, selectors, context
+			window, self, NULL, NULL, nil,	 					//window, delegate, selectors, context
 			NSLocalizedString(@"FinkCommanderDetected", nil),	//msg string
 			nil);												//msg string params
 		[self updateTable: nil];

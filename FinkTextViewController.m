@@ -9,6 +9,14 @@ File: FinkTextViewController.m
 
 @implementation FinkTextViewController
 
+-(id)initWithFrame:(NSRect)frame
+{
+	if (self = [super initWithFrame:frame]){
+		[self setEditable:NO];
+	}
+	return self;
+}
+
 //override parent method
 -(void)setString:(NSString *)aString
 {
@@ -63,5 +71,7 @@ File: FinkTextViewController.m
 	[[self textStorage] appendAttributedString:
 		[[[NSAttributedString alloc] initWithString: s] autorelease]];
 }
+
+
 
 @end

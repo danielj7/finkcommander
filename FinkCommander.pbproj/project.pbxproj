@@ -186,7 +186,7 @@
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
 				F5C523DC02A33E0A01A80165,
-				F559D2C802CC2C6501A80164,
+				F53B4D0503100C3501A80164,
 				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
 				F568C4A202FC9D6101A80164,
@@ -355,9 +355,9 @@
 				F57DA17C02B4680D01A8016B,
 				F5897AAB02C6E37B01A80166,
 				F5DE3CD702CAE98601A80164,
-				F559D2C902CC2C6501A80164,
 				F568C4A402FC9D6101A80164,
 				F5458DC00303658001A80164,
+				F53B4D0603100C3501A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 		};
@@ -681,6 +681,47 @@
 			name = Categories;
 			refType = 4;
 		};
+		F53B4CA303100C0E01A80164 = {
+			isa = PBXFileReference;
+			name = Toolbar.plist;
+			path = English.lproj/Toolbar.plist;
+			refType = 4;
+		};
+		F53B4D0503100C3501A80164 = {
+			children = (
+				F53B4CA303100C0E01A80164,
+				F53B4D0703100C4301A80164,
+				F53B4D0803100C5101A80164,
+				F53B4D0903100C5D01A80164,
+			);
+			isa = PBXVariantGroup;
+			name = Toolbar.plist;
+			refType = 4;
+		};
+		F53B4D0603100C3501A80164 = {
+			fileRef = F53B4D0503100C3501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F53B4D0703100C4301A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Toolbar.plist;
+			refType = 4;
+		};
+		F53B4D0803100C5101A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Toolbar.plist;
+			refType = 4;
+		};
+		F53B4D0903100C5D01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Toolbar.plist;
+			refType = 4;
+		};
 		F53D231602FF9B1201A80164 = {
 			includeInIndex = 1;
 			isa = PBXFolderReference;
@@ -907,17 +948,6 @@
 		};
 		F554F1DB0266AA4B01A80164 = {
 			fileRef = F554F1D80266AA4B01A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F559D2C802CC2C6501A80164 = {
-			isa = PBXFileReference;
-			path = Toolbar.plist;
-			refType = 4;
-		};
-		F559D2C902CC2C6501A80164 = {
-			fileRef = F559D2C802CC2C6501A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

@@ -148,12 +148,17 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 
 -(IBAction)copy:(id)sender
 {
-    [self copySelectedRows];
+	if ([self selectedRow] != -1){
+		[self copySelectedRows];
+	}
 }
 
+//not working!
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
 {
-	if ([self selectedRow] == -1) return NO;
+	if ([menuItem action] == @selector(copy:) && [self selectedRow] == -1){
+		return NO;
+	}
 	return YES;
 }
 

@@ -45,8 +45,9 @@
                 tableView = id; 
                 textView = id; 
                 viewMenu = NSMenu; 
+                window = NSWindow; 
             }; 
-            SUPERCLASS = NSWindowController; 
+            SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
     ); 
