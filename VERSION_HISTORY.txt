@@ -1,15 +1,24 @@
 VERSION HISTORY
 
-0.3.1	pending:
+0.3.1	pending (available in cvs):
 
 	Added working terminate command
+	
+	Added fink.conf parameters to Preferences panel; Preferences can now set
+	all fink.conf parameters except for base path (which should be set
+	properly before FinkCommander is installed) and download mirrors
+	
+	Added option to view total number of packages and packages installed in
+	window title; made it the default
+	
+	Improved layout of Preferences panel (I hope)
 	
 	Added full description to package data; used it to improve performance of 
 	describe command and appearance of describe output
 	
 	Added version number that shows up in Finder
 	
-	Removed limitation on resizing window
+	Removed artificial limitation on resizing window
 
 0.3.0	5/12/2002:
 	

@@ -45,6 +45,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysScrollToBottom];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkWarnBeforeRunning];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -151,7 +152,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
-	[scrollView setBorderType: NSNoBorder];
 	
 	[msgText setStringValue:
 		@"Updating table data…"];
@@ -179,8 +179,17 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 -(void)displayNumberOfPackages
 {
 	if (! [self commandIsRunning]){
-		[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
-			[[self displayedPackages] count]]];
+		if ([defaults boolForKey: FinkPackagesInTitleBar]){
+			[msgText setStringValue: @"Done"];		
+			[[self window] setTitle: [NSString stringWithFormat: 
+				@"Packages: %d Available, %d Installed",
+				[[self displayedPackages] count], [packages installedPackagesCount]]];
+		}else{
+			[[self window] setTitle: @"FinkCommander"];
+			[msgText setStringValue: [NSString stringWithFormat:
+				@"%d packages (%d installed)",
+				[[self displayedPackages] count], [packages installedPackagesCount]]];
+		}
 	}
 }
 
@@ -372,7 +381,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	int i = 0;
 	FinkPackage *pkg;
 	NSString *full = nil;
-	NSString *divider = @"________________________________________________________\n\n";
+	NSString *divider = @"____________________________________________________\n\n";
 	
 	[textView setString: @""];
 
@@ -466,8 +475,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	//disable Source and Binary menu items and table update if command is running
 	if ([self commandIsRunning] &&
-		([theItem action] == @selector(runCommand:) ||
-		 [theItem action] == @selector(runUpdater:) ||
+		([theItem action] == @selector(runCommand:) 		||
+		 [theItem action] == @selector(runUpdater:) 		||
+		 [theItem action] == @selector(showDescription:)	||
 		 [theItem action] == @selector(updateTable:))){
 		return  NO;
 	}
@@ -478,7 +488,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	return YES;
 }
-
 
 //Disable menu item selections
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem

@@ -35,6 +35,7 @@ File: FinkPreferences.m
 	NSString *basePath;
 	NSString *httpProxy; 
 	NSString *ftpProxy;
+	NSString *fetchAltDir;
 	
 	//General preferences
 	basePath = [defaults objectForKey: FinkBasePath];
@@ -52,6 +53,7 @@ File: FinkPreferences.m
 	[neverAskButton setState: [defaults boolForKey: FinkNeverAskForPassword]];
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
 	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
+	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
 		
 	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
@@ -74,6 +76,10 @@ File: FinkPreferences.m
 	ftpProxy = [conf useFTPProxy];
 	[ftpProxyButton setState: (ftpProxy != nil ? YES : NO)];
 	[ftpProxyTextField setStringValue: (ftpProxy != nil ? ftpProxy : @"")];
+	
+	fetchAltDir = [conf fetchAltDir];
+	[fetchAltDirButton setState: (fetchAltDir != nil ? YES : NO)];
+	[fetchAltDirTextField setStringValue: (fetchAltDir != nil ? fetchAltDir : @"")];	
 }
 
 -(void)windowDidLoad
@@ -89,6 +95,15 @@ File: FinkPreferences.m
 		[defaults setObject: @"/sw" forKey: FinkBasePath];
 	}else{
 		[defaults setObject: [basePathTextField stringValue] forKey: FinkBasePath];
+	}
+}
+
+-(void)setDownloadMethod
+{
+	if ([[downloadMethodMatrix selectedCell] tag] == 0){
+		[conf setDownloadMethod: @"curl"];
+	}else{
+		[conf setDownloadMethod: @"wget"];
 	}
 }
 
@@ -113,6 +128,15 @@ File: FinkPreferences.m
 	}
 }
 
+-(void)setFetchAltDir
+{
+	if ([fetchAltDirButton state] == NSOnState){
+		[conf setFetchAltDir: [fetchAltDirTextField stringValue]];
+	}else{
+		[conf setFetchAltDir: nil];
+	}
+}
+
 //---------------------------------------------------------------------->Actions
 
 
@@ -127,6 +151,7 @@ File: FinkPreferences.m
 	[defaults setBool: [neverAskButton state] forKey: FinkNeverAskForPassword];
 	[defaults setBool: [scrollToBottomButton state] forKey: FinkAlwaysScrollToBottom];
 	[defaults setBool: [warnBeforeRunningButton state] forKey: FinkWarnBeforeRunning];
+	[defaults setBool: [showPackagesInTitleButton state] forKey: FinkPackagesInTitleBar];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
@@ -137,9 +162,13 @@ File: FinkPreferences.m
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
 		[conf setVerboseOutput: [verboseOutputButton state]];
 		[conf setPassiveFTP: [passiveFTPButton state]];
+		[conf setKeepBuildDir: [keepBuildDirectoryButton state]];
+		[conf setKeepRootDir: [keepRootDirectoryButton state]];
 
+		[self setDownloadMethod];
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
+		[self setFetchAltDir];
 		finkConfChanged = NO;
 
 		[conf writeToFile];
@@ -158,7 +187,6 @@ File: FinkPreferences.m
 	[self close];
 }
 
-
 -(IBAction)setPathChoice:(id)sender
 {
 	pathChoiceChanged = YES;
@@ -176,7 +204,6 @@ File: FinkPreferences.m
 	
 }
 
-
 -(IBAction)neverAsk:(id)sender
 {
 	if ([neverAskButton state]){
@@ -191,29 +218,67 @@ File: FinkPreferences.m
 	}
 }
 
-//---------------------------------------------------------------------->Delegate Methods
+//didEndSelector for following method
+-(void)openPanelDidEnd:(NSOpenPanel *)openPanel
+		returnCode:(int)returnCode
+		textField:(NSTextField *)textField
+{
+	if (returnCode == NSOKButton){
+		[textField setStringValue: [openPanel filename]];
+
+		[[NSNotificationCenter defaultCenter]
+				postNotificationName: NSControlTextDidChangeNotification
+				object: textField];		
+	}
+}
+
+-(IBAction)selectDirectory:(id)sender
+{
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	NSTextField *pathField = ([sender tag] == 0 ? basePathTextField : fetchAltDirTextField);
+	
+	[panel setCanChooseDirectories: YES];
+	[panel setCanChooseFiles: NO];
+	[panel setAllowsMultipleSelection: NO];
+	
+	[panel beginSheetForDirectory: NSHomeDirectory()
+		file: nil
+		types: nil
+		modalForWindow: [self window]
+		modalDelegate: self
+		didEndSelector: @selector(openPanelDidEnd:returnCode:textField:)
+		contextInfo: pathField];
+}
+
+//---------------------------------------------------------------------->Delegate Method(s)
+
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	int textFieldID = [[aNotification object] tag];
 	NSString *tfString = [[aNotification object] stringValue];
 
-	//select appropriate button to correspond to changes in text fields
+	//select the button that corresponds to the altered text field
 	//the text fields were given the indicated tag #s in IB
+	//
 	switch(textFieldID){
 		case 0:
-			if ([tfString length] > 0){
-				[pathChoiceMatrix selectCellWithTag: 1]; //default fink path
-			}else{
-				[pathChoiceMatrix selectCellWithTag: 0];
-			}
+			[pathChoiceMatrix selectCellWithTag:
+				([tfString length] > 0 ? 1 : 0)]; //0 == default
 			break;
 		case 1:
 			[httpProxyButton setState: 
 				([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];
+			finkConfChanged = YES;
 			break;
 		case 2:
 			[ftpProxyButton setState:
 				([[ftpProxyTextField stringValue] length] > 0 ? YES : NO)];
+			finkConfChanged = YES;
+			break;
+		case 3:
+			[fetchAltDirButton setState:
+				([[fetchAltDirTextField stringValue] length] > 0 ? YES : NO)];
+			finkConfChanged = YES;
 			break;
 	}
 }

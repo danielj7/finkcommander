@@ -53,6 +53,7 @@ extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
 extern NSString *FinkAlwaysScrollToBottom;
 extern NSString *FinkWarnBeforeRunning;
+extern NSString *FinkPackagesInTitleBar;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;
@@ -76,10 +77,18 @@ extern NSString *FinkPackageArrayIsFinished;
 -(void)setVerboseOutput:(BOOL)verboseOutput;
 -(BOOL)passiveFTP;
 -(void)setPassiveFTP:(BOOL)passiveFTP;
+-(BOOL)keepBuildDir;
+-(void)setKeepBuildDir:(BOOL)passiveFTP;
+-(BOOL)keepRootDir;
+-(void)setKeepRootDir:(BOOL)passiveFTP;
 -(NSString *)useHTTPProxy;
 -(void)setUseHTTPProxy:(NSString *)s;
 -(NSString *)useFTPProxy;
 -(void)setUseFTPProxy:(NSString *)s;
+-(NSString *)downloadMethod;
+-(void)setDownloadMethod:(NSString *)s;
+-(NSString *)fetchAltDir;
+-(void)setFetchAltDir:(NSString *)s;
 -(void)setFinkTreesChanged:(BOOL)b;
 
 -(void)writeToFile;

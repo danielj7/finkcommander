@@ -23,6 +23,7 @@ NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
 NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
 NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
+NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 
 //Global variables identifying inter-object notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
@@ -32,6 +33,7 @@ NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 //Globals for this file
 NSString *PROXY_HTTP = @"ProxyHTTP";
 NSString *PROXY_FTP = @"ProxyFTP";
+NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 @implementation FinkConf
 
@@ -112,6 +114,7 @@ NSString *PROXY_FTP = @"ProxyFTP";
 	}
 }
 
+
 -(BOOL)useUnstableCrypto
 {
 	if ([[finkConfDict objectForKey: @"Trees"]
@@ -136,6 +139,7 @@ NSString *PROXY_FTP = @"ProxyFTP";
 	}
 }
 
+
 -(BOOL)verboseOutput
 {
 	if ([[finkConfDict objectForKey: @"Verbose"] isEqualToString: @"true"]){
@@ -152,6 +156,7 @@ NSString *PROXY_FTP = @"ProxyFTP";
 		[finkConfDict setObject: @"false" forKey: @"Verbose"];
 	}
 }
+
 
 -(BOOL)passiveFTP
 {
@@ -170,6 +175,45 @@ NSString *PROXY_FTP = @"ProxyFTP";
 	}
 }
 
+
+-(BOOL)keepBuildDir
+{
+	if ([[finkConfDict objectForKey: @"KeepBuildDir"] isEqualToString: @"true"]){
+		return YES;
+	}
+	return NO;
+}
+
+-(void)setKeepBuildDir:(BOOL)keep
+{
+	if (keep){
+		[finkConfDict setObject: @"true" forKey: @"KeepBuildDir"];
+	}else{
+		[finkConfDict setObject: @"false" forKey: @"KeepBuildDir"];
+	}
+}
+
+
+-(BOOL)keepRootDir
+{
+	if ([[finkConfDict objectForKey: @"KeepRootDir"] isEqualToString: @"true"]){
+		return YES;
+	}
+	return NO;
+	
+}
+
+-(void)setKeepRootDir:(BOOL)keep
+{
+	if (keep){
+		[finkConfDict setObject: @"true" forKey: @"KeepRootDir"];
+	}else{
+		[finkConfDict setObject: @"false" forKey: @"KeepRootDir"];
+	}
+	
+}
+
+
 -(NSString *)useHTTPProxy
 {
 	return [finkConfDict objectForKey: PROXY_HTTP];
@@ -184,6 +228,7 @@ NSString *PROXY_FTP = @"ProxyFTP";
 	}
 }
 
+
 -(NSString *)useFTPProxy
 {
 	return [finkConfDict objectForKey: PROXY_FTP];
@@ -192,11 +237,42 @@ NSString *PROXY_FTP = @"ProxyFTP";
 -(void)setUseFTPProxy:(NSString *)s
 {
 	if (s != nil){
-		[finkConfDict setObject: s forKey: PROXY_FTP];
+		[finkConfDict setObject:s forKey: PROXY_FTP];
 	}else{
 		[finkConfDict removeObjectForKey: PROXY_FTP];
 	}
 }
+
+
+-(NSString *)downloadMethod
+{
+	NSString *method = [finkConfDict objectForKey: DOWNLOAD_METHOD];
+	if (method != nil){
+		return method;
+	}
+	return @"curl"; //default
+}
+
+-(void)setDownloadMethod:(NSString *)s
+{
+	[finkConfDict setObject:s forKey: DOWNLOAD_METHOD];
+}
+
+
+-(NSString *)fetchAltDir
+{
+	return [finkConfDict objectForKey: @"FetchAltDir"];
+}
+
+-(void)setFetchAltDir:(NSString *)s
+{
+	if (s != nil){
+		[finkConfDict setObject:s forKey: @"FetchAltDir"];
+	}else{
+		[finkConfDict removeObjectForKey: @"FetchAltDir"];
+	}	
+}
+
 
 -(void)setFinkTreesChanged:(BOOL)b
 {
@@ -256,7 +332,7 @@ NSString *PROXY_FTP = @"ProxyFTP";
 
 //completes process of writing changes to fink.conf file;
 //performed twice after receiving notifications that previous commands were completed;
-//done this way to prevent method calls from overlapping commands running asynchronously
+//this implementation is necessary to prevent method calls from overlapping commands
 -(void)completeFinkConfUpdate:(NSNotification *)n
 {
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];

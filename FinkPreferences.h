@@ -44,6 +44,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *neverAskButton;
 	IBOutlet NSButton *scrollToBottomButton;
 	IBOutlet NSButton *warnBeforeRunningButton;
+	IBOutlet NSButton *showPackagesInTitleButton;
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
@@ -54,10 +55,15 @@ File: FinkPreferences.h
 	IBOutlet NSButton *useUnstableCryptoButton;
 	IBOutlet NSButton *verboseOutputButton;
 	IBOutlet NSButton *passiveFTPButton;
+	IBOutlet NSButton *keepBuildDirectoryButton;
+	IBOutlet NSButton *keepRootDirectoryButton;
 	IBOutlet NSButton *httpProxyButton;
 	IBOutlet NSTextField *httpProxyTextField;
 	IBOutlet NSButton *ftpProxyButton;
 	IBOutlet NSTextField *ftpProxyTextField;
+	IBOutlet NSButton *fetchAltDirButton;
+	IBOutlet NSTextField *fetchAltDirTextField;
+	IBOutlet NSMatrix *downloadMethodMatrix;
 	
 	NSUserDefaults *defaults;
 	FinkConf *conf;
@@ -70,6 +76,9 @@ File: FinkPreferences.h
 -(IBAction)setPreferences:(id)sender;
 -(IBAction)setAndClose:(id)sender;
 -(IBAction)cancel:(id)sender;
+
+//choose directory for text fields ("Browse" button action)
+-(IBAction)selectDirectory:(id)sender;
 
 //record whether certain preference items have changed
 -(IBAction)setPathChoice:(id)sender;

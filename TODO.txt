@@ -1,21 +1,24 @@
 FUNCTIONALITY
 
 Add command to display package's dependencies
+Add show info panel for packages
+Add show info panel for fink installation; include:
+	fink version
+	package version
+	OSX version
+	Developer Tools installed
 Add preferences:
-	Change fink.conf, including addition of unstable tree
-	Don't ask for password; reference Fink FAQ on changing sudo command
 	Select columns to be viewed (see O'Reilly Cocoa tutorial on preferences)
 Make application scriptable; possible useful scripts:
 	start-up routine: e.g. selfupdate-cvs, update-all
 	e-mail output from failed install to package maintainer
 	e-mail success to unstable package maintainer
-Allow user to send interrupt message to hanging process
-	NOTE:  attempted, but neither NSTask terminate nor NSTask interrupt worked
 Redo authorization and command launch methods to use "correct" approach (see AuthSample)
 
 
 EASE OF USE
 
+Localization strings
 Additional toolbar commands and icons
 Contextual menu to run commands by right- or control-clicking in table view
 Determinate progress bar for fink command phases
@@ -23,5 +26,4 @@ Determinate progress bar for fink command phases
 
 COSMETICS
 
-Use image to show binary, unstable packages, instead of asterisk
 Better application icon
