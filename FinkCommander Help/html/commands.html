@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html>
+
+<head>
+	<title>FinkCommander Help--The Fink and Apt-Get Commands</title>
+	<meta name="generator" content="BBEdit 6.1.2+">
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>The Fink and Apt-Get Commands</h2>
+
+<h3>Fink</h3>
+
+<em>Except for the notes, the following consists of excerpts from the fink manual.
+To see the complete version, open Terminal and type &quot;fink man&quot; at the
+prompt.</em>
+
+<dl>
+    <dt>Install</dt>   
+    <dd><p>The install command is used to install packages. It downloads, configures,
+           builds and installs the packages you name. It will also
+           install required dependencies automatically, but will ask you for
+           confirmation before it does so.</p></dd>
+
+    <dt>Reinstall</dt>   
+    <dd><p>Same as install, but will install the package via dpkg(8) even when
+           it is already installed. You can use this when you accidentally
+           deleted package files or changed configuration files and want to
+           get the default settings back.</p></dd>
+    
+    <dt>Build</dt>   
+    <dd><p>Builds a package, but does not install it. As usual, the source
+           tarballs are downloaded if they can not be found. The result of
+           this command is an installable .deb package file, which you can
+           quickly install later with the install command. This command will
+           do nothing if the .deb already exists.  Note that dependencies are
+           still installed, not just built. </p></dd>
+    
+    <dt>Rebuild</dt>   
+    <dd><p>Builds a package (like the build command), but ignores and over-
+           writes the existing .deb file. If the package is installed, the
+           newly created .deb file will also be installed in the system via
+           dpkg(8).  Very useful during package development. </p></dd>
+    
+    <dt>Fetch</dt>   
+    <dd><p>Downloads the named packages, but does not install it. This command
+           will download the tarballs even if they were downloaded before. </p></dd>
+    
+    <dt>Remove</dt>   
+    <dd><p>The remove command removes packages from the system by calling
+           <kbd>dpkg --remove</kbd>.</p>
+
+           <p>The remove command only removes the actual package files, but
+           leaves the .deb compressed package file intact. This means that you
+           can re-install the package later without going through the compile
+           process again. If you need the disk space, you can remove the .deb
+           from the /sw/fink/dists tree.</p></dd>    
+    
+    <dt>Describe</dt>   
+    <dd><p>This command displays a description of the package you name on the
+           command line.</p>
+           
+           <p><em>Note:  The <kbd>Tools:Show Package Info</kbd> and Toolbar info
+           commands provide the same information as the describe command in a 
+           separate window with active links to the package web site and
+           maintainer e-mail address.</em></p></dd>
+           
+    
+    <dt>Selfupdate, Selfupdate-cvs</dt>   
+    <dd><p>This command automates the process of upgrading to a new fink
+           release. It checks the fink website to see if a new version is
+           available. It then downloads the package descriptions and updates
+           the core packages, including fink itself. This command can upgrade
+           to regular releases, but it can also setup your /sw/fink/dists
+           directory tree for direct CVS updates.  This means that you then
+           will be able to access the very latest revisions of all packages.</p>
+           
+           <p><em>Note:  Selfupdate-cvs automatically uses CVS to obtain the latest
+           revision.</em></p></dd>
+    
+    <dt>Update-all</dt>   
+    <dd><p>This command updates all installed packages to the latest version.</p></dd>
+    
+    <dt>Index</dt>   
+    <dd><p>Rebuilds the package cache. You should not normally need to execute
+           this manually, fink should auto-detect when it needs to be updated.</p></dd>
+
+</dl>
+
+<h3>Apt-Get</h3>
+
+<em>Excerpts from the apt-get man page</em>
+
+<dl>
+
+    <dt>Install</dt>   
+    <dd><p>All packages required by  the  package(s) specified for installation will also be             
+           retrieved and installed.</p></dd>
+
+    <dt>Update</dt>   
+    <dd><p>Update is used to resynchronize the package index files from
+              their sources.  An  update
+              should  always  be  performed  before  an  upgrade.</p></dd>
+    
+    <dt>Upgrade</dt>   
+    <dd><p>Upgrade is used to install the newest versions of all  pack-
+              ages currently installed on the system.</p></dd>
+
+</dl>
+</body>
+
+</html>
