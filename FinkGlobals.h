@@ -73,6 +73,7 @@ extern NSString *FinkLookedForProxy;
 extern NSString *FinkViewMenuSelectionStates;
 extern NSString *FinkTableColumnsArray;
 extern NSString *FinkExtendedVerbosity;
+extern NSString *FinkUsersArray;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

@@ -82,15 +82,17 @@ void fixScript(void)
 
 void fixPreferences(void)
 {
-	NSString *path = [NSHomeDirectory() 
-		stringByAppendingPathComponent:@"Library/Preferences/com.sburrious.finkcommander.plist"];
-	NSMutableDictionary *prefs = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSArray *userArray = [defaults objectForKey:FinkUsersArray];
 	
-	[prefs removeObjectForKey:FinkViewMenuSelectionStates];
-	[prefs removeObjectForKey:FinkTableColumnsArray];
-	[prefs removeObjectForKey:@"NSTableView Columns FinkTableView"];
-
-	[prefs writeToFile:path atomically:YES];
+	[defaults removeObjectForKey:FinkViewMenuSelectionStates];
+	[defaults removeObjectForKey:FinkTableColumnsArray];
+	[defaults removeObjectForKey:@"NSTableView Columns FinkTableView"];
+	[defaults removeObjectForKey:FinkSelectedColumnIdentifier];
+	userArray = [userArray arrayByAddingObject:NSUserName()];
+	[defaults setObject:userArray forKey:FinkUsersArray];
+	[defaults setBool:YES forKey:FinkBasePathFound];
+	fixScript();
 }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
-<plist version="0.9">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
 	<key>FinkAlwaysChooseDefaults</key>
 	<false/>
@@ -42,7 +42,7 @@
 	<key>FinkOutputPath</key>
 	<string></string>
 	<key>FinkOutputViewRatio</key>
-	<real>5.000000000000000e-01</real>
+	<real>2.4424171554010284e-311</real>
 	<key>FinkPackageAttributes</key>
 	<array>
 		<string>name</string>
@@ -66,16 +66,18 @@
 	<false/>
 	<key>FinkTableColumnsArray</key>
 	<array>
-		<string>name</string>
 		<string>status</string>
+		<string>name</string>
 		<string>installed</string>
 		<string>binary</string>
-		<string>unstable</string>
+		<string>stable</string>
 		<string>category</string>
 		<string>summary</string>
 	</array>
 	<key>FinkUpdateWithFink</key>
 	<true/>
+	<key>FinkUsersArray</key>
+	<array/>
 	<key>FinkWarnBeforeRemoving</key>
 	<true/>
 	<key>FinkWarnBeforeRunning</key>

@@ -48,6 +48,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		defaults = [NSUserDefaults standardUserDefaults];
 		[NSApp setDelegate: self];
 		
+		//check whether initial startup of 0.4.0 or later for this user;
+		//if so, fix preferences
+		
+		if (![[defaults objectForKey:FinkUsersArray] containsObject:NSUserName()]){
+			NSLog(@"Fixing preferences for first run of version 0.4");
+			fixPreferences();
+		}
+		
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
 		findFinkBasePath(); 

@@ -41,6 +41,7 @@ NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
 NSString *FinkViewMenuSelectionStates = @"FinkViewMenuSelectionStates";
 NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
 NSString *FinkExtendedVerbosity = @"FinkExtendedVerbosity";
+NSString *FinkUsersArray = @"FinkUsersArray";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
