@@ -34,6 +34,7 @@ void findFinkBasePath(void)
 		}
 	}
 	if (! [oldBasePath isEqualToString:path]){
+		NSLog(@"Fink base path has changed from %@ to %@", oldBasePath, path);
 		[defaults setBool:YES forKey:FinkBasePathFound];
 	}
 }
@@ -42,25 +43,30 @@ void fixScript(void)
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *home = NSHomeDirectory();
-	NSString *wpath = [home stringByAppendingPathComponent:
-						@"Library/Application Support/FinkCommander.pl"];
+	NSString *dpath = [NSHomeDirectory() stringByAppendingPathComponent:
+						@"Library/Application Support"];
+	NSString *wpath = [dpath stringByAppendingPathComponent:@"FinkCommander.pl"];
+						
+	if (! [manager fileExistsAtPath:dpath]){
+		NSLog(@"Creating ~/Library/Application Support directory");
+		[manager createDirectoryAtPath:dpath attributes:nil];
+	}
 	
 	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){
 		NSString *rpath = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
 		NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath];
 		NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
 		NSRange rangeOfBASEPATH;
-
-		while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
+		
+		while((rangeOfBASEPATH = [scriptText rangeOfString:@"BASEPATH"]).length > 0){
 			LOGIFDEBUG(@"Replacing BASEPATH");
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
-		NSLog(@"Fixed script:\n%@", scriptText);
+		if (DEBUGGING) {NSLog(@"Script text:\n%@", scriptText);}
+		NSLog(@"Writing table update script to %@", wpath);
 		[scriptText writeToFile:wpath atomically:YES];
 		[defaults setBool:NO forKey:FinkBasePathFound];
 	}
-	
 }
 
 //------------------------------------------------------------>Environment Defaults
@@ -73,21 +79,24 @@ void setInitialEnvironmentVariables(void)
 	char *proxyEnv;
 
 	settings = 
-	[NSMutableDictionary 
-		dictionaryWithObjectsAndKeys: 
-			[NSString stringWithFormat:
-				@"%@/bin:%@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin", 
-				basePath, basePath],
-			@"PATH",
-			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
-			@"PERL5LIB", nil];
+		[NSMutableDictionary 
+			dictionaryWithObjectsAndKeys: 
+				[NSString stringWithFormat:
+					@"%@/bin:%@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin", 
+					basePath, basePath],
+				@"PATH",
+				[NSString stringWithFormat: @"%@/lib/perl5", basePath],
+				@"PERL5LIB", 
+				@"ssh",
+				@"CVS_RSH",
+				nil];
 
-	proxy = [defaults objectForKey: FinkHTTPProxyVariable];
+	proxy = [defaults objectForKey:FinkHTTPProxyVariable];
 	if ([proxy length] > 0){
 		[settings setObject:proxy forKey:@"http_proxy"];
 	}else if (! [defaults boolForKey: FinkLookedForProxy]){
 		if (proxyEnv = getenv("http_proxy")){
-			proxy = [NSString stringWithCString: proxyEnv];
+			proxy = [NSString stringWithCString:proxyEnv];
 			[settings setObject:proxy forKey:@"http_proxy"];
 		}
 		[defaults setBool:YES forKey:FinkLookedForProxy];
