@@ -36,12 +36,20 @@ File: FinkPreferences.h
 // eliminate for release version:
 #define DEBUG 
 
-//global variables
+//---------------------------------------------->Global Variables
+//User Default Items
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
 extern NSString *FinkScrollToSelectedRow;
 extern NSString *FinkAlwaysChooseDefaults;
+
+//Toolbar Items
+extern NSString *FinkInstallSourceItem;
+extern NSString *FinkInstallBinaryItem;
+extern NSString *FinkRemoveSourceItem;
+extern NSString *FinkFilterItem;
+
 
 @interface FinkPreferences : NSWindowController 
 {

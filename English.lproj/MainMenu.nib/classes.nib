@@ -6,6 +6,7 @@
                 endPwdWindow = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
+                refilter = id; 
                 runCommand = id; 
                 runUpdater = id; 
                 showPreferencePanel = id; 
@@ -21,6 +22,9 @@
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 
                 scrollView = NSScrollView; 
+                searchPopUpButton = NSPopUpButton; 
+                searchTextField = NSTextField; 
+                searchView = id; 
                 tableView = id; 
                 textView = id; 
             }; 

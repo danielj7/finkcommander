@@ -1,10 +1,14 @@
 OVERVIEW
 
-FinkCommander currently relies on inter-process communication (IPC) to gather information about fink packages and execute fink commands.  There has been discussion on the fink developers' mailing list about the possibility that an Objective C-Perl bridge will eliminate the need for at least some IPC and enhance functionality.  
+FinkCommander currently relies on inter-process communication (IPC) to gather information about fink packages and execute fink commands.  There has been discussion on the fink developers' mailing list about the possibility that an Objective C-Perl bridge will eliminate the need for at least some IPC and enhance functionality.  This document sets forth my thoughts on the subject as they evolve.
 
 Dave Vasilevsky has pointed out that it would therefore make sense to make FinkCommander more modular so that it will be easier to replace the existing IPC code with code relying on the Obj C-Perl bridge.  To accomplish this, I have taken most of the code relating to running fink and apt-get commands out of FinkController and put it into the IOTaskWrapperClass.
 
 Comments on the feasibility of implementing particular features with an Obj C-Perl bridge relate to fink only.  Installing binaries with apt-get requires a different approach.
+
+OBJECTIVE C-PERL BRIDGE
+
+A bridge is now available.  I have downloaded the framework and written a prototype application that uses the bridge rather than IPC to gather information for the FC table.  I will eventually incorporate the framework and this code into FC.  At the moment, I'm having a hard time seeing how I could go much farther with this.  See notes below.
 
 TYPES OF INTERACTION BETWEEN FC AND FP
 

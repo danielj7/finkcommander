@@ -48,7 +48,8 @@ See the header file, FinkController.h, for interface and license information.
 		}
 		[utility fixScript];
 	
-		packages = [[FinkDataController alloc] init];		// table data source
+		packages = [[FinkDataController alloc] init];		// data used in table
+		[self setDisplayPackages: [packages array]];
 		[self setSelectedPackages: nil];    				// used to update package data
 		[self setLastCommand: @""];  
 
@@ -88,6 +89,7 @@ See the header file, FinkController.h, for interface and license information.
 {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[packages release];
+	[displayPackages release];
 	[selectedPackages release];
 	[preferences release];
 	[utility release];
@@ -106,6 +108,8 @@ See the header file, FinkController.h, for interface and license information.
 //----------------------------------------------->Post-Init Startup
 -(void)awakeFromNib
 {
+	[self setupToolbar];
+
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
@@ -134,7 +138,7 @@ See the header file, FinkController.h, for interface and license information.
 -(void)displayNumberOfPackages
 {
 	[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
-		[[packages array] count]]];
+		[[self displayPackages] count]]];
 }
 
 //helper used in refreshTable and in table column clicked delegate
@@ -147,17 +151,17 @@ See the header file, FinkController.h, for interface and license information.
 	int newrow;
 
 	if (scrollToSelection && row >= 0){
-		pkg = [[packages array] objectAtIndex: row];
+		pkg = [[self displayPackages] objectAtIndex: row];
 	}
 
 	// sort data source; reload table; reset visual indicators
-	[[packages array] sortUsingSelector:
+	[[self displayPackages] sortUsingSelector:
 		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
 	[tableView reloadData];
 
 	if (scrollToSelection && row >= 0){
-		newrow = [[packages array] indexOfObject: pkg];
+		newrow = [[self displayPackages] indexOfObject: pkg];
 		[tableView selectRow: newrow byExtendingSelection: NO];
 		[tableView scrollRowToVisible: newrow];
 	}
@@ -171,8 +175,21 @@ See the header file, FinkController.h, for interface and license information.
 		[self lastIdentifier]];
 	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
 
+//	[searchTextField setStringValue: @""];
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
+	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
+}
+
+//version of same method called when filter applied
+//avoids re-validating command controls if filter is applied while a 
+//command is running
+-(void)refreshAfterFilter
+{
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+
 	[self sortTableAtColumn: lastColumn inDirection: direction];
 }
 
@@ -182,6 +199,14 @@ See the header file, FinkController.h, for interface and license information.
 //--------------------------------------------------------------------------------
 
 -(FinkDataController *)packages  {return packages;}
+
+-(NSMutableArray *)displayPackages {return displayPackages;}
+-(void)setDisplayPackages:(NSMutableArray *)a
+{
+	[a retain];
+	[displayPackages release];
+	displayPackages = a;
+}
 
 -(NSArray *)selectedPackages {return selectedPackages;}
 -(void)setSelectedPackages:(NSArray *)a
@@ -286,14 +311,24 @@ See the header file, FinkController.h, for interface and license information.
 //set up the argument list for either command method
 -(NSMutableArray *)setupCommandFrom:(id)sender
 {
-	NSString *cmd = [[sender title] lowercaseString];
-	NSString *theMenu = [[sender menu] title];
+	NSString *cmd; 
 	NSString *executable;
 	NSMutableArray *args;
 
-	[self setCommandIsRunning: YES];
-	executable = [theMenu isEqualToString: @"Source"] ? @"fink" : @"apt-get";
+	//determine command
+	if ([sender isKindOfClass: [NSMenuItem class]]){
+		cmd = [[sender title] lowercaseString];
+	}else{
+		cmd = [[[[sender label] componentsSeparatedByString:@" "] objectAtIndex: 0]			lowercaseString];
+	}	
+
+	//determine executable: source menu or toolbar item tag == 0
+	//binary item tag == 1
+	executable = ([sender tag] == 0 ? @"fink" : @"apt-get");
 	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
+	
+	
+	[self setCommandIsRunning: YES];	
 	[self setLastCommand: cmd];
 	return args;
 }
@@ -311,13 +346,13 @@ See the header file, FinkController.h, for interface and license information.
 	
 	//set up selectedPackages array for later use
 	while(anIndex = [e1 nextObject]){
-		[pkgs addObject: [[packages array] objectAtIndex: [anIndex intValue]]];
+		[pkgs addObject: [[self displayPackages] objectAtIndex: [anIndex intValue]]];
 	}
 	[self setSelectedPackages: pkgs];
 
 	//set up args array to run the command
 	while(anIndex = [e2 nextObject]){
-		[args addObject: [[[packages array] objectAtIndex: [anIndex intValue]] name]];
+		[args addObject: [[[self displayPackages] objectAtIndex: [anIndex intValue]] name]];
 	}
 	
 	[self displayCommand: args];		
@@ -374,6 +409,141 @@ See the header file, FinkController.h, for interface and license information.
 
 
 //--------------------------------------------------------------------------------
+//		TOOLBAR METHODS
+//--------------------------------------------------------------------------------
+
+-(void)setupToolbar
+{
+    NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier: @"mainToolbar"];
+    [toolbar setDelegate: self];
+    [toolbar setAllowsUserCustomization: YES];
+    [toolbar setAutosavesConfiguration: YES];
+    [[self window] setToolbar: [toolbar autorelease]];
+}
+
+//reapply filter if popup selection changes--NOT WORKING
+-(IBAction)refilter:(id)sender
+{
+	[self controlTextDidChange: nil];
+}
+
+//----------------------------------------------->Delegate MethodS
+
+-(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
+	   itemForItemIdentifier:(NSString *)itemIdentifier
+	willBeInsertedIntoToolbar:(BOOL)flag
+{
+	NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
+	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
+		[item setLabel: @"Install Source"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Install package from source"];
+		[item setTag: 0]; 		//source command
+		[item setImage: [NSImage imageNamed:@"addsrc"]];
+		[item setTarget: self];
+		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkInstallBinaryItem]){
+		[item setLabel: @"Install Binary"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Install binary package"];
+		[item setTag: 1]; 		//binary command
+		[item setImage: [NSImage imageNamed:@"addbin"]];
+		[item setTarget: self];
+		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
+		[item setLabel: @"Remove"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Remove package (but keep deb file)"];
+		[item setTag: 0]; 		//source command
+		[item setImage: [NSImage imageNamed:@"delete"]];
+		[item setTarget: self];
+		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
+		NSRect fRect = [searchView frame];
+		[item setLabel:@"Filter Table Data"];
+		[item setPaletteLabel:[item label]];
+		[item setView: searchView];
+		[item setMinSize: fRect.size];
+		[item setMaxSize: fRect.size];
+	}
+    return [item autorelease];
+}
+
+-(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
+{
+		
+	return [NSArray arrayWithObjects: 
+		NSToolbarSeparatorItemIdentifier,
+		NSToolbarSpaceItemIdentifier,
+		NSToolbarFlexibleSpaceItemIdentifier,
+		NSToolbarCustomizeToolbarItemIdentifier,
+		FinkInstallSourceItem,
+		FinkInstallBinaryItem,
+		FinkRemoveSourceItem,
+		FinkFilterItem,
+		nil];
+}
+
+-(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
+{
+	return [NSArray arrayWithObjects:
+		FinkInstallSourceItem,
+		FinkInstallBinaryItem,
+		FinkRemoveSourceItem, 	
+		NSToolbarFlexibleSpaceItemIdentifier,
+		FinkFilterItem,
+		nil];
+}
+
+-(BOOL)validateToolbarItem:(NSToolbarItem *)theItem
+{
+	if ([tableView selectedRow] == -1 &&
+	    [theItem action] == @selector(runCommand:)){
+		return NO;
+	}
+	if ([self commandIsRunning] &&
+		([theItem action] == @selector(runCommand:) ||
+		 [theItem action] == @selector(runUpdater:))){
+		return  NO;
+	}
+	return YES;
+}
+
+//----------------------------------------------->Text Field Delegate
+//Used to filter table data
+-(void)controlTextDidChange:(NSNotification *)aNotification
+{
+	NSString *field = [[[searchPopUpButton selectedItem] title] lowercaseString];
+	NSString *filterText = [[searchTextField stringValue] lowercaseString];
+	NSString *pkgAttribute;
+	NSMutableArray *subset = [NSMutableArray array];
+	NSEnumerator *e = [[packages array] objectEnumerator];
+	FinkPackage *pkg;
+
+	if ([[aNotification object] tag] == 0){ //filer text field
+		if ([filterText length] == 0){
+		[self setDisplayPackages: [packages array]];
+		[self refreshAfterFilter];
+		[self displayNumberOfPackages];
+		return;
+		}
+		while (pkg = [e nextObject]){
+			pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
+			if ([pkgAttribute rangeOfString: filterText].length > 0){
+				[subset addObject: pkg];
+			}
+		}
+		[self setDisplayPackages: subset];
+		[self refreshAfterFilter];
+		[self displayNumberOfPackages];
+	}else{
+		[interactionMatrix selectCellWithTag: 1];
+	}	
+}
+
+
+
+//--------------------------------------------------------------------------------
 //		TABLE METHODS
 //--------------------------------------------------------------------------------
 
@@ -381,7 +551,7 @@ See the header file, FinkController.h, for interface and license information.
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [[packages array] count];
+	return [[self displayPackages] count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
@@ -389,7 +559,7 @@ See the header file, FinkController.h, for interface and license information.
 	row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	FinkPackage *package = [[packages array] objectAtIndex: rowIndex];
+	FinkPackage *package = [[self displayPackages] objectAtIndex: rowIndex];
 	return [package valueForKey: identifier];
 }
 
@@ -435,6 +605,7 @@ See the header file, FinkController.h, for interface and license information.
 	
 	[self sortTableAtColumn: aTableColumn inDirection: direction];
 }
+
 
 //--------------------------------------------------------------------------------
 //		AUTHENTICATION AND PROCESS CONTROL
@@ -611,6 +782,7 @@ See the header file, FinkController.h, for interface and license information.
 	// Make sure command was succesful before updating table
 	// Checking exit status is not sufficient for some fink commands, so check
 	// last 50 chars of output for "failed"
+	[self setDisplayPackages: [packages array]];
 	if (status == 0 && [output rangeOfString:@"failed"
 						options: NSCaseInsensitiveSearch
 						range: NSMakeRange(0, [output length] - 1)].length == 0){
@@ -632,7 +804,7 @@ See the header file, FinkController.h, for interface and license information.
 		[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
 		@"FinkCommander detected a failure message.\nCheck the output window for problems.",
 		nil);										//msg string params
-		[self refreshTable: nil];
+		[packages update];
 	}
 }
 

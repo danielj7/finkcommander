@@ -54,8 +54,14 @@ Contact the author at sburr@mac.com.
 	IBOutlet NSWindow *interactionWindow;
 	IBOutlet NSMatrix *interactionMatrix;
 	IBOutlet NSTextField *interactionField;
+	
+	//search view outlets
+	IBOutlet id searchView;
+	IBOutlet NSPopUpButton *searchPopUpButton;
+	IBOutlet NSTextField *searchTextField;
 
 	FinkDataController *packages;
+	NSMutableArray *displayPackages;
 	FinkPreferences *preferences;
 	FinkBasePathUtility *utility;
 	NSArray *selectedPackages;
@@ -75,6 +81,8 @@ Contact the author at sburr@mac.com.
 
 //Accessors
 -(FinkDataController *)packages;
+-(NSMutableArray *)displayPackages;
+-(void)setDisplayPackages:(NSMutableArray *)a;
 -(BOOL)pendingCommand;
 -(void)setPendingCommand:(BOOL)b;
 -(NSArray *)selectedPackages;
@@ -90,6 +98,9 @@ Contact the author at sburr@mac.com.
 -(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
+
+//toolbar method
+-(IBAction)refilter:(id)sender;
 
 //Action and sheet methods
 -(IBAction)raisePwdWindow:(id)sender;
@@ -116,9 +127,18 @@ Contact the author at sburr@mac.com.
 		objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		row:(int)rowIndex;
 
-//Delegates
+//Table delegate method
 -(void)tableView:(NSTableView *)aTableView
 		didClickTableColumn:(NSTableColumn *)aTableColumn;
+		
+//Toolbar methods
+-(void)setupToolbar;
+-(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
+	itemForItemIdentifier:(NSString *)itemIdentifier
+	willBeInsertedIntoToolbar:(BOOL)flag;
+-(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
+-(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
+
 //Process control
 -(void)runCommandWithParams:(NSMutableArray *)params;
 

@@ -14,6 +14,12 @@ NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 
+//Global variables used in toolbar methods
+NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
+NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
+NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
+NSString *FinkFilterItem = @"FinkFilterItem";
+
 @implementation FinkPreferences
 
 //--------------------------------------------------------------->Startup and Shutdown
@@ -94,7 +100,8 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 }
 
 //---------------------------------------------------------------------->Delegate Methods
-
+//automatically select alternate path radio button if user starts to type in 
+//path choice text field
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	[pathChoiceMatrix selectCellWithTag: 1];

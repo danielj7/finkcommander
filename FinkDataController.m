@@ -18,14 +18,14 @@ See the header file, FinkDataController.h, for interface and license information
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
-		finkArray = [[NSMutableArray alloc] initWithCapacity: 1000];
+		finkArray = [[NSMutableArray alloc] initWithCapacity: 1100];
 		basePath = [[defaults objectForKey: FinkBasePath] retain];
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver: self
-									   selector: @selector(completeUpdate:)
-									   name: NSFileHandleReadToEndOfFileCompletionNotification
-									   object: nil];
+				selector: @selector(completeUpdate:)
+				name: NSFileHandleReadToEndOfFileCompletionNotification
+				object: nil];
 	return self;
 }
 

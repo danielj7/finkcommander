@@ -9,23 +9,23 @@ Add preferences:
 	Change fink.conf
 Enhance IPC to allow user choice on dependency and virtual dependency installations -- done 4/05/02
 Redo authorization and command launch methods to use "correct" approach (see AuthSample)
-Incremental search of table
-Filter table by category
+Incremental filter of table -- done 4/14/02
 Make application scriptable; possible useful scripts:
 	e-mail output from failed install to package maintainer
 	e-mail success to unstable package maintainer
 
 Add "stable" column -- done 3/9/02
+Add command to display package's dependencies
 Disable commands, table selection while command executing -- done 3/9/02
 
 EASE OF USE
 
 Add help
-Toolbar; need icons
+Toolbar; need icons -- done 4/14/02
 Contextual menu to run commands by right- or control-clicking in table view
 Additional visual clue that table is updating, like circling arrows in Mail and OmniWeb
 
 COSMETICS
 
-Custom application icon
+Custom application icon -- done (at least for now) 4/05/02
 Use image to show binary, unstable packages, instead of asterisk
