@@ -38,6 +38,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkConf.h"
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
+#import "FinkProcessKiller.h"
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {

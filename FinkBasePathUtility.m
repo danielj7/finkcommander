@@ -1,8 +1,7 @@
 /*
-File: FinkController.m
+File: FinkProcessKiller.m
 
  See the header file, FinkBasePathUtility.h, for interface and license information.
-
 */
 
 #import "FinkBasePathUtility.h"
@@ -78,9 +77,6 @@ File: FinkController.m
                 [path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
                 [defaults setObject: path forKey: FinkBasePath];
                 [defaults setBool: YES forKey: FinkBasePathFound];
-#ifdef DEBUG			
-                NSLog(@"Found basepath %@ using call to which command", path);
-#endif //DEBUG
             }
 		}
 	}

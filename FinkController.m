@@ -276,13 +276,18 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	return YES;
 }
 
-//but don't close window if command is running
+//but warn before closing window if a command is running
 -(BOOL)windowShouldClose:(id)sender
 {
 	if ([self commandIsRunning]){
-		NSBeep();
-		return NO;
+		int answer = NSRunCriticalAlertPanel(@"Warning!",
+				@"Quitting now will interrupt a Fink process.",
+				@"Cancel", @"Quit", nil);
+		if (answer == NSAlertDefaultReturn){
+			return NO;
+		}
 	}
+	userChoseToTerminate = YES;
 	return YES;
 }
 
@@ -360,7 +365,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(IBAction)terminateCommand:(id)sender
 {
-	[[finkTask task] terminate];
+	FinkProcessKiller *terminator = [[[FinkProcessKiller alloc] init] autorelease];
+
+	[terminator terminateChildProcesses];
+	
+	sleep(1);
+
 	if ([[finkTask task] isRunning]){
 		int answer = NSRunAlertPanel(@"Sorry",
 				@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander.\nWhat would you like to do?",
@@ -409,7 +419,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[[NSWorkspace sharedWorkspace] openURL:
 		[NSURL URLWithString: @"http://sourceforge.net/tracker/?group_id=48896&atid=454467"]];
 }
-
 
 //----------------------------------------------->Menu Item Delegate
 
@@ -899,10 +908,10 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	NSString *cmd = [args objectAtIndex: 0];
 
 	if ([self commandIsRunning]){
-		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil,    //title, buttons
-			[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
+		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, //title, buttons
+			[self window], self, NULL,	NULL, nil,	 //window, delegate, selectors, context info
 			@"You will have to wait until the current command is complete before changing the fink.conf settings.",
-			nil);										//msg string params
+			nil);									 //msg string params
 		return;
 	}
 

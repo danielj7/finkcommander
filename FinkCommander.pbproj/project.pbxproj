@@ -27,6 +27,8 @@
 				F5DE1D8E022845A201A80164,
 				F569E33702498D1101A80164,
 				F569E33802498D1101A80164,
+				F576358A0298AE4E01A80166,
+				F576358B0298AE4E01A80166,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -300,6 +302,7 @@
 				F569E33902498D1101A80164,
 				F54436BA027F6AD501A80164,
 				F536C0400280F24501A80164,
+				F576358C0298AE4E01A80166,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -345,6 +348,7 @@
 				F569E33A02498D1101A80164,
 				F54436BB027F6AD501A80164,
 				F536C0410280F24501A80164,
+				F576358D0298AE4E01A80166,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -757,6 +761,28 @@
 		};
 		F569E33A02498D1101A80164 = {
 			fileRef = F569E33802498D1101A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F576358A0298AE4E01A80166 = {
+			isa = PBXFileReference;
+			path = FinkProcessKiller.h;
+			refType = 4;
+		};
+		F576358B0298AE4E01A80166 = {
+			isa = PBXFileReference;
+			path = FinkProcessKiller.m;
+			refType = 4;
+		};
+		F576358C0298AE4E01A80166 = {
+			fileRef = F576358A0298AE4E01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F576358D0298AE4E01A80166 = {
+			fileRef = F576358B0298AE4E01A80166;
 			isa = PBXBuildFile;
 			settings = {
 			};
