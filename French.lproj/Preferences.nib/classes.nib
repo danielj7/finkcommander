@@ -3,9 +3,7 @@
         {
             ACTIONS = {
                 addEnvironmentSetting = id; 
-                askOnStartup = id; 
                 cancel = id; 
-                neverAsk = id; 
                 removeEnvironmentSettings = id; 
                 restoreEnvironmentSettings = id; 
                 selectDirectory = id; 
@@ -25,6 +23,7 @@
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
                 checkForUpdateButton = NSButton; 
+                checkForUpdateIntervalStepper = NSStepper; 
                 checkForUpdateIntervalTextField = NSTextField; 
                 deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 

@@ -1,5 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
-        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+
 <html lang="en">
 <head>
 	<title>README</title>
@@ -7,22 +8,23 @@
 </head>
 <body>
 
-<h2>Readme</h2>
+<h1>Readme</h1>
 
-<h3>Contents</h3>
+<h2>Contents</h2>
 
 <ul>
 	<li><a href="#description">Overview</a></li>
-	<li><a href="#installation">Installing FinkCommander</a></li>
+	<li><a href="#installation">Installing FinkCommander</a>
 	<ul>
 		<li><a href="#instructions">Instructions</a></li>
 		<li><a href="#explanation">Explanation</a></li>
 	</ul>
+	</li>
 	<li><a href="#timeout">Changing the Authorization Timeout</a></li>
 	<li><a href="#license">License</a></li>
 </ul>
 
-<h3> <a name="description">Overview</a> </h3>
+<h2> <a name="description">Overview</a> </h2>
 
 <p> <a href="http://finkcommander.sourceforge.net"
 target="top">FinkCommander</a> provides a GUI frontend to the <a
@@ -49,7 +51,7 @@ documentation for, future versions of FinkCommander.  Please send comments
 href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
 </p>
 
-<h3><a name="installation">Installing FinkCommander</a></h3>
+<h2><a name="installation">Installing FinkCommander</a></h2>
 
 <p>If you install FinkCommander from the disk image or source code, I
 recommend that you follow the Instructions provided below before 
@@ -71,7 +73,7 @@ sudo chown root:admin /Applications/FinkCommander.app/Contents/Resources</pre>
 	
 	<li>Change the owner of the Launcher tool to root:
 <pre>
-sudo chown root:admin /Applications/FinkCommander.app/Contents/Resource/Launcher</pre>
+sudo chown root:admin /Applications/FinkCommander.app/Contents/Resources/Launcher</pre>
 	</li>
 	
 	<li>Give Launcher setuid permission:
@@ -80,11 +82,11 @@ sudo chmod 4755 /Applications/FinkCommander.app/Contents/Resource/Launcher</pre>
 	</li>
 </ol>
 
-<p>If you don't take steps 2 and 3, above, the Launcher tool will execute a 
-&quot;self-repair&quot; routine the first time you attempt to run a command.  
-You will need to enter your password twice and then re-try the command after 
-the self-repair process is complete.  Once the Launcher tool has repaired itself, 
-you should only need to enter your password once per <a href="#timeout">timeout 
+<p>If you don't take steps 2 and 3, above, the Launcher tool will execute a
+&quot;self-repair&quot; routine the first time you attempt to run a command. You
+will need to enter your password twice and then re-try the command after the
+self-repair process is complete.  Once the Launcher tool has repaired itself,
+you should only need to enter your password once per <a href="#timeout">timeout
 period</a>.</p>
 
 <h4><a name="explanation">Explanation</a></h4>
@@ -102,47 +104,48 @@ sudo command.  The current version, consistent with Apple's recommendations,
 calls on OS X's security server to obtain authorization and never touches the 
 user's password.</p>
 
-<p>In order to use the security server in the manner recommended by Apple, 
-FinkCommander must include an auxiliary program, or &quot;tool,&quot; that 
-is owned by root and possesses a special file permission called 
-&quot;setuid.&quot; Unix processes ordinarily acquire the identity, and therefore
-the file permissions, of the user who starts the process.  A process started by a 
-program with setuid permission, on the other hand, can assume the identity of the 
-owner of the program's file.  Thus, a program that is owned by root and has setuid 
-permission can modify files owned by root, provided the user supplies an administrative
-password.</p>
+<p>In order to use the security server in the manner recommended by Apple,
+FinkCommander must include an auxiliary program, or &quot;tool,&quot; that is
+owned by root and possesses a special file permission called &quot;setuid.&quot;
+A Unix processes ordinarily acquires the identity, and therefore the file
+permissions, of the user who starts the process.  A process started by a program
+with setuid permission, on the other hand, can assume the identity of the owner
+of the program's file.  Thus, a program that is owned by root and has setuid
+permission can modify files owned by root, provided the user supplies an
+administrative password.</p>
 
-<p>The sudo program mentioned earlier is a familiar example of a setuid tool. 
+<p>The sudo program provides a familiar example of a setuid tool. 
 If at the command line you type <kbd>ls -l /usr/bin/sudo</kbd>, you will see 
 the following result:</p>
 <pre>---s--x--x    1 root     wheel       96384 Sep 18 21:23 /usr/bin/sudo 
 </pre> 
-<p>The &quot;s&quot; appearing where one would ordinarily
-expect to see an &quot;x&quot; shows that sudo has setuid permission.</p>
+<p>The &quot;s&quot; appearing where one would ordinarily expect to see an
+&quot;x&quot; shows that sudo has setuid permission.  As a result, it is able to
+run commands as root if the user provides an administrator's password.</p>
 
 <p>Because the package installer for FinkCommander obtains root privileges, it
 is able to install FinkCommander's tool, called &quot;Launcher&quot; 
-with the necessary permissions.  If you install from the disk image or compile 
-FinkCommander in Project Builder, Launcher will not have the necessary permissions.</p>
+with setuid root permission.  If you install from the disk image or compile 
+FinkCommander in Project Builder, Launcher will not have setuid permission.</p>
 
-<p>Launcher therefore includes functions to repair itself as described above.  
-Whenever Launcher is executed, it checks to see whether it has setuid root permission.  
-If not, it re-executes itself using a special authorization function from the
-Security Framework and makes itself setuid root.</p>
+<p>Launcher therefore includes functions to repair itself as described above.
+Whenever Launcher is executed, it checks to see whether it has setuid root
+permission. If not, it re-executes itself using a special authorization function
+from the Security Framework and makes itself setuid root.</p>
 
-<p>Launcher resides in the Resources directory.  Changing the owner of the Resources 
-directory to root, as recommended in Instructions, is necessary to prevent someone without 
-administrative privileges from replacing Launcher. The replacement tool could use the
-root privileges obtained when you enter your password to do damage to your system 
-or invade your privacy.</p>
+<p>Launcher resides in the Resources directory.  Changing the owner of the
+Resources directory to root, as recommended in Instructions, is recommended in
+order to prevent someone without administrative privileges from replacing
+Launcher. The replacement tool could use the root privileges obtained when you
+enter your password to do damage to your system or invade your privacy.</p>
 
-<h3><a name="timeout">Changing the Authorization Timeout</a></h3>
+<h2><a name="timeout">Changing the Authorization Timeout</a></h2>
 
 <p> By default, FinkCommander works in much the same way as sudo.  If you run a
-command and provide your password to authorize root privileges, that
-authorization has a timeout period of five minutes.  You can enter additional
-commands without retyping your password for five minutes.  After that, you need
-to reauthenticate. </p>
+command and provide your password to authenticate your entitlement to root
+privileges, the authorization you acquire has a timeout period of five minutes. 
+You can enter additional commands requiring root without retyping your password
+for five minutes.  After that, you need to re-authenticate.</p>
 
 <p> You can customize the timeout for FinkCommander by editing the
 /private/etc/authorization file.  To do so, open Terminal and type the following
@@ -151,11 +154,10 @@ at the command line: </p>
 <p><kbd>sudo [editor] /private/etc/authorization</kbd></p>
 
 <p>where [editor] is the name of your favorite command-line editor. 
-You should not use the Property List Editor in /Developer/Applications to edit the file, 
-because it will fail to preserve the comments.</p>
+You should not use the Property List Editor in /Developer/Applications to edit the file, because it will fail to preserve the comments.</p>
 
-<p>To eliminate the timeout for FinkCommander, add the following &quot;rule&quot; to the 
-authorization file:</p>
+<p>To eliminate the timeout for FinkCommander, add the following
+&quot;rule&quot; to the authorization file:</p>
 <pre>
 &lt;!-- Your comment here --&gt;
     &lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
@@ -187,7 +189,7 @@ command, set N to 0.</p>
 <p>I hope to automate this process in a future release, possibly through
 FinkCommander's Preferences panel.</p>
 
-<h3><a name="license">License</a></h3>
+<h2><a name="license">License</a></h2>
 
 <p> This program is free software; you may redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free

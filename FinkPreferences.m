@@ -26,8 +26,7 @@ File: FinkPreferences.m
 	if ([conf extendedVerboseOptions]){
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", nil) atIndex:1];
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", nil) atIndex:2];
-
-	}	
+	}
 }
 
 -(void)dealloc
@@ -106,6 +105,7 @@ File: FinkPreferences.m
 	[checkForUpdateButton setState:  interval > 0];
 	if (interval){
 		[checkForUpdateIntervalTextField setIntValue:interval];
+		[checkForUpdateIntervalStepper setIntValue:interval];
 	}
 	
 	

@@ -27,6 +27,13 @@ File: Launcher.c
 
 static AuthorizationExternalForm extAuth;
 
+enum {
+	cmdAuthorized,
+	cmdNotAuthorized,
+	cmdStatusUndetermined,
+	cmdNotOwnedByRoot
+};
+
 /* 
  * Read the incoming authorization byte blob and make sure it's valid 
  */ 
@@ -73,13 +80,13 @@ int isauthorizedcmd(char * const *cmd, int args)
     if (!strstr(cmd[1], "/bin/fink")		&&
 		!strstr(cmd[1], "/bin/apt-get")		&&
 		!strstr(cmd[1], "/bin/dpkg")){
-		return 0;
+		return cmdNotAuthorized;
     }
 	/* Make sure program is owned by root, so it could not have been installed or
 	   replaced by an ordinary user */
-    if (stat(cmd[1], &st) != 0) return 0;
-    if (st.st_uid != 0) return 0;
-    return 1;
+    if (stat(cmd[1], &st) != 0) return cmdStatusUndetermined;
+    if (st.st_uid != 0) return cmdNotOwnedByRoot;
+    return cmdAuthorized;
 }
 
 
@@ -325,12 +332,19 @@ main(int argc, char * const *argv)
 			/* Write changes to fink.conf */
 			result = write_fconf(argv[2]);
 		}else{
-			/* Run a fink or apt-get command */
-			if (isauthorizedcmd(argv, argc)){
-				result = perform(argv[1], &argv[1]);
-			}else{
-				fprintf(stderr, "WARNING:  An attempt was made to use the Launcher tool in "
-								"FinkCommander to run an unauthorized command: %s", argv[1]);
+			switch (isauthorizedcmd(argv, argc)){
+				case cmdAuthorized:
+					result = perform(argv[1], &argv[1]);
+					break;
+				case cmdNotAuthorized:
+					fprintf(stderr, "WARNING:  An attempt was made to use the Launcher tool in  FinkCommander to run an unauthorized command: %s\n", argv[1]);
+					break;
+				case cmdStatusUndetermined:
+					fprintf(stderr, "Error:  FinkCommander was unable to determine the owner of %s.\nFor security reasons, FinkCommander will not run %s unless it can determine that it is owned by root.\n", argv[1], argv[1]);
+					break;
+				case cmdNotOwnedByRoot:
+					fprintf(stderr, "Error:  %s is not owned by root.\n", argv[1]);
+					break;
 			}
 		}
     }

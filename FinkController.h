@@ -102,7 +102,7 @@ Contact the author at sburrious@users.sourceforge.net.
 							@"name",				\
 							nil]
 
-#define NAME_TAG__DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 	\
+#define NAME_TAG_DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 	\
 					[NSNumber numberWithInt: VERSION], @"version",          \
 					[NSNumber numberWithInt: BINARY], @"binary",            \
 					[NSNumber numberWithInt: STABLE], @"stable",            \

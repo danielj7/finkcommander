@@ -1,11 +1,22 @@
-Create binary .dmg:
-	Make sure new version is set in Target:Application Settings
+Create final binary:
+	Set new version number in Target:Application Settings and localized InfoPlist.strings
 	Compile with DEBUGGING undefined and "Deployment" selected
-	Create directory with .app, VERSION_HISTORY.html, README.html, LICENSE.txt
-	Run DMG Tool on directory:  file name = finkcommander-<version>-bin.dmg
+	
+Create package installer:
+	Run ~/FCFiles/install.sh
+	Update /FCFiles/PackageInstall/Resources as necessary
+	Open ~/FCFiles/Pinstaller.pmsp in /Applications/PackageMaker (old version)
+	Set new version number and create package
+	Test installation
+	
+Create disk images of package and binary
+	Run Disk Copy and make blank images: FinkCommanderPkg, FinkCommanderBin
+	Copy to images:  package/binary, VERSION_HISTORY.html, README.html, LICENSE.txt
+	Eject images
+	tar -cz FinkCommanderPkg/Bin -f finkcommander-<version>-pkg/bin.tgz
 	
 Create source tarball
-	tar -c -z FinkCommander/ -f finkcommander-<version>-src.tgz
+	tar -cz FinkCommander/ -f finkcommander-<version>-src.tgz
 	
 Copy to G3 and test
 

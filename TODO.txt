@@ -1,49 +1,17 @@
+SHORT TERM
 
+Add warning alert back to terminate command
 
-D = done
-I = in progress
+Customize warning alert for removal commands: check box to turn
+warning off
 
-RELEASE 0.4.0
-
-Target date: 09/07/2002
-
-D Use Security Framework for authorization
-
-D Additional information for table:
-	Installed version
-	Binary version
-	Stable version
-	Unstable version
-	
-D Fix preferences for first run of 0.4.0
-	
-D Same information in package inspector
-
-I Determinate progress bar and more detailed message text for fink command phases
-
-D Fix terminate command
-
-Localizations:
- D	German
- I	French
-	Spanish
-		
-D Collapse and expand output with double click (like Mail.app)
-
-D Jaguar bug fixes
-
-
-RELEASE 0.4.1
-
-Target date: 11/15/2002
-
-New View menu item:  hide/show splitoffs
+Add execute command in Terminal option
 
 New command: update fink from cvs (raise warning alert)
 
 Search output
 
-Regex support in filter and output search 
+Regex support in filter and output search
 
 Additional fink installation info:
 	   last selfupdate-cvs 
@@ -51,26 +19,28 @@ Additional fink installation info:
 
 Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences
 
-
-RELEASE 0.4.2
-	   
-Command inspector: show currently running command, list of all packages subject to command (including those added by fink or apt-get) in a table showing the status of each (e.g. "compiled," "upacked"), when command started, how long command has been running; include refresh button
-
 Dock icon customization: show status of command
 
-Installed package browser; dpkg -c <path to .deb file>
-
-Show info panel for fink installation; mirror information in email sig
+Show info panel for fink installation; mirror information in email
+sig; Application->About Your Fink Installation... ?
 
 Customize sound
 
 Better toolbar icons
 
+New View menu item:  hide/show splitoffs
+
+Installed package browser; dpkg -c <path to .deb file>; include
+	  total size (see finksizer.py)
 
 LONG TERM:
 
-Initial startup routine: selfupdate/selfupdate-cvs, apt-get update, scanpackages;
-panel that steps through process
+Command inspector: show currently running command, list of all
+packages subject to command (including those added by fink or apt-get)
+in a table showing the status of each (e.g. "compiled," "upacked")
+
+Initial startup routine: selfupdate/selfupdate-cvs, apt-get update, 
+scanpackages;panel that steps through process
 
 Custom script suite
 

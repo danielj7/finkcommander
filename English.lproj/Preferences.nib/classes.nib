@@ -3,9 +3,7 @@
         {
             ACTIONS = {
                 addEnvironmentSetting = id; 
-                askOnStartup = id; 
                 cancel = id; 
-                neverAsk = id; 
                 removeEnvironmentSettings = id; 
                 restoreEnvironmentSettings = id; 
                 selectDirectory = id; 
@@ -22,10 +20,10 @@
             OUTLETS = {
                 addEnvironmentSettingButton = NSButton; 
                 alwaysChooseDefaultsButton = NSButton; 
-                askOnStartupButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
                 checkForUpdateButton = NSButton; 
+                checkForUpdateIntervalStepper = NSStepper; 
                 checkForUpdateIntervalTextField = NSTextField; 
                 deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 
@@ -40,7 +38,6 @@
                 keepBuildDirectoryButton = NSButton; 
                 keepRootDirectoryButton = NSButton; 
                 nameTextField = NSTextField; 
-                neverAskButton = NSButton; 
                 outputPathButton = NSButton; 
                 outputPathTextField = NSTextField; 
                 passiveFTPButton = NSButton; 

@@ -46,6 +46,7 @@ File: FinkPreferences.h
 	IBOutlet NSTextField *outputPathTextField;
 	IBOutlet NSTextField *scrollBackLimitTextField;
 	IBOutlet NSTextField *checkForUpdateIntervalTextField;
+	IBOutlet NSStepper *checkForUpdateIntervalStepper;
 	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
@@ -85,7 +86,7 @@ File: FinkPreferences.h
 	IBOutlet NSMatrix *downloadMethodMatrix;
 	IBOutlet NSMatrix *rootMethodMatrix;
 	IBOutlet NSImageView *titleBarImageView;
-	
+		
 	NSUserDefaults *defaults;
 	FinkConf *conf;
 	NSMutableDictionary *environmentSettings;

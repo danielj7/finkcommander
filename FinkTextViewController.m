@@ -60,13 +60,12 @@ File: FinkTextViewController.m
 		overflow = lines - bufferLimit;
 		if (overflow > minDelete){
 			r = [self rangeOfLinesAtTopOfView:overflow];
-			[[self textStorage] deleteCharactersInRange:r];
+			[self replaceCharactersInRange:r withString:@""];
 			lines -= overflow;
 		}
 	}
-	
-	[[self textStorage] appendAttributedString:
-		[[[NSAttributedString alloc] initWithString: s] autorelease]];
+	[self replaceCharactersInRange:NSMakeRange([[self string] length], 0)
+			withString:s];
 }
 
 

@@ -36,7 +36,7 @@
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
 
-#define DEBUGGING
+//#define DEBUGGING
 
 //User Default Items
 //  Set by user

@@ -146,7 +146,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(int)tagFromAttributeName:(NSString *)name
 {
-	return [[NAME_TAG__DICTIONARY objectForKey:name] intValue];
+	return [[NAME_TAG_DICTIONARY objectForKey:name] intValue];
 }
 	
 //----------------------------------------------->Post-Init Startup
