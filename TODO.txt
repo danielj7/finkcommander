@@ -1,31 +1,27 @@
 FUNCTIONALITY
 
-Allow user to send interrupt message to hanging process
+Add command to display package's dependencies
 Add preferences:
-	Manually select path to fink directory tree -- done 3/29/02
-	Fink updates table after each command -- done 4/05/02
-	Ask-first option for dependency and virtual dependency installation -- done 4/05/02
+	Change fink.conf, including addition of unstable tree
+	Don't ask for password; reference Fink FAQ on changing sudo command
 	Select columns to be viewed (see O'Reilly Cocoa tutorial on preferences)
-	Change fink.conf
-Enhance IPC to allow user choice on dependency and virtual dependency installations -- done 4/05/02
-Redo authorization and command launch methods to use "correct" approach (see AuthSample)
-Incremental filter of table -- done 4/14/02
 Make application scriptable; possible useful scripts:
+	start-up routine: e.g. selfupdate-cvs, update-all
 	e-mail output from failed install to package maintainer
 	e-mail success to unstable package maintainer
+Allow user to send interrupt message to hanging process
+	NOTE:  attempted, but neither NSTask terminate nor NSTask interrupt worked
+Redo authorization and command launch methods to use "correct" approach (see AuthSample)
 
-Add "stable" column -- done 3/9/02
-Add command to display package's dependencies
-Disable commands, table selection while command executing -- done 3/9/02
 
 EASE OF USE
 
-Add help
-Toolbar; need icons -- done 4/14/02
+Additional toolbar commands and icons
 Contextual menu to run commands by right- or control-clicking in table view
-Additional visual clue that table is updating, like circling arrows in Mail and OmniWeb
+Determinate progress bar for fink command phases
+
 
 COSMETICS
 
-Custom application icon -- done (at least for now) 4/05/02
 Use image to show binary, unstable packages, instead of asterisk
+Better application icon
