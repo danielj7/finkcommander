@@ -172,14 +172,16 @@ File: FinkOutputParser.m
 //if a previous phase has been skipped (e.g. b/c pkg was already fetched)
 -(void)setIncrementForLastPhase
 {
-    float phaseTotal = [[increments objectAtIndex:currentPhase] floatValue];
+    float phaseTotal;
 	float pkgTotal;
 	
-	if (!currentPackage || !packageList || !ptracker){
-		NSLog(@"Warning:  Data objects for installation tracking were not created");
+	if (!currentPackage || !packageList || [packageList count] < 1 || !ptracker){
+		Dprintf(@"Data objects for installation tracking were not created");
+		increment = 0;
 		return;
 	}
-	
+	 
+	phaseTotal = [[increments objectAtIndex:currentPhase] floatValue];
 	if ([currentPackage isEqualToString:@"package"]){
 		increment = 0;
 		return;

@@ -1,5 +1,6 @@
 Create final binary:
-	Set new version number in Target:Info.plist:Expert in both CFBundleShortVersionString and CFBundleVersion, as well as in localized InfoPlist.strings
+	Set new version number in Target:Info.plist:Expert in CFBundleShortVersionString, as well as in localized InfoPlist.strings, if any
+	Set CFBundleVersion to ".release"
 	Clean the targets
 	Compile with DEBUGGING undefined and "Deployment" selected
 	

@@ -57,9 +57,10 @@ See the header file, FinkController.h, for interface and license information.
 	the associated fink or apt-get command */
 #define ACTION_ITEM_IDENTIFIER(theSender)                   \
 	[[[([(theSender) isKindOfClass:[NSMenuItem class]] ?    \
-		[(theSender) title] : [(theSender) label])   		\
-	componentsSeparatedByString:@" "]          				\
-		objectAtIndex:0] lowercaseString];          		\
+		[(theSender) title] : 								\
+		[(theSender) label]) 								\
+			componentsSeparatedByString:@" "]          		\
+			objectAtIndex:0] lowercaseString];          	\
 
 
 /*
