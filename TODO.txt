@@ -1,4 +1,12 @@
-VERSION 0.5.2:
+VERSION 0.6.0:
+
+Search output
+
+i Regex support in filter and output search (wrote wrapper as NSString category)
+
+Custom command dialog
+
+Command queue
 
 Fix Environment table disappearing items bug
 
@@ -21,22 +29,14 @@ Add "Any" filter item; make default
 
 SHORT TERM:
 
-Custom command dialog
-
 Warning dialog for first run of command in Terminal
 
 Command to show man page for packages
-
-Command queue
 
 Catch and highlight cvs errors during selfupdate-cvs
 
 Show info panel for fink installation; mirror information in email
 sig; Application->About Your Fink Installation... ?
-
-Search output
-
-i Regex support in filter and output search (wrote wrapper as NSString category)
 
 Additional fink installation info:
 	   last selfupdate-cvs 

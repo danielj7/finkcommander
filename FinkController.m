@@ -592,8 +592,6 @@ enum {
 					[[NSDate date] descriptionWithCalendarFormat:
 								@"%d%b%Y" timeZone: nil locale: nil]];
 	} 
-	
-
     [panel setRequiredFileType: @"txt"];
     [panel beginSheetForDirectory:savePath
 			file:fileName
@@ -1533,7 +1531,7 @@ enum {
 			output = NSLocalizedString(@"\nSelf-repair succeeded.  Please re-try your command.\n", @"Text displayed in output view");
 			commandTerminated = YES;
 			break;
-		case RESOURCE_DIR:
+		case RESOURCE_DIR_ERROR:
 			output = NSLocalizedString(@"\nSelf-repair succeeded, but FinkCommander was unable to change the permissions of the FinkCommander.app/Contents/Resources directory.\nPlease see the README.html file, available at http://finkcommander.sourceforge.net, for instructions on changing the permissions manually.\n", @"Error message that may be displayed in output view");
 			break;
 		case SELF_REPAIR_FAILED:

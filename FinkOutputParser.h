@@ -54,19 +54,19 @@ enum {
     BUILD,
     ACTIVATE,
 	//Used only as signals
-	PGID,
+    PGID,
     START_INSTALL,
     PASSWORD_PROMPT,
     PROMPT,
-	MANDATORY_PROMPT,
-	PROMPT_AND_START,
-	START_AND_FETCH,
-	START_AND_UNPACK,
-	START_AND_ACTIVATE,
-	RUNNING_SELF_REPAIR,
-	SELF_REPAIR_COMPLETE,
-	RESOURCE_DIR,
-	SELF_REPAIR_FAILED
+    MANDATORY_PROMPT,
+    PROMPT_AND_START,
+    START_AND_FETCH,
+    START_AND_UNPACK,
+    START_AND_ACTIVATE,
+    RUNNING_SELF_REPAIR,
+    SELF_REPAIR_COMPLETE,
+    RESOURCE_DIR_ERROR,
+    SELF_REPAIR_FAILED
 };
  
 
@@ -74,22 +74,22 @@ enum {
 {
     NSUserDefaults *defaults;
 
-	NSMutableDictionary *ptracker;
+    NSMutableDictionary *ptracker;
     NSMutableArray *packageList;
-	NSMutableArray *increments;
-	NSString *command;
+    NSMutableArray *increments;
+    NSString *command;
     NSString *currentPackage;
 
-	regex_t configure;
-	regex_t prompt;
-	regex_t manPrompt;
+    regex_t configure;
+    regex_t prompt;
+    regex_t manPrompt;
 
     float increment;
     int currentPhase;
-	int pgid;
-	BOOL installing;
+    int pgid;
+    BOOL installing;
     BOOL readingPackageList;
-	BOOL selfRepair;
+    BOOL selfRepair;
 }
 
 -(id)initForCommand:(NSString *)cmd
