@@ -8,7 +8,9 @@
  Unix software on Mac OS X.
 
  FinkPackageInfo enables the Package Info window to display information on packages 
- selected in the main window's table.
+ selected in the main window's table and to provide links to package websites and maintainer
+ email addresses.  It uses the GPL'd MyTextView class created by Hoshi Takanori to display the 
+ familiar "hand" cursor over links.
 
  Copyright (C) 2002  Steven J. Burr
 

@@ -1,22 +1,20 @@
 NEXT RELEASE
 
-X Menu, toolbar commands to e-mail package maintainer
+Optional limit on output buffer--bug fix
 
 Show info panel for fink installation; include:
 	fink version
 	package version
 	OSX version
 	Developer Tools installed
+	
+Command inspector:  show currently running command with list of
+	all packages
 
-Check for new FinkCommander release
-
-X Optional warning before removing a package
-
-X Resize package inspector window properly
-
-X Save output to log files
+Automize check for new FinkCommander release
 
 Command to update fink from cvs
+	
 
 FUNCTIONALITY
 
@@ -34,24 +32,6 @@ Custom script suite
 
 **Long Term
 
-Architecture changes: 
-
-	     table view methods in separate class file (can a
-	     table view be its own delegate?); this will open the door
-	     to switching in other views without dumping all of the
-	     necessary code into FinkController; creating the table
-	     programmatically will make it easier to implement the
-	     view menu
-
-	     make FinkConf self-sufficient in terms of making changes
-	     to fink.conf file; both FinkConf and FinkController
-	     should post notifications when start and stop command;
-	     FinkController can use these to set interface elements
-	     appropriately (e.g. disable menus, start progress bar);
-	     FinkConf can use them to schedule tasks
-
-View menu: select rows to display; see O'Reilly cocoa tutorial
-
 Command to display a package's dependencies
 
 Dependency browser
@@ -61,10 +41,10 @@ Redo authorization and command launch methods to use "correct" approach (see Aut
 
 EASE OF USE
 
+Determinate progress bar for fink command phases
+
 Put text of prompts and choices in the form of buttons in the
 interaction panel
-
-Determinate progress bar for fink command phases
 
 Localization strings
 

@@ -34,8 +34,14 @@ File: FinkGlobals.h
 #import <Foundation/Foundation.h>
 #import "SBString.h"
 
-//comment out for release version:
+#define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
+
+#define DEBUGGING 1
+
+#define LOGIFDEBUG(x) if (DEBUGGING) {NSLog(x);}
+
 //#define DEBUG
+
 
 //User Default Items
 //  Set by user
@@ -56,6 +62,7 @@ extern NSString *FinkPackagesInTitleBar;
 extern NSString *FinkAutoExpandOutput;
 extern NSString *FinkGiveEmailCredit;
 extern NSString *FinkCheckForNewVersion;
+extern NSString *FinkBufferLimit;
 //  not yet implemented
 extern NSString *FinkLastCheckedForNewVersion;
 extern NSString *FinkCheckForNewVersionInterval;
@@ -69,6 +76,7 @@ extern NSString *FinkTableColumnsArray;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;
+extern NSString *FinkRunCommandNotification;
 extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;

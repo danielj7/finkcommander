@@ -19,7 +19,7 @@
 	
     <dt>Automatic response to prompt failures</dt>
     <dd><p>In some instances, Fink will not automatically respond to a prompt
-		when <kbd>Preferences:General:Always choose default response to prompts</kbd> 
+		when <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
 		is selected. When this occurs, select <kbd>Tools:Interact with Fink</kbd> to enter
 		a response.  <a href="details/fc_defaults.html">More detail</a>.
     </p></dd>
@@ -32,15 +32,7 @@
         package you just installed from source is shown as <dfn>current</dfn>), then the 
 		error message was a false positive.  You don't need to worry about it.
     </p></dd>
-    
-    <dt>Binary install failures</dt>
-    <dd><p>When you try to use <kbd>Binary:Install</kbd> to install some
-        packages identifed in the table as binary, FinkCommander will generate an
-        error message.  If this happens, you will need to use
-        <kbd>Source:Install</kbd> to install the package.  
-        <a href="details/fc_binarypkgs.html">More detail</a>.
-    </p></dd>
-	
+    	
 	<dt>Apt-get update failure</dt>
 	<dd><p>If you receive an error message after running apt-get update, try running
 		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.

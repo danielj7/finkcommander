@@ -26,6 +26,7 @@ NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
 NSString *FinkGiveEmailCredit = @"FinkGiveEmailCredit";
 NSString *FinkCheckForNewVersion = @"FinkCheckForNewVersion";
+NSString *FinkBufferLimit = @"FinkBufferLimit";
 NSString *FinkLastCheckedForNewVersion = @"FinkLastCheckedForNewVersion";
 NSString *FinkCheckForNewVersionInterval = @"FinkCheckForNewVersionInterval";
 
@@ -38,6 +39,7 @@ NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
+NSString *FinkRunCommandNotification = @"FinkRunCommandNotification";
 NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";

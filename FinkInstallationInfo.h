@@ -8,8 +8,6 @@ File: FinkController.h
  Unix software on Mac OS X.
 
  The FinkInstallationInfo models the state of the user's fink installation.
- (OK, it's really just a series of functions dressed up as a class, but I
- find it easier to write Objective C than regular C.)
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -29,7 +27,7 @@ File: FinkController.h
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
 
 #import <Foundation/Foundation.h>

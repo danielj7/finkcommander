@@ -37,6 +37,8 @@
                 passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
                 rootMethodMatrix = NSMatrix; 
+                scrollBackLimitButton = NSButton; 
+                scrollBackLimitTextField = NSTextField; 
                 scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 showPackagesInTitleButton = NSButton; 

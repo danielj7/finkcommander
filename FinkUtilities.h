@@ -1,5 +1,5 @@
 /*
- File: FinkProcessKiller.h
+File: FinkUtilities.h
 
  FinkCommander
 
@@ -7,16 +7,9 @@
  that automates the downloading, patching, compilation and installation of
  Unix software on Mac OS X.
 
- The FinkProcessKiller class provides a method for terminating fink and apt-get
- processes.  The NSTask terminate method doesn't work on these processes because
- they are owned by root, while FinkCommander is owned by the user.  
- 
- I have tried several alternatives, and the only method that seems to be at all 
- reliable is to send a SIGKILL signal to the child process and to each of the "grandchildren."
- 
- Another alternative that I may try is to write a separate tool that calls killpg()
- for the child process (which seems to set the process group for each of the grandchildren)
- and then run that with sudo or the SecurityFramework.
+ This file prototypes utility functions used by the FinkController object to 
+ discover the base path for the user's fink installation and to terminate
+ processes.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -36,17 +29,18 @@
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
-#import <Foundation/Foundation.h>
+
+#import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
+#import "SBString.h"
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
 
-@interface FinkProcessKiller : NSObject {
-}
+void findFinkBasePath(void);
+void fixScript(void);
 
--(void)terminateChildProcesses;
-
-@end
+void terminateChildProcesses(void);

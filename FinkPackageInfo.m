@@ -130,8 +130,7 @@
 				line = @"\n\n";
 			}
 		//if line begins with punctuation intended as a bullet, put the linefeed back
-		}else if ([line rangeOfCharacterFromSet: 
-			[NSCharacterSet characterSetWithCharactersInString:@"-*"]].location == 0){
+		}else if ([line hasPrefix:@"-"] || [line hasPrefix:@"*"] || [line hasPrefix:@"o "]){
 			line = [NSString stringWithFormat: @"%@\n", line];
 			if (! [[desc string] hasSuffix: @"\n"]){
 				line = [NSString stringWithFormat: @"\n%@", line];

@@ -41,6 +41,8 @@ File: FinkPreferences.h
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSTextField *outputPathTextField;
+	IBOutlet NSTextField *scrollBackLimitTextField;
+	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *askOnStartupButton;

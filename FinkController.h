@@ -7,9 +7,28 @@ Graphical user interface for Fink, a software package management system
 that automates the downloading, patching, compilation and installation of
 Unix software on Mac OS X.
 
-The FinkController class allows the graphical user interface to interact with
-command-line fink scripts and programs, as well as the data made available 
-by the FinkDataController class.
+FinkController is the hub of the FinkCommander object system.  It instantiates and
+communicates with:
+
+* 	a FinkDataController object, which gathers and updates information on the user's fink
+	installation in the form of an array of FinkPackage objects;
+
+*	IOTaskWrapper objects, which run fink commands asynchronously in separate processes;
+
+*	a FinkTableViewController object and FinkTextViewController object, which control
+	the primary user interface elements;
+	
+*	a FinkPreferences object, which provides an interface for both the FinkCommander user
+	interface system and for changing the fink.conf file (represented by
+	the FinkConf object);
+	
+*	a FinkPackageInfo object, which obtains and formats information from FinkPackage
+	objects for display in the Package Inspector;
+	
+* 	user interface elements created in Interface Builder and located in the MainMenu.nib file.
+
+FinkController also creates the FinkCommander toolbar and registers the "factory defaults."  The
+settings for each are read from the files Toolbar.plist and UserDefaults.plist, respectively.
 
 Copyright (C) 2002  Steven J. Burr
 
@@ -38,13 +57,12 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
-#import "FinkBasePathUtility.h"
-#import "FinkProcessKiller.h"
 #import "IOTaskWrapper.h"
 #import "FinkTableViewController.h"
+#import "FinkTextViewController.h"
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
-#include <math.h>
+#import "FinkUtilities.h"
 
 enum {
 	SOURCE_COMMAND,
@@ -74,7 +92,7 @@ enum {
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet NSSplitView *splitView;
-	IBOutlet NSTextView *textView;
+	IBOutlet id textView;
 	IBOutlet id msgText;
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
@@ -99,23 +117,16 @@ enum {
 	//general instance variables
 	NSUserDefaults *defaults;
 	FinkDataController *packages;
-	NSMutableArray *displayedPackages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
 	FinkOutputParser *parser;
 	NSArray *selectedPackages;
 	NSString *lastCommand;
-	NSString *lastIdentifier;
-	NSMutableDictionary *columnState;
-	NSImage *reverseSortImage;
-	NSImage *normalSortImage;
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
 	BOOL userChoseToTerminate;
-	NSArray *selectedObjectInfo;
 	NSTimer *timer;
 
-	//Authentication and Process Control
 	NSString *password;
 	BOOL pendingCommand;
 	BOOL passwordError;
@@ -125,26 +136,14 @@ enum {
 
 //Accessors
 -(FinkDataController *)packages;
--(NSMutableArray *)displayedPackages;
--(void)setDisplayedPackages:(NSMutableArray *)a;
--(BOOL)pendingCommand;
--(void)setPendingCommand:(BOOL)b;
 -(NSArray *)selectedPackages;
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
--(NSString *)lastIdentifier;
--(void)setLastIdentifier:(NSString *)s;
--(BOOL)commandIsRunning;
--(void)setCommandIsRunning:(BOOL)b;
-//Authentication and process control
 -(NSString *)password;
 -(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
--(NSArray *)selectedObjectInfo;
--(void)setSelectedObjectInfo:(NSArray *)array;
--(NSArray *)selectedPackageArray;
 -(void)setParser:(FinkOutputParser *)p;
 
 -(void)scrollToVisible:(NSNumber *)n;
@@ -167,7 +166,7 @@ enum {
 -(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)showDescription:(id)sender;
 //  help menu items
--(IBAction)internetAccess:(id)sender;
+-(IBAction)goToWebsite:(id)sender;
 -(IBAction)emailMaintainer:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 
@@ -180,16 +179,6 @@ enum {
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
 // reapplies filter if filter popup menu changes 
 -(IBAction)refilter:(id)sender;
-
-//Table Methods
-//  data source methods
--(int)numberOfRowsInTableView:(NSTableView *)aTableView;
--(id)tableView:(NSTableView *)aTableView 
-		objectValueForTableColumn:(NSTableColumn *)aTableColumn
-		row:(int)rowIndex;
-//  delegate method
--(void)tableView:(NSTableView *)aTableView
-		didClickTableColumn:(NSTableColumn *)aTableColumn;
 
 //Process Control Methods
 // sheet methods for password window

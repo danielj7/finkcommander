@@ -8,7 +8,9 @@ File: FinkTableViewController.h
  Unix software on Mac OS X.
 
  FinkTableViewController, a subclass of NSTableView, includes methods
- for adding and removing columns from FinkCommander's table view.
+ for adding and removing columns from FinkCommander's table view, for sorting
+ the table view when the user clicks the table header cells and for returning
+ an array of the FinkPackage objects selected in the table.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -28,23 +30,47 @@ File: FinkTableViewController.h
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
-
+*/
 
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
+#import "FinkPackage.h"
 
 @interface FinkTableViewController: NSTableView
 {
-	NSMutableDictionary *tableColumns;
 	NSUserDefaults *defaults;
-}
 
+	NSMutableDictionary *columnState;
+	NSMutableArray *displayedPackages;
+	NSArray *selectedObjectInfo;
+	
+	NSString *lastIdentifier;
+
+	NSImage *reverseSortImage;
+	NSImage *normalSortImage;	
+}
+//----------------------------------------------->Accessors
+-(NSString *)lastIdentifier;
+-(void)setLastIdentifier:(NSString *)s;
+-(NSMutableArray *)displayedPackages;
+-(void)setDisplayedPackages:(NSMutableArray *)a;
+-(NSArray *)selectedObjectInfo;
+-(void)setSelectedObjectInfo:(NSArray *)array;
+-(NSImage *)normalSortImage;
+-(NSImage *)reverseSortImage;
+-(NSArray *)selectedPackageArray;
+//----------------------------------------------->Column Manipulation
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier;
 -(void)addColumnWithName:(NSString *)identifier;
 -(void)removeColumnWithName:(NSString *)identifier;
 
+//----------------------------------------------->Sorting Methods
+-(void)storeSelectedObjectInfo;
+-(void)scrollToSelectedObject;
 -(void)sortTableAtColumn:(NSTableColumn *)aTableColumn 
 		inDirection:(NSString *)direction;
+-(void)resortTableAfterFilter;
 
 @end
+
+

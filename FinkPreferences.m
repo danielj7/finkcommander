@@ -36,6 +36,7 @@ File: FinkPreferences.m
 	NSString *httpProxy; 
 	NSString *ftpProxy;
 	NSString *fetchAltDir;
+	int scrollBackLimit;
 	
 	//FinkCommander Preferences
 	basePath = [defaults objectForKey: FinkBasePath];
@@ -64,6 +65,12 @@ File: FinkPreferences.m
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
+	
+	scrollBackLimit = [defaults integerForKey:FinkBufferLimit];
+	[scrollBackLimitButton setState: scrollBackLimit];
+	if (scrollBackLimit){
+		[scrollBackLimitTextField setIntValue: scrollBackLimit];
+	}
 	
 	//Fink Preferences
 	[useUnstableMainButton setState: [conf useUnstableMain]];
@@ -114,6 +121,14 @@ File: FinkPreferences.m
 	}else{
 		[defaults setObject: [basePathTextField stringValue] forKey: FinkBasePath];
 	}
+}
+
+-(void)setScrollBackLimit
+{
+	int scrollBackLimit = [scrollBackLimitButton state] == NSOnState ?
+							[scrollBackLimitTextField intValue] : 0;
+							
+	[defaults setInteger:scrollBackLimit forKey:FinkBufferLimit];
 }
 
 -(void)setDownloadMethod
@@ -169,6 +184,7 @@ File: FinkPreferences.m
 -(IBAction)setPreferences:(id)sender
 {
 	[self setBasePath];
+	[self setScrollBackLimit];
 	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
 	
 	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];

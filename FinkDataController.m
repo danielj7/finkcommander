@@ -135,13 +135,10 @@ int NAMESTART = 12;
 	[cmdStdout readToEndOfFileInBackgroundAndNotify];
 	
 	[self setBinaryPackages: [self getBinaryList]];
-	
-	 NSLog(@"Binary list:\n%@", binaryPackages); 
-	
-#ifdef DEBUG
-	NSLog(@"Completed binary list after %f seconds",
-	   -[start timeIntervalSinceNow]);
-#endif //DEBUG
+		
+	if (DEBUGGING) {
+		NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
+	}
 }
 
 -(NSString *)parseWeburlFromString:(NSString *)s
@@ -205,11 +202,11 @@ int NAMESTART = 12;
 	NSEnumerator *e;
 	FinkPackage *p;
 
-#ifdef DEBUG	
-	NSLog(@"Read to end of file notification sent after %f seconds",
+	if (DEBUGGING) {
+		NSLog(@"Read to end of file notification sent after %f seconds",
 	       -[start timeIntervalSinceNow]);
-#endif
-
+	}	
+	
 	d = [[n userInfo] objectForKey: NSFileHandleNotificationDataItem];
 	output = [[[NSString alloc] initWithData: d
 								encoding: NSUTF8StringEncoding] autorelease];
@@ -247,10 +244,10 @@ int NAMESTART = 12;
 	}
 	[self setArray: collector];
 
-#ifdef DEBUG
-	NSLog(@"Fink package array completed after %f seconds",
+	if (DEBUGGING){
+		NSLog(@"Fink package array completed after %f seconds",
 		-[start timeIntervalSinceNow]);
-#endif //DEBUG
+	}
 
 	//notify FinkController that table needs to be updated
 	[[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished
@@ -268,7 +265,7 @@ int NAMESTART = 12;
 		}
 	}else if ([cmd isEqualToString: @"remove"]){
 		while (pkg = [e nextObject]){
-			[pkg setInstalled: @" "];
+			[pkg setInstalled: @"archived"];
 		}
 	}else if ([cmd isEqualToString: @"update-all"]){
 		e = [[self array] objectEnumerator];

@@ -32,48 +32,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 +(void)initialize
 {
 	//set "factory defaults"
-	//TBD:  consider putting this stuff in a plist file
-	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
-	NSNumber *on = [NSNumber numberWithInt: NSOnState];
-	NSNumber *off = [NSNumber numberWithInt: NSOffState];
 	
-	[defaultValues setObject: @"" forKey: FinkBasePath];
-	[defaultValues setObject: @"" forKey: FinkOutputPath];
-	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
-	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
-			
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysScrollToBottom];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkGiveEmailCredit];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkWarnBeforeRemoving];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkCheckForNewVersion];	
-
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];	
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkWarnBeforeRunning];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAutoExpandOutput];
-
-	[defaultValues setObject: [NSNumber numberWithFloat: 0.50] forKey: FinkOutputViewRatio];
-	[defaultValues setObject:
-		[NSDictionary dictionaryWithObjectsAndKeys:
-			on, @"Version Column", 
-			on, @"Installed Column",
-			on, @"Binary Column",
-			on, @"Unstable Column",
-			on, @"Category Column",
-			on, @"Description Column",
-			off, @"Maintainer Column",
-			nil]
-		forKey: FinkViewMenuSelectionStates];
-	[defaultValues setObject:
-		[NSArray arrayWithObjects: @"name", @"version", @"binary", @"unstable",
-			@"installed", @"category", @"description", nil]
-		forKey: FinkTableColumnsArray];
+	NSDictionary *defaultValues = [NSDictionary dictionaryWithContentsOfFile:
+		[[NSBundle mainBundle] pathForResource: @"UserDefaults" ofType: @"plist"]];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -82,9 +43,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(id)init
 {
 	if (self = [super init]){
-		FinkBasePathUtility *utility;
-		NSEnumerator *e;
-		NSString *attribute;
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		
 		defaults = [NSUserDefaults standardUserDefaults];
@@ -94,64 +52,47 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
-		utility = [[[FinkBasePathUtility alloc] init] autorelease];
-		if (! [defaults boolForKey: FinkBasePathFound]){
-			[utility findFinkBasePath];
-		}
-		[utility fixScript];	
+		if (! [defaults boolForKey: FinkBasePathFound]) { findFinkBasePath(); }
+		fixScript();
+
 		//Set instance variables used to store information related to fink package data
 		packages = [[FinkDataController alloc] init];		// data used in table
-		[self setDisplayedPackages: [packages array]];		// modifiable version for filter
 		[self setSelectedPackages: nil];    				// used to update package data
-		[self setLastCommand: @""];  						// ditto
-
-		//Set instance variables used to display table
-		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
-		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
-		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
-		// dictionary used to record whether table columns are sorted in normal or reverse order
-		// enables proper sorting behavior; uses macro from FinkPackage to set attributes
-		columnState = [[NSMutableDictionary alloc] init];
-		e = [[NSArray arrayWithObjects: PACKAGE_ATTRIBUTES, nil] objectEnumerator];
-		while (attribute = [e nextObject]){
-			[columnState setObject: @"normal" forKey: attribute];
-		}
 		
 		//Set instance variables used to store objects and state information  
 		//needed to run fink and apt-get commands
-		[self setCommandIsRunning: NO];		
+		commandIsRunning = NO;		
 		[self setPassword: nil];
-		lastParams = [[NSMutableArray alloc] init];
-		[self setPendingCommand: NO];
-		
+		[self setLastParams: nil];
+		pendingCommand = NO;
+				
 		//Flag used to avoid duplicate warnings when user terminates FC 
 		//in middle of command with something other than App:Quit
 		userChoseToTerminate = NO;
 		
-		//Register for notifications that run commands
-		//  selector runs command if one is pending and password was entered 
+		//Register for notification that another object needs to run
+		//a command with root privileges
 		[center addObserver: self
-				selector: @selector(runCommandAfterPasswordEntered:)
-				name: @"passwordWasEntered"
+				selector: @selector(runCommandOnNotification:)
+				name: FinkRunCommandNotification
 				object: nil];
-		//  selector runs commands that change the fink.conf file
-		[center addObserver: self
-				selector: @selector(runFinkConfCommand:)
-				name: FinkConfChangeIsPending
-				object: nil];
-					
 		//Register for notification that causes table to update 
 		//and resume normal state
 		[center addObserver: self
 				selector: @selector(resetInterface:)
 				name: FinkPackageArrayIsFinished
 				object: nil];
-					
 		//Register for notification that causes output to collapse when
 		//user selects the auto expand option
 		[center addObserver: self
 				selector: @selector(collapseOutput:)
 				name: FinkCollapseOutputView
+				object: nil];
+		//Register notification that table selection changed in order
+		//to update Package Inspector
+		[center addObserver: self
+				selector: @selector(tableViewSelectionDidChange:)
+				name: NSTableViewSelectionDidChangeNotification
 				object: nil];
 	}
 	return self;
@@ -162,15 +103,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[packages release];
-	[displayedPackages release];
 	[selectedPackages release];
 	[preferences release];
 	[parser release];
 	[lastCommand release];
-	[lastIdentifier release];
-	[columnState release];
-	[reverseSortImage release];
-	[normalSortImage release];
 	[lastParams release];
 	[password release];
 	[finkTask release];
@@ -180,41 +116,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Post-Init Startup
-//helpers
--(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
-{
-	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
-		infoDictionary] objectForKey:@"CFBundleVersion"];
-	NSDictionary *latestVersionDict = 
-		[NSDictionary dictionaryWithContentsOfURL:
-			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
-	NSString *latestVersion;	
-
-	if (latestVersionDict){
-		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
-	}else{
-		NSRunAlertPanel(@"Error",
-			@"FinkCommander was unable to locate on-line update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.",
-			@"OK", nil, nil);
-		return;
-	}
-	if (! [installedVersion isEqualToString: latestVersion]){
-		int answer = NSRunAlertPanel(@"Download",
-								@"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?",
-								@"Yes", @"No", nil, latestVersion);
-		if (answer == NSAlertDefaultReturn){
-			[[NSWorkspace sharedWorkspace] openURL: 
-				[NSURL URLWithString: 
-					[NSString stringWithFormat:
-					@"http://finkcommander.sourceforge.net",
-					latestVersion]]];
-		}
-	}else if (notifyWhenCurrent){
-		NSRunAlertPanel(@"Current",
-				  @"The latest version of FinkCommander is installed on your system.",
-				  @"OK", nil, nil);
-	}
-}
 
 -(void)awakeFromNib
 {
@@ -222,16 +123,23 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSEnumerator *e = [selStates keyEnumerator];
 	NSString *key;
 
-	NSSize contentSize = [tableScrollView contentSize];
+	NSSize tableContentSize = [tableScrollView contentSize];
+	NSSize outputContentSize = [outputScrollView contentSize];
 
-	tableView = [[FinkTableViewController alloc] initWithFrame:
-		NSMakeRect(0, 0, contentSize.width, contentSize.height)];
+	tableView = 
+		[[FinkTableViewController alloc] 
+			initWithFrame:NSMakeRect(0, 0, tableContentSize.width, tableContentSize.height)];
 	[tableScrollView setDocumentView: tableView];
 	[tableView release];
-	[tableView setDelegate: self];
-	[tableView setDataSource: self];
+	[tableView setDisplayedPackages: [packages array]];
 	[tableView sizeLastColumnToFit];
 	[tableView setMenu: tableContextMenu];
+	
+	textView = 
+		[[FinkTextViewController alloc] 
+			initWithFrame:NSMakeRect(0, 0, outputContentSize.width, outputContentSize.height)];
+	[outputScrollView setDocumentView: textView];
+	[textView release];
 
 	while (key = [e nextObject])
 	{
@@ -244,26 +152,28 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self collapseOutput: nil];
 	}else{
-		[self expandOutput: nil];
+		//restore to pre-terminate state
+		[self expandOutput: nil]; 
 	}
 	[msgText setStringValue:
-		@"Updating table dataÉ"];
+		@"Updating table data"];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
+		[tableView lastIdentifier]];
 				
 	if (! [defaults boolForKey: FinkBasePathFound]){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
-	
 	[self updateTable:nil];
+
 	[tableView setHighlightedTableColumn:lastColumn];
-	[tableView setIndicatorImage:normalSortImage inTableColumn:lastColumn];
+	[tableView setIndicatorImage:[tableView normalSortImage] inTableColumn:lastColumn];
+
 	if ([defaults boolForKey:FinkAskForPasswordOnStartup]){
 		[self raisePwdWindow:self];
 	}
@@ -275,15 +185,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkPackagesInTitleBar]){				
 		[[self window] setTitle: [NSString stringWithFormat: 
 			@"Packages: %d Displayed, %d Installed",
-			[[self displayedPackages] count], [packages installedPackagesCount]]];
-		if (! [self commandIsRunning]){
+			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
+		if (! commandIsRunning){
 			[msgText setStringValue: @"Done"];
 		}
-	}else if (! [self commandIsRunning]){
+	}else if (! commandIsRunning){
 		[[self window] setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
 			@"%d packages (%d installed)",
-			[[self displayedPackages] count], [packages installedPackagesCount]]];
+			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
 	}
 }
 
@@ -292,14 +202,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //--------------------------------------------------------------------------------
 
 -(FinkDataController *)packages  {return packages;}
-
--(NSMutableArray *)displayedPackages {return displayedPackages;}
--(void)setDisplayedPackages:(NSMutableArray *)a
-{
-	[a retain];
-	[displayedPackages release];
-	displayedPackages = a;
-}
 
 -(NSArray *)selectedPackages {return selectedPackages;}
 -(void)setSelectedPackages:(NSArray *)a
@@ -317,19 +219,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	lastCommand = s;	
 }
 
--(NSString *)lastIdentifier {return lastIdentifier;}
--(void)setLastIdentifier:(NSString *)s
-{
-	[s retain];
-	[lastIdentifier release];
-	lastIdentifier = s;
-}
-
--(BOOL)commandIsRunning {return commandIsRunning;}
--(void)setCommandIsRunning:(BOOL)b{
-	commandIsRunning = b;
-}
-
 -(NSString *)password {return password;}
 -(void)setPassword:(NSString *)s
 {
@@ -341,26 +230,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(NSMutableArray *)lastParams {return lastParams;}
 -(void)setLastParams:(NSMutableArray *)a
 {
-	[lastParams removeAllObjects];
-	[lastParams addObjectsFromArray: a];
-}
-
--(BOOL)pendingCommand {return pendingCommand;}
--(void)setPendingCommand:(BOOL)b
-{
-	pendingCommand = b;
-}
-
--(NSArray *)selectedObjectInfo
-{
-    return selectedObjectInfo;
-}
-
--(void)setSelectedObjectInfo:(NSArray *)array
-{
-    [array retain];
-    [selectedObjectInfo release];
-    selectedObjectInfo = array;
+	[a retain];
+	[lastParams release];
+	lastParams = a;
 }
 
 -(void)setParser:(FinkOutputParser *)p
@@ -368,21 +240,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     [p retain];
     [parser release];
     parser = p;
-}
-
-
-//not really an accessor, but it needs to go somewhere
--(NSArray *)selectedPackageArray
-{
-	NSEnumerator *e = [tableView selectedRowEnumerator];
-	NSNumber *anIndex;
-	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
-
-	while (anIndex = [e nextObject]){
-		[pkgArray addObject:
-			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
-	}
-	return pkgArray;
 }
 
 //--------------------------------------------------------------------------------
@@ -394,7 +251,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	int answer;
 	
-	if ([self commandIsRunning] && ! userChoseToTerminate){
+	if (commandIsRunning && ! userChoseToTerminate){
 		answer = NSRunCriticalAlertPanel(@"Warning!", 
 			@"Quitting now will interrupt a Fink process.",
 			@"Cancel", @"Quit", nil);
@@ -414,7 +271,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //but warn before closing window if a command is running
 -(BOOL)windowShouldClose:(id)sender
 {
-	if ([self commandIsRunning]){
+	if (commandIsRunning){
 		int answer = NSRunCriticalAlertPanel(@"Warning!",
 				@"Quitting now will interrupt a Fink process.",
 				@"Cancel", @"Quit", nil);
@@ -430,37 +287,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //		MENU COMMANDS AND HELPERS
 //--------------------------------------------------------------------------------
 
-//----------------------------------------------->Helpers
+//----------------------------------------------->Helpers Used In Various Methods
 
 //display running command below table
 -(void)displayCommand:(NSArray *)params
 {
-	[msgText setStringValue: [NSString stringWithFormat: @"Running %@É",
+	[msgText setStringValue: [NSString stringWithFormat: @"Running %@",
 		[params componentsJoinedByString: @" "]]];
-}
-
-//set up the argument list and flags for either command method
--(NSMutableArray *)setupCommandFrom:(id)sender
-{
-	NSString *cmd; 
-	NSString *executable;
-	NSMutableArray *args;
-
-	//determine command
-	if ([sender isKindOfClass: [NSMenuItem class]]){
-		cmd = [[sender title] lowercaseString];
-	}else{
-		cmd = [[[[sender label] componentsSeparatedByString:@" "] 
-			objectAtIndex: 0] lowercaseString];
-	}	
-
-	//determine executable
-	executable = ([sender tag] == SOURCE_COMMAND ? @"fink" : @"apt-get");
-	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
-	
-	[self setCommandIsRunning: YES];
-	[self setLastCommand: cmd];
-	return args;
 }
 
 -(void)startProgressIndicatorAsIndeterminate:(BOOL)b
@@ -471,10 +304,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[progressIndicator setUsesThreadedAnimation: YES];
 		[progressIndicator startAnimation: nil];
     }else{
-		;
-#ifdef DEBUG
-		NSLog(@"Called start PI while PI still running");
-#endif //DEBUG
+		LOGIFDEBUG(@"Called start PI while PI still running");
     }
 }
 
@@ -484,19 +314,153 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
     }else{
-#ifdef DEBUG
-		NSLog(@"Called stop PI when PI not running");
-#endif //DEBUG
+		LOGIFDEBUG(@"Called stop PI when PI not running");
     }
 }
 
-//----------------------------------------------->Menu Actions
+//----------------------------------------------->Running Commands
+
+//there are separate action methods for running package-specific and
+//non-package-specific commands; this allows choosing the appropriate
+//method in IB, rather than changing the command method, when new 
+//commands are added (the sender tag is already used to distinguish
+//fink and apt-get commands)
+
+//helper: sets up the argument list and flags for either command method
+-(NSMutableArray *)setupCommandFrom:(id)sender
+{
+	NSString *cmd;
+	NSString *executable;
+	NSMutableArray *args;
+
+	//determine command
+	if ([sender isKindOfClass: [NSMenuItem class]]){
+		cmd = [[sender title] lowercaseString];
+	}else{
+		cmd = [[[[sender label] componentsSeparatedByString:@" "]
+			objectAtIndex: 0] lowercaseString];
+	}
+
+	//determine executable
+	executable = ([sender tag] == SOURCE_COMMAND ? @"fink" : @"apt-get");
+	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
+
+	commandIsRunning = YES;
+	[self setLastCommand: cmd];
+	return args;
+}
+
+//run package-specific command with arguments derived from table selection
+-(IBAction)runCommand:(id)sender
+{
+	NSMutableArray *args = [self setupCommandFrom: sender];
+	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity: 5];
+	FinkPackage *pkg;
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+
+	while (pkg = [e nextObject]){
+		[pkgNames addObject: [pkg name]];
+	}
+
+	//set up selectedPackages array for later use
+	[self setSelectedPackages: pkgNames];
+
+	//set up args array to run the command
+	[args addObjectsFromArray: pkgNames];
+
+	[self displayCommand: args];
+	[self runCommandWithParameters: args];
+}
+
+//run non-package-specific command; ignore table selection
+-(IBAction)runUpdater:(id)sender
+{
+	NSMutableArray *args = [self setupCommandFrom: sender];
+
+	[self displayCommand: args];
+	[self runCommandWithParameters: args];
+}
+
+//faster substitute for fink describe command; preserves original
+//formatting, unlike package inspector
+-(IBAction)showDescription:(id)sender
+{
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+	int i = 0;
+	FinkPackage *pkg;
+	NSString *full = nil;
+	NSString *divider = @"____________________________________________________\n\n";
+
+	[textView setString: @""];
+
+	while (pkg = [e nextObject]){
+		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
+			[pkg name],
+			[pkg version],
+			[pkg fulldesc]];
+		if (i > 0){
+			[[textView textStorage] appendAttributedString:
+				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
+		}
+		[[textView textStorage] appendAttributedString:
+			[[[NSAttributedString alloc] initWithString: full] autorelease]];
+		i++;
+	}
+}
+
+//usually called by other methods after a command runs
+-(IBAction)updateTable:(id)sender
+{
+	[self startProgressIndicatorAsIndeterminate:YES];
+	[msgText setStringValue: @"Updating table data"];
+	commandIsRunning = YES;
+	[packages update]; //calls resetInterface by notification
+}
+
+//----------------------------------------------->Version Checker
+
+//helper
+-(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
+{
+	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
+		infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSDictionary *latestVersionDict =
+		[NSDictionary dictionaryWithContentsOfURL:
+			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
+	NSString *latestVersion;
+
+	if (latestVersionDict){
+		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
+	}else{
+		NSRunAlertPanel(@"Error",
+				  @"FinkCommander was unable to locate on-line update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.",
+				  @"OK", nil, nil);
+		return;
+	}
+	if (! [installedVersion isEqualToString: latestVersion]){
+		int answer = NSRunAlertPanel(@"Download",
+							   @"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?",
+							   @"Yes", @"No", nil, latestVersion);
+		if (answer == NSAlertDefaultReturn){
+			[[NSWorkspace sharedWorkspace] openURL:
+				[NSURL URLWithString:
+					[NSString stringWithFormat:
+													   @"http://finkcommander.sourceforge.net",
+						latestVersion]]];
+		}
+	}else if (notifyWhenCurrent){
+		NSRunAlertPanel(@"Current",
+				  @"The latest version of FinkCommander is installed on your system.",
+				  @"OK", nil, nil);
+	}
+}
 
 -(IBAction)checkForLatestVersionAction:(id)sender
 {
 	[self checkForLatestVersion:YES];
 }
 
+//----------------------------------------------->Save Output
 
 -(IBAction)saveOutput:(id)sender
 {
@@ -527,46 +491,16 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
-//run package-specific command with arguments derived from table selection
--(IBAction)runCommand:(id)sender
-{
-	NSMutableArray *args = [self setupCommandFrom: sender];
-	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity: 5];
-	FinkPackage *pkg;
-	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
-
-	while (pkg = [e nextObject]){
-		[pkgNames addObject: [pkg name]];
-	}
-	
-	//set up selectedPackages array for later use
-	[self setSelectedPackages: pkgNames];
-
-	//set up args array to run the command
-	[args addObjectsFromArray: pkgNames];
-	
-	[self displayCommand: args];		
-	[self runCommandWithParameters: args];
-}
-
-//run non-package-specific command; ignore table selection
--(IBAction)runUpdater:(id)sender
-{
-	NSMutableArray *args = [self setupCommandFrom: sender];
-	
-	[self displayCommand: args];	
-	[self runCommandWithParameters: args];
-}
+//----------------------------------------------->Terminator III
 
 -(IBAction)terminateCommand:(id)sender
 {
-	FinkProcessKiller *terminator = [[[FinkProcessKiller alloc] init] autorelease];
 	int answer1 = NSRunAlertPanel(@"Caution",
 			@"The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\nWhat would you like to do?",
 			@"Terminate", @"Continue", nil);
 
 	if (answer1 == NSAlertDefaultReturn){
-		[terminator terminateChildProcesses];
+		terminateChildProcesses();
 
 		sleep(1);
 
@@ -582,39 +516,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
-//update table using Fink
--(IBAction)updateTable:(id)sender
-{	
-	[self startProgressIndicatorAsIndeterminate:YES];
-	[msgText setStringValue: @"Updating table dataÉ"]; 
-	[self setCommandIsRunning: YES];
-	[packages update]; //calls resetInterface by notification
-}
-
--(IBAction)showDescription:(id)sender
-{
-	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
-	int i = 0;
-	FinkPackage *pkg;
-	NSString *full = nil;
-	NSString *divider = @"____________________________________________________\n\n";
-
-	[textView setString: @""];
-
-	while (pkg = [e nextObject]){
-		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
-			[pkg name],
-			[pkg version],
-			[pkg fulldesc]];
-		if (i > 0){
-			[[textView textStorage] appendAttributedString:
-				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
-		}
-		[[textView textStorage] appendAttributedString:
-			[[[NSAttributedString alloc] initWithString: full] autorelease]];
-		i++;
-	}
-}
+//----------------------------------------------->Show Windows/Panels
 
 -(IBAction)showPackageInfoPanel:(id)sender
 {
@@ -628,7 +530,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[packageInfo setEmailSig: sig];
 	[[packageInfo window] zoom: nil];
 	[packageInfo showWindow: self];
-	[packageInfo displayDescriptions: [self selectedPackageArray]];
+	[packageInfo displayDescriptions: [tableView selectedPackageArray]];
 }
 
 -(IBAction)showPreferencePanel:(id)sender
@@ -639,29 +541,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[preferences showWindow: self];
 }
 
--(IBAction)chooseTableColumn:(id)sender
-{
-	int loc = [[sender title] rangeOfString: @" "].location;
-	NSString *columnIdentifier = 
-		[[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
-	NSMutableDictionary *selStates = [[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy];
-	NSDictionary *immutable;
-	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
-
-	if (newState == NSOnState){
-		[tableView addColumnWithName: columnIdentifier];
-	}else{
-		[tableView removeColumnWithName: columnIdentifier];
-	}
-		
-	[sender setState: newState];
-	[selStates setObject: [NSNumber numberWithInt: newState] forKey: [sender title]];
-	immutable = selStates;
-	[defaults setObject: immutable forKey: FinkViewMenuSelectionStates];
-}
+//----------------------------------------------->Internet Access
 
 //help menu internet access items
--(IBAction)internetAccess:(id)sender
+-(IBAction)goToWebsite:(id)sender
 {
 	NSString *url = nil;
 
@@ -681,7 +564,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)emailMaintainer:(id)sender
 {
-	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 	FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
 	NSString *sig = [info getInstallationInfo];
 	FinkPackage *pkg;
@@ -696,6 +579,27 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
+//----------------------------------------------->Change Information Display
+
+//remove or add column
+-(IBAction)chooseTableColumn:(id)sender
+{
+	int loc = [[sender title] rangeOfString: @" "].location;
+	NSString *columnIdentifier =
+		[[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
+	NSMutableDictionary *selStates = [[[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy] autorelease];
+	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
+
+	if (newState == NSOnState){
+		[tableView addColumnWithName: columnIdentifier];
+	}else{
+		[tableView removeColumnWithName: columnIdentifier];
+	}
+
+	[sender setState: newState];
+	[selStates setObject: [NSNumber numberWithInt: newState] forKey: [sender title]];
+	[defaults setObject: selStates forKey: FinkViewMenuSelectionStates];
+}
 
 -(IBAction)collapseOutput:(id)sender
 {
@@ -718,53 +622,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
-//work in progress:  attempt to make splitview slide down when it collapses
-//so far any combination of increments and timing I try results in very jerky motion
-#ifdef UNDEF
--(IBAction)collapseOutput:(id)sender
-{	
-	NSRect oFrame = [outputScrollView frame];
-	NSRect sFrame = [splitView frame];
-	float increment = oFrame.size.height / 5;
-	NSDictionary *d = [NSDictionary dictionaryWithObject: [NSNumber numberWithFloat: increment]
-									forKey: @"theIncrement"];
-									
-	if ([splitView isSubviewCollapsed: outputScrollView]) return;
-
-	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-					forKey: FinkOutputViewRatio];
-	timer = [[NSTimer scheduledTimerWithTimeInterval: 0.1
-						target: self
-						selector: @selector(collapseByIncrements:)
-						userInfo: d
-						repeats: YES] retain];
-}
-
--(void)collapseByIncrements:(NSTimer *)t
-{
-	NSRect oFrame = [outputScrollView frame];
-	NSRect tFrame = [tableScrollView frame];
-	float maxTFrameHeight = [splitView frame].size.height - [splitView dividerThickness];
-	float increment = [[[t userInfo] objectForKey: @"theIncrement"] floatValue];
-	
-	tFrame.size.height = tFrame.size.height + increment;
-	oFrame.size.height = oFrame.size.height - increment;
-
-	if (oFrame.size.height <= 0 || tFrame.size.height >= maxTFrameHeight){
-		oFrame.size.height = 0;
-		tFrame.size.height = maxTFrameHeight;
-		[timer invalidate];
-		[timer release];
-	}
-	
-	//need to set oFrame.origin.y
-	
-	[outputScrollView setFrame: oFrame];
-	[tableScrollView setFrame: tFrame];
-	[splitView setNeedsDisplay: YES];	
-}
-#endif //UNDEF
-
 -(IBAction)expandOutput:(id)sender
 {
 	NSRect oFrame = [outputScrollView frame];
@@ -783,7 +640,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Menu Item Delegate
-//Helper for menu item and toolbar item validators
+//helper for menu item and toolbar item validators
 -(BOOL)validateItem:(id)theItem
 {
 	//disable package-specific commands if no row selected
@@ -794,7 +651,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		return NO;
 	}
 	//disable Source and Binary menu items and table update if command is running
-	if ([self commandIsRunning] &&
+	if (commandIsRunning &&
 		([theItem action] == @selector(runCommand:) 		||
 		 [theItem action] == @selector(runUpdater:) 		||
 		 [theItem action] == @selector(showDescription:)	||
@@ -802,7 +659,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		 [theItem action] == @selector(updateTable:))){
 		return  NO;
 	}
-	if (! [self commandIsRunning] &&
+	if (! commandIsRunning &&
 	 ([theItem action] == @selector(raiseInteractionWindow:) ||
 		 [theItem action] == @selector(terminateCommand:))){
 		return NO;
@@ -839,14 +696,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Delegate Methods
+
+//use Toolbar.plist file to populate toolbar
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
 	   itemForItemIdentifier:(NSString *)itemIdentifier
    willBeInsertedIntoToolbar:(BOOL)flag
 {
-	NSBundle *b = [NSBundle mainBundle];
 	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:
-				    [b pathForResource: @"Toolbar"
-								ofType: @"plist"]];
+			[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]];
 	NSDictionary *itemDict;
 	NSString *value;
 	NSNumber *tag;
@@ -923,77 +780,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	return [self validateItem: theItem]; //helper preceding menu item validator
 }
 
-//START OF SCROLLING AND SORTING METHODS
-
 //----------------------------------------------->Text Field Delegate
 
-//The following two methods are used in the filter delegate method and the 
-//didClickTableColumn method to scroll back to the previously selected row
-//after the table is sorted.  It works almost the same way Mail does, except
-//that only the latest selection is preserved.  For the filter, sorting and
-//scrolling methods to work together, information on the selected object must
-//be stored and then the rows must be deselected before the filter is applied 
-//and before the table is sorted.
-
-//TBD:  Store package and offset for each selected row; in scrollToSelectedObject
-//iterate through array of stored information; select each package still found
-//in table; scroll to the first package found.  This will duplicate Mail.
-
-//store information needed to scroll back to selection after filter/sort
--(void)storeSelectedObjectInfo
-{
-	FinkPackage *selectedObject;
-    int selectionIndex = [tableView selectedRow];
-	int topRowIndex =  [tableView rowAtPoint:
-		[[tableView superview] bounds].origin];
-	int offset = selectionIndex - topRowIndex;
-
-	if (selectionIndex >= 0){
-		selectedObject = [[self displayedPackages]
-							objectAtIndex: selectionIndex];
-		[self setSelectedObjectInfo:
-			[NSArray arrayWithObjects:
-				selectedObject,
-				[NSNumber numberWithInt: offset],
-				nil]];
-		[tableView deselectAll: self];
-	}else{
-		[self setSelectedObjectInfo: nil];
-	}
-}
-
-//scroll back to selection after sort
--(void)scrollToSelectedObject
-{
-	if ([self selectedObjectInfo]){
-		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
-		int selection = [[self displayedPackages] indexOfObject: selectedObject];
-
-		if (selection != NSNotFound){
-			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
-			NSPoint offsetRowOrigin = [tableView rectOfRow: selection - offset].origin;
-			NSClipView *contentView = [tableView superview];
-			NSPoint target = [contentView constrainScrollPoint: offsetRowOrigin];
-
-			[contentView scrollToPoint: target];
-			[tableScrollView reflectScrolledClipView: contentView];
-			[tableView selectRow: selection byExtendingSelection: NO];
-		}
-	}
-}
-
-//called by delegate method; much simpler than the didClickTableColumn delegate method,
-//because there is no need to record and adjust sort direction or visual indicators
--(void)resortTableAfterFilter
-{
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
-
-	[tableView sortTableAtColumn: lastColumn inDirection: direction];
-}
-
-//Delegate method:  filters data source each time the filter text field changes
+//filter data source each time the filter text field changes
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	if ([[aNotification object] tag] == FILTER){
@@ -1006,11 +795,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
-			[self storeSelectedObjectInfo];
+			[tableView storeSelectedObjectInfo];
 		}
 		
 		if ([filterText length] == 0){
-			[self setDisplayedPackages: [packages array]];
+			[tableView setDisplayedPackages: [packages array]];
 		}else{
 			while (pkg = [e nextObject]){
 				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
@@ -1018,13 +807,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 					[subset addObject: pkg];
 				}
 			}
-			[self setDisplayedPackages: subset];
+			[tableView setDisplayedPackages: subset];
 		}
-		[self resortTableAfterFilter];
+		[tableView resortTableAfterFilter];
 
 		//restore the selection and scroll back to it after the table is sorted
 		if ([defaults boolForKey: FinkScrollToSelection]){
-			[self scrollToSelectedObject];
+			[tableView scrollToSelectedObject];
 		}
 
 		[self displayNumberOfPackages];
@@ -1039,104 +828,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		TABLE METHODS
+//		TABLEVIEW AND SPLITVIEW NOTIFICATION METHODS
 //--------------------------------------------------------------------------------
-
-//----------------------------------------------->Delegate Methods
-//sorts table when column header is clicked
--(void)tableView:(NSTableView *)aTableView
-	didClickTableColumn:(NSTableColumn *)aTableColumn
-{
-	NSString *identifier = [aTableColumn identifier];
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction;
-
-	// remove sort direction indicator from last selected column
-	[tableView setIndicatorImage: nil inTableColumn: lastColumn];
-	
-	// if user clicks same column header twice in a row, change sort order
-	if ([aTableColumn isEqualTo: lastColumn]){
-		direction = [[columnState objectForKey: identifier] isEqualToString: @"normal"]
-					? @"reverse" : @"normal";
-		//record new state for next click on this column
-		[columnState setObject: direction forKey: identifier];
-	// otherwise, return sort order to previous state for selected column
-	}else{
-		direction = [columnState objectForKey: identifier];
-	}
-
-	// record currently selected column's identifier for next call to method
-	// and for future sessions
-	[self setLastIdentifier: identifier];
-	[defaults setObject: identifier forKey: FinkSelectedColumnIdentifier];
-
-	// reset visual indicators
-	if ([direction isEqualToString: @"reverse"]){
-		[tableView setIndicatorImage: reverseSortImage
-				 inTableColumn: aTableColumn];
-	}else{
-		[tableView setIndicatorImage: normalSortImage
-				 inTableColumn: aTableColumn];
-	}
-	[tableView setHighlightedTableColumn: aTableColumn];
-	
-	//sort the table contents
-	if ([defaults boolForKey: FinkScrollToSelection]){
-		[self storeSelectedObjectInfo];
-	}	
-	[tableView sortTableAtColumn: aTableColumn inDirection: direction];
-	if ([defaults boolForKey: FinkScrollToSelection]){
-		[self scrollToSelectedObject];
-	}
-}
-
-//END OF SCROLLING AND SORTING METHODS
-
--(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
-{
-	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name] contains: @"tcsh"]){
-		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
-				[self window], self, NULL,	NULL, nil,
-					@"FinkCommander is unable to install tcsh.\nSee Help:FinkCommander Help:Known Bugs and Limitations",
-					nil);
-		return NO;
-	}
-	return YES;
-}
-
-//allows selection of table cells for copying, unlike setting the column to be non-editable
--(BOOL)textShouldBeginEditing:(NSText *)textObject
-{
-	return NO;
-}
 
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	if (packageInfo && [[packageInfo window] isVisible]){
-		[packageInfo displayDescriptions: [self selectedPackageArray]];
+		[packageInfo displayDescriptions: [tableView selectedPackageArray]];
 	}
 }
-
-//----------------------------------------------->Data Source Methods
-
--(int)numberOfRowsInTableView:(NSTableView *)aTableView
-{
-	return [[self displayedPackages] count];
-}
-
--(id)tableView:(NSTableView *)aTableView
-objectValueForTableColumn:(NSTableColumn *)aTableColumn
-			  row:(int)rowIndex
-{
-	NSString *identifier = [aTableColumn identifier];
-	FinkPackage *package = [[self displayedPackages] objectAtIndex: rowIndex];
-	return [package valueForKey: identifier];
-}
-
-//--------------------------------------------------------------------------------
-//		SPLITVIEW DELEGATE METHOD(S)
-//--------------------------------------------------------------------------------
 
 //records ratio of textview/splitview so that splitview can be reset on startup
 -(void)splitViewDidResizeSubviews:(NSNotification *)aNotification
@@ -1175,9 +875,14 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 {
 	[self setPassword: [NSString stringWithFormat:
 		@"%@\n", [pwdField stringValue]]];
-	[[NSNotificationCenter defaultCenter] 
-		postNotificationName: @"passwordWasEntered"
-		object: nil];
+
+	if ([self lastParams]){
+		[[NSNotificationCenter defaultCenter]
+			postNotificationName: FinkRunCommandNotification
+						  object: [self lastParams]];
+		[self setLastParams: nil];
+	}
+
 	if (passwordError && [[finkTask task] isRunning]){
 		[finkTask writeToStdin: [self password]];
 	}
@@ -1208,9 +913,6 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 				   returnCode:(int)returnCode
 						contextInfo:(void *)contextInfo
 {
-	NSAttributedString *areturn = [[[NSAttributedString alloc]
-		initWithString: @"\n"] autorelease];
-
 	if (returnCode){  // Submit rather than Cancel
 		if ([[interactionMatrix selectedCell] tag] == 0){
 			[finkTask writeToStdin: @"\n"];
@@ -1218,7 +920,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
 				[interactionField stringValue]]];
 		}
-		[[textView textStorage] appendAttributedString: areturn];
+		[textView appendString:@"\n"];
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
 			[self collapseOutput: nil];
 		}
@@ -1240,12 +942,11 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 
 	if ([[self password] length] < 1 && 
 		! [defaults boolForKey: FinkNeverAskForPassword]){
-		
-		[self raisePwdWindow: self];
 		[self setLastParams: params];
-		[self setPendingCommand: YES];
-		[self setCommandIsRunning: NO];
+		pendingCommand = YES;
+		commandIsRunning = NO;
 		[self displayNumberOfPackages];
+		[self raisePwdWindow: self];
 		return;
 	}
 	if ([defaults boolForKey: FinkWarnBeforeRunning]){
@@ -1255,7 +956,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			[params componentsJoinedByString: @" "]);
 
 		if (answer == NSAlertAlternateReturn){
-			[self setCommandIsRunning: NO];
+			commandIsRunning = NO;
 			[self displayNumberOfPackages];
 			return;
 		}
@@ -1267,7 +968,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			@"Don't Remove", @"Remove",  @"Remove/Don't Warn");
 		switch(answer){
 			case NSAlertDefaultReturn:
-				[self setCommandIsRunning: NO];
+				commandIsRunning = NO;
 				[self displayNumberOfPackages];
 				return;
 			case NSAlertOtherReturn:
@@ -1293,10 +994,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	if ([executable isEqualToString: @"apt-get"]){
 		[params insertObject: @"-f" atIndex: 3];
 	}
-
-#ifdef DEBUG	
-	NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
-#endif //DEBUG
+	if (DEBUGGING) { NSLog(@"Command = %@", [params componentsJoinedByString: @" "]); }
 	
 	//set up environment variables for task
 	d = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -1321,9 +1019,9 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		[defaults setBool: YES forKey: FinkLookedForProxy];
 	}
 		
-	[self setPendingCommand: NO];
+	pendingCommand = NO;
 
-	if (finkTask) [finkTask release];
+	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
 	[finkTask setEnvironmentDictionary: d];
 
@@ -1331,38 +1029,26 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	[finkTask startProcessWithArgs: params];
 }
 
-//if last command was not completed because no valid password was entered,
-//run it again after receiving passwordWasEntered notification;
--(void)runCommandAfterPasswordEntered:(NSNotification *)note
-{
-	if ([self pendingCommand]){
-		[self setCommandIsRunning: YES];
-		[self displayCommand: [self lastParams]];
-		[self runCommandWithParameters: [self lastParams]];
-	}
-}
-
-//run commands to change fink.conf file after FinkConf object posts a notification
--(void)runFinkConfCommand:(NSNotification *)note
+-(void)runCommandOnNotification:(NSNotification *)note
 {
 	NSMutableArray *args = [note object];
 	NSString *cmd = [args objectAtIndex: 0];
-
-	if ([self commandIsRunning]){
+		
+	if (commandIsRunning){
 		NSRunAlertPanel(@"Sorry",
-			@"You will have to wait until the current command is complete before changing the fink.conf settings.",
-			@"OK", nil, nil);									 
+				  @"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"done\" appears below the output view.",
+				  @"OK", nil, nil);
+		if ([cmd isEqualToString:@"/bin/cp"]){
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
+		}
 		return;
 	}
-	[self startProgressIndicatorAsIndeterminate:YES];	
-
-	[self setLastCommand: 
-		([cmd contains: @"fink"] ? [args objectAtIndex: 1] : cmd)];
-	[self setCommandIsRunning: YES];
-	passwordError = NO;
-	[msgText setStringValue: @"Updating fink.conf file"];
-	[self performSelector:@selector(runCommandWithParameters:) withObject: args afterDelay: 1.0];
+	[self startProgressIndicatorAsIndeterminate:YES];
+	[self setLastCommand: ([cmd contains:@"fink"] ? [args objectAtIndex:1] : cmd)];
+	commandIsRunning = YES; 
+	[self displayCommand: args];
+	//prevent tasks run by consecutive notifications from tripping over each other
+	[self performSelector:@selector(runCommandWithParameters:) withObject:args afterDelay:1.0];
 }
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
@@ -1401,8 +1087,9 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			[finkTask writeToStdin: [self password]];
 			break;
 	}
-	[[textView textStorage] appendAttributedString:  
-		[[[NSAttributedString alloc] initWithString: output] autorelease]];
+
+	[textView appendString:output];
+
 	//  according to Moriarity example, have to put off scrolling until next event loop
 	[self performSelector: @selector(scrollToVisible:) withObject: theTest 
 				  afterDelay: 0.0];
@@ -1432,7 +1119,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 {
 	[self stopProgressIndicator];
 	[self displayNumberOfPackages];
-	[self setCommandIsRunning: NO];
+	commandIsRunning = NO;
 	[tableView deselectAll: self];
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
 }
@@ -1440,7 +1127,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 -(void)processFinishedWithStatus:(int)status
 {
 	int outputLength = [[textView string] length];
-	NSString *output = outputLength < 160 ? [textView string] : 
+	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
 
 	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"chown"] &&
@@ -1451,8 +1138,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	// Make sure command was successful before updating table
 	// Checking exit status is not sufficient for some fink commands, so check
 	// approximately last two lines for "failed"
-	[self setDisplayedPackages: [packages array]];
-	if (status == 0 && ! [output containsCI: @"failed"]){
+	[tableView setDisplayedPackages: [packages array]];
+	if (status == 0 && ! [last2lines containsCI: @"failed"]){
 		if ([self commandRequiresTableUpdate: lastCommand]){
 			if ([lastCommand contains: @"selfupdate"] ||
 				[lastCommand contains: @"index"]	  ||
