@@ -1,0 +1,26 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                endPwdWindow = id; 
+                raisePwdWindow = id; 
+                runCommand = id; 
+                runUpdater = id; 
+                updateTable = id; 
+            }; 
+            CLASS = FinkController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mainWindow = id; 
+                msgText = id; 
+                pwdField = NSSecureTextField; 
+                pwdWindow = NSWindow; 
+                tableView = id; 
+                textView = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

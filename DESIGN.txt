@@ -1,0 +1,67 @@
+OVERVIEW
+
+FinkCommander currently relies on inter-process communication (IPC) to gather information about fink packages and execute fink commands.  There has been discussion on the fink developers' mailing list about the possibility that an Objective C-Perl bridge will eliminate the need for at least some IPC and enhance functionality.  Dave Vasilevsky has pointed out that it would therefore make sense to make FinkCommander more modular so that it will be easier to replace the existing IPC code with code relying on the Obj C-Perl bridge.
+
+To accomplish this, I plan to take the command execution code in the current FinkController (FC) class and put it in a new class called FinkProcess (FP).  To the extent possible, FinkProcess should adopt an interface that works equally well whether the implementation is through IPC, the Obj C-Perl bridge or (most likely) some combination of the two.
+
+Comments on the feasibility of implementing particular features with an Obj C-Perl bridge relate to fink only.  Installing binaries with apt-get requires a different approach.
+
+TYPES OF INTERACTION BETWEEN FC AND FP
+
+(1)  Getting Information into Table
+
+Sequence:
+FC message to FP requesting info on packages
+FP sends array of FinkPackage instances to FC 
+FC displays package info in table
+
+Status in current FinkCommander:
+Implemented through NSTask and NSPipe in the FinkDataController class
+ 
+Feasibility of Implementing through Obj C-Perl bridge:
+Piece of cake.  Even I can see that.  
+
+(2)  Executing Fink or Apt-get Command
+
+Sequence:
+FC receives menu command, asks table which rows are selected
+FC sends program name (fink or apt-get), command name and package names to FP
+FP runs command with administrator privileges
+
+Status in current FinkCommander:
+Implemented through creation of IOTaskWrapper object.  IOTaskWrapper is a modified version of the TaskWrapper class in Apple's "Moriarity" example:
+http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
+Authentication is currently handled by having the user enter his password in a secure text field and passing it to the IOTaskWrapper object.  (This is not the correct way of doing it.)
+
+Feasibility of implementing through Obj C-Perl bridge:
+I am not certain.  Discussions on the Omni-Web and Apple mailing lists for Cocoa developers indicate that a running process cannot change its own authorization.  Instead, it must execute a subprocess with administrator privileges using the Security Framework.  This would seem to suggest that FinkCommander could not use the Obj C-Perl bridge to call a fink subroutine with administrator privileges.  On the other hand, I know so little about this stuff that I could easily be wrong, and hope I am. 
+
+(3)  Responding to Fink Request for Input
+
+E.g. pick a virtual dependency, agree to download dependencies, choose option when download fails
+
+Sequence:
+While running command, FP receives request for user input
+FP sends request to FC
+FC displays panel, probably in sheet form, asking for user response
+FC sends user response to FP
+FP sends user response to running command
+
+Status in current FinkCommander:
+Not yet implemented, but the plumbing is there.  FinkCommander already reads stdout from the running process, parses it for prompts and writes a "\n" to the process stdin in order to select the default. 
+
+Feasibility of implementing through Obj C-Perl bridge:
+Seems possible, but wouldn't the fink subroutines need to be altered?
+
+(4)	 Sending stdout from running command to text view in real time
+
+Sequence:
+FP receives chunk of output from running command
+FC adds output to text view and scrolls to end
+
+Status in current FinkCommander:
+Implemented through IOTaskWrapper appendOutput protocol
+
+Feasibility of implementing through Obj C-Perl bridge:
+Seems doubtful.  Fink appears to rely on the Perl system function to execute the scripts and programs that download, patch, configure, build and install the packages.  If I understand system correctly, it does not capture the standard output from the executed script or program.  If FinkCommander made a call to a fink subroutine through the Obj C-Perl bridge, that subroutine would not return the output.  Even if the fink subroutines were modified to use something like popen, they would send back the output in big chunks and leave the user uncertain about the status of the command for long periods, particularly during the build phase.  The user could use top to see what was going on, but that would kind of defeat the point of the GUI.
+
