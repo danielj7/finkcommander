@@ -68,7 +68,7 @@
 // Start the process via an NSTask.
 -(void)startProcessWithArgs: (NSMutableArray *)arguments
 {
-	NSString *executable = [arguments objectAtIndex: 1];
+	NSString *executable = [arguments objectAtIndex: 0];
 
 	[controller processStarted];
 

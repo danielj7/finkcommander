@@ -35,6 +35,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkDataController.h"
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
+#import "FinkPackageInfo.h"
 #import "FinkConf.h"
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
@@ -76,6 +77,7 @@ enum {
 	FinkDataController *packages;
 	NSMutableArray *displayedPackages;
 	FinkPreferences *preferences;
+	FinkPackageInfo *packageInfo;
 	FinkBasePathUtility *utility;
 	NSArray *selectedPackages;
 	NSString *lastCommand;
@@ -121,6 +123,7 @@ enum {
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)showPreferencePanel:(id)sender;
+-(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)showDescription:(id)sender;
 //  help menu items
 -(IBAction)goToFinkCommanderWebSite:(id)sender;

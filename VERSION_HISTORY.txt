@@ -2,7 +2,8 @@ VERSION HISTORY
 
 0.3.1	pending (available in cvs):
 
-	Added working terminate command
+	There is now a working terminate command available from the menu and
+	the toolbar
 	
 	Added fink.conf parameters to Preferences panel; Preferences can now set
 	all fink.conf parameters except for base path (which should be set
@@ -15,6 +16,8 @@ VERSION HISTORY
 	
 	Added full description to package data; used it to improve performance of 
 	describe command and appearance of describe output
+	
+	Basic scripting support included
 	
 	Added version number that shows up in Finder
 	

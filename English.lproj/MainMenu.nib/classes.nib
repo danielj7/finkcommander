@@ -13,6 +13,7 @@
                 runCommand = id; 
                 runUpdater = id; 
                 showDescription = id; 
+                showPackageInfoPanel = id; 
                 showPreferencePanel = id; 
                 terminateCommand = id; 
                 updateTable = id; 

@@ -338,27 +338,32 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	return args;
 }
 
+-(NSArray *)selectedPackageArray
+{
+	NSEnumerator *e = [tableView selectedRowEnumerator];
+	NSNumber *anIndex;
+	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
+
+	while (anIndex = [e nextObject]){
+		[pkgArray addObject: 
+			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
+	}
+	return pkgArray;
+}
+
 //----------------------------------------------->Menu Actions
 
 //run package-specific command with arguments derived from table selection
 -(IBAction)runCommand:(id)sender
 {
 	NSMutableArray *args = [self setupCommandFrom: sender];
-	NSMutableArray *pkgs = [NSMutableArray array];
-	NSNumber *anIndex;
-	NSEnumerator *e1 = [tableView selectedRowEnumerator];
-	NSEnumerator *e2 = [tableView selectedRowEnumerator];
+	NSArray *pkgs = [self selectedPackageArray];
 	
 	//set up selectedPackages array for later use
-	while(anIndex = [e1 nextObject]){
-		[pkgs addObject: [[self displayedPackages] objectAtIndex: [anIndex intValue]]];
-	}
 	[self setSelectedPackages: pkgs];
 
 	//set up args array to run the command
-	while(anIndex = [e2 nextObject]){
-		[args addObject: [[[self displayedPackages] objectAtIndex: [anIndex intValue]] name]];
-	}
+	[args addObjectsFromArray: pkgs];
 	
 	[self displayCommand: args];		
 	[self runCommandWithParams: args];
@@ -373,34 +378,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[self runCommandWithParams: args];
 }
 
--(IBAction)showDescription:(id)sender
-{
-	NSEnumerator *e = [tableView selectedRowEnumerator];
-	NSNumber *anIndex;
-	int index;
-	int i = 0;
-	FinkPackage *pkg;
-	NSString *full = nil;
-	NSString *divider = @"____________________________________________________\n\n";
-	
-	[textView setString: @""];
-
-	while (anIndex = [e nextObject]){
-		index = [anIndex intValue];
-		pkg = [[self displayedPackages] objectAtIndex: index];
-		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
-					[pkg name],
-					[pkg version],
-					[pkg fulldesc]];
-		if (i > 0){
-			[[textView textStorage] appendAttributedString:
-				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
-		}
-		[[textView textStorage] appendAttributedString:
-			[[[NSAttributedString alloc] initWithString: full] autorelease]];
-		i++;
-	}
-}
 
 -(IBAction)terminateCommand:(id)sender
 {
@@ -437,6 +414,40 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[packages update]; //calls refreshTable by notification
 }
 
+-(IBAction)showDescription:(id)sender
+{
+	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+	int i = 0;
+	FinkPackage *pkg;
+	NSString *full = nil;
+	NSString *divider = @"____________________________________________________\n\n";
+
+	[textView setString: @""];
+
+	while (pkg = [e nextObject]){
+		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
+			[pkg name],
+			[pkg version],
+			[pkg fulldesc]];
+		if (i > 0){
+			[[textView textStorage] appendAttributedString:
+				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
+		}
+		[[textView textStorage] appendAttributedString:
+			[[[NSAttributedString alloc] initWithString: full] autorelease]];
+		i++;
+	}
+}
+
+-(IBAction)showPackageInfoPanel:(id)sender
+{
+	if (!packageInfo){
+		packageInfo = [[FinkPackageInfo alloc] init];
+	}
+	[packageInfo showWindow: self];
+	[packageInfo displayDescriptions: [self selectedPackageArray]];
+}
+
 -(IBAction)showPreferencePanel:(id)sender
 {
 	if (!preferences){
@@ -470,7 +481,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 {
 	//disable package-specific commands if no row selected
 	if ([tableView selectedRow] == -1 &&
-	    [theItem action] == @selector(runCommand:)){
+	    ([theItem action] == @selector(runCommand:)  ||
+		 [theItem action] == @selector(showDescription:))){
 		return NO;
 	}
 	//disable Source and Binary menu items and table update if command is running
@@ -567,12 +579,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkDescribeItem]){
-		[item setLabel: @"Describe"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Print full description of package(s) in output window"];
+		[item setLabel: @"Info"];
+		[item setPaletteLabel: @"Package Info Panel"];
+		[item setToolTip: @"Raise package info panel"];
 		[item setImage: [NSImage imageNamed: @"describe"]];
 		[item setTarget: self];
-		[item setAction: @selector(showDescription:)];
+		[item setAction: @selector(showPackageInfoPanel:)];
 	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateItem]){
 		[item setLabel: @"Selfupdate"];
 		[item setPaletteLabel: [item label]];
@@ -823,6 +835,13 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 -(BOOL)textShouldBeginEditing:(NSText *)textObject
 {
 	return NO;
+}
+
+-(void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+	if (packageInfo && [[packageInfo window] isVisible]){
+		[packageInfo displayDescriptions: [self selectedPackageArray]];
+	}
 }
 
 //--------------------------------------------------------------------------------
