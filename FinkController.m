@@ -63,6 +63,9 @@ File: FinkController.m
 		[finkTask setDelegate:self];
 		commandIsRunning = NO;
 		pendingCommand = NO;
+		
+		//Set the instance variable for the package tree manager
+		treeManager = [[SBTreeManager alloc] init];
 
 		//Set flag used to avoid duplicate warnings when user terminates FC
 		//in middle of command with something other than App:Quit
@@ -121,6 +124,7 @@ File: FinkController.m
     [toolbar release];
     [packageInfo release];
     [warningDialog release];
+	[treeManager release];
     [super dealloc];
 }
 
@@ -643,6 +647,17 @@ File: FinkController.m
 	[self sendEmailWithMessage:NEGATIVE];
 }
 
+-(IBAction)openPackageFileViewer:(id)sender
+{
+	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
+		[tableView selectedRow]];
+	
+	if (! [[pkg status] contains:@"u"]){
+		NSBeep();//Substitute alert sheet?
+	}
+	[treeManager openNewOutlineForPackageName:[pkg name]];
+}
+
 -(IBAction)openDocumentation:(id)sender
 {
 	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
@@ -650,12 +665,11 @@ File: FinkController.m
 	NSFileManager *mgr = [NSFileManager defaultManager];
 	NSString *root = [[defaults objectForKey:FinkBasePath] 
 						stringByAppendingPathComponent:@"share/doc"];
-	NSString *path = [root stringByAppendingPathComponent:[pkg name]];
+	NSString *path = [root stringByAppendingPathComponent:[pkg nameWithoutSplitoff]];
 	NSArray *pathContents;
 
-	path = removeSplitoffIdentifier(path);
 	if (![mgr fileExistsAtPath:path]){
-		NSBeep();  //Substitute alert sheet
+		NSBeep();  //Substitute alert sheet?
 		return;
 	}
 	pathContents = [mgr directoryContentsAtPath:path];
@@ -866,7 +880,8 @@ File: FinkController.m
 		[theItem action] == @selector(showDescription:)						||
 		[theItem action] == @selector(sendNegativeFeedback:)				||
 		[theItem action] == @selector(sendPositiveFeedback:)				||
-		[theItem action] == @selector(openDocumentation:))){
+		[theItem action] == @selector(openDocumentation:)					||
+		[theItem action] == @selector(openPackageFileViewer:))){
 		return NO;
     }
     //disable Source and Binary menu items and table update if command is running

@@ -57,6 +57,8 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)name;
 -(void)setName:(NSString *)s;
 
+-(NSString *)nameWithoutSplitoff;
+
 -(NSString *)status;
 -(void)setStatus:(NSString *)s;
 

@@ -1,0 +1,17 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {openSelectedFiles = id; }; 
+            CLASS = SBFileItemTree; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                loadingIndicator = NSProgressIndicator; 
+                msgTextField = NSTextField; 
+                outlineView = NSOutlineView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

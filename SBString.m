@@ -26,9 +26,10 @@
 
 -(BOOL)containsPattern:(NSString *)pat
 {
-	char s[[self length]+1];
-	char p[[self length]+1];
-    int result;
+	//Caution: if s is long enough, statically allocating memory could result in bad access error
+	char s[[self length]+1];  
+	char p[[pat length]+1];
+	int result;
 	
 	strcpy(s, [self UTF8String]);
 	strcpy(p, [pat UTF8String]);
@@ -41,8 +42,8 @@
 -(BOOL)containsExpression:(NSString *)pat
 {
     regex_t expr;
-	char s[[self length]+1];
-	char p[[self length]+1];
+	char *s = (char *)malloc((size_t)([self length] + 1));
+	char *p = (char *)malloc((size_t)([pat length] + 1));
 	char errmsg[MAXBUF];
 	int comperr;
     int result;
@@ -63,6 +64,8 @@
 		return NO;
 	}
 	regfree(&expr);
+	free(s);
+	free(p);
 	return result == 0;
 }
 
@@ -77,7 +80,8 @@
 {
 	NSRange r = NSMakeRange(NSNotFound, 0);
 	regex_t expr;
-	char p[[pat length]+1];
+	char *p = (char *)malloc((size_t)([pat length] + 1));
+
 	char errmsg[MAXBUF];
 	int comperr;
 	
@@ -91,6 +95,7 @@
 	r = [self rangeOfCompiledExpression:&expr
 			inRange:range];
 	regfree(&expr);
+	free(p);
 	return r;
 }
 
@@ -107,7 +112,7 @@
 	NSString *searchString = [self substringWithRange:range];
 	regmatch_t matches[1];
 	size_t nmatch = 1;
-	char s[[self length]+1];
+	char *s = (char *)malloc((size_t)([self length] + 1));
 	char errmsg[MAXBUF];
 	int result;
 	
@@ -118,11 +123,13 @@
 			regerror(result, re, errmsg, MAXBUF);
 			NSLog(@"Error executing regular expression:\n%s", errmsg);
 		}
+		free(s);
 		return r;
 	}
 	//Add location of substring searhced to determine location within string
 	r.location = matches[0].rm_so + range.location;
 	r.length = matches[0].rm_eo - matches[0].rm_so;
+	free(s);
 	return r;
 }
 
@@ -150,7 +157,7 @@
 
 int compiledExpressionFromString(NSString *string, regex_t *expr)
 {
-	char s[[string length]+1];
+	char *s = (char *)malloc((size_t)([string length] + 1));
 	char errmsg[MAXBUF];
 	int comperr;
 	
@@ -162,7 +169,6 @@ int compiledExpressionFromString(NSString *string, regex_t *expr)
 	}
 	return comperr;
 }
-
 
 
 

@@ -25,12 +25,13 @@ communicates with:
 	information;
 
 *	FinkTableViewController (VC) and FinkTextViewController (C) -- control
-	the primary user interface elements;
+	the primary user interface elements; FinkTableViewController is a subclass
+	of NSTableView, but probably should not be;
 	
 *	a FinkPreferences object (C) -- provides an interface for both the FinkCommander user
 	interface system and for changing the fink.conf file (represented by
 	the FinkConf object (M)); instantiates and communicates with user interface elements 
-	defined in Preferences.nib;
+	defined in Preferences.nib (V);
 	
 *	FinkPackageInfo (C) -- obtains and formats information from FinkPackage
 	objects for display in the Package Inspector (V); along with FinkController uses
@@ -40,7 +41,9 @@ communicates with:
 
 FinkController also creates the FinkCommander toolbar and registers the "factory defaults" 
 for preferences set by FinkPreferences or programmatically.  The settings for each are 
-read from the files Toolbar.plist and UserDefaults.plist, respectively.
+read from the files Toolbar.plist and UserDefaults.plist, respectively.  A FinkToolbar subclass
+of NSToolbar is included solely to enable resizing of the custom filter view when
+the toolbar is resized.  There is currently no delegate method for this.
 
 Global variables, which are used solely to allow compiler checking for misspellings of 
 defaults and notification identifiers, are declared in FinkGlobals.h.  Functions that 
@@ -83,6 +86,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
+#import "SBTreeManager.h"
 
 #define CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
 							[(x) isEqualToString: @"remove"]		|| 				\
@@ -143,7 +147,6 @@ enum{
     DPKG
 };
 
-
 enum {
 	FILTER,
 	INTERACTION
@@ -195,6 +198,7 @@ enum {
 	FinkToolbar *toolbar;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;
+	SBTreeManager *treeManager;
 
 	//Other objects
 	NSUserDefaults *defaults;
@@ -234,6 +238,7 @@ enum {
 -(IBAction)sendNegativeFeedback:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 -(IBAction)openDocumentation:(id)sender;
+-(IBAction)openPackageFileViewer:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

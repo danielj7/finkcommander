@@ -157,6 +157,7 @@
 			children = (
 				F54A055E029C9F0101A80166,
 				080E96DDFE201D6D7F000001,
+				F5C94460039C68BC01A80164,
 				F53B283802879DF201A80164,
 				29B97315FDCFA39411CA2CEA,
 				29B97317FDCFA39411CA2CEA,
@@ -341,6 +342,9 @@
 				F55407EF035D0C8601A80170,
 				F5019E9A03625D4201A80165,
 				F5128EE90366617D01A80166,
+				F5C94466039C68FB01A80164,
+				F5C94468039C68FB01A80164,
+				F5C94473039C75FC01A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,6 +386,7 @@
 				F53649820388930201A80164,
 				F5364A1B0388964301A80164,
 				F5CA48B10394730301A80164,
+				F5C9446F039C6BE201A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,6 +413,9 @@
 				F5F8FA580331966401A80166,
 				F55407F0035D0C8601A80170,
 				F5019E9803625D2701A80165,
+				F5C94465039C68FB01A80164,
+				F5C94467039C68FB01A80164,
+				F5C94472039C75FC01A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1499,6 +1507,111 @@
 			isa = PBXFileReference;
 			path = PackageInfo.nib;
 			refType = 4;
+		};
+		F5C94460039C68BC01A80164 = {
+			children = (
+				F5C94470039C75FC01A80164,
+				F5C94471039C75FC01A80164,
+				F5C94462039C68FB01A80164,
+				F5C94461039C68FB01A80164,
+				F5C94464039C68FB01A80164,
+				F5C94463039C68FB01A80164,
+				F5C9446D039C6BE201A80164,
+			);
+			isa = PBXGroup;
+			name = "File Viewer";
+			refType = 4;
+		};
+		F5C94461039C68FB01A80164 = {
+			isa = PBXFileReference;
+			name = SBFileItemTree.m;
+			path = /Users/sburr/CocoaProjects/Outliner/SBFileItemTree.m;
+			refType = 0;
+		};
+		F5C94462039C68FB01A80164 = {
+			isa = PBXFileReference;
+			name = SBFileItemTree.h;
+			path = /Users/sburr/CocoaProjects/Outliner/SBFileItemTree.h;
+			refType = 0;
+		};
+		F5C94463039C68FB01A80164 = {
+			isa = PBXFileReference;
+			name = SBFileItem.m;
+			path = /Users/sburr/CocoaProjects/Outliner/SBFileItem.m;
+			refType = 0;
+		};
+		F5C94464039C68FB01A80164 = {
+			isa = PBXFileReference;
+			name = SBFileItem.h;
+			path = /Users/sburr/CocoaProjects/Outliner/SBFileItem.h;
+			refType = 0;
+		};
+		F5C94465039C68FB01A80164 = {
+			fileRef = F5C94461039C68FB01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C94466039C68FB01A80164 = {
+			fileRef = F5C94462039C68FB01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C94467039C68FB01A80164 = {
+			fileRef = F5C94463039C68FB01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C94468039C68FB01A80164 = {
+			fileRef = F5C94464039C68FB01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C9446D039C6BE201A80164 = {
+			children = (
+				F5C9446E039C6BE201A80164,
+			);
+			isa = PBXVariantGroup;
+			name = TreeView.nib;
+			path = "";
+			refType = 4;
+		};
+		F5C9446E039C6BE201A80164 = {
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/TreeView.nib;
+			refType = 4;
+		};
+		F5C9446F039C6BE201A80164 = {
+			fileRef = F5C9446D039C6BE201A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C94470039C75FC01A80164 = {
+			isa = PBXFileReference;
+			path = SBTreeManager.m;
+			refType = 4;
+		};
+		F5C94471039C75FC01A80164 = {
+			isa = PBXFileReference;
+			path = SBTreeManager.h;
+			refType = 4;
+		};
+		F5C94472039C75FC01A80164 = {
+			fileRef = F5C94470039C75FC01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C94473039C75FC01A80164 = {
+			fileRef = F5C94471039C75FC01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		F5CA48B00394730301A80164 = {
 			isa = PBXFileReference;

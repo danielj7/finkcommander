@@ -130,21 +130,3 @@ void setInitialEnvironmentVariables(void)
 	[defaults setObject:settings forKey:FinkEnvironmentSettings];
 }
 
-//------------------------------------------------------------>Splitoff Remover
-
-NSString *removeSplitoffIdentifier(NSString *pkgname)
-{
-	NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
-								objectEnumerator];
-    NSString *splitoff;
-	NSRange r;
-
-	while (nil != (splitoff = [e nextObject])){
-		r = [pkgname rangeOfString:splitoff];
-		if (r.length > 0){
-			pkgname = [pkgname substringToIndex:r.location];
-			break;
-		}
-	}
-	return pkgname;
-}

@@ -54,6 +54,28 @@ See the header file, FinkPackage.h, for interface and license information.
 	name = s;
 }
 
+-(NSString *)nameWithoutSplitoff
+{
+	if ([[self name] rangeOfString:@"-"].length > 0){
+		NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
+			objectEnumerator];
+		NSString *pkgname = [self name];
+		NSString *splitoff;
+		NSRange r;
+
+		while (nil != (splitoff = [e nextObject])){
+			r = [pkgname rangeOfString:splitoff];
+			if (r.length > 0){
+				pkgname = [pkgname substringToIndex:r.location];
+				break;
+			}
+		}
+		return pkgname;
+	}
+	return [self name];
+}
+
+
 //Status
 -(NSString *)status
 {

@@ -299,13 +299,12 @@ See the header file, FinkDataController.h, for interface and license information
 			   withExtension:(NSString *)ext
 {
 	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
-	NSString *name = [pkg name];
+	NSString *name = [pkg nameWithoutSplitoff];
 	NSString *pathToDists = [[[defaults objectForKey:FinkBasePath]
 								stringByAppendingPathComponent: @"/fink/dists"] retain];
     NSString *pkgFileName;
     NSArray *components;
 
-	name = removeSplitoffIdentifier(name);
 	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", name, version, ext];
 
     if ([[pkg category] isEqualToString:@"crypto"]){
