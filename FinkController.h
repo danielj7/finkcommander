@@ -79,6 +79,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkSplitView.h"
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
+#import "FinkProcessTerminator.h"
 #import "FinkUtilities.h"
 
 #define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| \
@@ -166,7 +167,7 @@ enum {
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
 	BOOL userChoseToTerminate;
-	NSTimer *timer;
+	BOOL commandTerminated;
 
 	NSString *password;
 	BOOL pendingCommand;

@@ -26,6 +26,7 @@
 				F542CFF702C2F03B01A80166,
 				F5B9D9E402B1D61C01A8016B,
 				F55FF54A02CFC96301A80164,
+				F5C373FD032EE41301A80165,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -331,6 +332,7 @@
 				F553429302E9F45A015ADE4E,
 				F55FBB1F02F3B8C901A80164,
 				F53B4D44031079C801A80164,
+				F5C37400032EE42701A80165,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +391,7 @@
 				F553429202E9F45A015ADE4E,
 				F55FBB2002F3B8C901A80164,
 				F53B4D43031079C801A80164,
+				F5C373FE032EE41301A80165,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -509,6 +512,13 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		F51CCE5D032E202001A80168 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Localizable.strings;
+			refType = 4;
 		};
 		F527284C0221B4E801A80164 = {
 			isa = PBXFileReference;
@@ -941,6 +951,7 @@
 				F5C523D802A326B701A80165,
 				F5B9D9EC02B2B13501A8016B,
 				F55FF54B02CFC96301A80164,
+				F5C373FF032EE42701A80165,
 			);
 			isa = PBXGroup;
 			name = Headers;
@@ -1108,9 +1119,9 @@
 		F568C4A202FC9D6101A80164 = {
 			children = (
 				F568C4A302FC9D6101A80164,
-				F5CC37180304F2BD01A80164,
 				F5CC37190304F2C601A80164,
 				F5CC371A0304F2CD01A80164,
+				F51CCE5D032E202001A80168,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;
@@ -1278,6 +1289,28 @@
 			path = "English.lproj/FinkCommander Help";
 			refType = 4;
 		};
+		F5C373FD032EE41301A80165 = {
+			isa = PBXFileReference;
+			path = FinkProcessTerminator.m;
+			refType = 4;
+		};
+		F5C373FE032EE41301A80165 = {
+			fileRef = F5C373FD032EE41301A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C373FF032EE42701A80165 = {
+			isa = PBXFileReference;
+			path = FinkProcessTerminator.h;
+			refType = 4;
+		};
+		F5C37400032EE42701A80165 = {
+			fileRef = F5C373FF032EE42701A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5C523D802A326B701A80165 = {
 			isa = PBXFileReference;
 			path = FinkPackageInfo.h;
@@ -1344,13 +1377,6 @@
 			isa = PBXFileReference;
 			name = Spanish;
 			path = Spanish.lproj/Preferences.nib;
-			refType = 4;
-		};
-		F5CC37180304F2BD01A80164 = {
-			fileEncoding = 10;
-			isa = PBXFileReference;
-			name = German;
-			path = German.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5CC37190304F2C601A80164 = {

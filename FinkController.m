@@ -80,6 +80,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		//Flag used to avoid duplicate warnings when user terminates FC 
 		//in middle of command with something other than App:Quit
 		userChoseToTerminate = NO;
+		
+		//Flag indicating user has chosen to terminate a command;
+		//used to stop appending text to output
+		commandTerminated = NO;
 
 		//Register for notification that causes table to update
 		//and resume normal state
@@ -628,9 +632,17 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			NSLocalizedString(@"TheTerminateCommand", nil),
 			NSLocalizedString(@"Terminate", nil), 
 			NSLocalizedString(@"Continue", nil), nil);
+	FinkProcessTerminator *arnold = [[[FinkProcessTerminator alloc] init] autorelease];
 
 	if (answer1 == NSAlertAlternateReturn) return;
-	terminateChildProcesses(password);
+	//signal appendOutput to stop
+	commandTerminated = YES;
+	[self startProgressIndicatorAsIndeterminate:YES];
+	[msgText setStringValue:NSLocalizedString(@"Terminating", nil)];
+	
+	[NSThread detachNewThreadSelector:@selector(terminateChildProcesses:)
+				toTarget:arnold
+				withObject:password];
 }
 
 //----------------------------------------------->Show Windows/Panels
@@ -781,7 +793,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //use Toolbar.plist file to populate toolbar
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
 	   itemForItemIdentifier:(NSString *)itemIdentifier
-   willBeInsertedIntoToolbar:(BOOL)flag
+		willBeInsertedIntoToolbar:(BOOL)flag
 {
 	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:
 			[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]];
@@ -1113,9 +1125,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 
--(void)scrollToVisible:(NSNumber *)n
+-(void)scrollToVisible:(NSNumber *)pixelsBelowView
 {
-	if ([n floatValue] <= 100.0 || 
+	//window or splitview resizing often results in some gap between
+	//the scroll thumb and the bottom, so the test shouldn't be whether
+	//there are 0 pixels below the scroll view
+	if ([pixelsBelowView floatValue] <= 100.0 || 
 		[defaults boolForKey: FinkAlwaysScrollToBottom]){
 		[textView scrollRangeToVisible:	
 			NSMakeRange([[textView string] length], 0)];
@@ -1145,13 +1160,19 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)appendOutput:(NSString *)output
 {	
-	//total document length (in pixels) - length above scroll view (y coord of visible portion) - 
-	//length w/in scroll view = length below scroll view
-	NSNumber *theTest = [NSNumber numberWithFloat: 
-									abs([textView bounds].size.height 
-									- [textView visibleRect].origin.y 
-									- [textView visibleRect].size.height)];
+	//total document length (in pixels) 						- 
+	//length above scroll view (y coord of visible portion) 	- 
+	//length w/in scroll view 									= 
+	//length below scroll view
+	//used to determine whether the user has scrolled up; if so the output view
+	//will not autoscroll to the bottom
+	NSNumber *pixelsBelowView = [NSNumber numberWithFloat: 
+									abs([textView bounds].size.height -
+										[textView visibleRect].origin.y - 
+										[textView visibleRect].size.height)];
 	int signal = [parser parseOutput:output];
+	
+	if (commandTerminated) return;
 
 	switch(signal)
 	{
@@ -1203,7 +1224,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[textView appendString:output];
 	//according to Moriarity example, we have to put off scrolling until next event loop
 	[self performSelector:@selector(scrollToVisible:) 
-			withObject:theTest 
+			withObject:pixelsBelowView 
 			afterDelay:0.0];
 }
 
@@ -1251,6 +1272,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			nil);												//msg string params
 		[self updateTable: nil];
 	}
+	
+	commandTerminated = NO;
+	
 	[[NSNotificationCenter defaultCenter]
 		postNotificationName:FinkCommandCompleted 
 		object:[self lastCommand]]; 

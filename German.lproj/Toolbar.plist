@@ -11,9 +11,9 @@
 		<key>Label</key>
 		<string>Inspector</string>
 		<key>PaletteLabel</key>
-		<string>Pakete Inspektor</string>
+		<string>Paket-Inspektor</string>
 		<key>ToolTip</key>
-		<string>Pakete Inspector zeigen</string>
+		<string>Paket-Inspektor anzeigen</string>
 	</dict>
 	<key>FinkEmailItem</key>
 	<dict>
@@ -24,14 +24,14 @@
 		<key>Label</key>
 		<string>Maintainer</string>
 		<key>PaletteLabel</key>
-		<string>Email Erhalter</string>
+		<string>Email Maintainer</string>
 		<key>ToolTip</key>
-		<string>E-mail zu dem Erhalter für das Paket senden</string>
+		<string>Email an den Maintainer des Pakets senden</string>
 	</dict>
 	<key>FinkFilterItem</key>
 	<dict>
 		<key>Label</key>
-		<string>Pakete Filter</string>
+		<string>Paket-Filter</string>
 	</dict>
 	<key>FinkInstallBinaryItem</key>
 	<dict>
@@ -41,10 +41,12 @@
 		<string>addbin</string>
 		<key>Label</key>
 		<string>Install Binary</string>
+		<key>PaletteLabel</key>
+		<string>Binär installieren</string>
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Binär Pakete einbringen</string>
+		<string>Binär Paket(e) installieren</string>
 	</dict>
 	<key>FinkInstallSourceItem</key>
 	<dict>
@@ -55,11 +57,11 @@
 		<key>Label</key>
 		<string>Install</string>
 		<key>PaletteLabel</key>
-		<string>Source Einbringen</string>
+		<string>Source installieren</string>
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Pakete von Source Code einbringen</string>
+		<string>Paket(e) von Source Code installieren</string>
 	</dict>
 	<key>FinkInteractItem</key>
 	<dict>
@@ -69,8 +71,10 @@
 		<string>interact</string>
 		<key>Label</key>
 		<string>Interact</string>
+		<key>PaletteLabel</key>
+		<string>Interaktion</string>
 		<key>ToolTip</key>
-		<string>Das Kommunikationsfenster zeigen</string>
+		<string>Kommunikationsfenster anzeigen (falls Kommando angehalten hat)</string>
 	</dict>
 	<key>FinkRemoveBinaryItem</key>
 	<dict>
@@ -80,10 +84,12 @@
 		<string>delbin</string>
 		<key>Label</key>
 		<string>Remove Binary</string>
+		<key>PaletteLabel</key>
+		<string>Binär löschen</string>
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Pakete Dateien entfernen; .deb Dateien behalten um die Pakete leicht wieder zu einbringen</string>
+		<string>Binäre Paket-Dateien löschen; .deb Dateien behalten für eine schnelle Neu-Installation</string>
 	</dict>
 	<key>FinkRemoveSourceItem</key>
 	<dict>
@@ -94,11 +100,11 @@
 		<key>Label</key>
 		<string>Remove</string>
 		<key>PaletteLabel</key>
-		<string>Remove Source</string>
+		<string>Source löschen</string>
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Pakete Dateien entfernen; .deb Dateien behalten um die Pakete leicht wieder zu einbringen</string>
+		<string>Source Paket-Dateien löschen; .deb Dateien behalten für eine schnelle Neu-Installation</string>
 	</dict>
 	<key>FinkSelfUpdateCVSItem</key>
 	<dict>
@@ -108,10 +114,12 @@
 		<string>cvs</string>
 		<key>Label</key>
 		<string>Selfupdate-cvs</string>
+		<key>PaletteLabel</key>
+		<string>Selfupdate-cvs</string>
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Pakete Beschreibungen von cvs erneuen</string>
+		<string>Paket-Beschreibungen von CVS aktualisieren</string>
 	</dict>
 	<key>FinkSelfUpdateItem</key>
 	<dict>
@@ -121,10 +129,12 @@
 		<string>update</string>
 		<key>Label</key>
 		<string>Selfupdate</string>
+		<key>PaletteLabel</key>
+		<string>Aktualisieren</string>
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Pakete Beschreibungen erneuen</string>
+		<string>Paket-Beschreibungen aktualisieren</string>
 	</dict>
 	<key>FinkTerminateCommandItem</key>
 	<dict>
@@ -134,8 +144,10 @@
 		<string>terminate</string>
 		<key>Label</key>
 		<string>Terminate</string>
+		<key>PaletteLabel</key>
+		<string>Befehl beenden</string>
 		<key>ToolTip</key>
-		<string>Gegenwärtigen Befehl beenden</string>
+		<string>Aktuell ausgeführten Befehl beenden</string>
 	</dict>
 	<key>FinkUpdateBinaryItem</key>
 	<dict>
@@ -146,11 +158,11 @@
 		<key>Label</key>
 		<string>Update</string>
 		<key>PaletteLabel</key>
-		<string>Apt-Get Update</string>
+		<string>apt-get update</string>
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Beschreibungen von Binär Pakete erneuen</string>
+		<string>Beschreibungen der Binär-Pakete aktualisieren (apt-get update)</string>
 	</dict>
 </dict>
 </plist>
