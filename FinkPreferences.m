@@ -21,6 +21,15 @@ File: FinkPreferences.m
 	return self;
 }
 
+-(void)awakeFromNib
+{
+	if ([conf extendedVerboseOptions]){
+		[verboseOutputPopupButton insertItemWithTitle:@"Low" atIndex:1];
+		[verboseOutputPopupButton insertItemWithTitle:@"Medium" atIndex:2];
+
+	}	
+}
+
 -(void)dealloc
 {
 	[conf release];
@@ -117,10 +126,6 @@ File: FinkPreferences.m
 	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
 	[passiveFTPButton setState: [conf passiveFTP]];
 	
-	if ([conf extendedVerboseOptions]){
-		[verboseOutputPopupButton insertItemWithTitle:@"Medium" atIndex:1];
-		[verboseOutputPopupButton insertItemWithTitle:@"Low" atIndex:2];
-	}
 	[verboseOutputPopupButton selectItemAtIndex:[conf verboseOutput]];
 	
 	httpProxy = [environmentSettings objectForKey:@"http_proxy"];
@@ -287,12 +292,7 @@ File: FinkPreferences.m
 	if (finkConfChanged){
 		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
-
-		if ([conf extendedVerboseOptions]){
-			[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
-		}else{
-			[conf setVerboseOutput:[[verboseOutputPopupButton selectedItem] tag]];
-		}
+		[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
 			
 		[conf setPassiveFTP: [passiveFTPButton state]];
 		[conf setKeepBuildDir: [keepBuildDirectoryButton state]];

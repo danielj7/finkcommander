@@ -323,9 +323,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[progressIndicator setUsesThreadedAnimation: YES];
 		[progressIndicator startAnimation: nil];
     }
-#ifdef DEBUGGING
-	NSLog(@"Called start PI while PI still running");
-#endif
 }
 
 -(void)stopProgressIndicator
@@ -333,9 +330,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     if ([progressView isDescendantOf: progressViewHolder]){
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
-#ifdef DEBUGGING
-	NSLog(@"Called stop PI when PI not running");
-#endif
 	}
 }
 

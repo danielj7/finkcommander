@@ -125,7 +125,9 @@ NSString *ps(void)
 	psOutput = [[[NSString alloc] initWithData: 
 									[cmdStdout readDataToEndOfFile] 
 												encoding:NSMacOSRomanStringEncoding] autorelease];
-
+#ifdef DEBUGGING
+	NSLog(@"ps command output:\n%@", psOutput);
+#endif
 	return psOutput;
 }
 
@@ -140,7 +142,7 @@ NSString *childOfProcess(NSString *ppid)
 	while (line = [e nextObject]){
 		if ([line contains: ppid]){
 #ifdef DEBUGGING
-			NSLog(@"Found line with pid %@:\n%@", ppid, line);
+			NSLog(@"Found line with parent pid %@:\n%@", ppid, line);
 #endif
 			pidScanner = [NSScanner scannerWithString:line];
 			//child pid is first set of decimal digits in line
@@ -148,7 +150,10 @@ NSString *childOfProcess(NSString *ppid)
 												   intoString: nil];
 			[pidScanner scanCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
 											   intoString:&cpid];
-			if ([cpid isEqualToString:ppid]){
+			if ([cpid isEqualToString:ppid]){ 
+#ifdef DEBUGGING
+				NSLog(@"It's the parent; ignoring");
+#endif
 				cpid = nil;
 				continue;
 			}
@@ -171,6 +176,7 @@ void terminateChildProcesses(void)
 
 	//The sins of the father are visited on his children.
 	while (cpid){
+	
 #ifdef DEBUGGING
 		NSLog(@"Calling terminateProcessWithPID: %@", cpid);
 #endif

@@ -122,7 +122,7 @@ File: FinkConf.m
 	NSString *verbose = [finkConfDict objectForKey:@"Verbose"];
 	
 	if ([self extendedVerboseOptions]){
-		return [verbose intValue] - 1;
+		return [verbose intValue];
 	}
 	if ([verbose isEqualToString:@"true"]){
 		return 1;
@@ -135,7 +135,7 @@ File: FinkConf.m
 	NSString *loquacity;
 	
 	if ([self extendedVerboseOptions]){
-		loquacity = [NSString stringWithFormat:@"%d", verboseOutput + 1];
+		loquacity = [NSString stringWithFormat:@"%d", verboseOutput];
 	}else if (verboseOutput){
 		loquacity = @"true";
 	}else{
