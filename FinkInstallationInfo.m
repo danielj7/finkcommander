@@ -7,116 +7,148 @@ File: FinkInstallationInfo.m
 
 #import "FinkInstallationInfo.h"
 
-#define MAY_TOOLS_VERSION 	@"2.0.1"
-
-NSString *DEVTOOLS_TEST_PATH1 = 
-	@"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist";
-
-NSString *DEVTOOLS_TEST_PATH2 = 
-		@"/Developer/Applications/Interface Builder.app/Contents/version.plist";
+//globals
+#define MAY_TOOLS_VERSION  @"2.0.1"
+#define DEVTOOLS_TEST_PATH1 @"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist"
+#define DEVTOOLS_TEST_PATH2 @"/Developer/Applications/Interface Builder.app/Contents/version.plist"
 
 @implementation FinkInstallationInfo
 
--(NSString *)finkVersion
+//------------------------------>init
+
+-(id)init
 {
-	NSFileManager *manager = [NSFileManager defaultManager];
-	NSTask *versionTask = [[NSTask alloc] init];
-	NSPipe *pipeFromStdout = [NSPipe pipe];
-	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
-	NSString *pathToFink = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
-			stringByAppendingPathComponent: @"/bin/fink"];
-	NSString *result = @"Unable to determine fink version";
-	if (! [manager fileExistsAtPath:pathToFink]){
-		return result;
+	if (self = [super init]){
+		manager = [NSFileManager defaultManager];  //shared instance, no need to retain
 	}
-	[versionTask setLaunchPath: pathToFink];
-	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
-	[versionTask setStandardOutput: pipeFromStdout];
-	[versionTask launch];
-	result = [[[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
-								encoding:NSMacOSRomanStringEncoding] autorelease];
-	[versionTask release];
-	[taskStdout closeFile];
-	return result;
+	return self;
 }
 
--(NSString *)macOSXVersion
-{
-	NSFileManager *manager = [NSFileManager defaultManager];
-	NSTask *versionTask = [[NSTask alloc] init];
-	NSPipe *pipeFromStdout = [NSPipe pipe];
-	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
-	NSString *output;
-	NSString *line;
-	NSString *result = @"Could not find Mac OS X Version";
-	NSEnumerator *e;
-	int loc;
-	
-	if (! [manager fileExistsAtPath:@"/usr/bin/sw_vers"]){
-		return result;
-	}
-	[versionTask setLaunchPath: @"/usr/bin/sw_vers"];
-	[versionTask setStandardOutput: pipeFromStdout];
-	[versionTask launch];
+//------------------------------>Helpers for Specific Version Methods
 
-	output = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSMacOSRomanStringEncoding] autorelease];
-	[versionTask release];
-	[taskStdout closeFile];
-	
-	e = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
-	while (line = [e nextObject]){
-		if ((loc = [line rangeOfString: @"10."].location) != NSNotFound){
-			result = [NSString stringWithFormat: @"Mac OS X Version: %@",
-							[line substringWithRange: 
-								NSMakeRange(loc, [line length] - loc)]];
-			result = [result strip];
-			break;
-		}
+//Scan version output for the version number
+-(NSString *)numericVersionFromString:(NSString *)s
+{
+	NSScanner *versionScanner;
+	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
+		@"0123456789."];
+	NSString *result;
+
+	if (! s) return nil;
+	versionScanner = [NSScanner scannerWithString:s];
+	[versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL];
+	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&result]){
+		return nil;
 	}
 	return result;
 }
 
--(NSString *)gccVersion
+//Run CLI tool to get its version information
+-(NSString *)versionOutputForExecutable:(NSString *)path
+	usingArgument:(NSString *)arg
 {
-	NSFileManager *manager = [NSFileManager defaultManager];
 	NSTask *versionTask = [[NSTask alloc] init];
 	NSPipe *pipeFromStdout = [NSPipe pipe];
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
 	NSString *result;
-	NSScanner *versionScanner;
-	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
-		@"0123456789."];
-	
 
-	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
-		return @"Developer Tools not installed";
+	if (! [manager fileExistsAtPath:path]){
+		return nil;
 	}
-	[versionTask setLaunchPath: @"/usr/bin/cc"];
-	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
+	
+	[versionTask setLaunchPath: path];
+	if (arg){
+		[versionTask setArguments: [NSArray arrayWithObjects:arg, nil]];
+	}
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask launch];
 
-	result = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSMacOSRomanStringEncoding] autorelease];
+	NS_DURING
+		result = [[[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
+									encoding:NSMacOSRomanStringEncoding] autorelease];
+	NS_HANDLER
+		//Handle NSFileHandleOperationException
+		NSLog(@"Failed to read data stream from %@ %@", path, arg);
+		return nil;
+	NS_ENDHANDLER
+
 	[versionTask release];
 	[taskStdout closeFile];
-
-	versionScanner = [NSScanner scannerWithString:result];
-	if (! [versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL]){
-		return @"Unable to determine gcc version";
-	}
-	[versionScanner scanCharactersFromSet:versionChars intoString:&result];
-	result = [NSString stringWithFormat: @"gcc version: %@", result];
 	return result;
 }
 
+-(NSString *)versionOutputForExecutable:(NSString *)path
+{
+	return [self versionOutputForExecutable:path usingArgument:@"--version"];
+}
+
+//------------------------------>Specific Version Methods
+
+-(NSString *)finkVersion
+{
+	NSString *pathToFink = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
+			stringByAppendingPathComponent: @"/bin/fink"];
+	NSString *version = [self versionOutputForExecutable:pathToFink];
+	if (! version) return @"Unable to determine fink version\n";
+	return version;
+}
+
+-(NSString *)macOSXVersion
+{
+	NSString *result = [self versionOutputForExecutable:@"/usr/bin/sw_vers"
+								usingArgument:nil];
+	
+	result = [self numericVersionFromString:result];
+	if (!result) return @"Unable to determine Mac OS X Version";
+	return [NSString stringWithFormat: @"Mac OS X version: %@", result];
+}
+
+-(NSString *)gccVersion
+{
+	NSString *result; 
+	
+	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
+		return @"Developer Tools not installed";
+	}
+	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
+	
+	result = [self numericVersionFromString:result];
+	if (!result) return @"Unable to determine gcc version";
+	return [NSString stringWithFormat: @"gcc version: %@", result];
+}
+
+-(NSString *)makeVersion
+{
+	NSString *finkMakePath = [[[NSUserDefaults standardUserDefaults] 
+		objectForKey:FinkBasePath] stringByAppendingPathComponent:@"bin/make"];
+	NSString *pathToMake;
+	NSString *error = @"Unable to determine make version";
+	NSString *result;
+
+	if ([manager fileExistsAtPath:finkMakePath]){
+		pathToMake = finkMakePath;
+	}else if ([manager fileExistsAtPath:@"/usr/local/bin/make"]){
+		pathToMake = @"/usr/local/bin/make";
+	}else if ([manager fileExistsAtPath:@"/usr/bin/make"]){
+		pathToMake = @"/usr/bin/make";
+	}else{
+		return error;
+	}
+	Dprintf(@"Make is %@", pathToMake);
+	
+	result = [self versionOutputForExecutable:pathToMake];
+	result = [self numericVersionFromString:result];
+	if (!result) return error;
+	return [NSString stringWithFormat: @"make version: %@", result];
+}
+
+//------------------------------>developerToolsInfo
+
 -(NSString *)developerToolsInfo
 {
-	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *error = @"Unable to determine Developer Tools version";
 	NSString *version;
-	
+
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
 		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1]
@@ -138,76 +170,9 @@ NSString *DEVTOOLS_TEST_PATH2 =
 	return error;
 }
 
--(NSString *)makeVersion
-{
-	NSFileManager *manager = [NSFileManager defaultManager];
-	NSTask *whichTask = [[NSTask alloc] init];
-	NSTask *versionTask = [[NSTask alloc] init];
-	NSPipe *whichPipe = [NSPipe pipe];
-	NSPipe *versionPipe = [NSPipe pipe];
-	NSFileHandle *whichStdout = [whichPipe fileHandleForReading];
-	NSFileHandle *versionStdout = [versionPipe fileHandleForReading];
-	NSString *pathToMake;
-	NSString *versionString;
-	NSString *versionNumber;
-	NSString *error = @"Unable to locate \"make\"";
-	NSScanner *versionScanner;
-	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
-													@"0123456789."];
-	NSArray *pathComponents;
+//------------------------------>installationInfo
 
-	if (! [manager fileExistsAtPath:@"/usr/bin/which"]){
-		return error;
-	}
-	
-	//use which to find the path to make
-	[whichTask setCurrentDirectoryPath:@"/" ];
-	[whichTask setLaunchPath: @"/usr/bin/which"];
-	[whichTask setArguments: [NSArray arrayWithObjects: @"make", nil]];
-	[whichTask setStandardOutput: whichPipe];
-	[whichTask launch];
-	pathToMake = [[[NSString alloc] initWithData:[whichStdout readDataToEndOfFile]
-									encoding:NSMacOSRomanStringEncoding] autorelease];
-	[whichTask release];
-	[whichStdout closeFile];
-	
-	if ([pathToMake contains: @"not found"] || [pathToMake contains:@"no make"]){
-		return error;
-	}
-	//if the wdPath is at the start, remove it - some unicode char is first
-	if ([[pathToMake substringFromIndex:1] hasPrefix:[NSString stringWithFormat:@"]2;/"]]){
-		pathComponents = [pathToMake componentsSeparatedByString: @"]2;/"];
-		//there is another unicode character after the wdPath, so just move the index fwd one more
-		pathToMake = [[pathComponents objectAtIndex:1] substringFromIndex:1];
-	}
-	//make sure we're looking at the last line of the result
-	pathComponents = [pathToMake componentsSeparatedByString:@"\n"];
-	pathToMake = [pathComponents count] > 1 								? 
-				 [pathComponents objectAtIndex: [pathComponents count] - 2] :
-				 [pathComponents objectAtIndex:0];
-	pathToMake = [pathToMake strip];
-	if (! [manager fileExistsAtPath:pathToMake]){
-		return error;
-	}
-	//get the result of make -v
-	[versionTask setLaunchPath: [pathToMake strip]];
-	[versionTask setArguments: [NSArray arrayWithObjects: @"-v", nil]];
-	[versionTask setStandardOutput: versionPipe];
-	[versionTask launch];
-	versionString = [[[NSString alloc] initWithData: [versionStdout readDataToEndOfFile]
-										encoding: NSMacOSRomanStringEncoding] autorelease];
-	[versionTask release];
-	[versionStdout closeFile];
-	//parse the result for the version number
-	versionScanner = [NSScanner scannerWithString:versionString];
-	[versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL];
-	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&versionNumber]){
-		return error;
-	}
-	return [NSString stringWithFormat: @"make version: %@", versionNumber];
-}
-
--(NSString *)getInstallationInfo
+-(NSString *)installationInfo
 {
 	NSString *finkVersion = [self finkVersion];
 	NSString *macOSXVersion = [self macOSXVersion];

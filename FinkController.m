@@ -609,7 +609,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)showPackageInfoPanel:(id)sender
 {
 	FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-	NSString *sig = [info getInstallationInfo];
+	NSString *sig = [info installationInfo];
 
 	if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
@@ -653,7 +653,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 	FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-	NSString *sig = [info getInstallationInfo];
+	NSString *sig = [info installationInfo];
 	FinkPackage *pkg;
 
 	if (!packageInfo){

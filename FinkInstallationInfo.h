@@ -1,5 +1,5 @@
 /*
-File: FinkController.h
+File: FinkInstallationInfo.h
 
  FinkCommander
 
@@ -7,7 +7,9 @@ File: FinkController.h
  that automates the downloading, patching, compilation and installation of
  Unix software on Mac OS X.
 
- The FinkInstallationInfo models the state of the user's fink installation.
+ FinkInstallationInfo models the state of the user's fink installation and
+ development tools.  The information it provides is used primarily to create
+ the email sig for reports to package maintainers.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -34,10 +36,15 @@ File: FinkController.h
 #import "FinkGlobals.h"
 #import "FinkUtilities.h"
 
-@interface FinkInstallationInfo : NSObject {
+@interface FinkInstallationInfo : NSObject 
+{
+	NSFileManager *manager;
 }
 
 -(NSString *)finkVersion;
--(NSString *)getInstallationInfo;
+
+//Returns a string with the versions of fink, Mac OS X, gcc, make, and Dev Tools
+//installed on the user's system
+-(NSString *)installationInfo;
 
 @end

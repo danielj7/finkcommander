@@ -43,10 +43,10 @@ target="top">Bug Tracker</a> for FinkCommander.
 
 <p>
 I will not be able to provide direct support for FinkCommander.
-Software development is my hobby.  I have a pretty demanding "day
-job," so responding directly to every request for help is just not in
+Software development is my hobby.  I have a pretty demanding &quot;day
+job,&quot; so responding directly to every request for help is just not in
 the cards.  I will, however, take your comments into account in
-designing and drafting documentation for future versions of
+designing, and drafting documentation for, future versions of
 FinkCommander.  Please send comments (other than bug reports) to my <a
 href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
 </p>
@@ -55,62 +55,77 @@ href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
 <a name="installation">Installing FinkCommander</a>
 </h3>
 
-<p>Users who install FinkCommander from source or from the disk image should be aware of two things:</p>
+<p>Users who install FinkCommander from source or from the disk image should be aware 
+of two things:</p>
 <ol>
-<li>You will experience the following when you first run a command after installing, moving or recompiling 
-FinkCommander:<br />
-	<ul><br />
-	<li>You will be asked for your password, probably twice, by the standard Apple 
-	password dialog.</li><br />
-	<li>The following messages, designed for people who don't read README files, will appear in the 
-	output view:<br />
-<pre>
-The tool that FinkCommander uses to run commands as root does not have the necessary permissions.
-By entering your password you will give the tool the authorization it needs to repair itself.
-Under some circumstances you may need to enter your password twice.
-
-The tool has successfully repaired itself.
-Please re-try the command you just attempted.</pre>
-	</li>
-	<li>The process will then terminate and you will receive an error message.</li>
+  <li>You should expect to see the following the first time
+      you run a command after installing, moving or compiling FinkCommander:
+      <ul><br />
+	<li>FinkCommander will ask for your password through the standard
+	    Macintosh authorization dialog.  It may ask twice.</li><br />
+	<li>The output view in the lower part of the window will
+	    display messages indicating that a &quot;tool&quot; had to
+	    repair itself and that you should re-try the
+	    command.</li><br />
+	<li>FinkCommander will display an error dialog sheet.</li></br>
 	</ul><br />
-</li>
-<li>It is highly recommended that you change the owner of the Resources directory inside the
-FinkCommander.app bundle to root.  (The Package Installer would do this for you automatically.)  You
-can do this from Finder, but it's easier to open Terminal and enter (or paste) the following 
-at the command line:  <br /> <br />
-	<kbd>sudo chown root:admin /Applications/FinkCommander.app/Contents/Resources</kbd>.
-</li>
+  </li>
+  <li>You should change the owner of the FinkCommander application
+      bundle and its contents to root and the group to admin.
+      (The Package Installer would do this for you automatically.)  You
+      can do this from Finder using Get Info (cmd-I), or open Terminal and
+      enter the following at the command line:  <br /> <br />
+      <kbd>sudo chown -R root:admin /Applications/FinkCommander.app/Contents/Resources</kbd>.
+  </li>
 </ol>
 <p>
-For those with sufficient interest and patience, an explanation follows.
+For those with sufficient interest and patience, an explanation
+follows.  It assumes a basic understanding of the Unix file permission system.
+</p>
+
+<p>As of version 0.4.0, FinkCommander uses Apple's Security Framework
+to authorize commands requiring root privileges.  In order to do this,
+it must include an auxiliary program, or &quot;tool,&quot; that is
+owned by root and that possesses a special file permission called
+&quot;setuid.&quot;</p>
+
+<p>The tool needs these permission settings in order to acquire the
+authority to modify files and directories, such as those in your Fink
+installation, that are owned by root.  Unix processes ordinarily
+acquire the identity, and therefore the file permissions, of the user
+who starts the process.  A program with setuid permission, on the
+other hand, can assume the identity of the owner of the program's
+file.  Thus, a program that is owned by root and has setuid permission
+can modify files owned by root, provided the user supplies an
+administrative password.</p>
+
+<p>The program sudo is probably the most familiar example of a setuid tool.  
+If at the command line you type <kbd>ls -l /usr/bin/sudo</kbd>, you will see the
+following result:<br />
+<pre>
+    ---s--x--x    1 root     wheel       96384 Sep 18 21:23 /usr/bin/sudo
+</pre>
+The &quot;s&quot; appearing where one would ordinarily expect to
+see an &quot;x&quot; shows that sudo has setuid permission.</p>
+
+<p>
+Because the package installer for FinkCommander obtains root privileges, it 
+is able to install FinkCommander with these permissions already
+established.  If you install from the disk image or compile FinkCommander 
+in Project Builder, these permissions will not be set.
 </p>
 
 <p>
-As of version 0.4.0, FinkCommander uses Apple's Security Framework to authorize commands
-requiring root privileges.  In order to do this, it must incorporate a tool that has certain
-file permissions.  Specifically, it must be owned by root and have its setuid bit set. Because 
-the package installer for FinkCommander obtains root privileges, it 
-is able to install FinkCommander with these permissions already established. 
+The tool, however, includes code to "repair" itself if it lacks
+the necessary permissions and will do so the first time you try to run
+a fink or apt-get command in FinkCommander.  The self-repair process 
+results in the sequence of events described in item 1 above.
 </p>
 
 <p>
-If you drag and drop from the disk image or compile FinkCommander 
-in Project Builder, these permissions will not be set.  The tool, however, includes code 
-to "repair" itself if it lacks the necessary permissions and will do so the first time
-you try to run a fink or apt-get command in FinkCommander.
-</p>
-
-<p>
-So why change the ownership of the Resources directory?  An executable that is
-setuid root has the ability to assume the identity of root and do anything root can do
-once it obtains authorization.  This is not a problem for FinkCommander's tool 
-(called "Launcher"), because all it does is run fink and apt-get commands and edit your
-fink.conf file.  However, there is a possibility that someone could sneak Launcher's evil twin
-into the FinkCommander.app bundle, and the twin could use root authorization to wreak all kinds
-of havoc on your system.  If you change the ownership of Launcher's directory to root, it will
-take an administrator's password to get the evil twin through the door, which makes twin
-infiltration much less likely.
+FinkCommander's tool is known as Launcher and resides in the Resources directory
+of the FinkCommander.app bundle.  Changing the owner of Resources to root will
+prevent someone with  
 </p>
 
 <h3><a name="timeout">Changing the Authorization Timeout</a></h3>
@@ -119,7 +134,7 @@ infiltration much less likely.
 By default, FinkCommander works in much the same way as sudo.  If you run a command and
 provide your password to authorize root privileges, that authorization has a timeout period
 of five minutes.  You can enter additional commands without retyping your password for five
-minutes.  After that, you need to reauthorize.
+minutes.  After that, you need to reauthenticate.
 </p>
 
 <p>
@@ -129,7 +144,7 @@ To do so, open Terminal and type the following at the command line:
 
 <p><kbd>sudo emacs /private/etc/authorization</kbd></p>
 
-<p>You may of course substitute vi or pico or  whichever inferior product you prefer to emacs.  :)  
+<p>You may of course substitute vi or pico or whichever inferior product you prefer to emacs.  :)  
 You should not use the Property List Editor in /Developer/Applications to edit the file, 
 because it will not preserve the comments.</p>
 
@@ -143,7 +158,7 @@ because it will not preserve the comments.</p>
             &lt;key&gt;shared&lt;/key&gt;
             &lt;true/&gt;
             &lt;key&gt;allow-root&lt;/key&gt;
-            &lt;true/&gt;
+            &lt;false/&gt;
         &lt;/dict&gt;
 </pre>
 <p>If you do this, entering your password at the beginning of a FinkCommander session will
@@ -157,7 +172,7 @@ authorize all subsequent commands.</p>
 
 <p>Where N is the timeout period in seconds.  To require a password for each command, set N to 0.</p>
 
-<p>We hope to automize this process in a future release, possibly through FinkCommander's Preferences 
+<p>I hope to automize this process in a future release, possibly through FinkCommander's Preferences 
 panel.</p>
 
 <h3><a name="license">License</a></h3>
