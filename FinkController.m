@@ -650,9 +650,8 @@ File: FinkController.m
     itemForItemIdentifier:(NSString *)itemIdentifier
 	willBeInsertedIntoToolbar:(BOOL)flag
 {
-    NSDictionary *d = [[NSDictionary dictionaryWithContentsOfFile:
-							[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
-						objectForKey:@"ToolbarItemDefinitions"];
+    NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:
+						[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]];
     NSDictionary *itemDict;
     NSString *value;
     NSNumber *tag;
@@ -688,16 +687,44 @@ File: FinkController.m
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-    return [[NSDictionary dictionaryWithContentsOfFile:
-				[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
-			objectForKey:@"AllowedToolbarItems"];
+	return [NSArray arrayWithObjects:
+				NSToolbarSeparatorItemIdentifier,
+				NSToolbarSeparatorItemIdentifier,
+				NSToolbarSpaceItemIdentifier,
+				NSToolbarFlexibleSpaceItemIdentifier,
+				NSToolbarCustomizeToolbarItemIdentifier,
+				@"FinkInstallSourceItem",
+				@"FinkInstallBinaryItem",
+				@"FinkRemoveSourceItem",
+				@"FinkRemoveBinaryItem",
+				@"FinkSelfUpdateItem",
+				@"FinkSelfUpdateCVSItem",
+				@"FinkUpdateallItem",
+				@"FinkUpdateBinaryItem",
+				@"FinkDescribeItem",
+				@"FinkTermInstallItem",
+				@"FinkTermCvsItem",
+				@"FinkInteractItem",
+				@"FinkTerminateCommandItem",
+				@"FinkEmailItem",
+				@"FinkFilterItem",		
+				nil];
 }
 
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
-    return [[NSDictionary dictionaryWithContentsOfFile:
-				[[NSBundle mainBundle] pathForResource: @"Toolbar" ofType: @"plist"]]
-			objectForKey:@"DefaultToolbarItems"];
+	return 	[NSArray arrayWithObjects:
+				@"FinkInstallSourceItem",
+				@"FinkTermInstallItem",
+				@"FinkRemoveSourceItem",
+				@"FinkSelfUpdateCVSItem",
+				NSToolbarSeparatorItemIdentifier,
+				@"FinkTerminateCommandItem",
+				@"FinkDescribeItem",
+				@"FinkEmailItem",
+				NSToolbarFlexibleSpaceItemIdentifier,
+				@"FinkFilterItem",
+				nil];
 }
 
 //----------------------------------------------->Text Field Delegate
@@ -799,7 +826,7 @@ File: FinkController.m
 //Disable toolbar items
 -(BOOL)validateToolbarItem:(NSToolbarItem *)theItem
 {
-    return [self validateItem: theItem]; //helper preceding menu item validator
+    return [self validateItem: theItem];
 }
 
 //--------------------------------------------------------------------------------
