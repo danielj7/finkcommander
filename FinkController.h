@@ -166,7 +166,7 @@ enum {
 {
 	//Main window outlets
 	IBOutlet NSWindow *window;
-	IBOutlet id tableView;
+	IBOutlet id tableViewController;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet id splitView;
@@ -237,6 +237,8 @@ enum {
 -(IBAction)sendPositiveFeedback:(id)sender;
 -(IBAction)sendNegativeFeedback:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
+-(IBAction)sortByPackageElement:(id)sender;
+-(IBAction)collapseExpandOutput:(id)sender;
 -(IBAction)openDocumentation:(id)sender;
 -(IBAction)openPackageFileViewer:(id)sender;
 

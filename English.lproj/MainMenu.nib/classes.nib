@@ -4,6 +4,7 @@
             ACTIONS = {
                 checkForLatestVersionAction = id; 
                 chooseTableColumn = id; 
+                collapseExpandOutput = id; 
                 endInteractionWindow = id; 
                 goToWebsite = id; 
                 openDocumentation = id; 
@@ -21,6 +22,7 @@
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 
+                sortByPackageElement = id; 
                 terminateCommand = id; 
                 updateTable = id; 
             }; 
@@ -41,7 +43,7 @@
                 splitView = id; 
                 tableContextMenu = NSMenu; 
                 tableScrollView = NSScrollView; 
-                tableView = id; 
+                tableViewController = id; 
                 textView = NSTextView; 
                 viewMenu = NSMenu; 
                 window = NSWindow; 
