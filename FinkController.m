@@ -125,7 +125,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)awakeFromNib
 {
-	NSDictionary *selStates = [defaults objectForKey: FinkViewMenuSelectionStates];
+	NSDictionary *selStates = [defaults objectForKey:FinkViewMenuSelectionStates];
 	NSEnumerator *e = [selStates keyEnumerator];
 	NSString *key;
 
@@ -137,20 +137,20 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			initWithFrame:NSMakeRect(0, 0, tableContentSize.width, tableContentSize.height)];
 	[tableScrollView setDocumentView: tableView];
 	[tableView release];
-	[tableView setDisplayedPackages: [packages array]];
+	[tableView setDisplayedPackages:[packages array]];
 	[tableView sizeLastColumnToFit];
-	[tableView setMenu: tableContextMenu];
+	[tableView setMenu:tableContextMenu];
 	
 	textView = 
 		[[FinkTextViewController alloc] 
 			initWithFrame:NSMakeRect(0, 0, outputContentSize.width, outputContentSize.height)];
-	[outputScrollView setDocumentView: textView];
+	[outputScrollView setDocumentView:textView];
 	[textView release];
 
 	while (key = [e nextObject])
 	{
-		int menuState = [[selStates objectForKey: key] intValue];
-		[[viewMenu itemWithTitle: key] setState: menuState];
+		int menuState = [[selStates objectForKey:key] intValue];
+		[[viewMenu itemWithTitle:key] setState:menuState];  //LOC
 	}
 		
 	[self setupToolbar];
@@ -650,20 +650,22 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //remove or add column
 -(IBAction)chooseTableColumn:(id)sender
 {
-	int loc = [[sender title] rangeOfString: @" "].location;
-	NSString *columnIdentifier = [[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
-	NSMutableDictionary *selStates = [[[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy] autorelease];
+	int loc = [[sender title] rangeOfString: @" "].location;								//LOC
+	NSString *columnIdentifier = [[[sender title] substringWithRange: NSMakeRange(0, loc)] 	//LOC
+													lowercaseString];
+	NSMutableDictionary *selStates = 
+		[[[defaults objectForKey:FinkViewMenuSelectionStates] mutableCopy] autorelease];
 	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
 	if (newState == NSOnState){
-		[tableView addColumnWithName: columnIdentifier];
+		[tableView addColumnWithName:columnIdentifier];
 	}else{
-		[tableView removeColumnWithName: columnIdentifier];
+		[tableView removeColumnWithName:columnIdentifier];
 	}
 
-	[sender setState: newState];
-	[selStates setObject: [NSNumber numberWithInt: newState] forKey: columnIdentifier];
-	[defaults setObject: selStates forKey: FinkViewMenuSelectionStates];
+	[sender setState:newState];
+	[selStates setObject:[NSNumber numberWithInt:newState] forKey:[sender title]];			//LOC
+	[defaults setObject:selStates forKey:FinkViewMenuSelectionStates];
 }
 
 -(IBAction)collapseOutput:(id)sender
@@ -1053,7 +1055,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
 		([executable contains: @"fink"] 			||
 		 [executable contains: @"apt-get"])){
-		 NSLog(@"Always choose defaults option selected");
 		[params insertObject: @"-y" atIndex: 3];
 	}
 	if ([executable isEqualToString: @"apt-get"]){ //give apt-get a chance to fix broken dependencies

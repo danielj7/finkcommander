@@ -8,7 +8,7 @@ File: FinkGlobals.h
  Unix software on Mac OS X.
 
  The FinkGlobals files declare and define global variables used throughout the 
- project as keys for user default values and as notification items.
+ project as keys for user default values and as notification names.
  
  Copyright (C) 2002  Steven J. Burr
 
@@ -36,7 +36,7 @@ File: FinkGlobals.h
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
 
-#define DEBUGGING
+//#define DEBUGGING
 
 //User Default Items
 //  Set by user

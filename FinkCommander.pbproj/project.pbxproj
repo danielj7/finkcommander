@@ -187,7 +187,7 @@
 				F5375A6C0246DE1901A80164,
 				F5C523DC02A33E0A01A80165,
 				F559D2C802CC2C6501A80164,
-				F513D60402DB42D70135C1EB,
+				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
 				F568C4A202FC9D6101A80164,
 				F57DA17B02B4680D01A8016B,
@@ -204,6 +204,8 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
+				F5458DBB030364F501A80164,
+				F5458DBC0303651C01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -352,8 +354,8 @@
 				F5897AAB02C6E37B01A80166,
 				F5DE3CD702CAE98601A80164,
 				F559D2C902CC2C6501A80164,
-				F513D60502DB42D70135C1EB,
 				F568C4A402FC9D6101A80164,
+				F5458DC00303658001A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 		};
@@ -494,17 +496,6 @@
 			settings = {
 			};
 		};
-		F513D60402DB42D70135C1EB = {
-			isa = PBXFileReference;
-			path = UserDefaults.plist;
-			refType = 4;
-		};
-		F513D60502DB42D70135C1EB = {
-			fileRef = F513D60402DB42D70135C1EB;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F527284C0221B4E801A80164 = {
 			isa = PBXFileReference;
 			path = FinkPackage.h;
@@ -613,6 +604,8 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
+				F5458DBD0303653001A80164,
+				F5458DBE0303655001A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -817,6 +810,41 @@
 		};
 		F54436BB027F6AD501A80164 = {
 			fileRef = F54436B9027F6AD501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5458DBB030364F501A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F5458DBC0303651C01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F5458DBD0303653001A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Preferences.nib;
+			refType = 4;
+		};
+		F5458DBE0303655001A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Preferences.nib;
+			refType = 4;
+		};
+		F5458DBF0303658001A80164 = {
+			isa = PBXFileReference;
+			path = UserDefaults.plist;
+			refType = 4;
+		};
+		F5458DC00303658001A80164 = {
+			fileRef = F5458DBF0303658001A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

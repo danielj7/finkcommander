@@ -104,7 +104,7 @@ File: FinkTableViewController.m
 	NSTableColumn *newColumn= 
 		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
 				
-	[[newColumn headerCell] setStringValue: [identifier capitalizedString]];
+	[[newColumn headerCell] setStringValue: [identifier capitalizedString]]; //LOC
 	[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
 	[newColumn setEditable:YES];
 	//center text in unstable and installed columns
