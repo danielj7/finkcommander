@@ -602,7 +602,8 @@ File: FinkController.m
 			[pkgNames addObject:[pkg name]];
 			continue;
 		}
-		if (typeOfFeedback == NEGATIVE 							&&
+		if (typeOfFeedback == NEGATIVE							&&
+			[[pkg installed] length] > 1						&&
 			! [[pkg installed] isEqualToString:[pkg version]]	&&  //version = latest
 			! [[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
