@@ -57,9 +57,9 @@
 #pragma mark BROWSER DELEGATE METHODS
 //----------------------------------------------------------
 
-/* Let the browser know how many rows should be displayed for the
-next column so it knows how many times to send the next delegate
-message. */
+/* 	Let the browser know how many rows should be displayed for the
+	next column so it knows how many times to send the next delegate
+	message. */
 -(int)browser:(NSBrowser *)sender
 		numberOfRowsInColumn:(int)column
 {
@@ -90,17 +90,17 @@ message. */
 		/* Put the root item in column 0. */
 		item = [tree rootItem];
     }else{
-		/* The representedObject of the selected item in the parent column
-		is the SBFileItem ancestor of the objects that will be represented
-		in the child (i.e. new) column. */
+		/* 	The representedObject of the selected item in the parent column
+			is the SBFileItem ancestor of the objects that will be represented
+			in the child (i.e. new) column. */
 		parentCell = [self selectedCellInColumn:column-1];
 		item = [[parentCell representedObject] childAtIndex:row];
     }
     //Cell should be a leaf rather than branch if represented object has no children
     [cell setLeaf:(nil == [item children])];
-    /* Set the represented object for the current cell to the SBFileItem derived
-		above, so that its attributes can be accessed by this method when it's
-		selected.  */
+    /* 	Set the represented object for the new cell being displayed to the SBFileItem 
+		derived above, so that the item's attributes can be accessed by this method when 
+		the cell is selected.  */
     [cell setRepresentedObject:item];
     [cell setStringValue:[item filename]];
     //Set the image for the item to an appropriately sized version of the file icon
@@ -130,6 +130,28 @@ message. */
 }
 
 //----------------------------------------------------------
+#pragma mark VALIDATION
+//----------------------------------------------------------
+
+-(BOOL)validateItem:(id)theItem
+{
+	SEL itemAction = [theItem action];
+
+    if (nil == [self selectedCell]){
+		if (itemAction == @selector(openSelectedFiles:)){
+			return NO;
+		}
+	}
+	return YES;
+}
+
+-(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+{
+    return [self validateItem:menuItem];
+}
+
+
+//----------------------------------------------------------
 #pragma mark FILE DRAG AND DROP
 //----------------------------------------------------------
 
@@ -149,22 +171,29 @@ message. */
     SBFileItem *item;
     NSEnumerator *cellEnum = [[self selectedCells] objectEnumerator];
 
+	//Put the path for each selected item in an array
 	while (nil != (theCell = [cellEnum nextObject])){
 		item = [theCell representedObject];
 		fileList = [fileList arrayByAddingObject:[item path]];
 	}
-
+	
+	//Let the pasteboard know we want a drag to copy file paths
 	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
 			owner:self];
+	//Give the pasteboard a list of the paths to be copied
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	
 	dragImage = [[NSWorkspace sharedWorkspace]
 			iconForFile:[fileList objectAtIndex:0]];
 	dragPosition = [self convertPoint:[theEvent locationInWindow]
 											fromView:nil];
+	//Put hot spot at center of icon
 	imageSize = [dragImage size];
 	dragPosition.x -= imageSize.width/2.0;
 	dragPosition.y -= imageSize.height/2.0;
+
+	/* 	Start the drag.  It will be up to the receiver, probably Finder or 
+		an application icon, to accept the drop.  */
 	[self dragImage:dragImage
 		  at:dragPosition
 		  offset:NSZeroSize

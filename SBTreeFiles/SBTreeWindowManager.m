@@ -87,8 +87,9 @@
 	
 	newController = [[SBTreeWindowController alloc]
 							initWithFileList:fileList
-							windowName:windowTitle];
-	[[self windowControllers] addObject:newController];
+							windowName:windowTitle];		//RC == 1
+	[[self windowControllers] addObject:newController];		//RC == 2
+	[newController release];								//RC == 1
 }
 
 -(void)closingTreeWindowWithController:(id)sender
@@ -96,7 +97,7 @@
 	Dprintf(@"Retain count of %@ before removed from array: %d",
 		 sender, [sender retainCount]);
 
-	[[self windowControllers] removeObject:sender];
+	[[self windowControllers] removeObject:sender];			//RC == 0
 }
 
 @end

@@ -102,12 +102,10 @@ enum {
 		[NSBundle loadNibNamed:@"TreeView" owner:self];
 
 		[[self window] setTitle:wName];
-		/* 	This should be set to yes, but for some reason releasing the window
-			is causing a crash the next time a package browser is opened.  */
-		[[self window] setReleasedWhenClosed:NO];
+		[[self window] setReleasedWhenClosed:YES];
 		[self setupViews];
 
-		[[self window] orderFront:self];
+		[[self window] makeKeyAndOrderFront:self];
 		
 		[loadingIndicator setUsesThreadedAnimation:YES];
 		[loadingIndicator startAnimation:self];

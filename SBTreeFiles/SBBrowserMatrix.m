@@ -15,6 +15,7 @@
 {
     myBrowser = newBrowser;  //Don't retain parent object!
 }
+
 #ifdef USE_MODIFIER
 
 -(void)mouseDown:(NSEvent *)theEvent

@@ -96,26 +96,6 @@
 }
 
 //----------------------------------------------------------
-#pragma mark DRAG AND DROP
-//----------------------------------------------------------
-//Allow dragging items outside outline view
--(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
-{
-    return NSDragOperationCopy;
-}
-
-- (NSImage *)dragImageForRows:(NSArray *)dragRows
-			event:(NSEvent *)dragEvent
-			dragImageOffset:(NSPointPointer)dragImageOffset
-{
-	SBFileItem *dragItem = [self itemAtRow:[[dragRows lastObject] intValue]];
-	NSImage *dragImage = [[NSWorkspace sharedWorkspace]
-							iconForFile:[dragItem path]];
-	
-	return dragImage;
-}
-
-//----------------------------------------------------------
 #pragma mark ACTION(S)
 //----------------------------------------------------------
 
@@ -135,6 +115,47 @@
 		}
     }
     alertProblemPaths(inaccessiblePathsArray);
+}
+
+//----------------------------------------------------------
+#pragma mark VALIDATION
+//----------------------------------------------------------
+
+-(BOOL)validateItem:(id)theItem
+{
+	SEL itemAction = [theItem action];
+
+    if ([self selectedRow] == -1){
+		if (itemAction == @selector(openSelectedFiles:)){
+			return NO;
+		}
+	}
+	return YES;
+}
+
+-(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+{
+    return [self validateItem:menuItem];
+}
+
+//----------------------------------------------------------
+#pragma mark DRAG AND DROP
+//----------------------------------------------------------
+//Allow dragging items outside outline view
+-(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+{
+    return NSDragOperationCopy;
+}
+
+- (NSImage *)dragImageForRows:(NSArray *)dragRows
+			event:(NSEvent *)dragEvent
+			dragImageOffset:(NSPointPointer)dragImageOffset
+{
+	SBFileItem *dragItem = [self itemAtRow:[[dragRows lastObject] intValue]];
+	NSImage *dragImage = [[NSWorkspace sharedWorkspace]
+							iconForFile:[dragItem path]];
+	
+	return dragImage;
 }
 
 @end

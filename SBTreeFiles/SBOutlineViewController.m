@@ -126,6 +126,8 @@
 #pragma mark DRAG AND DROP
 //----------------------------------------------------------
 
+/* 	Create an array of path names for selected items. Copy
+	the file list to the pasteboard.  */
 -(BOOL)outlineView:(NSOutlineView *)ov 
 	writeItems:(NSArray *)items
 	toPasteboard:(NSPasteboard *)pboard
