@@ -44,13 +44,6 @@ extern void alertProblemPaths(NSArray *);
 */
 -(void)buildTreeFromFileList:(NSMutableArray *)flist;
 
-/*
-	Finding Tree Items
-*/
-
-//-(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray;
-
-//-(SBFileItem *)itemInTreeWithPath:(NSString *)path;
 
 /*
 	Sorting the Tree

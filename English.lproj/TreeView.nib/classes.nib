@@ -20,7 +20,8 @@
                 loadingIndicator = NSProgressIndicator; 
                 msgTextField = NSTextField; 
                 oldBrowser = NSBrowser; 
-                outlineView = NSOutlineView; 
+                outlineScrollView = NSScrollView; 
+                outlineView = id; 
                 tabView = NSTabView; 
             }; 
             SUPERCLASS = NSWindowController; 

@@ -17,7 +17,6 @@ File: FinkController.m
 +(void)initialize
 {
     //set "factory defaults"
-
     NSDictionary *defaultValues = [NSDictionary dictionaryWithContentsOfFile:
 		[[NSBundle mainBundle] pathForResource:@"UserDefaults"
 							   ofType: @"plist"]];

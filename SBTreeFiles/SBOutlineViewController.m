@@ -13,10 +13,11 @@
 	self = [super init];
 	if (nil != self){
 		NSTableColumn *aColumn;
-		NSEnumerator *e = [[outlineView tableColumns] objectEnumerator];
+		NSEnumerator *e; 
 
-		outlineView = oView; //Retained when nib opens
+		outlineView = [oView retain];
 		tree = [aTree retain];
+		e = [[outlineView tableColumns] objectEnumerator];
 		[self setPreviousColumnIdentifier:@"filename"];
 		
 		[outlineView setDelegate:self];
@@ -24,7 +25,6 @@
 		[outlineView setTarget:self];
 		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
 		[outlineView setIntercellSpacing:NSMakeSize(4.0, 2.0)];
-
 
 		while (nil != (aColumn = [e nextObject])){
 			[[aColumn headerCell] setTarget:self];
@@ -42,6 +42,7 @@
 -(void)dealloc
 {
     [tree release];
+	[outlineView release];
 	[previousColumnIdentifier release];
     [columnStateDictionary release];
 

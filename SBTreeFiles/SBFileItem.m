@@ -34,7 +34,7 @@
 
 -(void)dealloc
 {
-//	NSLog(@"Deallocating %@", [self description]);
+	NSLog(@"Deallocating %@", [self description]);
 	//Recursively release all items below this one in the tree
 	if (nil != _sbchildren) [_sbchildren release];
 	[_sbpath release];

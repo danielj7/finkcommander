@@ -1,5 +1,6 @@
 
 #import <Cocoa/Cocoa.h>
+#import "SBOutlineView.h"
 #import "SBFileItemTree.h"
 #import "SBFileItem.h"
 #import "SBDateColumnController.h"

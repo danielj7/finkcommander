@@ -17,7 +17,6 @@ BOOL openFileAtPath(NSString *path)
 
     valid = [mgr fileExistsAtPath:path isDirectory:&isDir];
     if (! valid) return NO;
-//    if (isDir) return YES;
     if ([path contains:@".htm"]){
 		NSURL *fileURL = [NSURL fileURLWithPath:path];
 		successful = [ws openURL:fileURL];

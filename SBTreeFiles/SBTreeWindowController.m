@@ -46,16 +46,26 @@
 browser; tell the tree object to build its data structure.  */
 -(void)windowDidLoad
 {
-    NSTableColumn *mdateColumn = [outlineView
-					 tableColumnWithIdentifier:@"mdate"];
+    NSTableColumn *mdateColumn;
     NSSize browserSize = [oldBrowser bounds].size;
     NSRect browserFrame = NSMakeRect(0, 0, browserSize.width, browserSize.height);
 	NSView *browserSuperview = [oldBrowser superview];
+	
     [self startedLoading];
     [self showWindow:self];
-	    /* Set up the outline view controller */
+	
+	/* Set up the custom outline view */
+	outlineView = [SBOutlineView substituteForOutlineView:outlineView];
+	[outlineScrollView setDocumentView:outlineView];
+	[outlineView sizeLastColumnToFit];
+
+	/* Set up the outline view controller */
     oController = [[SBOutlineViewController alloc] initWithTree:tree
-																 view:outlineView];
+													view:outlineView];
+													
+	/* Set up the controller for the date column */
+	mdateColumn = [outlineView
+					 tableColumnWithIdentifier:@"mdate"];
     mDateColumnController =
 		[[SBDateColumnController alloc]
 		initWithColumn:mdateColumn
@@ -162,7 +172,7 @@ browser; tell the tree object to build its data structure.  */
 
 -(void)finishedLoading:(NSNotification *)n
 {
-	//Dprintf(@"Received SBTreeCompleteNotification");
+	Dprintf(@"Received SBTreeCompleteNotification");
 	treeBuildingThreadIsFinished = YES;
     if (nil == [tree rootItem]){
 		[msgTextField setStringValue:@"Error:  No such package installed"];

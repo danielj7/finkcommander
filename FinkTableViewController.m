@@ -167,28 +167,28 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	NSArray *fileList = [NSArray array];
     NSEnumerator *e = [rows objectEnumerator];
 	NSNumber *rowNum;
-	int rowInt;
 	FinkPackage *pkg;
 	NSString *tree;
 	NSString *path;
 	NSFileManager *manager = [NSFileManager defaultManager];
 
 	while (nil != (rowNum = [e nextObject])){
-		rowInt = [rowNum intValue];
-		pkg = [displayedPackages objectAtIndex:rowInt];
+		pkg = [displayedPackages objectAtIndex:[rowNum intValue]];
 		if ([[pkg unstable] length] > 1){
 			tree = @"unstable";
 		}else{
 			tree = @"stable";
 		}
 		path = [pkg pathToPackageinTree:tree
-							 withExtension:@"info"];
-		fileList = [fileList arrayByAddingObject:path];
-		path = [pkg pathToPackageinTree:tree
-							withExtension:@"patch"];
+							 withExtension:@"patch"];
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];
 		}
+		path = [pkg pathToPackageinTree:tree
+							withExtension:@"info"];
+		if ([manager fileExistsAtPath:path]){
+			fileList = [fileList arrayByAddingObject:path];
+		}		
 	}
 	[tview registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
 	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
@@ -201,7 +201,11 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 			event:(NSEvent*)dragEvent 
 			dragImageOffset:(NSPointPointer)dragImageOffset
 {
-	return [NSImage imageNamed:@"info"];
+	NSImage *dragImage = [NSImage imageNamed:@"info"];
+
+	dragImageOffset->y += [dragImage size].height / 3.5;
+	
+	return dragImage;
 }
 
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
@@ -283,12 +287,12 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 #pragma mark SORTING
 //----------------------------------------------------------
 
-//The following two methods are used to scroll back to the previously selected row
-//after the table is sorted.  It works almost the same way Mail does, except
-//that only the latest selection is preserved.  For the filter, sorting and
-//scrolling methods to work together, information on the selected object must
-//be stored and then the rows must be deselected before the filter is applied
-//and before the table is sorted.
+/* 	The following two methods are used to scroll back to the previously selected row
+after the table is sorted.  It works almost the same way Mail does, except
+that only the latest selection is preserved.  For the filter, sorting and
+scrolling methods to work together, information on the selected object must
+be stored and then the rows must be deselected before the filter is applied
+and before the table is sorted. */
 
 //store information needed to scroll back to selection after filter/sort
 -(void)storeSelectedObjectInfo

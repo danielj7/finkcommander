@@ -2,6 +2,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SBFileItemTree.h"
+#import "SBOutlineView.h"
 #import "SBOutlineViewController.h"
 #import "FinkGlobals.h"
 #import "SBBrowserView.h"
@@ -9,7 +10,8 @@
 @interface SBTreeWindowController: NSWindowController
 {
 	IBOutlet NSTabView *tabView;
-    IBOutlet NSOutlineView *outlineView;
+	IBOutlet NSScrollView *outlineScrollView;
+    IBOutlet id outlineView;
     IBOutlet NSTextField *msgTextField;
     IBOutlet NSProgressIndicator *loadingIndicator;
 	IBOutlet NSBrowser *oldBrowser;
