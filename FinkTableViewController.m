@@ -151,6 +151,12 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
     [self copySelectedRows];
 }
 
+-(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+{
+	if ([self selectedRow] == -1) return NO;
+	return YES;
+}
+
 //----------------------------------------------->Column Manipulation
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier

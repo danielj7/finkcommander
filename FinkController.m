@@ -745,6 +745,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 //----------------------------------------------->Menu Item Delegate
 //helper for menu item and toolbar item validators
+
 -(BOOL)validateItem:(id)theItem
 {
 	//disable package-specific commands if no row selected
@@ -766,10 +767,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		return  NO;
 	}
 	if (! commandIsRunning &&
-	 ([theItem action] == @selector(raiseInteractionWindow:) ||
+		([theItem action] == @selector(raiseInteractionWindow:) ||
 		 [theItem action] == @selector(terminateCommand:))){
 		return NO;
 	}
+	if ([theItem action] == @selector(copy:)) return NO;
 	return YES;
 }
 

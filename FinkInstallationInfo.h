@@ -32,6 +32,7 @@ File: FinkController.h
 
 #import <Foundation/Foundation.h>
 #import "FinkGlobals.h"
+#import "FinkUtilities.h"
 
 @interface FinkInstallationInfo : NSObject {
 }

@@ -208,5 +208,3 @@ void terminateChildProcesses()
 		cpid = childOfProcess(ppid);
 	}
 }
-
-

@@ -24,15 +24,13 @@ NSString *DEVTOOLS_TEST_PATH =
 	NSString *pathToFink = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 			stringByAppendingPathComponent: @"/bin/fink"];
 	NSString *result = @"Unable to determine fink version";
-	
 	if (! [manager fileExistsAtPath:pathToFink]){
 		return result;
-	} 
+	}
 	[versionTask setLaunchPath: pathToFink];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask launch];
-
 	result = [[[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
 								encoding:NSMacOSRomanStringEncoding] autorelease];
 	[versionTask release];
