@@ -2,16 +2,22 @@
     IBClasses = (
         {
             ACTIONS = {
+                checkForLatestVersionAction = id; 
+                chooseTableColumn = id; 
+                collapseOutput = id; 
+                emailMaintainer = id; 
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
-                goToBugReportPage = id; 
-                goToFinkCommanderWebSite = id; 
-                goToFinkWebSite = id; 
+                expandOutput = id; 
+                internetAccess = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 refilter = id; 
                 runCommand = id; 
                 runUpdater = id; 
+                saveOutput = id; 
+                showDescription = id; 
+                showPackageInfoPanel = id; 
                 showPreferencePanel = id; 
                 terminateCommand = id; 
                 updateTable = id; 
@@ -23,17 +29,21 @@
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 
                 msgText = id; 
+                outputScrollView = NSScrollView; 
                 progressIndicator = NSProgressIndicator; 
                 progressView = NSView; 
                 progressViewHolder = NSView; 
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 
-                scrollView = NSScrollView; 
                 searchPopUpButton = NSPopUpButton; 
                 searchTextField = NSTextField; 
                 searchView = id; 
+                splitView = NSSplitView; 
+                tableContextMenu = NSMenu; 
+                tableScrollView = NSScrollView; 
                 tableView = id; 
-                textView = id; 
+                textView = NSTextView; 
+                viewMenu = NSMenu; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 
