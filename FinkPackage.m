@@ -516,10 +516,11 @@ See the header file, FinkPackage.h, for interface and license information.
 	}
 	
 	//Finally, if that failed, fall back to what fink said. Probably best, anyway.
-	if(![mgr fileExistsAtPath:thePath] && [filename length] > 4)
-	{
-		return filename;
-	}
+// This breaks the 'tree' parameter! bad!
+//	if(![mgr fileExistsAtPath:thePath] && [filename length] > 4)
+//	{
+//		return filename;
+//	}
 	return thePath;
 }
 
