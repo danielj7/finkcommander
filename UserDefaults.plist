@@ -5,15 +5,15 @@
 	<key>FinkAlwaysChooseDefaults</key>
 	<false/>
 	<key>FinkAlwaysScrollToBottom</key>
-	<true/>
+	<false/>
 	<key>FinkAskForPasswordOnStartup</key>
 	<false/>
 	<key>FinkAutoExpandOutput</key>
 	<false/>
 	<key>FinkBasePath</key>
-	<string></string>
+	<string> </string>
 	<key>FinkBasePathFound</key>
-	<false/>
+	<true/>
 	<key>FinkBufferLimit</key>
 	<integer>10000</integer>
 	<key>FinkCheckForNewVersion</key>

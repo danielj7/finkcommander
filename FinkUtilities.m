@@ -16,16 +16,8 @@ void findFinkBasePath(void)
     NSString *homeDir = NSHomeDirectory();
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	BOOL pathFound = NO;
-
-	//variables used by NSTask
-	NSTask *findTask;
-	NSPipe *pipeIn;
-	NSFileHandle *cmdStdout;
-	NSArray *args;
-	NSRange range;
-	NSString *whichPath;
-
+	NSString *oldBasePath = [defaults objectForKey:FinkBasePath];
+	
 	//look in some possible install paths
 	e = [[NSArray arrayWithObjects: @"/sw", @"/opt", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
@@ -36,49 +28,25 @@ void findFinkBasePath(void)
 	while (path = [e nextObject]){
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
-			[defaults setObject: path forKey: FinkBasePath];
-			[defaults setBool: YES forKey: FinkBasePathFound];
-			pathFound = YES;
+			[defaults setObject:path forKey:FinkBasePath];
 			if (DEBUGGING) {NSLog(@"Found basepath %@ using array", path);}
 			break;
 		}
 	}
-	//if that doesn't work, try the which command
-	if (!pathFound){
-		findTask = [[[NSTask alloc] init] autorelease];
-		pipeIn  = [NSPipe pipe];
-		cmdStdout = [pipeIn fileHandleForReading];
-		args = [NSArray arrayWithObjects: @"fink", @"|", @"tail", @"-n1",
-			nil];
-
-		[findTask setLaunchPath: @"/usr/bin/which"];
-		[findTask setArguments: args];
-		[findTask setStandardOutput: pipeIn];
-		[findTask launch];
-		whichPath = [[[NSString alloc] initWithData: [cmdStdout readDataToEndOfFile]
-														encoding: NSUTF8StringEncoding]
-														autorelease];
-		//get the stuff before /bin/fink
-		range = [whichPath rangeOfString: @"/bin/fink"];
-        if (range.length > 0){
-            path = [whichPath substringWithRange: NSMakeRange(0, range.location)];
-            if([manager isReadableFileAtPath:
-                [path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
-                [defaults setObject: path forKey: FinkBasePath];
-                [defaults setBool: YES forKey: FinkBasePathFound];
-            }
-		}
+	if (! [oldBasePath isEqualToString:path]){
+		[defaults setBool:YES forKey:FinkBasePathFound];
 	}
 }
 
 void fixScript(void)
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *home = NSHomeDirectory();
 	NSString *wpath = [home stringByAppendingPathComponent:
 						@"Library/Application Support/FinkCommander.pl"];
 	
-	if (! [manager fileExistsAtPath:wpath]){
+	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){
 		NSString *rpath = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
 		NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath];
 		NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
@@ -90,6 +58,7 @@ void fixScript(void)
 		}
 		NSLog(@"Fixed script:\n%@", scriptText);
 		[scriptText writeToFile:wpath atomically:YES];
+		[defaults setBool:NO forKey:FinkBasePathFound];
 	}
 	
 }

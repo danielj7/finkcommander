@@ -183,7 +183,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[tableView lastIdentifier]];
 				
-	if (! [defaults boolForKey: FinkBasePathFound]){
+	if (! [[defaults objectForKey:FinkBasePath] length] > 1){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
