@@ -1362,6 +1362,7 @@
 			children = (
 				F5BBDFB1023AF8A601A80164,
 				F55057270231E5F701A80164,
+				F5D5018B0342BADE01A80165,
 				F501F21202FDF20001A80164,
 				F5BBDFAF023AF89301A80164,
 				F54A669802DA8F3701A80165,
@@ -1440,6 +1441,11 @@
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F5D5018B0342BADE01A80165 = {
+			isa = PBXFileReference;
+			path = README.html;
 			refType = 4;
 		};
 		F5DABE8B03359EF601FEFA3F = {

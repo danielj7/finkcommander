@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="en">
+<head>
+	<title>README</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h2>Readme</h2>
+
+<ul>
+	<li><a href="#description">Overview</a></li>
+	<li><a href="#installation">Installing FinkCommander</a></li>
+	<li><a href="#timeout">Changing the Authorization Timeout</a></li>
+	<li><a href="#license">License</a></li>
+</ul>
+
+<h3>
+<a name="description">Overview</a>
+</h3>
+
+<p>
+<a href="http://finkcommander.sourceforge.net"
+target="top">FinkCommander</a> provides a GUI frontend to the <a
+href="http://fink.sourceforge.net" target="top">Fink</a> package manager.  You will
+need to <a href="http://fink.sourceforge.net/download/"
+target="top">install Fink</a> itself in order for FinkCommander to be
+of any use.
+</p>
+
+<p>
+FinkCommander is designed to be intuitive.  A fairly extensive set of
+help files is nevertheless included.  There is even a German translation in the
+German localization.
+</p>
+
+<p>
+If you encounter bugs, it would be very helpful to have them reported
+at the SourceForge <a href="http://sourceforge.net/tracker/?group_id=48896&atid=454467"
+target="top">Bug Tracker</a> for FinkCommander.
+</p>
+
+<p>
+I will not be able to provide direct support for FinkCommander.
+Software development is my hobby.  I have a pretty demanding "day
+job," so responding directly to every request for help is just not in
+the cards.  I will, however, take your comments into account in
+designing and drafting documentation for future versions of
+FinkCommander.  Please send comments (other than bug reports) to my <a
+href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
+</p>
+
+<h3>
+<a name="installation">Installing FinkCommander</a>
+</h3>
+
+<p>Users who install FinkCommander from source or from the disk image should be aware of two things:</p>
+<ol>
+<li>You will experience the following when you first run a command after installing, moving or recompiling 
+FinkCommander:<br />
+	<ul><br />
+	<li>You will be asked for your password, probably twice, by the standard Apple 
+	password dialog.</li><br />
+	<li>The following messages, designed for people who don't read README files, will appear in the 
+	output view:<br />
+<pre>
+The tool that FinkCommander uses to run commands as root does not have the necessary permissions.
+By entering your password you will give the tool the authorization it needs to repair itself.
+Under some circumstances you may need to enter your password twice.
+
+The tool has successfully repaired itself.
+Please re-try the command you just attempted.</pre>
+	</li>
+	<li>The process will then terminate and you will receive an error message.</li>
+	</ul><br />
+</li>
+<li>It is highly recommended that you change the owner of the Resources directory inside the
+FinkCommander.app bundle to root.  (The Package Installer would do this for you automatically.)  You
+can do this from Finder, but it's easier to open Terminal and enter (or paste) the following 
+at the command line:  <br /> <br />
+	<kbd>sudo chown root:admin /Applications/FinkCommander.app/Contents/Resources</kbd>.
+</li>
+</ol>
+<p>
+For those with sufficient interest and patience, an explanation follows.
+</p>
+
+<p>
+As of version 0.4.0, FinkCommander uses Apple's Security Framework to authorize commands
+requiring root privileges.  In order to do this, it must incorporate a tool that has certain
+file permissions.  Specifically, it must be owned by root and have its setuid bit set. Because 
+the package installer for FinkCommander obtains root privileges, it 
+is able to install FinkCommander with these permissions already established. 
+</p>
+
+<p>
+If you drag and drop from the disk image or compile FinkCommander 
+in Project Builder, these permissions will not be set.  The tool, however, includes code 
+to "repair" itself if it lacks the necessary permissions and will do so the first time
+you try to run a fink or apt-get command in FinkCommander.
+</p>
+
+<p>
+So why change the ownership of the Resources directory?  An executable that is
+setuid root has the ability to assume the identity of root and do anything root can do
+once it obtains authorization.  This is not a problem for FinkCommander's tool 
+(called "Launcher"), because all it does is run fink and apt-get commands and edit your
+fink.conf file.  However, there is a possibility that someone could sneak Launcher's evil twin
+into the FinkCommander.app bundle, and the twin could use root authorization to wreak all kinds
+of havoc on your system.  If you change the ownership of Launcher's directory to root, it will
+take an administrator's password to get the evil twin through the door, which makes twin
+infiltration much less likely.
+</p>
+
+<h3><a name="timeout">Changing the Authorization Timeout</a></h3>
+
+<p>
+By default, FinkCommander works in much the same way as sudo.  If you run a command and
+provide your password to authorize root privileges, that authorization has a timeout period
+of five minutes.  You can enter additional commands without retyping your password for five
+minutes.  After that, you need to reauthorize.
+</p>
+
+<p>
+You can customize the timeout for FinkCommander by editing the /private/etc/authorization file.  
+To do so, open Terminal and type the following at the command line:
+</p>
+
+<p><kbd>sudo emacs /private/etc/authorization</kbd></p>
+
+<p>You may of course substitute vi or pico or  whichever inferior product you prefer to emacs.  :)  
+You should not use the Property List Editor in /Developer/Applications to edit the file, 
+because it will not preserve the comments.</p>
+
+<p>To eliminate the timeout for FinkCommander, add the following:</p>
+<pre>
+&lt;!-- Your comment here --&gt;
+    &lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;group&lt;/key&gt;
+            &lt;string&gt;admin&lt;/string&gt;
+            &lt;key&gt;shared&lt;/key&gt;
+            &lt;true/&gt;
+            &lt;key&gt;allow-root&lt;/key&gt;
+            &lt;true/&gt;
+        &lt;/dict&gt;
+</pre>
+<p>If you do this, entering your password at the beginning of a FinkCommander session will
+authorize all subsequent commands.</p>
+
+<p>To extend or shorten the timeout period, add the following key/value pair to the dict:</p>
+<pre>
+            &lt;key&gt;timeout&lt;/key&gt;
+            &lt;integer&gt;N&lt;/integer&gt;
+</pre>
+
+<p>Where N is the timeout period in seconds.  To require a password for each command, set N to 0.</p>
+
+<p>We hope to automize this process in a future release, possibly through FinkCommander's Preferences 
+panel.</p>
+
+<h3><a name="license">License</a></h3>
+
+<p>
+This program is free software; you may redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+</p>
+
+<p>
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+</p>
+
+<p>
+A copy of the GPL is included in the file "LICENSE.html."  It can be viewed in the 
+package installer and is included in the disk image for the binary versions of
+FinkCommander.  In the source code version, the file is available in the top directory
+as well as in the Documentation group in Project Builder.  It can also be viewed via the 
+help system.
+</p>
+
+<p>
+If you have downloaded the binary version of this software but would like the
+source, it's available at the 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=48896"
+target="top">FinkCommander SourceForge site</a>.
+</p>
+
+
+</body>
+</html>
