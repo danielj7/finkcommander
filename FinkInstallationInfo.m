@@ -118,12 +118,14 @@ NSString *DEVTOOLS_TEST_PATH2 =
 	NSString *version;
 	
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
-		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2]
+		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
+		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1]
 							objectForKey:@"DevCDVersion"];
 		if (! version  || [version length] < 3) return error;
 		return version;
 	}
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
+		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH2);
 		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2]
 							objectForKey:@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;  //should at least be x.x
@@ -132,6 +134,7 @@ NSString *DEVTOOLS_TEST_PATH2 =
 		}
 		return @"Pre-December 2001 Developer Tools";
 	}
+	Dprintf(@"Failed to find file specifying Developer Tools version");
 	return error;
 }
 
