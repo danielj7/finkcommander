@@ -186,6 +186,7 @@
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
 				F5DE3CD602CAE98601A80164,
+				F568C4A202FC9D6101A80164,
 				F56200A902FC768601A80164,
 			);
 			isa = PBXGroup;
@@ -345,6 +346,7 @@
 				F5DE3CD702CAE98601A80164,
 				F559D2C902CC2C6501A80164,
 				F513D60502DB42D70135C1EB,
+				F568C4A402FC9D6101A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 		};
@@ -969,6 +971,27 @@
 		};
 		F56200AA02FC768601A80164 = {
 			fileRef = F56200A902FC768601A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F568C4A202FC9D6101A80164 = {
+			children = (
+				F568C4A302FC9D6101A80164,
+			);
+			isa = PBXVariantGroup;
+			name = Localizable.strings;
+			path = "";
+			refType = 4;
+		};
+		F568C4A302FC9D6101A80164 = {
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F568C4A402FC9D6101A80164 = {
+			fileRef = F568C4A202FC9D6101A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
