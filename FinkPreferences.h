@@ -45,6 +45,8 @@ extern NSString *FinkAlwaysChooseDefaults;
 extern NSString *FinkScrollToSelection;
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;
+extern NSString *FinkHTTPProxyVariable;
+extern NSString *FinkLookedForProxy;
 
 //Toolbar Items
 extern NSString *FinkInstallSourceItem;
@@ -62,6 +64,8 @@ extern NSString *FinkFilterItem;
 	IBOutlet NSButton *updateWithFinkButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *scrollToSelectionButton;
+	IBOutlet NSButton *httpProxyButton;
+	IBOutlet NSTextField *httpProxyTextField;
 	
 	NSUserDefaults *defaults;
 	BOOL pathChoiceChanged;

@@ -13,12 +13,15 @@
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *basePath = [defaults objectForKey: FinkBasePath];
-
+	NSString *proxy;
+	char *proxyEnv;
+	
     if (self = [super init]){
+		
 		controller = cont;
 		binPath = [[NSString alloc] initWithString: [basePath
 						  stringByAppendingPathComponent: @"/bin"]];
-		environment = [[NSDictionary alloc] initWithObjectsAndKeys:
+		environment = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 			[NSString stringWithFormat:
 			    @"/%@:/%@/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:",
 				binPath, basePath],
@@ -26,6 +29,22 @@
 			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
 			@"PERL5LIB",
 			nil];
+
+		proxy = [defaults objectForKey: FinkHTTPProxyVariable];
+		if ([proxy length] > 0){
+			[environment setObject: proxy forKey: @"http_proxy"];
+		}else if (! [defaults boolForKey: FinkLookedForProxy]){
+			NSLog(@"Looking for http_proxy environment variable");
+			if (proxyEnv = getenv("http_proxy")){
+				proxy = [NSString stringWithCString: proxyEnv];
+				NSLog(@"Found http_proxy variable: %@", proxy);
+				[environment setObject: proxy  forKey: @"http_proxy"];
+				[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
+			}else {
+				NSLog(@"Proxy environment variable not found");
+			}
+			[defaults setBool: YES forKey: FinkLookedForProxy];
+		}
 		task = [[NSTask alloc] init];
 	}
     return self;
@@ -44,12 +63,6 @@
 -(NSTask *)task
 {
 	return task;
-}
-
--(void)setPassword:(NSData *)p{
-	[p retain];
-	[password release];
-	password = p;
 }
 
 // Start the process via an NSTask.
@@ -75,12 +88,14 @@
         name: NSFileHandleReadCompletionNotification 
         object: [[task standardOutput] fileHandleForReading]];
 
+
     [[[task standardOutput] fileHandleForReading] readInBackgroundAndNotify];
+#ifdef DEBUG
+	NSLog(@"Environment set to %@", [task environment]);
+#endif
 
     // launch the task asynchronously
     [task launch];
-
-//	[[[task standardInput] fileHandleForWriting] writeData: password];
 }
 
 

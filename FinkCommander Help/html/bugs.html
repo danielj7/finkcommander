@@ -14,9 +14,10 @@
     FinkCommander.</p></dd>
 	
 	<dt>Automatic response to prompt failures</dt>
-	<dd><p>In at least one known instance, Fink will not automatically respond to a prompt
-	when <kbd>Preferences...:General:Always choose defaults</kbd> is selected.   
-	<a href="details/fc_defaults.html">More detail</a>.
+	<dd><p>In some instances, Fink will not automatically respond to a prompt
+	when <kbd>Preferences...:General:Always choose defaults</kbd> is selected.
+	When this occurs, select <kbd>Tools:Interact with Fink</kbd> to enter
+	a response.  <a href="details/fc_defaults.html">More detail</a>.
 	</p></dd>
 	
     <dt>Incorrect error messages</dt>
@@ -48,6 +49,12 @@
     <dd><p>The selection of tcsh is disabled, because FinkCommander stalls when trying
         to install this package.  Installing from the command-line works fine.
     </p></dd>  
+	
+	<dt>Apt-get from behind a firewall</dt>
+	<dd><p>Apt-get will not work from behind a firewall unless the http_proxy environment
+	variable is set.  FinkCommander will attempt to read this variable from your environment.  If
+	it fails, you can set it manually in <kbd>FinkCommander:Preferences:General</kbd>.
+	</p></dd>
 </dl>
 
 </body>

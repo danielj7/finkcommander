@@ -24,6 +24,8 @@ See the header file, FinkController.h, for interface and license information.
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysChooseDefaults];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
+	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 #ifdef DEBUG
@@ -122,7 +124,7 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+-(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
@@ -420,11 +422,12 @@ See the header file, FinkController.h, for interface and license information.
 	//disable Source and Binary menu items if command is running
 	if ([self commandIsRunning] &&
 		([menuItem action] == @selector(runCommand:) ||
-		 [menuItem action] == @selector(runUpdater:))){
+		 [menuItem action] == @selector(runUpdater:) ||
+		 [menuItem action] == @selector(updateTable:))){
 		return  NO;
 	}
 	if (! [self commandIsRunning] && 
-		[[menuItem title] rangeOfString: @"Terminate"].length > 0){
+		[[menuItem title] rangeOfString: @"Interact"].length > 0){
 		return NO;
 	}
 	return YES;
@@ -713,8 +716,9 @@ See the header file, FinkController.h, for interface and license information.
 
 -(IBAction)endInteractionWindow:(id)sender
 {
+	int returnValue = [sender tag];  // 1 for Submit, 0 for Cancel
 	[interactionWindow orderOut: sender];
-	[NSApp endSheet:interactionWindow returnCode: 1];
+	[NSApp endSheet:interactionWindow returnCode: returnValue];
 }
 
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
@@ -724,13 +728,18 @@ See the header file, FinkController.h, for interface and license information.
 	NSAttributedString *areturn = [[[NSAttributedString alloc]
 		initWithString: @"\n"] autorelease];
 
-	if ([[interactionMatrix selectedCell] tag] == 0){
-		[finkTask writeToStdin: @"\n"];
-	}else{
-		[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
-			[interactionField stringValue]]];
+	if (returnCode){  // Submit rather than Cancel
+#ifdef DEBUG
+	NSLog(@"Submit button chosen");
+#endif //DEBUG
+		if ([[interactionMatrix selectedCell] tag] == 0){
+			[finkTask writeToStdin: @"\n"];
+		}else{
+			[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
+				[interactionField stringValue]]];
+		}
+		[[textView textStorage] appendAttributedString: areturn];
 	}
-	[[textView textStorage] appendAttributedString: areturn];
 }
 
 //----------------------------------------------->Process Commands
@@ -752,8 +761,6 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
 
-	[finkTask setPassword: [NSData dataWithData:
-		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
 	// start the process asynchronously
 	[finkTask startProcessWithArgs: params];
 }

@@ -15,6 +15,8 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 NSString *FinkScrollToSelection = @"FinkScrollToSelection";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
+NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
+NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 
 //Global variables used in toolbar methods
 //(Should these be moved to FinkController?)
@@ -43,6 +45,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 -(void)resetPreferences
 {
 	NSString *basePath;
+	NSString *proxy = [defaults objectForKey: FinkHTTPProxyVariable];
 	
 	basePath = [defaults objectForKey: FinkBasePath];
 	if ([basePath isEqualToString: @"/sw"]){
@@ -56,6 +59,12 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
+	if ([proxy length] > 0){
+		[httpProxyButton setState: YES];
+	}else{
+		[httpProxyButton setState: NO];
+	}
+	[httpProxyTextField setStringValue: [defaults objectForKey: FinkHTTPProxyVariable]];
 	pathChoiceChanged = NO;
 }
 
@@ -75,12 +84,21 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	}
 }
 
+-(void)setHTTPProxyVariable
+{
+	if ([httpProxyButton state] == NSOnState){
+		[defaults setObject: [httpProxyTextField stringValue] forKey: FinkHTTPProxyVariable];
+	}else
+		[defaults setObject: @"" forKey: FinkHTTPProxyVariable];
+}
+
 //---------------------------------------------------------------------->Actions
 
 
 -(IBAction)setPreferences:(id)sender
 {
 	[self setBasePath];
+	[self setHTTPProxyVariable];
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
