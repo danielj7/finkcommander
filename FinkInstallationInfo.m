@@ -76,12 +76,12 @@ NSString *DEVTOOLS_TEST_PATH =
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
 	NSString *result;
 
-	if (! [manager fileExistsAtPath: @"/usr/bin/gcc"]){
+	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
 		result = @"Developer Tools not installed";
 		return result;
 	}
 
-	[versionTask setLaunchPath: @"/usr/bin/gcc"];
+	[versionTask setLaunchPath: @"/usr/bin/cc"];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask launch];
