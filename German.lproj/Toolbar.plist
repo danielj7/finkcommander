@@ -11,9 +11,9 @@
 		<key>Label</key>
 		<string>Inspector</string>
 		<key>PaletteLabel</key>
-		<string>Package Inspector</string>
+		<string>Pakete Inspektor</string>
 		<key>ToolTip</key>
-		<string>Show package inspector panel</string>
+		<string>Pakete Inspector zeigen</string>
 	</dict>
 	<key>FinkEmailItem</key>
 	<dict>
@@ -24,14 +24,14 @@
 		<key>Label</key>
 		<string>Maintainer</string>
 		<key>PaletteLabel</key>
-		<string>Email Maintainer</string>
+		<string>Email Erhalter</string>
 		<key>ToolTip</key>
-		<string>Send email to package maintainer</string>
+		<string>E-mail zu dem Erhalter für das Paket senden</string>
 	</dict>
 	<key>FinkFilterItem</key>
 	<dict>
 		<key>Label</key>
-		<string>Filter Table Data</string>
+		<string>Pakete Filter</string>
 	</dict>
 	<key>FinkInstallBinaryItem</key>
 	<dict>
@@ -44,7 +44,7 @@
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Install binary package(s)</string>
+		<string>Binär Pakete einbringen</string>
 	</dict>
 	<key>FinkInstallSourceItem</key>
 	<dict>
@@ -55,11 +55,11 @@
 		<key>Label</key>
 		<string>Install</string>
 		<key>PaletteLabel</key>
-		<string>Install Source</string>
+		<string>Source Einbringen</string>
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Install package(s) from source</string>
+		<string>Pakete von Source Code einbringen</string>
 	</dict>
 	<key>FinkInteractItem</key>
 	<dict>
@@ -70,7 +70,7 @@
 		<key>Label</key>
 		<string>Interact</string>
 		<key>ToolTip</key>
-		<string>Raise interaction sheet (use if command has stalled)</string>
+		<string>Das Kommunikationsfenster zeigen</string>
 	</dict>
 	<key>FinkRemoveBinaryItem</key>
 	<dict>
@@ -83,7 +83,7 @@
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
+		<string>Pakete Dateien entfernen; .deb Dateien behalten um die Pakete leicht wieder zu einbringen</string>
 	</dict>
 	<key>FinkRemoveSourceItem</key>
 	<dict>
@@ -98,7 +98,7 @@
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
+		<string>Pakete Dateien entfernen; .deb Dateien behalten um die Pakete leicht wieder zu einbringen</string>
 	</dict>
 	<key>FinkSelfUpdateCVSItem</key>
 	<dict>
@@ -111,7 +111,7 @@
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Update package descriptions and package manager from fink cvs repository</string>
+		<string>Pakete Beschreibungen von cvs erneuen</string>
 	</dict>
 	<key>FinkSelfUpdateItem</key>
 	<dict>
@@ -124,7 +124,7 @@
 		<key>Tag</key>
 		<integer>0</integer>
 		<key>ToolTip</key>
-		<string>Update package descriptions and package manager</string>
+		<string>Pakete Beschreibungen erneuen</string>
 	</dict>
 	<key>FinkTerminateCommandItem</key>
 	<dict>
@@ -135,7 +135,7 @@
 		<key>Label</key>
 		<string>Terminate</string>
 		<key>ToolTip</key>
-		<string>Terminate current command</string>
+		<string>Gegenwärtigen Befehl beenden</string>
 	</dict>
 	<key>FinkUpdateBinaryItem</key>
 	<dict>
@@ -150,7 +150,7 @@
 		<key>Tag</key>
 		<integer>1</integer>
 		<key>ToolTip</key>
-		<string>Update binary package descriptions</string>
+		<string>Beschreibungen von Binär Pakete erneuen</string>
 	</dict>
 </dict>
 </plist>

@@ -33,6 +33,9 @@
 		089C165CFE840E0CC02AAC07 = {
 			children = (
 				089C165DFE840E0CC02AAC07,
+				F53B4D0B031033DD01A80164,
+				F53B4D0A031033D401A80164,
+				F53B4D0C031033FE01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = InfoPlist.strings;
@@ -720,6 +723,24 @@
 			isa = PBXFileReference;
 			name = Spanish;
 			path = Spanish.lproj/Toolbar.plist;
+			refType = 4;
+		};
+		F53B4D0A031033D401A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		F53B4D0B031033DD01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		F53B4D0C031033FE01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/InfoPlist.strings;
 			refType = 4;
 		};
 		F53D231602FF9B1201A80164 = {

@@ -51,6 +51,7 @@
                 scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 showPackagesInTitleButton = NSButton; 
+                showRedundantPackagesButton = NSButton; 
                 tabView = NSTabView; 
                 titleBarImageView = NSImageView; 
                 updateWithFinkButton = NSButton; 

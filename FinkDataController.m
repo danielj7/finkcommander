@@ -295,15 +295,15 @@ int NAMESTART = 12;
 
     while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
 		p = [[FinkPackage alloc] init];
-		[p setName: [listRecord objectAtIndex: 0]];
-		[p setStatus: NSLocalizedString([listRecord objectAtIndex: 1], nil)];
-		[p setVersion: [listRecord objectAtIndex: 2]];
-		[p setInstalled: [listRecord objectAtIndex: 3]];
-		[p setStable: [listRecord objectAtIndex: 4]];
-		[p setUnstable: [listRecord objectAtIndex: 5]];
-		[p setCategory: [listRecord objectAtIndex: 6]];
-		[p setSummary: [listRecord objectAtIndex: 7]];
-		[p setFulldesc: [listRecord objectAtIndex: 8]];
+		[p setName:[listRecord objectAtIndex: 0]];
+		[p setStatus:[listRecord objectAtIndex: 1]];
+		[p setVersion:[listRecord objectAtIndex: 2]];
+		[p setInstalled:[listRecord objectAtIndex: 3]];
+		[p setStable:[listRecord objectAtIndex: 4]];
+		[p setUnstable:[listRecord objectAtIndex: 5]];
+		[p setCategory:[listRecord objectAtIndex: 6]];
+		[p setSummary:[listRecord objectAtIndex: 7]];
+		[p setFulldesc:[listRecord objectAtIndex: 8]];
 
 		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
 			path = [self pathToPackage:p inTree:@"stable"];

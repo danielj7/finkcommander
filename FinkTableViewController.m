@@ -208,7 +208,7 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	[defaults setObject:columns forKey:FinkTableColumnsArray];
 }
 
-//----------------------------------------------->DataSource Methods
+//----------------------------------------------->Data Source Methods
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -221,6 +221,9 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 {
 	NSString *identifier = [aTableColumn identifier];
 	FinkPackage *package = [[self displayedPackages] objectAtIndex: rowIndex];
+	if ([identifier isEqualToString:@"status"]){
+		return NSLocalizedString([package valueForKey: identifier], nil);
+	}
 	return [package valueForKey: identifier];
 }
 
@@ -266,8 +269,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		if (selection != NSNotFound){
 			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
 			NSPoint offsetRowOrigin = [self rectOfRow: selection - offset].origin;
-			NSClipView *contentView = [self superview];
-			NSScrollView *tableScrollView = [contentView superview];
+			id contentView = [self superview];
+			id tableScrollView = [contentView superview];
 			NSPoint target = [contentView constrainScrollPoint: offsetRowOrigin];
 
 			[contentView scrollToPoint: target];

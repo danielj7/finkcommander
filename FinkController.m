@@ -899,7 +899,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		NSEnumerator *e = [[packages array] objectEnumerator];
 		FinkPackage *pkg;
 
-
 		//store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
 			[tableView storeSelectedObjectInfo];
@@ -909,7 +908,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[tableView setDisplayedPackages: [packages array]];
 		}else{
 			while (pkg = [e nextObject]){
-				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
+				pkgAttribute = 
+					NSLocalizedString([[pkg performSelector: NSSelectorFromString(field)] lowercaseString], nil);
 				if ([pkgAttribute contains: filterText]){
 					[subset addObject: pkg];
 				}
