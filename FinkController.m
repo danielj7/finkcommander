@@ -654,6 +654,7 @@ File: FinkController.m
 	
 	if (! [[pkg status] contains:@"u"]){
 		NSBeep();//Substitute alert sheet?
+		return;
 	}
 	[treeManager openNewOutlineForPackageName:[pkg name]];
 }
