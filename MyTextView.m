@@ -68,7 +68,7 @@ static NSCursor *handCursor = nil;
 	image = [NSImage imageNamed: HAND_IMAGE];
 		if (image != nil) {
 			handCursor = [[NSCursor alloc] initWithImage: image
-			hotSpot: NSMakePoint(HAND_HOTSPOT_X, HAND_HOTSPOT_Y)];
+				hotSpot: NSMakePoint(HAND_HOTSPOT_X, HAND_HOTSPOT_Y)];
 		} else {
 			handCursor = [NSCursor arrowCursor];
 		}

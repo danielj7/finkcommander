@@ -36,6 +36,15 @@ appear.  <a href="details/fc_tableupdate.html">More detail</a>.</p>
 <p>While either of these processes is underway, the menu and toolbar items for
 running commands will be disabled.</p>
 
+<h3><a name="terminate">Terminating Commands</a></h3>
+
+<p>You can ordinarily terminate commands by (1)  clicking the stop sign toolbar button, 
+(2) pressing <kbd>cmd-.</kbd> on the keyboard or (3) selecting the 
+<kbd>Tools:Terminate Command</kbd> menu item.  You should exercise caution in terminating 
+Fink commands from FinkCommander. <a href="details/fc_terminate.html">More detail</a>. If the 
+terminate command doesn't work, you will need to terminate FinkCommander's subprocesses manually. 
+<a href="details/fc_terminate.html">More detail</a>.
+
 <h3><a name="binary">Source vs. Binary</a></h3>
 
 <p>The commands under the <kbd>Source</kbd> menu are run by the fink
@@ -48,7 +57,7 @@ menu names.</p>
 example, if you install a source code package,
 remove it and then reinstall it before a newer version becomes
 available, the fink package manager will use the dpkg command to 
-reinstall a compressed binary package that it has stored on your system.</p>
+reinstall an archived binary package that it has stored on your system.</p>
 
 <p>Note that some packages that are identified in the table as
 binary cannot be installed by apt-get.  

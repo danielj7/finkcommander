@@ -24,8 +24,8 @@
 				F54436B9027F6AD501A80164,
 				F542CFF702C2F03B01A80166,
 				F55FF54A02CFC96301A80164,
-				F5B9D9E402B1D61C01A8016B,
 				F54BD02602D549F101A80165,
+				F5B9D9E402B1D61C01A8016B,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -282,7 +282,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.3</string>
+	<string>0.3.2</string>
 	<key>CFBundleSignature</key>
 	<string>Fcmd</string>
 	<key>CFBundleVersion</key>
@@ -775,6 +775,11 @@
 			settings = {
 			};
 		};
+		F546BA0402D8EA6B01A80165 = {
+			isa = PBXFileReference;
+			path = version.xml;
+			refType = 4;
+		};
 		F54A055E029C9F0101A80166 = {
 			children = (
 				F53369F50218261B01A80165,
@@ -1031,6 +1036,7 @@
 				F5BBDFB1023AF8A601A80164,
 				F55057270231E5F701A80164,
 				F5BBDFAF023AF89301A80164,
+				F546BA0402D8EA6B01A80165,
 			);
 			isa = PBXGroup;
 			name = Documentation;

@@ -1,10 +1,10 @@
-//
-//  FinkOutputParser.m
-//  FinkCommander
-//
-//  Created by Steven Burr on Thu Jul 04 2002.
-//  Copyright (c) 2002 __MyCompanyName__. All rights reserved.
-//
+/*
+File: FinkOutputParser.m
+
+ See the header file, FinkOutputParser.h, for interface and license information.
+
+*/
+
 
 #import "FinkOutputParser.h"
 
@@ -49,7 +49,7 @@
 {
     NSEnumerator *e = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
     NSString *line;
-    int signal;
+    int signal = FC_NO_SIGNAL;
 
     while (line = [e nextObject]){
 		if (signal = [self parseLineOfOutput:line]) return signal;

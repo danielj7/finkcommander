@@ -154,6 +154,7 @@ enum {
 -(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
+-(IBAction)checkForLatestVersionAction:(id)sender;
 -(IBAction)saveOutput:(id)sender;
 -(void)didEnd:(NSSavePanel *)sheet
 	  returnCode:(int)code

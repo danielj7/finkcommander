@@ -13,7 +13,7 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)dealloc
 {
-	[name release];	
+	[name release];
 	[version release];
 	[installed release];
 	[category release];
@@ -273,16 +273,14 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg
 {
-	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare:
-		[pkg maintainer]];
+	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare: [pkg maintainer]];
 	if (result == 0) return [self normalCompareByName: pkg];
-	return result;	
+	return result;
 }
 
 -(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg
 {
-	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare:
-		[pkg maintainer]];
+	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare: [pkg maintainer]];
 	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (0 - result);
 }

@@ -97,7 +97,8 @@
 	
 	//start attributed string with colon, which will follow name and version,
 	//then newline and formatted Desc field
-	NSMutableAttributedString *desc = [[[NSMutableAttributedString alloc]
+	NSMutableAttributedString *desc = 
+		[[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @":\n%@", 
 									[e nextObject]] //Desc
 				attributes: [NSDictionary dictionaryWithObjectsAndKeys:
@@ -107,6 +108,7 @@
 
 	//test second line for period or DescDetail
 	line = [[e nextObject]  strip];
+	if (! line) return desc;
 	if ([line isEqualToString: @"."]){ 		//change period to 2 newlines
 		[desc appendAttributedString:
 			[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];

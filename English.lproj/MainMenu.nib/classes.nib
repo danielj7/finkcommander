@@ -2,6 +2,7 @@
     IBClasses = (
         {
             ACTIONS = {
+                checkForLatestVersionAction = id; 
                 chooseTableColumn = id; 
                 collapseOutput = id; 
                 emailMaintainer = id; 

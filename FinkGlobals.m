@@ -25,6 +25,9 @@ NSString *FinkWarnBeforeRemoving = @"FinkWarnBeforeRemoving";
 NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
 NSString *FinkGiveEmailCredit = @"FinkGiveEmailCredit";
+NSString *FinkCheckForNewVersion = @"FinkCheckForNewVersion";
+NSString *FinkLastCheckedForNewVersion = @"FinkLastCheckedForNewVersion";
+NSString *FinkCheckForNewVersionInterval = @"FinkCheckForNewVersionInterval";
 
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";

@@ -25,6 +25,8 @@ foreach $pname (sort @pkglist) {
     if ($package->is_virtual()) {
       $lversion = " ";
       $iflag = " ";
+	  $section = " ";
+	  $tree = " ";
       $description = "virtual package";
 	  $full = "virtual package";
     } else {

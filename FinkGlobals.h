@@ -55,6 +55,10 @@ extern NSString *FinkWarnBeforeRemoving;
 extern NSString *FinkPackagesInTitleBar;
 extern NSString *FinkAutoExpandOutput;
 extern NSString *FinkGiveEmailCredit;
+extern NSString *FinkCheckForNewVersion;
+//  not yet implemented
+extern NSString *FinkLastCheckedForNewVersion;
+extern NSString *FinkCheckForNewVersionInterval;
 //  Set programmatically
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;

@@ -106,7 +106,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	
 	if ([version isEqualToString: APRIL_TOOLS_VERSION]){
 		result = [NSString stringWithFormat: develFormat, @"April 2002"];
-	}else if ([version compare: MAY_TOOLS_VERSION] == NSOrderedAscending){
+	}else if ([version compare: MAY_TOOLS_VERSION] == NSOrderedDescending){
 		result = [NSString stringWithFormat: develFormat, @"December 2001"];
 	}else{
 		result = [NSString stringWithFormat: develFormat, @"Pre-December 2001"];

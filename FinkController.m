@@ -32,6 +32,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 +(void)initialize
 {
 	//set "factory defaults"
+	//TBD:  consider putting this stuff in a plist file
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	NSNumber *on = [NSNumber numberWithInt: NSOnState];
 	NSNumber *off = [NSNumber numberWithInt: NSOffState];
@@ -40,14 +41,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[defaultValues setObject: @"" forKey: FinkOutputPath];
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
-	
+			
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysScrollToBottom];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkGiveEmailCredit];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkWarnBeforeRemoving];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkCheckForNewVersion];	
 
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];	
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkPackagesInTitleBar];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
@@ -173,10 +175,47 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[password release];
 	[finkTask release];
 	[toolbar release];
+	[packageInfo release];
 	[super dealloc];
 }
 
 //----------------------------------------------->Post-Init Startup
+//helpers
+-(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
+{
+	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
+		infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSDictionary *latestVersionDict = 
+		[NSDictionary dictionaryWithContentsOfURL:
+			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
+	NSString *latestVersion;	
+
+	if (latestVersionDict){
+		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
+	}else{
+		NSRunAlertPanel(@"Error",
+			@"FinkCommander was unable to locate on-line update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.",
+			@"OK", nil, nil);
+		return;
+	}
+	if (! [installedVersion isEqualToString: latestVersion]){
+		int answer = NSRunAlertPanel(@"Download",
+								@"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?",
+								@"Yes", @"No", nil, latestVersion);
+		if (answer == NSAlertDefaultReturn){
+			[[NSWorkspace sharedWorkspace] openURL: 
+				[NSURL URLWithString: 
+					[NSString stringWithFormat:
+					@"http://finkcommander.sourceforge.net",
+					latestVersion]]];
+		}
+	}else if (notifyWhenCurrent){
+		NSRunAlertPanel(@"Current",
+				  @"The latest version of FinkCommander is installed on your system.",
+				  @"OK", nil, nil);
+	}
+}
+
 -(void)awakeFromNib
 {
 	NSDictionary *selStates = [defaults objectForKey: FinkViewMenuSelectionStates];
@@ -188,10 +227,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	tableView = [[FinkTableViewController alloc] initWithFrame:
 		NSMakeRect(0, 0, contentSize.width, contentSize.height)];
 	[tableScrollView setDocumentView: tableView];
+	[tableView release];
 	[tableView setDelegate: self];
 	[tableView setDataSource: self];
 	[tableView sizeLastColumnToFit];
-
 	[tableView setMenu: tableContextMenu];
 
 	while (key = [e nextObject])
@@ -452,7 +491,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Menu Actions
-//save output
+
+-(IBAction)checkForLatestVersionAction:(id)sender
+{
+	[self checkForLatestVersion:YES];
+}
+
 
 -(IBAction)saveOutput:(id)sender
 {
@@ -528,7 +572,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		if ([[finkTask task] isRunning]){
 			int answer2 = NSRunAlertPanel(@"Sorry",
-					@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander.\nWhat would you like to do?",
+					@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander and run ps and sudo kill from the Terminal (see help for more details).\nWhat would you like to do?",
 					@"Quit", @"Continue", nil);
 			if (answer2 == NSAlertDefaultReturn){
 				userChoseToTerminate = YES;
@@ -1374,14 +1418,11 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 //helper for processFinishedWithStatus:
 -(BOOL)commandRequiresTableUpdate:(NSString *)cmd
 {
-	if ([cmd isEqualToString: @"install"] 	  ||
-		[cmd isEqualToString: @"remove"]	  ||
-		[cmd isEqualToString: @"update-all"]  ||
-		[cmd contains: @"index"]			  ||
-	    [cmd contains: @"selfupdate"]){
-		return YES;
-	}
-	return NO;
+	return  [cmd isEqualToString: @"install"]	||
+			[cmd isEqualToString: @"remove"]	||
+			[cmd isEqualToString: @"index"]		||
+			[cmd contains: @"build"]			||  
+			[cmd contains: @"update"];
 }
 
 //reset the interface--stop and remove progress indicator, revalidate
@@ -1392,7 +1433,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	[self stopProgressIndicator];
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
-	[tableView deselectAll:self];
+	[tableView deselectAll: self];
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
 }
 
