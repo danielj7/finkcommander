@@ -576,7 +576,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		return  NO;
 	}
 	if (! [self commandIsRunning] &&
-		[[theItem label] rangeOfString: @"Terminate"].length > 0){
+		[[theItem label] contains: @"Terminate"]){
 		return NO;
 	}
 	if (! [self commandIsRunning] &&
@@ -601,11 +601,11 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		if ([filterText length] == 0){
 			[self setDisplayedPackages: [packages array]];
 		}else{
-			//deselect rows so autoscroll doesn't interfere
+			//deselect rows so automatic scrolling doesn't interfere
 			[tableView deselectAll: self];
 			while (pkg = [e nextObject]){
 				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
-				if ([pkgAttribute rangeOfString: filterText].length > 0){
+				if ([pkgAttribute contains: filterText]){
 					[subset addObject: pkg];
 				}
 			}
@@ -730,8 +730,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
-	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name]
-		rangeOfString: @"tcsh"].length > 0){
+	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name] contains: @"tcsh"]){
 		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
 				[self window], self, NULL,	NULL, nil,
 					@"FinkCommander is unable to install that package.\nSee Help:FinkCommander Guide:Known Bugs and Limitations",
@@ -856,6 +855,14 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	NSMutableArray *args = [note object];
 	NSString *cmd = [args objectAtIndex: 0];
 
+	if ([self commandIsRunning]){
+		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil,    //title, buttons
+			[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
+			@"You will have to wait until the current command is complete before changing the fink.conf settings.",
+			nil);										//msg string params
+		return;
+	}
+
 	[progressViewHolder addSubview: progressView];
 	[progressIndicator setUsesThreadedAnimation: YES];
 	[progressIndicator startAnimation: nil];	
@@ -956,7 +963,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	// approximately last two lines for "failed"
 	[self setDisplayedPackages: [packages array]];
 	if (status == 0 && ! [output containsCI: @"failed"]){
-		if ([self commandRequiresTableUpdate: [self lastCommand]]){
+		if ([self commandRequiresTableUpdate: lastCommand]){
 			if ([lastCommand contains: @"selfupdate"] ||
 				[lastCommand contains: @"index"]	  ||
 	            [defaults boolForKey: FinkUpdateWithFink]){
@@ -966,7 +973,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 										   packages: [self selectedPackages]];
 				[self refreshTable: nil]; 
 			}
-		}else if (! [lastCommand contains: @"cp"] && ! [lastCommand contains: @"mv"]){
+		}else{
 			[self refreshTable: nil];
 		}
 	}else{

@@ -4,6 +4,7 @@
             ACTIONS = {
                 cancel = id; 
                 setFinkConfChanged = id; 
+                setFinkTreesChanged = id; 
                 setPathChoice = id; 
                 setPreferences = id; 
             }; 

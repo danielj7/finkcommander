@@ -157,8 +157,8 @@ See the header file, FinkDataController.h, for interface and license information
 			[p setUnstable: @"*"];
 		}
 		//make sure FULL name matches package on binary list
-		if ([binaryPackages rangeOfString:
-			[NSString stringWithFormat: @" %@#", [p name]]].length > 0){
+		if ([binaryPackages contains:
+			[NSString stringWithFormat: @" %@#", [p name]]]){
 			[p setBinary: @"*"];
 		}else{
 			[p setBinary: @" "];

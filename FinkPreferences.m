@@ -164,6 +164,13 @@ File: FinkPreferences.m
 }
 
 
+-(IBAction)setFinkTreesChanged:(id)sender
+{
+	finkConfChanged = YES;
+	[conf setFinkTreesChanged: YES];
+	
+}
+
 //---------------------------------------------------------------------->Delegate Methods
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {

@@ -40,6 +40,7 @@ NSString *gProxyFTP = @"ProxyFTP";
 	if (self = [super init]){
 		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
 		[self readFinkConf];
+		[self setFinkTreesChanged: NO];
 
 	[[NSNotificationCenter defaultCenter] 
 		addObserver: self
@@ -64,7 +65,7 @@ NSString *gProxyFTP = @"ProxyFTP";
 
 	e = [[fconfString componentsSeparatedByString: @"\n"] objectEnumerator];
 	while(line = [e nextObject]){
-		if ([line rangeOfString: @":"].length > 0){
+		if ([line contains: @":"]){
 			split = [line rangeOfString: @":"].location;
 			[finkConfDict setObject: [line substringFromIndex: split + 2] // eliminate space 
 				forKey: [line substringToIndex: split]];
@@ -188,7 +189,10 @@ NSString *gProxyFTP = @"ProxyFTP";
 	}
 }
 
-
+-(void)setFinkTreesChanged:(BOOL)b
+{
+	finkTreesChanged = b;
+}
 
 //helper used in writeToFile:
 -(NSString *)stringFromDictionary
@@ -269,11 +273,13 @@ NSString *gProxyFTP = @"ProxyFTP";
 		}
 	//if fink.conf file changed by mv command, call index to make table data reflect
 	//new fink.conf settings
-	}else if ([[n object] contains: @"mv"]){
+	}else if (finkTreesChanged && [[n object] contains: @"mv"]){
 		NSMutableArray *indexCommandArray = [NSMutableArray arrayWithObjects:
 			@"fink",
 			@"index",
 			nil];
+			
+		[self setFinkTreesChanged: NO];
 
 		[center postNotificationName: FinkConfChangeIsPending
 				object: indexCommandArray];

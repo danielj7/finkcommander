@@ -68,5 +68,6 @@ File: FinkPreferences.h
 -(IBAction)cancel:(id)sender;
 -(IBAction)setPathChoice:(id)sender;
 -(IBAction)setFinkConfChanged:(id)sender;
+-(IBAction)setFinkTreesChanged:(id)sender;
 
 @end

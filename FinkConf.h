@@ -62,6 +62,7 @@ extern NSString *FinkCommandCompleted;
 	NSMutableDictionary *finkConfDict;
 	NSUserDefaults *defaults;
 	NSString *proxyHTTP;
+	BOOL finkTreesChanged;
 }
 
 -(void)readFinkConf;
@@ -77,6 +78,7 @@ extern NSString *FinkCommandCompleted;
 -(void)setUseHTTPProxy:(NSString *)s;
 -(NSString *)useFTPProxy;
 -(void)setUseFTPProxy:(NSString *)s;
+-(void)setFinkTreesChanged:(BOOL)b;
 
 -(void)writeToFile;
 
