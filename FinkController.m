@@ -76,7 +76,7 @@ See the header file, FinkController.h, for interface and license information.
 		[self setCommandIsRunning: NO];		
 		[self setPassword: nil];
 		lastParams = [[NSMutableArray alloc] init];
-		[self setPendingCommand: NO];		
+		[self setPendingCommand: NO];
 			
 		//register for notification that password was entered
 		[[NSNotificationCenter defaultCenter] addObserver: self
@@ -114,8 +114,10 @@ See the header file, FinkController.h, for interface and license information.
 //----------------------------------------------->Post-Init Startup
 -(void)awakeFromNib
 {
+	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
+	
 	[msgText setStringValue:
 		@"Gathering data for table; this will take a moment . . ."];
 }
@@ -143,7 +145,7 @@ See the header file, FinkController.h, for interface and license information.
 		[[packages array] count]]];
 }
 
-//helper used in refreshTable and table sorting delegate method
+//helper used in refreshTable and mouse down in table header column delegate
 -(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
 	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
@@ -243,7 +245,7 @@ See the header file, FinkController.h, for interface and license information.
 //--------------------------------------------------------------------------------
 //		WINDOW METHODS
 //--------------------------------------------------------------------------------
-
+//single window app; so quit when red button clicked
 -(BOOL)applicationShouldTerminateAfterLastWindowClosed:
 	(NSApplication *)theApplication 
 {
@@ -259,7 +261,7 @@ See the header file, FinkController.h, for interface and license information.
 //display running command above table
 -(void)displayCommand:(NSArray *)params
 {
-	[msgText setStringValue: [NSString stringWithFormat: @"Running %@ . . .",
+	[msgText setStringValue: [NSString stringWithFormat: @"Running %@…",
 		[[params subarrayWithRange: NSMakeRange(1, [params count] - 1)]
 		componentsJoinedByString: @" "]]];
 }
@@ -319,7 +321,7 @@ See the header file, FinkController.h, for interface and license information.
 //allow user to update table using Fink
 -(IBAction)updateTable:(id)sender
 {
-	[msgText setStringValue: @"Updating table data . . . "]; //time lag here
+	[msgText setStringValue: @"Updating table data…"]; //time lag here
 	[self setCommandIsRunning: YES];
 	[packages update]; //calls refreshTable by notification
 }
@@ -515,7 +517,7 @@ See the header file, FinkController.h, for interface and license information.
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
 
-//helpers
+//helper:  look for prompt with default number choice in brackets
 -(BOOL)scanForNumberPrompt:(NSString *)s
 {
 	NSCharacterSet *openingSet = [NSCharacterSet characterSetWithCharactersInString: @"?:"];
@@ -554,8 +556,8 @@ See the header file, FinkController.h, for interface and license information.
 	if ( ! alwaysChooseDefaultSelected        &&
 		 ([self scanForNumberPrompt: output]  ||
 		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0)){
-		NSBeep();
 		[self raiseInteractionWindow: self];
+		NSBeep();
 	}
 	if ([output rangeOfString:           //handle non-anonymous cvs
 			@"cvs.sourceforge.net's password:"].length > 0){ 
@@ -571,7 +573,8 @@ See the header file, FinkController.h, for interface and license information.
 		[self setPassword: nil];
 	}
 
-	[[textView textStorage] appendAttributedString: lastOutput];		
+	[[textView textStorage] appendAttributedString: lastOutput];
+	//according to Moriarity example, have to put off scrolling until next event loop
 	[self performSelector: @selector(scrollToVisible:) withObject: nil afterDelay: 0.0];
 }
 
@@ -602,11 +605,11 @@ See the header file, FinkController.h, for interface and license information.
 	// last 50 chars of output for "failed"
 	if (status == 0 && [output rangeOfString:@"failed"
 						options: NSCaseInsensitiveSearch
-						range: NSMakeRange([output length] - 50, 49)].length == 0){
+						range: NSMakeRange(0, [output length] - 1)].length == 0){
 		if ([self commandRequiresTableUpdate: [self lastCommand]]){
 			if ([lastCommand rangeOfString: @"selfupdate"].length > 0 ||
 	            [[NSUserDefaults standardUserDefaults] boolForKey: FinkUpdateWithFink]){
-				[msgText setStringValue: @"Updating table data . . . "];
+				[msgText setStringValue: @"Updating table data…"];
 				[packages update];   // refreshTable will be called by notification
 			}else{
 				[packages updateManuallyWithCommand: [self lastCommand]
