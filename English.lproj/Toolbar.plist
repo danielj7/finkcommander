@@ -96,7 +96,7 @@
 		<key>PaletteLabel</key>
 		<string>Remove Source</string>
 		<key>Tag</key>
-		<integer>1</integer>
+		<integer>0</integer>
 		<key>ToolTip</key>
 		<string>Delete files for package(s), but retain deb files for possible reinstallation</string>
 	</dict>

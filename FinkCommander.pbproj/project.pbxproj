@@ -1244,7 +1244,7 @@
 		F580FC780332C42601A80166 = {
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 6;
+			dstSubfolderSpec = 7;
 			files = (
 				F580FC790332C44601A80166,
 			);

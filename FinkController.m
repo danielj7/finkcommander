@@ -72,7 +72,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set instance variables used to store objects and state information  
 		//needed to run fink and apt-get commands
-		launcher = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"Launcher"];
+		launcher = [[NSBundle mainBundle] pathForResource:@"Launcher" ofType:nil];
 		Dprintf(@"Path to launcher: %@", launcher);
 		finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
 		killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];

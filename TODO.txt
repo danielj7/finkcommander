@@ -7,6 +7,8 @@ RELEASE 0.4.0
 
 Target date: 09/07/2002
 
+D Use Security Framework for authorization
+
 D Additional information for table:
 	Installed version
 	Binary version
@@ -22,7 +24,7 @@ I Determinate progress bar and more detailed message text for fink command phase
 D Fix terminate command
 
 Localizations:
- I	German
+ D	German
  I	French
 	Spanish
 		
@@ -34,18 +36,6 @@ D Jaguar bug fixes
 RELEASE 0.4.1
 
 Target date: 11/15/2002
-
-Thread terminate command and provide user feedback
-
-Security fixes (2 possible tracks):
-
-	(1)	Use Security Framework:
-		Write prototype for testing
-		Test changes to Fink perl mods
-		
-	(2) Improve existing system:
-		Option to run command in Terminal via NSAppleScript; FC would no longer touch password
-		Default to not storing password in memory (will require re-entry if > 5 min. since last); Preferences:Commander option to store
 
 New View menu item:  hide/show splitoffs
 
@@ -69,8 +59,6 @@ Command inspector: show currently running command, list of all packages subject 
 Dock icon customization: show status of command
 
 Installed package browser; dpkg -c <path to .deb file>
-
-Tools menu item to copy package description from unstable to stable
 
 Show info panel for fink installation; mirror information in email sig
 

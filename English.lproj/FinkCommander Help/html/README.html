@@ -12,7 +12,6 @@
 <ul>
 	<li><a href="#description">Overview</a></li>
 	<li><a href="#license">License</a></li>
-	<li><a href="#security">Note on Security</a></li>
 </ul>
 
 <h3>
@@ -77,38 +76,6 @@ source, it's available at the
 target="top">FinkCommander SourceForge site</a>.
 </p>
 
-
-<h3><a name="security">Note on Security</a></h3>
-
-<p>
-FinkCommander does not use Apple's Security Framework to authorize commands
-requiring administrator privileges.  Instead, it asks you to enter your password
-in a text field and then passes it along to the sudo command.  
-</p>
-
-<p>
-Please note that FinkCommander does not itself run as root.  Instead, it uses the sudo command
-to run Fink as root, just as Fink itself does.  I believe that the main concern about this 
-approach is that <strong>you are giving your password to FinkCommander</strong>.  
-If FinkCommander were evil software, it could use the password do mischief to your system.
-</p>
-
-<p>
-On the other hand, FinkCommander is free software, so what it does
-with your password is transparent.  If you have concerns, I would
-encourage you to obtain and look at the source code to confirm what the
-program is doing with your password.
-</p>
-
-<p>
-I have been studying the Security Framework and Apple's recommended method
-for running privileged operations, as exemplified in the 
-<a href="http://developer.apple.com/samplecode/Sample_Code/Security/AuthSample.htm">AuthSample</a> 
-code sample.  It appears that using this method to perform the 
-complex inter-process communication that FinkCommander engages in will be extremely
-difficult, at least for an amateur programmer like me.  
-FinkCommander is likely to remain in its present form indefinitely.
-</p>
 
 </body>
 </html>
