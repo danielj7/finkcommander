@@ -48,6 +48,9 @@ File: SBString.h
 //Strip leading and trailing whitespace from string
 -(NSString *)strip;
 
+//Return a URL with properly escaped characters from an ordinary string
+-(NSURL *)URLByAddingPercentEscapesToString;
+
 @end
 
 //Convenience function for use with rangeOfCompiledExpression methods.

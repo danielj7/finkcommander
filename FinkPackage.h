@@ -57,8 +57,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)name;
 -(void)setName:(NSString *)s;
 
--(NSString *)nameWithoutSplitoff;
-
 -(NSString *)status;
 -(void)setStatus:(NSString *)s;
 
@@ -135,5 +133,11 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg;
 
+//Querying the Package
+
+-(NSString *)nameWithoutSplitoff;
+
+-(NSString *)pathToPackageinTree:(NSString *)tree
+			withExtension:(NSString *)ext;
 
 @end

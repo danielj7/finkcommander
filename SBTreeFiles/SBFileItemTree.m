@@ -6,6 +6,42 @@ NSString *SBAscendingOrder = @"SBAscendingOrder";
 NSString *SBDescendingOrder = @"SBDescendingOrder";
 
 //----------------------------------------------------------
+#pragma mark UTILITY FUNCTIONS
+//----------------------------------------------------------
+
+BOOL openFileAtPath(NSString *path)
+{
+    NSFileManager *mgr = [NSFileManager defaultManager];
+    NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+    BOOL successful, valid, isDir;
+
+    valid = [mgr fileExistsAtPath:path isDirectory:&isDir];
+    if (! valid) return NO;
+//    if (isDir) return YES;
+    if ([path contains:@".htm"]){
+		NSURL *fileURL = [NSURL fileURLWithPath:path];
+		successful = [ws openURL:fileURL];
+    }else{
+		successful = [ws openFile:path];
+		if (! successful){
+			successful = [ws openFile:path withApplication:@"TextEdit"];
+		}
+    }
+    return successful;
+}
+
+void alertProblemPaths(NSArray *pathArray)
+{
+    if ([pathArray count] > 0){
+		NSRunAlertPanel(FINK_ERROR,
+				  NSLocalizedString(@"The following could not be opened:\n\n%@",
+						@"Error message for failure to open file(s)"),
+				  @"OK", nil, nil,
+				  [pathArray componentsJoinedByString:@" "]);
+    }
+}
+
+//----------------------------------------------------------
 #pragma mark SORTING FUNCTIONS
 //----------------------------------------------------------
 
@@ -38,8 +74,10 @@ int sortByMdate(id firstItem, id secondItem, void *direction)
 
 int sortBySize(id firstItem, id secondItem, void *direction)
 {
-	float firstSize = [firstItem size];
-	float secondSize = [secondItem size];
+	SBFileItem *itemOne = (SBFileItem *)firstItem;
+	SBFileItem *itemTwo = (SBFileItem *)secondItem;
+	float firstSize = [itemOne size];
+	float secondSize = [itemTwo size];
 	int result = firstSize - secondSize;
 	NSString *order = (NSString *)direction;
 	
@@ -203,6 +241,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     return;
 }
 
+#ifdef UNDEF
 //----------------------------------------------------------
 #pragma mark ITEM ACCESS METHODS
 //----------------------------------------------------------
@@ -230,6 +269,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     }
     return [self itemInTreeWithPathArray:pathArray];
 }
+#endif
 
 //----------------------------------------------------------
 #pragma mark SORTING METHODS

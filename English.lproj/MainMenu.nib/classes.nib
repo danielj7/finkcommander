@@ -29,6 +29,8 @@
             CLASS = FinkController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                collapseExpandMenuItem = NSMenuItem; 
+                columnsMenu = NSMenu; 
                 interactionField = NSTextField; 
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 
@@ -45,7 +47,6 @@
                 tableScrollView = NSScrollView; 
                 tableViewController = id; 
                 textView = NSTextView; 
-                viewMenu = NSMenu; 
                 window = NSWindow; 
             }; 
             SUPERCLASS = NSObject; 

@@ -98,6 +98,28 @@
 		(id)[item valueForKey:identifier];
 }
 
+//Drag and Drop
+
+-(BOOL)outlineView:(NSOutlineView *)ov 
+	writeItems:(NSArray *)items
+	toPasteboard:(NSPasteboard *)pboard
+{
+    NSArray *fileList = [NSArray array];
+    SBFileItem *item;
+    NSEnumerator *e = [items objectEnumerator];
+
+	while (nil != (item = [e nextObject])){
+		fileList = [fileList arrayByAddingObject:[item path]];
+	}
+	[ov registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
+						 owner:self];
+	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
+	return YES;
+}
+
+
+
 //----------------------------------------------------------
 #pragma mark SORTING METHOD
 //----------------------------------------------------------
@@ -143,35 +165,18 @@
 {
     NSEnumerator *e = [outlineView selectedRowEnumerator];
     NSNumber *rownum;
-    SBFileItem *item;
-    NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-    NSString *stnddpath;
+    NSString *ipath;
     BOOL successful;
-    NSMutableArray *problemFiles = [NSMutableArray array];
+    NSMutableArray *inaccessiblePathsArray = [NSMutableArray array];
 
     while (nil != (rownum = [e nextObject])){
-		item = [outlineView itemAtRow:[rownum intValue]];
-		if (nil != [item children]) continue;  //skip directories
-		stnddpath = [item path];  //now standardized when item created
-		if ([stnddpath hasSuffix:@".html"] || [stnddpath hasSuffix:@".htm"]){
-			NSURL *fileURL = [NSURL fileURLWithPath:stnddpath];
-			successful = [ws openURL:fileURL];
-		}else{
-			successful = [ws openFile:stnddpath];
-			if (! successful){
-				successful = [ws openFile:stnddpath withApplication:@"TextEdit"];
-			}			
-		}
+		ipath = [[outlineView itemAtRow:[rownum intValue]] path];
+		successful = openFileAtPath(ipath);
 		if (! successful){
-			[problemFiles addObject:stnddpath];
+			[inaccessiblePathsArray addObject:ipath];
 		}
     }
-    if ([problemFiles count] > 0){
-		NSRunAlertPanel(@"Error",
-				  @"The following could not be opened:\n\n%@",
-				  @"OK", nil, nil, 
-				  [problemFiles componentsJoinedByString:@" "]);
-    }
+    alertProblemPaths(inaccessiblePathsArray);
 }
 
 //----------------------------------------------------------

@@ -348,6 +348,7 @@
 				F5CC765E039F19D801A80165,
 				F50EC36703A0559001A80165,
 				F5067EF503A1BF3001A80167,
+				F57E59B603A998D701A80165,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +392,7 @@
 				F5CA48B10394730301A80164,
 				F5C9446F039C6BE201A80164,
 				F50EC0D603A0464101A80165,
+				F57E59C203A9ABBA01A80165,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,6 +426,7 @@
 				F5CC765F039F19D801A80165,
 				F50EC36803A0559001A80165,
 				F5067EF603A1BF3101A80167,
+				F57E59B703A998D701A80165,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -874,6 +877,7 @@
 				F50DF7770359464F01A8016C,
 				F542437F028CE59801A80166,
 				F5CA48B00394730301A80164,
+				F57E59C103A9ABBA01A80165,
 			);
 			isa = PBXGroup;
 			name = Images;
@@ -1357,6 +1361,41 @@
 			path = English.lproj/Credits.html;
 			refType = 4;
 		};
+		F57E59B403A998D701A80165 = {
+			isa = PBXFileReference;
+			name = SBBrowserMatrix.h;
+			path = SBTreeFiles/SBBrowserMatrix.h;
+			refType = 4;
+		};
+		F57E59B503A998D701A80165 = {
+			isa = PBXFileReference;
+			name = SBBrowserMatrix.m;
+			path = SBTreeFiles/SBBrowserMatrix.m;
+			refType = 4;
+		};
+		F57E59B603A998D701A80165 = {
+			fileRef = F57E59B403A998D701A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F57E59B703A998D701A80165 = {
+			fileRef = F57E59B503A998D701A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F57E59C103A9ABBA01A80165 = {
+			isa = PBXFileReference;
+			path = info.tiff;
+			refType = 4;
+		};
+		F57E59C203A9ABBA01A80165 = {
+			fileRef = F57E59C103A9ABBA01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F580FC3A0332C30701A80166 = {
 			buildActionMask = 2147483647;
 			files = (
@@ -1628,6 +1667,8 @@
 				F5CC7618039F174E01A80165,
 				F5CC7615039F174E01A80165,
 				F5CC7616039F174E01A80165,
+				F57E59B403A998D701A80165,
+				F57E59B503A998D701A80165,
 				F5CC7619039F174E01A80165,
 				F5CC761A039F174E01A80165,
 				F5CC765C039F19D801A80165,
@@ -1700,14 +1741,14 @@
 		};
 		F5CC7615039F174E01A80165 = {
 			isa = PBXFileReference;
-			name = SBBrowserController.h;
-			path = SBTreeFiles/SBBrowserController.h;
+			name = SBBrowserView.h;
+			path = SBTreeFiles/SBBrowserView.h;
 			refType = 4;
 		};
 		F5CC7616039F174E01A80165 = {
 			isa = PBXFileReference;
-			name = SBBrowserController.m;
-			path = SBTreeFiles/SBBrowserController.m;
+			name = SBBrowserView.m;
+			path = SBTreeFiles/SBBrowserView.m;
 			refType = 4;
 		};
 		F5CC7617039F174E01A80165 = {

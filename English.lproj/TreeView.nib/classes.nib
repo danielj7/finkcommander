@@ -13,12 +13,13 @@
             SUPERCLASS = NSWindowController; 
         }, 
         {
+            ACTIONS = {switchViews = id; }; 
             CLASS = SBTreeWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                browser = NSBrowser; 
                 loadingIndicator = NSProgressIndicator; 
                 msgTextField = NSTextField; 
+                oldBrowser = NSBrowser; 
                 outlineView = NSOutlineView; 
                 tabView = NSTabView; 
             }; 

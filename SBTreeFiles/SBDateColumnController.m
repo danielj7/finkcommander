@@ -1,40 +1,43 @@
 
 #import "SBDateColumnController.h"
 
-//Used IB to determine approximate pixel width needed for each format
+//----------------------------------------------------------
+#pragma mark FORMAT MACROS
+//----------------------------------------------------------
 
-#define Y2_WIDTH         NSLocalizedStringFromTable(@"80.0", @"Date", \
-                            @"Pixel width for numeric format with two-digit year")
-#define NUMERIC_Y2       NSLocalizedStringFromTable(@"%m/%d/%y", @"Date", \
-                            @"Numeric format with two-digit year")
+/* Definitions of date formats and the minimum widths that will accomodate
+the formats. These macros are used in the formatForWidth: method to determine
+the longest possible date format that will fit in the current column length. */
 
-#define Y4_WIDTH         NSLocalizedStringFromTable(@"95.0", @"Date", \
-                            @"Pixel width for numeric format with four-digit year")
-#define NUMERIC_Y4       NSLocalizedStringFromTable(@"%m/%d/%Y", @"Date", \
-                            @"Numeric format with four-digit year")
+#define FULL_MONTH_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"240.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
+#define FULL_MONTH_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%A %B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
 
-#define AB_WIDTH         NSLocalizedStringFromTable(@"125.0", @"Date", \
-                            @"Pixel width for month-abbreviated format")
-#define M_ABBREV         NSLocalizedStringFromTable(@"%b %e, %Y", @"Date", \
-                            @"Abbreviated month, day, year")
+#define FULL_MONTH_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"200.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
+#define FULL_MONTH_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
 
-#define FULL_WIDTH       NSLocalizedStringFromTable(@"145.0", @"Date", \
-                            @"Pixel width for full format")
-#define M_FULL           NSLocalizedStringFromTable(@"%B %e, %Y", @"Date", \
-                            @"Full month, day, year")
+#define ABBREVIATED_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"190.0", @"Date",  @"Minimum width for abbreviated day and month names, day, year, time") floatValue]
+#define ABBREVIATED_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%a %b %e, %Y  %I:%M %p", @"Date", @"Abbreviated day and month names, day, year, time")
 
-#define YT2_WIDTH        NSLocalizedStringFromTable(@"160.0", @"Date", \
-                            @"Pixel width for numeric format with time")
-#define NUMERIC_Y2_TIME  NSLocalizedStringFromTable(@"%m/%d/%y  %I:%M %p", \
-                            @"Date", @"Numeric format with two-digit year plus time")
+#define ABBREVIATED_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"165.0", @"Date", @"Minimum width for abbreviated month name, day and year plus time") floatValue]
+#define ABBREVIATED_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y  %I:%M %p", @"Date",  @"Abbreviated month name, day and year plus time")
 
-#define ABT_WIDTH        NSLocalizedStringFromTable(@"190.0", @"Date", \
-                            @"Pixel width for numeric format with two-digit year")
-#define M_ABBREV_TIME    NSLocalizedStringFromTable(@"%b %e, %Y  %I:%M %p", @"Date", \
-                            @"Abbreviated month, day, year plus time")
+#define NUMERIC_Y4_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"155.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
+#define NUMERIC_Y4_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
 
-#define M_FULL_TIME      NSLocalizedStringFromTable(@"%B %e, %Y  %I:%M %p", @"Date", \
-                            @"Full month, day, year plus time")
+#define NUMERIC_Y2_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"145.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
+#define NUMERIC_Y2_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
+
+#define FULL_MONTH_WIDTH [NSLocalizedStringFromTable(@"125.0", @"Date", @"Minimum width for full month name, day and year format") floatValue]
+#define FULL_MONTH_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y", @"Date", @"Full month name, day and year")
+
+#define ABBREVIATED_WIDTH [NSLocalizedStringFromTable(@"95.0", @"Date", @"Minimum width for abbreviated month name, day and year") floatValue]
+#define ABBREVIATED_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y", @"Date", @"Abbreviated month name, day and year")
+
+#define NUMERIC_Y4_WIDTH [NSLocalizedStringFromTable(@"80.0", @"Date", @"Minimum width for numeric format with four-digit year") floatValue]
+#define NUMERIC_Y4_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y", @"Date", @"Numeric format with four-digit year")
+
+#define NUMERIC_Y2_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y", @"Date", @"Numeric format with two-digit year")
+
 
 @implementation SBDateColumnController
 
@@ -42,46 +45,55 @@
 #pragma mark CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(id)init
 {
-    return [self initWithColumn:myColumn 
-	       shortTitle:@"Date"];
+    return [self initWithColumn:nil];
 }
 
 -(id)initWithColumn:(NSTableColumn *)myColumn
-    shortTitle:(NSString *)stitle
 {
     return [self initWithColumn:myColumn 
-	       shortTitle:stitle 
-	       longTitle:nil];
+						shortTitle:NSLocalizedStringFromTable(@"Date", @"Date",
+											@"Default column title")];
 }
 
 -(id)initWithColumn:(NSTableColumn *)myColumn
-    shortTitle:(NSString *)stitle 
-    longTitle:(NSString *)ltitle
+		 shortTitle:(NSString *)stitle
 {
-    if (nil != (self = [super init])){
+    return [self initWithColumn:myColumn 
+						shortTitle:stitle 
+						 longTitle:nil];
+}
+
+-(id)initWithColumn:(NSTableColumn *)myColumn
+		 shortTitle:(NSString *)stitle 
+		  longTitle:(NSString *)ltitle
+{
+    self = [super init];
+    if (nil != self){
 		[self setColumn:myColumn];
 		[self setShortTitle:stitle];
 		[self setLongTitle:ltitle];
-		
-		//Dprintf(@"SBDCC initialized for column %@", [[self column] identifier]);
 
-		[[NSNotificationCenter defaultCenter]
-			addObserver:self
-			selector:@selector(adjustColumnAndHeaderDisplay:)
-			name:NSOutlineViewColumnDidResizeNotification
-			object:nil];
+		Dprintf(@"SBDCC initialized for column %@", [[self column] identifier]);
 
-#ifdef UNDEF
-		[[NSNotificationCenter defaultCenter]
-			addObserver:self
-			selector:@selector(adjustColumnAndHeaderDisplay:)
-			name:NSTableViewColumnDidResizeNotification
-			object:nil];
-#endif
-		
-		[self adjustColumnAndHeaderDisplay:nil];
+		if ([[[self column] tableView] isKindOfClass:[NSOutlineView class]]){
+			[[NSNotificationCenter defaultCenter]
+		addObserver:self
+		   selector:@selector(adjustColumnAndHeaderDisplay:)
+			   name:NSOutlineViewColumnDidResizeNotification
+			 object:nil];
+		}else{
+			[[NSNotificationCenter defaultCenter]
+		addObserver:self
+		   selector:@selector(adjustColumnAndHeaderDisplay:)
+			   name:NSTableViewColumnDidResizeNotification
+			 object:nil];
+		}
+
+		if (nil != [self column]){
+			[self adjustColumnAndHeaderDisplay:nil];
+		}
     }
     return self;
 }
@@ -103,27 +115,27 @@
 
 -(void)setColumn:(NSTableColumn *)newColumn
 {
-	[newColumn retain];
-	[_sbColumn release];
-	_sbColumn = newColumn;
+    [newColumn retain];
+    [_sbColumn release];
+    _sbColumn = newColumn;
 }
 
 -(NSString *)shortTitle { return _sbShortTitle; }
 
 -(void)setShortTitle:(NSString *)newShortTitle
 {
-	[newShortTitle retain];
-	[_sbShortTitle release];
-	_sbShortTitle = newShortTitle;
+    [newShortTitle retain];
+    [_sbShortTitle release];
+    _sbShortTitle = newShortTitle;
 }
 
 -(NSString *)longTitle { return _sbLongTitle; }
 
 -(void)setLongTitle:(NSString *)newLongTitle
 {
-	[newLongTitle retain];
-	[_sbLongTitle release];
-	_sbLongTitle = newLongTitle;
+    [newLongTitle retain];
+    [_sbLongTitle release];
+    _sbLongTitle = newLongTitle;
 }
 
 //----------------------------------------------------------
@@ -132,37 +144,49 @@
 
 -(NSString *)formatForWidth:(float)width
 {
-    if (width <= [Y2_WIDTH floatValue])   return NUMERIC_Y2;
-    if (width <= [Y4_WIDTH floatValue])   return NUMERIC_Y4;
-    if (width <= [AB_WIDTH floatValue])   return M_ABBREV;
-    if (width <= [FULL_WIDTH floatValue]) return M_FULL;
-    if (width <= [YT2_WIDTH floatValue])  return NUMERIC_Y2_TIME;
-    if (width <= [ABT_WIDTH floatValue])  return M_ABBREV_TIME;
-    return M_FULL_TIME;
+    if (width >= FULL_MONTH_WITH_DAY_AND_TIME_WIDTH)
+		return FULL_MONTH_WITH_DAY_AND_TIME_FORMAT;
+    if (width >= FULL_MONTH_WITH_TIME_WIDTH)
+		return FULL_MONTH_WITH_TIME_FORMAT;
+    if (width >= ABBREVIATED_WITH_DAY_AND_TIME_WIDTH)
+		return ABBREVIATED_WITH_DAY_AND_TIME_FORMAT;
+    if (width >= ABBREVIATED_WITH_TIME_WIDTH)
+		return ABBREVIATED_WITH_TIME_FORMAT;
+    if (width >= NUMERIC_Y4_WITH_TIME_WIDTH)
+		return NUMERIC_Y4_WITH_TIME_FORMAT;
+    if (width >= NUMERIC_Y2_WITH_TIME_WIDTH) 
+		return NUMERIC_Y2_WITH_TIME_FORMAT;
+    if (width >= FULL_MONTH_WIDTH)
+		return FULL_MONTH_FORMAT;
+    if (width >= ABBREVIATED_WIDTH)
+		return ABBREVIATED_FORMAT;
+    if (width >= NUMERIC_Y4_WIDTH) 
+		return NUMERIC_Y4_FORMAT;
+    return NUMERIC_Y2_FORMAT;
 }
 
+//Set appropriate format for new column width
 -(void)adjustColumnDisplay
 {
     float width = [[self column] width];
-	
-    NSCell *dateCell = [[NSCell alloc] initTextCell:@""];
-    NSString *format = [self formatForWidth:width];
-    NSDateFormatter *dateFormat= [[NSDateFormatter alloc]
-		initWithDateFormat:format
-		allowNaturalLanguage:YES];
 
-    [dateCell setFormatter:dateFormat];
-    [dateFormat release];
-    [[self column] setDataCell:dateCell];
-    [dateCell release];
+    NSString *format = [self formatForWidth:width];
+    NSDateFormatter *dateFormatter= [[NSDateFormatter alloc]
+					 initWithDateFormat:format
+				allowNaturalLanguage:YES];
+
+    [[[self column] dataCell] setFormatter:dateFormatter];
+    [dateFormatter release];
 }
 
+//Use a more descriptive title if it will fit in the column
 -(void)adjustHeaderDisplay
 {
     if (nil != [self longTitle]){
 		float width = [[self column] width];
 
-		if (width < [[self longTitle] length] * 7.0){  //approximate pixels per character
+		if (width < [[self longTitle] length] * 7.0){  
+			//approximate width per character with system standard font
 			[[[self column] headerCell] setStringValue:[self shortTitle]];
 		}else{
 			[[[self column] headerCell] setStringValue:[self longTitle]];
@@ -170,6 +194,7 @@
     }
 }
 
+// Method invoked by columnDidResize notification
 -(void)adjustColumnAndHeaderDisplay:(NSNotification *)n
 {
     [self adjustColumnDisplay];

@@ -4,21 +4,22 @@
 #import "SBFileItemTree.h"
 #import "SBOutlineViewController.h"
 #import "FinkGlobals.h"
-#import "SBBrowserController.h"
+#import "SBBrowserView.h"
 
 @interface SBTreeWindowController: NSWindowController
 {
 	IBOutlet NSTabView *tabView;
     IBOutlet NSOutlineView *outlineView;
-	IBOutlet NSBrowser *browser;
     IBOutlet NSTextField *msgTextField;
     IBOutlet NSProgressIndicator *loadingIndicator;
+	IBOutlet NSBrowser *oldBrowser;
 
-    SBFileItemTree *tree;
+	SBFileItemTree *tree;
     SBOutlineViewController *oController;
-	SBBrowserController *bController;
+	SBBrowserView *browser;
     SBDateColumnController *mDateColumnController;
     NSMutableArray *fileList;
+	NSString  *_sbActiveView;
 	BOOL treeBuildingThreadIsFinished;
 }
 
@@ -29,7 +30,10 @@
 -(NSMutableArray *)fileList;
 -(void)setFileList:(NSMutableArray *)fList;
 
-//-(IBAction)switchViews:(id)sender;
+-(NSString *)activeView;
+-(void)setActiveView:(NSString *)newActiveView;
+
+-(IBAction)switchViews:(id)sender;
 
 -(void)startedLoading;
 -(void)finishedLoading:(NSNotification *)n;

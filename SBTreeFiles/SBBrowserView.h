@@ -3,19 +3,24 @@
 #import <Cocoa/Cocoa.h>
 #import "SBFileItemTree.h"
 #import "SBFileItem.h"
+#import "SBBrowserMatrix.h"
 
-@interface SBBrowserController: NSObject
+@interface SBBrowserView: NSBrowser
 {
     NSBrowser *browser;
     SBFileItemTree *tree;
 }
 
--(id)initWithTree:(SBFileItemTree *)aTree
-		  browser:(NSBrowser *)aBrowser;
+/*
+ * Accessors
+ */
+ 
+-(SBFileItemTree *)tree;
+-(void)setTree:(SBFileItemTree *)newTree;
 
 /*
-	Browser delegate methods
-*/
+ *	Browser delegate methods
+ */
 
 -(int)browser:(NSBrowser *)sender 
 		numberOfRowsInColumn:(int)column;

@@ -1,10 +1,14 @@
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import "SBFileItem.h"
 #import "FinkGlobals.h"
 
 extern NSString *SBAscendingOrder;
 extern NSString *SBDescendingOrder;
+
+//Functions used by both SBBrowserView and SBOutlineViewController
+extern BOOL openFileAtPath(NSString *);
+extern void alertProblemPaths(NSArray *);
 
 @interface SBFileItemTree: NSObject
 {
@@ -44,9 +48,9 @@ extern NSString *SBDescendingOrder;
 	Finding Tree Items
 */
 
--(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray;
+//-(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray;
 
--(SBFileItem *)itemInTreeWithPath:(NSString *)path;
+//-(SBFileItem *)itemInTreeWithPath:(NSString *)path;
 
 /*
 	Sorting the Tree

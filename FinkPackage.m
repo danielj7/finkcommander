@@ -54,28 +54,6 @@ See the header file, FinkPackage.h, for interface and license information.
 	name = s;
 }
 
--(NSString *)nameWithoutSplitoff
-{
-	if ([[self name] rangeOfString:@"-"].length > 0){
-		NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
-			objectEnumerator];
-		NSString *pkgname = [self name];
-		NSString *splitoff;
-		NSRange r;
-
-		while (nil != (splitoff = [e nextObject])){
-			r = [pkgname rangeOfString:splitoff];
-			if (r.length > 0){
-				pkgname = [pkgname substringToIndex:r.location];
-				break;
-			}
-		}
-		return pkgname;
-	}
-	return [self name];
-}
-
-
 //Status
 -(NSString *)status
 {
@@ -236,6 +214,7 @@ See the header file, FinkPackage.h, for interface and license information.
 	[email release];
 	email = s;	
 }
+
 
 
 //----------------------------------------------------->Comparison
@@ -414,6 +393,53 @@ See the header file, FinkPackage.h, for interface and license information.
 	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare: [pkg maintainer]];
 	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (0 - result);
+}
+
+
+-(NSString *)nameWithoutSplitoff
+{
+	if ([[self name] rangeOfString:@"-"].length > 0){
+		NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
+			objectEnumerator];
+		NSString *pkgname = [self name];
+		NSString *splitoff;
+		NSRange r;
+
+		while (nil != (splitoff = [e nextObject])){
+			r = [pkgname rangeOfString:splitoff];
+			if (r.length > 0){
+				pkgname = [pkgname substringToIndex:r.location];
+				break;
+			}
+		}
+		return pkgname;
+	}
+	return [self name];
+}
+
+
+-(NSString *)pathToPackageinTree:(NSString *)tree
+			withExtension:(NSString *)ext
+{
+	NSString *fversion = [tree isEqualToString:@"unstable"] ?
+						[self unstable] : [self stable];
+	NSString *fname = [self nameWithoutSplitoff];
+	NSString *pathToDists = [[[[NSUserDefaults standardUserDefaults]
+									objectForKey:FinkBasePath]
+								stringByAppendingPathComponent: @"/fink/dists"] retain];
+    NSString *pkgFileName;
+    NSArray *components;
+
+	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext];
+
+    if ([[self category] isEqualToString:@"crypto"]){
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",
+			@"finkinfo", pkgFileName, nil];
+    }else{
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"main",
+			@"finkinfo", [self category], pkgFileName, nil];
+    }
+	return [NSString pathWithComponents:components];
 }
 
 @end

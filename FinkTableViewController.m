@@ -8,6 +8,10 @@ See the header file, FinkTableViewController.h, for interface and license inform
 
 @implementation FinkTableViewController
 
+//----------------------------------------------------------
+#pragma mark CREATION AND DESTRUCTION
+//----------------------------------------------------------
+
 -(id)initWithFrame:(NSRect)rect
 {
 	defaults = [NSUserDefaults standardUserDefaults];
@@ -46,7 +50,10 @@ See the header file, FinkTableViewController.h, for interface and license inform
 	[super dealloc];
 }
 
-//----------------------------------------------->Accessors
+//----------------------------------------------------------
+#pragma mark ACCESSORS
+//----------------------------------------------------------
+
 -(NSString *)lastIdentifier {return lastIdentifier;}
 -(void)setLastIdentifier:(NSString *)s
 {
@@ -92,11 +99,12 @@ See the header file, FinkTableViewController.h, for interface and license inform
 	return pkgArray;
 }
 
-//----------------------------------------------->Copy
+//----------------------------------------------------------
+#pragma mark COPY
+//----------------------------------------------------------
 
-/*"        Copy the single selected row from the table.  The elements
-are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType).
-"*/
+/* Copy the single selected row from the table.  The elements
+are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType). */
 
 -(void)copySelectedRows
 {
@@ -148,16 +156,62 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	}
 }
 
-//not working!
--(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+//----------------------------------------------------------
+#pragma mark FILE DRAG AND DROP
+//----------------------------------------------------------
+
+-(BOOL)tableView:(NSTableView *)tview
+	writeRows:(NSArray *)rows
+	toPasteboard:(NSPasteboard *)pboard
 {
-	if ([menuItem action] == @selector(copy:) && [self selectedRow] == -1){
-		return NO;
+	NSArray *fileList = [NSArray array];
+    NSEnumerator *e = [rows objectEnumerator];
+	NSNumber *rowNum;
+	int rowInt;
+	FinkPackage *pkg;
+	NSString *tree;
+	NSString *path;
+	NSFileManager *manager = [NSFileManager defaultManager];
+
+	while (nil != (rowNum = [e nextObject])){
+		rowInt = [rowNum intValue];
+		pkg = [displayedPackages objectAtIndex:rowInt];
+		if ([[pkg unstable] length] > 1){
+			tree = @"unstable";
+		}else{
+			tree = @"stable";
+		}
+		path = [pkg pathToPackageinTree:tree
+							 withExtension:@"info"];
+		fileList = [fileList arrayByAddingObject:path];
+		path = [pkg pathToPackageinTree:tree
+							withExtension:@"patch"];
+		if ([manager fileExistsAtPath:path]){
+			fileList = [fileList arrayByAddingObject:path];
+		}
 	}
+	[tview registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
+								  owner:self];
+	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	return YES;
 }
 
-//----------------------------------------------->Column Manipulation
+- (NSImage *)dragImageForRows:(NSArray*)dragRows 
+			event:(NSEvent*)dragEvent 
+			dragImageOffset:(NSPointPointer)dragImageOffset
+{
+	return [NSImage imageNamed:@"info"];
+}
+
+-(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+{
+    return NSDragOperationCopy;
+}
+
+//----------------------------------------------------------
+#pragma mark COLUMN MANIPULATION
+//----------------------------------------------------------
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
 {
@@ -203,7 +257,10 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	[defaults setObject:columns forKey:FinkTableColumnsArray];
 }
 
-//----------------------------------------------->Data Source Methods
+//----------------------------------------------------------
+#pragma mark DATA SOURCE METHODS
+//----------------------------------------------------------
+
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -222,7 +279,9 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	return [package valueForKey: identifier];
 }
 
-//------------------------------------------------->Sorting Methods
+//----------------------------------------------------------
+#pragma mark SORTING
+//----------------------------------------------------------
 
 //The following two methods are used to scroll back to the previously selected row
 //after the table is sorted.  It works almost the same way Mail does, except
@@ -297,7 +356,9 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 }
 
 
-//------------------------------------------------->Delegate Methods
+//----------------------------------------------------------
+#pragma mark DELEGATE METHODS
+//----------------------------------------------------------
 
 -(void)tableView:(NSTableView *)aTableView
 	didClickTableColumn:(NSTableColumn *)aTableColumn

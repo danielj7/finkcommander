@@ -57,13 +57,11 @@
 //in FinkController's emailMaintainer method
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg
 { 
-	NSString *body = [@"&body=%0A%0A" stringByAppendingString:emailSig];
-	NSString *urlString = [NSString stringWithFormat: 
-								@"mailto:%@?subject=%@-%@%@", [pkg email], [pkg name], 
-								[pkg version], body];
-	NSURL *mailURL = [NSURL URLWithString:urlString];
-	return mailURL;
-}
+	return [[NSString stringWithFormat: 
+						@"mailto:%@?subject=%@-%@&body=\n\n%@", 
+						[pkg email], [pkg name], [pkg version], emailSig]
+				URLByAddingPercentEscapesToString];
+ }
 
 //--------------------------------------------------------------->Text Display Methods
 

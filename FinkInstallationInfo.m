@@ -197,9 +197,6 @@ File: FinkInstallationInfo.m
 //As a signature properly formatted for inclusion in a mailto URL
 -(NSString *)formattedEmailSig
 {
-	NSMutableArray *m = [NSMutableArray array];
-	NSEnumerator *e;
-	NSString *line;
 	NSString *emailSig = [self installationInfo];
 	NSString *sig;
 
@@ -211,14 +208,6 @@ File: FinkInstallationInfo.m
 	}else{
 		sig = [NSString stringWithFormat: @"--\n%@", emailSig];
 	}
-	//replace linefeeds with %0A and spaces with %20
-	//probably should do this with CFURL
-	e = [[sig componentsSeparatedByString: @"\n"] objectEnumerator];
-	while (nil != (line = [e nextObject])){
-		line = [[line componentsSeparatedByString: @" "] componentsJoinedByString: @"%20"];
-		[m addObject: line];
-	}
-	sig = [m componentsJoinedByString: @"%0A"];
 	return sig;
 }
 

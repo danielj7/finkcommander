@@ -153,6 +153,15 @@
 	return [self substringWithRange: NSMakeRange(start, length)];
 }
 
+-(NSURL *)URLByAddingPercentEscapesToString
+{
+	NSString *urlString;
+	urlString = [(NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self,
+					NULL, NULL, CFStringConvertNSStringEncodingToEncoding(NSASCIIStringEncoding))
+				autorelease];
+	return [NSURL URLWithString:urlString];
+}
+
 @end
 
 int compiledExpressionFromString(NSString *string, regex_t *expr)

@@ -39,9 +39,9 @@
 
 //Localizable strings used in multiple files
 
-#define FINK_CANCEL NSLocalizableString(@"Cancel", @"Cancel button title")
-#define FINK_OK NSLocalizableString(@"Cancel", @"OK button title")
-#define FINK_ERROR NSLocalizableString(@"Cancel", @"Error dialog title")
+#define FINK_CANCEL NSLocalizedString(@"Cancel", @"Cancel button title")
+#define FINK_OK NSLocalizedString(@"Cancel", @"OK button title")
+#define FINK_ERROR NSLocalizedString(@"Cancel", @"Error dialog title")
 
 //User Default Items
 //  Set by user
@@ -90,8 +90,6 @@ extern NSString *FinkTerminateNotification;
 
 //UserInfo Key
 extern NSString *FinkRunProgressIndicator;
-
-extern NSString *FinkCreditString;
 
 //Debugging Log
 #ifdef DEBUGGING

@@ -298,7 +298,7 @@ See the header file, FinkDataController.h, for interface and license information
 			   inTree:(NSString *)tree
 			   withExtension:(NSString *)ext
 {
-	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
+	NSString *version = [tree isEqualToString:@"stable"] ? [pkg stable] : [pkg unstable];
 	NSString *name = [pkg nameWithoutSplitoff];
 	NSString *pathToDists = [[[defaults objectForKey:FinkBasePath]
 								stringByAppendingPathComponent: @"/fink/dists"] retain];
