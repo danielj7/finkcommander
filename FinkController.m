@@ -222,8 +222,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[splitView collapseOutput: nil];
 	}
 	
-	NSLog(@"Interval for new version check: %d", interval);
-	NSLog(@"Last checked for new version: %@", [lastCheckDate description]);
+	Dprintf(@"Interval for new version check: %d", interval);
+	Dprintf(@"Last checked for new version: %@", [lastCheckDate description]);
 	
 	if (interval && -([lastCheckDate timeIntervalSinceNow] / (24 * 60 * 60)) >= interval){
 		NSLog(@"Checking for FinkCommander update");
@@ -295,8 +295,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	int answer;
 	
-	if (commandIsRunning && 
-		! userConfirmedQuit){ //see windowShouldClose: method
+	if (commandIsRunning && ! userConfirmedQuit){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil), 
 			NSLocalizedString(@"QuittingNow", nil),
 			NSLocalizedString(@"Cancel", nil), 
@@ -411,13 +410,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSMutableArray *args;
 
 	//determine command
-	if ([sender isKindOfClass: [NSMenuItem class]]){
-		cmd = [[sender title] lowercaseString];
-	}else{
-		cmd = [[[[sender label] componentsSeparatedByString:@" "]
-			objectAtIndex: 0] lowercaseString];
-	}
-
+	cmd = [sender isKindOfClass:[NSMenuItem class]] ? [sender title] : [sender label];
+	cmd = [[[cmd componentsSeparatedByString:@" "] objectAtIndex:0] lowercaseString];
+	
 	//determine executable
 	executable = ([sender tag] == SOURCE_COMMAND ? @"fink" : @"apt-get");
 	executable = [NSString stringWithFormat:@"%@/bin/%@", 
@@ -566,7 +561,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSSavePanel *panel = [NSSavePanel savePanel];
 	NSString *defaultPath = [defaults objectForKey: FinkOutputPath];
 	NSString *savePath = ([defaultPath length] > 0) ? defaultPath : NSHomeDirectory();
-	NSString *fileName = [NSString stringWithFormat: @"%@_%@", 
+	NSString *fileName = [NSString stringWithFormat: @"%@_%@",
 			[self lastCommand], 
 			[[NSDate date] descriptionWithCalendarFormat: @"%d%b%Y" timeZone: nil locale: nil]];
 	
@@ -980,11 +975,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
 		([exec contains: @"fink"] 			||
 		 [exec contains: @"apt-get"])){
-		[params insertObject: @"-y" atIndex: 3];
+		[params insertObject: @"-y" atIndex: 1];
 	}
 	if ([exec isEqualToString: @"apt-get"]){ 
-		[params insertObject: @"-f" atIndex: 3];
-		[params insertObject: @"-q0" atIndex: 3];
+		[params insertObject: @"-f" atIndex: 1];
+		[params insertObject: @"-q0" atIndex: 1];
 	}
 	pendingCommand = NO;
 	toolIsBeingFixed = NO;
@@ -1063,6 +1058,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self incrementPIBy:[parser increment]];
 }
 
+-(void)interactIfRequired
+{
+	if (! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+		NSBeep();
+		[self raiseInteractionWindow:self];
+	}
+}
+
 //----------------------------------------------->AuthorizedExecutable Delegate Methods
 
 
@@ -1087,17 +1090,19 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		case NONE:
 			break;
 		case PASSWORD_PROMPT:
-			Dprintf(@"Password prompt received");
 			output = @"";
 			[finkTask stop];
 			break;
 		case PROMPT:
+			[self interactIfRequired];
+			break;
+		case MANDATORY_PROMPT:
 			NSBeep();
-			[self raiseInteractionWindow: self];
+			[self raiseInteractionWindow:self];
 			break;
 		case PROMPT_AND_START:
 			[self startInstall];
-			[self raiseInteractionWindow: self];
+			[self interactIfRequired];
 			break;
 		case START_INSTALL:
 			[self startInstall];

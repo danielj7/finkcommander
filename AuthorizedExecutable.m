@@ -12,7 +12,6 @@
 #import "AuthorizedExecutable.h"
 #import <Security/AuthorizationTags.h>
 
-
 @implementation AuthorizedExecutable
 
 // This needs to be initialized with the full path to the Launcher
@@ -114,7 +113,8 @@
         // the tool you want to execute, and the length of the C string path.
         // There needs to be one item for each tool you want to execute.
         items[0].name = kAuthorizationRightExecute;
-        items[0].value = (char*)[[NSFileManager defaultManager] fileSystemRepresentationWithPath:[self authExecutable]];
+        items[0].value = (char*)[[NSFileManager defaultManager] 
+		fileSystemRepresentationWithPath:[self authExecutable]];
         items[0].valueLength = [[self authExecutable] length];
         items[0].flags = 0;
         rights.count=1;
@@ -176,7 +176,7 @@
     return [self authorize];
 }
 
-// Determine if the Luancher exists and is executable.
+// Determine if the Launcher exists and is executable.
 //
 -(bool)isExecutable
 {

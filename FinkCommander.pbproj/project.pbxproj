@@ -36,7 +36,6 @@
 				089C165DFE840E0CC02AAC07,
 				F53B4D0B031033DD01A80164,
 				F53B4D0A031033D401A80164,
-				F53B4D0C031033FE01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = InfoPlist.strings;
@@ -216,7 +215,6 @@
 				29B97319FDCFA39411CA2CEA,
 				F5CC37120304F26F01A80164,
 				F5CC37130304F27C01A80164,
-				F5CC37140304F28601A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -639,7 +637,6 @@
 				F5375A6D0246DE1901A80164,
 				F5CC37150304F29A01A80164,
 				F5CC37160304F2A201A80164,
-				F5C3E8F303341DFE01A80167,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -723,7 +720,6 @@
 				F53B4CA303100C0E01A80164,
 				F53B4D0703100C4301A80164,
 				F53B4D0803100C5101A80164,
-				F53B4D0903100C5D01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Toolbar.plist;
@@ -747,12 +743,6 @@
 			path = German.lproj/Toolbar.plist;
 			refType = 4;
 		};
-		F53B4D0903100C5D01A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Toolbar.plist;
-			refType = 4;
-		};
 		F53B4D0A031033D401A80164 = {
 			isa = PBXFileReference;
 			name = German;
@@ -763,12 +753,6 @@
 			isa = PBXFileReference;
 			name = French;
 			path = French.lproj/InfoPlist.strings;
-			refType = 4;
-		};
-		F53B4D0C031033FE01A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/InfoPlist.strings;
 			refType = 4;
 		};
 		F53B4D41031079C801A80164 = {
@@ -1117,7 +1101,6 @@
 			children = (
 				F568C4A302FC9D6101A80164,
 				F5CC37190304F2C601A80164,
-				F5CC371A0304F2CD01A80164,
 				F5D3EE420336DD8B01A80165,
 			);
 			isa = PBXVariantGroup;
@@ -1405,12 +1388,6 @@
 			path = "English.lproj/FinkCommander Help";
 			refType = 4;
 		};
-		F5C3E8F303341DFE01A80167 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Preferences.nib;
-			refType = 4;
-		};
 		F5C523D802A326B701A80165 = {
 			isa = PBXFileReference;
 			path = FinkPackageInfo.h;
@@ -1439,12 +1416,6 @@
 			path = German.lproj/MainMenu.nib;
 			refType = 4;
 		};
-		F5CC37140304F28601A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/MainMenu.nib;
-			refType = 4;
-		};
 		F5CC37150304F29A01A80164 = {
 			isa = PBXFileReference;
 			name = French;
@@ -1462,13 +1433,6 @@
 			isa = PBXFileReference;
 			name = French;
 			path = French.lproj/Localizable.strings;
-			refType = 4;
-		};
-		F5CC371A0304F2CD01A80164 = {
-			fileEncoding = 10;
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5D3EE420336DD8B01A80165 = {

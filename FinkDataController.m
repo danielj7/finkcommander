@@ -97,7 +97,7 @@ int NAMESTART = 12;
 	NSMutableDictionary *pkgs = [NSMutableDictionary dictionary];
     NSEnumerator *e, *f;
     NSString *pkginfo, *line;
-	NSString *pname, *pversion;
+	NSString *pname = nil, *pversion = nil;
 
     [listCmd setLaunchPath: 
 		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]

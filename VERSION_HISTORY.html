@@ -9,20 +9,39 @@
 
 <h2>Version History</h2>
 
-0.4.0	pending
+0.4.0	9/22/2002
 
 <ul>
-	<li>Improved table display:  The existing Installed, Binary and Unstable columns, as well as the new Stable column, show the appropriate version numbers.  The information that formerly appeared under Installation ("current", "outdated", etc.) now appears in the Status column.</li>
+	<li>FinkCommander now uses Apple's Security Framework to authorize Fink and
+	apt-get commands that require root privileges.  Users will notice three
+	differences as a result:
+	<ol>
+		<li>Apple's password dialog allows the user to enter a user name other than that of
+		the current user.  It will now be possible to use FinkCommander from a 
+		non-administrator's account.</li>
+		<li>FinkCommander's authorization will time out after five minutes, unless the 
+		default timeout period has been changed in /private/etc/authorization.  The user 
+		will need to re-enter his or her password to run another command.</li>
+		<li>The terminate command is <em>much</em> more reliable.</li>
+	</ol>
+	Thanks to Dave Love, who provided the code for making this long-needed change.</li>	 
+
+	<li>The table display has been improved:  The existing Installed, Binary and
+	Unstable columns, as well as the new Stable column, show the appropriate
+	version numbers.  The information that formerly appeared under Installation
+	("current", "outdated", etc.) now appears in the Status column.</li>
 	
-	<li>The same version information appears in the Package Inspector</li>
+	<li>The same version information appears in the Package Inspector.</li>
 	
-	<li>A determinate progress indicator and more detailed messages in the status bar provide better feedback for source installation commands.</li>
+	<li>A determinate progress indicator and more detailed messages in the status bar 
+	provide better feedback for source installation commands.</li>
 	
 	<li>The terminate command is more reliable.</li>
 	
 	<li>Table rows can now be copied.</li>
 	
-	<li>The output view can be collapsed or expanded by double clicking the view divider.</li>
+	<li>The output view can be collapsed or expanded by double clicking the view 
+	divider.</li>
 </ul>
 
 0.3.3a	8/10/2002
@@ -36,41 +55,45 @@
 0.3.3 	8/4/2002
 
 <ul>
-
 	<li>The binary column now marks only those packages that are available in the
-Fink binary distribution.  Previously, as documented in the help system, 
-it also marked packages that had been installed on the user's system from the 
-source distribution.  Thanks to Martin Costabel for providing the information that
-enabled me to fix this long-standing problem.</li>
+	Fink binary distribution.  Previously, as documented in the help system, 
+	it also marked packages that had been installed on the user's system from the 
+	source distribution.  Thanks to Martin Costabel for providing the information that
+	enabled me to fix this long-standing problem.</li>
 
-	<li>A Force Remove command, which runs dpkg --remove --force-depends, has been added to the 
-Source menu.</li>
+	<li>A Force Remove command, which runs dpkg --remove --force-depends, has been added to 
+	the Source menu.</li>
 
-	<li>A new Environment tab in Preferences allows you to set environment variables
-for fink and apt-get processes.  You can also edit or remove environment variables set by 
-FinkCommander, although I wouldn't necessarily recommend it.</li>
+	<li>A new Environment tab in Preferences allows you to set environment
+	variables for fink and apt-get processes.  You can also edit or remove
+	environment variables set by FinkCommander, although I wouldn't necessarily
+	recommend it.</li>
 
-	<li>The Verbosity item in the Fink Tab has been altered to accomodate a pending change
-to the Fink package manager.  When you install the next version of the PM, you should have
-4 choices rather than 2 for this item.</li>
+	<li>The Verbosity item in the Fink Tab has been altered to accomodate a
+	pending change to the Fink package manager.  When you install the next
+	version of the PM, you should have 4 choices rather than 2 for this
+	item.</li>
 
-	<li>There has been another modest reorganization of the Preferences panel.  Some items that 
-formerly appeared in the Commander tab are now in a new Display tab.  The Uniphobe
-tab is gone.  Most of its contents are under Commander.</li> 
+	<li>There has been another modest reorganization of the Preferences panel. 
+	Some items that formerly appeared in the Commander tab are now in a new
+	Display tab.  The Uniphobe tab is gone.  Most of its contents are under
+	Commander.</li>
 
-	<li>FinkCommander will now automatically check for new versions according to a schedule you
-set in Preferences.  (As always, you can also turn this feature off.)</li>
+	<li>FinkCommander will now automatically check for new versions according to
+	a schedule you set in Preferences.  (As always, you can also turn this
+	feature off.)</li>
 
-	<li>There is now an optional limit on the number of lines displayed in the output view.  The
-default is 10000 (same as for Terminal), but this can be changed or removed entirely in 
-Preferences:Display.</li>
+	<li>There is now an optional limit on the number of lines displayed in the
+	output view.  The default is 10000 (same as for Terminal), but this can be
+	changed or removed entirely in Preferences:Display.</li>
 
-	<li>A bug preventing the table data from loading once Japanese had been chosen as the 
-preferred language in System Preferences has been fixed. (I hope.)</li>
+	<li>A bug preventing the table data from loading once Japanese had been
+	chosen as the preferred language in System Preferences has been fixed. (I
+	hope.)</li>
 
-	<li>The package version number and the version of make on the user's system have been added 
-to the information included in emails to package maintainers generated by FinkCommander.</li>
-
+	<li>The package version number and the version of make on the user's system
+	have been added to the information included in emails to package maintainers
+	generated by FinkCommander.</li>
 </ul>
 
 0.3.2 	7/7/2002
@@ -78,37 +101,34 @@ to the information included in emails to package maintainers generated by FinkCo
 <ul>
     <li>FinkCommander has a new application icon!</li>
 
-	<li>A new View menu allows the user to specify which columns to
-display, including a new package maintainer column.</li>
-	
-	<li>The user can now email the maintainer for a selected package
-via the Help menu and a toolbar command as well by clicking the email
-address in the package inspector.</li>
+    <li>A new View menu allows the user to specify which columns to display,
+    including a new package maintainer column.</li> 
+    
+    <li>The user can now email the maintainer for a selected package via the
+    Help menu and a toolbar command as well by clicking the email address in the
+    package inspector.</li>
 
-	<li>Emails to package maintainers now include the name of the
-package in the subject line and a signature providing relevant system
-information.  The signature also gives FinkCommander credit for
-generating the email, but you can turn this off in
-Preferences:Commander.</li>
-	
-	<li>A save output command has been added to the File menu.  The
-save dialog provides a default filename consisting of the command and
-the date.  The user can specify a default directory in
-Preferences:Paths.</li>
-	
-	<li>A FinkCommander:Check for Updates menu item has been added.
-It produces a dialog letting the user know whether a more recent
-version of FinkCommander is available for download.</li>
-	
-	<li>An optional alert panel displays before FinkCommander runs a
-remove command.</li>
-	
-	<li>The zoom behavior of the package inspector panel has been
-improved.</li>
-	
-	<li>Fixed bugs: Failure of selfupdate-cvs when run by fink
-developers with secure cvs access.  Inadvertently change in ownership
-and group ownership of fink.conf file.  Memory leaks.</li>
+    <li>Emails to package maintainers now include the name of the package in the
+    subject line and a signature providing relevant system information.  The
+    signature also gives FinkCommander credit for generating the email, but you
+    can turn this off in Preferences:Commander.</li> 
+    
+    <li>A save output command has been added to the File menu.  The save dialog
+    provides a default filename consisting of the command and the date.  The
+    user can specify a default directory in Preferences:Paths.</li> 
+    
+    <li>A FinkCommander:Check for Updates menu item has been added. It produces
+    a dialog letting the user know whether a more recent version of
+    FinkCommander is available for download.</li> 
+    
+    <li>An optional alert panel displays before FinkCommander runs a remove
+    command.</li> 
+    
+    <li>The zoom behavior of the package inspector panel has been improved.</li>
+    
+    <li>Fixed bugs: Failure of selfupdate-cvs when run by fink developers with
+    secure cvs access.  Inadvertently change in ownership and group ownership of
+    fink.conf file.  Memory leaks.</li> 
 </ul>
 
 0.3.1   6/11/2002:
