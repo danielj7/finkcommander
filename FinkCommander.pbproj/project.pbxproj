@@ -239,7 +239,7 @@
 				29B9732DFDCFA39411CA2CEA,
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "/Users/sburr/CamelBones/build /Users/sburr/Library/Frameworks /Users/sburr/FinkCommanderDev/FinkCommander";
+				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";

@@ -82,19 +82,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Register for notification that causes table to update
 		//and resume normal state
-#ifndef USE_CAMELBONES
 		[center addObserver: self
 				selector: @selector(resetInterface:)
 				name: FinkPackageArrayIsFinished
 				object: nil];
-#else
-		[[NSDistributedNotificationCenter defaultCenter]
-				addObserver: self 
-				selector: @selector(resetInterface:)
-				name: FinkPackageArrayIsFinished
-				object: nil];
-#endif
-		
 		//Register for notification that another object needs to run
 		//a command with root privileges
 		[center addObserver: self
@@ -182,8 +173,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[tableView lastIdentifier]];
+	NSString *basePath = [defaults objectForKey:FinkBasePath];
 				
-	if (! [[defaults objectForKey:FinkBasePath] length] > 1){
+	if ([basePath length] <= 0 ){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
@@ -220,11 +212,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //		ACCESSORS
 //--------------------------------------------------------------------------------
 
-#ifndef USE_CAMELBONES
 -(FinkDataController *)packages  {return packages;}
-#else
--(FinkData *)packages { return packages; }
-#endif
 
 -(NSArray *)selectedPackages {return selectedPackages;}
 -(void)setSelectedPackages:(NSArray *)a
@@ -362,13 +350,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[msgText setStringValue: @"Updating table data"];
 	commandIsRunning = YES;
 
-#ifndef USE_CAMELBONES
 	[packages update];
-#else
-	[NSThread detachNewThreadSelector:@selector(update:) 
-				toTarget:packages 
-				withObject:nil]; 
-#endif
 }
 
 //there are separate action methods for running package-specific and

@@ -36,14 +36,11 @@ File: FinkGlobals.h
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
 
-//#define USE_CAMELBONES
-
 #define DEBUGGING 1
 
 #define LOGIFDEBUG(x) if (DEBUGGING) {NSLog(x);}
 
 //#define DEBUG
-
 
 //User Default Items
 //  Set by user
