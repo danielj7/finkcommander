@@ -505,6 +505,31 @@
 //4A2
 //4A3
 //4A4
+//C70
+//C71
+//C72
+//C73
+//C74
+		C77360DD03E9D21200EE6D09 = {
+			children = (
+				F5D5018B0342BADE01A80165,
+				C77360DE03E9D23200EE6D09,
+			);
+			isa = PBXVariantGroup;
+			name = README.html;
+			refType = 4;
+		};
+		C77360DE03E9D23200EE6D09 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/README.html;
+			refType = 4;
+		};
+//C70
+//C71
+//C72
+//C73
+//C74
 //F50
 //F51
 //F52
@@ -1638,7 +1663,7 @@
 		F5BBDFAC023AF87D01A80164 = {
 			children = (
 				F55057270231E5F701A80164,
-				F5D5018B0342BADE01A80165,
+				C77360DD03E9D21200EE6D09,
 				F501F21202FDF20001A80164,
 				F5BBDFAF023AF89301A80164,
 				F54A669802DA8F3701A80165,
@@ -1945,7 +1970,8 @@
 		F5D5018B0342BADE01A80165 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = README.html;
+			name = English;
+			path = English.lproj/README.html;
 			refType = 4;
 		};
 		F5DABE8B03359EF601FEFA3F = {

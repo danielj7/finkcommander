@@ -3,7 +3,7 @@
 "%d packages (%d installed)" = "%d Pakete (%d installiert)";
 
 /* Alert dialog query */
-"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?" = "Eine neuere Version von FinkCommander\n%@) ist verfügbar.\nWollen Sie die FinkCommander Web Site besuchen um die neue Version herunterzuladen?";
+"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?" = "Eine neuere Version von FinkCommander (%@) ist verfügbar.\nWollen Sie die FinkCommander Web Site besuchen um die neue Version herunterzuladen?";
 
 /* Warning dialog message, singular version */
 "Are you certain you want to remove the selected package?" = "Sind Sie sicher, dass Sie das ausgewählte Paket löschen wollen?";
@@ -96,7 +96,7 @@
 "Show Main Window" = "Hauptfenster einblenden";
 
 /* Menu title */
-"Show Toolbar" = "Werkzeigleiste einblenden";
+"Show Toolbar" = "Werkzeugliste einblenden";
 
 /* Dialog title */
 "Sorry" = "Entschuldigung";
@@ -132,8 +132,7 @@
 "You do not have the latest version of the following package:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest version, you should install and try it before sending negative feedback." = "Sie haben nicht die aktuellste Version des folgenden Paketes:\n\n\t%@\n\nBitte installieren und testen Sie die aktuellste Version bevor Sie ein negatives Feedback senden.";
 
 /* Alert message, plural version */
-"You do not have the latest version of the following packages:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest versions, you should install and try them before sending negative feedback." = "Sie haben nicht die aktuellste Version der folgenden Pakete:\n\n\t%@\n\nBitte installieren und testen Sie die aktuellste Version bevor Sie ein 
-		negatives Feedback senden.";
+"You do not have the latest version of the following packages:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest versions, you should install and try them before sending negative feedback." = "Sie haben nicht die aktuellste Version der folgenden Pakete:\n\n\t%@\n\nBitte installieren und testen Sie die aktuellste Version bevor Sie ein negatives Feedback senden.";
 
 /* This warning is issued if the user tries to start this task when the mustBeAuthorized flag is set and the user isn't authorized */
 "You must authorize yourself before you can run this command.\n" = "Sie müssen sich ausweisen bevor Sie dieses Kommando ausführen können.\n";
