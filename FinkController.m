@@ -650,11 +650,34 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //remove or add column
 -(IBAction)chooseTableColumn:(id)sender
 {
-	int loc = [[sender title] rangeOfString: @" "].location;
-	NSString *columnIdentifier =
-		[[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
+	NSString *columnIdentifier = @"";
 	NSMutableDictionary *selStates = [[[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy] autorelease];
 	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
+	
+	//cannot use title because of localization
+	switch ([sender tag]){
+		case VERSION:
+			columnIdentifier = @"version";
+			break;
+		case BINARY:
+			columnIdentifier = @"binary";
+			break;
+		case UNSTABLE:
+			columnIdentifier = @"unstable";
+			break;
+		case INSTALLED:
+			columnIdentifier = @"installed";
+			break;
+		case CATEGORY:
+			columnIdentifier = @"category";
+			break;
+		case DESCRIPTION:
+			columnIdentifier = @"description";
+			break;
+		case MAINTAINER:
+			columnIdentifier = @"maintainer";
+			break;
+	}
 
 	if (newState == NSOnState){
 		[tableView addColumnWithName: columnIdentifier];
