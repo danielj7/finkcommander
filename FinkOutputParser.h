@@ -104,7 +104,9 @@ enum {
 	START_AND_UNPACK,
 	START_AND_ACTIVATE,
 	RUNNING_SELF_REPAIR,
-	SELF_REPAIR_COMPLETE
+	SELF_REPAIR_COMPLETE,
+	RESOURCE_DIR,
+	SELF_REPAIR_FAILED
 };
  
 
@@ -122,6 +124,7 @@ enum {
     int currentPhase;
 	BOOL installing;
     BOOL readingPackageList;
+	BOOL self_repair;
 }
 
 -(id)initForCommand:(NSString *)cmd

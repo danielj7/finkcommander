@@ -59,5 +59,19 @@ remove it and then reinstall it before a newer version becomes
 available, the fink package manager will use the dpkg command to 
 reinstall an archived binary package that it has stored on your system.</p>
 
+<h3><a name="terminal">Running Commands in Terminal</a></h3>
+
+<p>If you choose a command from the <kbd>Source:Run in Terminal</kbd> or 
+<kbd>Binary:Run in Terminal</kbd> submenu, a new terminal window will open with
+the name of the command in the window title and the command will run in that window
+rather than in FinkCommander.  You may be prompted for your password in the Terminal.
+The same option is available via the table's contextual menu and a number of optional
+toolbar items.</p>
+
+<p>You can if you wish use this option to run a second fink command while another command
+is being run in FinkCommander, but you should exercise care in doing so.  Simultaneously running 
+incompatible commands, such as installing a package while removing one of the package's
+dependencies, will have unpredictable results.</p>
+
 </body>
 </html>

@@ -34,9 +34,11 @@
 #import <Foundation/Foundation.h>
 #import "SBString.h"
 
-#define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
+#ifndef DEBUGGING
+#include "Debugging.h"
+#endif
 
-#define DEBUGGING
+#define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
 
 //User Default Items
 //  Set by user

@@ -17,7 +17,8 @@ File: FinkOutputParser.m
     if (self = [super init]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
-		readingPackageList = NO;		
+		readingPackageList = NO;
+		self_repair = NO;		
 		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
 		
 		if (installing){
@@ -329,13 +330,23 @@ File: FinkOutputParser.m
 	if (ISMANDATORY_PROMPT(line)){
 		return MANDATORY_PROMPT;
     }
-	//Look for self-repair of tool
+	//Look for self-repair of tool 
 	if ([line contains:@"Running self-repair"]){
+		self_repair = YES;
 		return RUNNING_SELF_REPAIR;
 	}
-	if ([line contains:@"Self-repair done"]){
+	if (self_repair && [line contains:@"Self-repair succeeded"]){
+		self_repair = NO;
 		return SELF_REPAIR_COMPLETE;
 	} 
+	if (self_repair && [line contains:@"Unable to modify Resource directory\n"]){
+		self_repair = NO;
+		return RESOURCE_DIR;
+	}
+	if ([line contains:@"Self-repair failed\n"]){
+		self_repair = NO;
+		return SELF_REPAIR_FAILED;
+	}
 	return NONE;
 }
 

@@ -21,7 +21,8 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 NSString *FinkInteractItem = @"FinkInteractItem";
 NSString *FinkEmailItem = @"FinkEmailItem";
 NSString *FinkUpdateallItem = @"FinkUpdateallItem";
-
+NSString *FinkTermInstallItem = @"FinkTermInstallItem";
+NSString *FinkTermCvsItem = @"FinkTermCvsItem";
 
 @implementation FinkController
 
@@ -78,7 +79,6 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 		finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
 		killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
 		[finkTask setDelegate:self];
-		[self setLastParams: nil];
 		commandIsRunning = NO;
 		pendingCommand = NO;
 
@@ -131,9 +131,9 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [packages release];
     [preferences release];
+	[textViewController release];
     [parser release];
     [lastCommand release];
-    [lastParams release];
     [finkTask release];
     [killTask release];
     [toolbar release];
@@ -147,7 +147,7 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 #pragma mark GENERAL HELPERS
 //--------------------------------------------------------------------------------
 
-//Tag <-> Name Translation
+/** Tag <-> Name Translation **/
 //Using tags rather than titles to tie the View menu items and search fields to
 //particular columns makes it possible to localize the column names
 
@@ -187,7 +187,7 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     }
 }
 
-//display running command below table
+//Display running command below the table
 -(void)displayCommand:(NSArray *)params
 {
     [msgText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"Running", nil),
@@ -245,7 +245,6 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     NSString *col;
     id splitSuperview = [splitView superview];
     NSSize tableContentSize = [tableScrollView contentSize];
-    NSSize outputContentSize = [outputScrollView contentSize];
 
     //Substitute FinkScrollView for NSScrollView
     [tableScrollView retain];  //keep subviews available after the split
@@ -271,13 +270,12 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     [tableView sizeLastColumnToFit];
     [tableView setMenu:tableContextMenu];
 
-    //Substitute FinkTextViewController for NSTextView
-    textView = [[FinkTextViewController alloc] initWithFrame:
-		NSMakeRect(0, 0, outputContentSize.width,
-			 outputContentSize.height)];
-    [outputScrollView setDocumentView:textView];
-    [textView release];
-
+    //Instantiate FinkTextViewController
+    textViewController = [[FinkTextViewController alloc] 
+								initWithView:textView
+								forScrollView:outputScrollView];
+									
+	//Set state of View menu column items
     while (col = [e nextObject]){
 		int atag = [self tagFromAttributeName:col];
 		[[viewMenu itemWithTag:atag] setState:NSOnState];
@@ -342,14 +340,6 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     lastCommand = s;
 }
 
--(NSMutableArray *)lastParams {return lastParams;}
--(void)setLastParams:(NSMutableArray *)a
-{
-    [a retain];
-    [lastParams release];
-    lastParams = a;
-}
-
 -(void)setParser:(FinkOutputParser *)p
 {
     [p retain];
@@ -409,21 +399,6 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     userConfirmedQuit = YES; //flag to make sure we ask only once
     return YES;
 }
-
-//TBD:  Trying to resize search view when other toolbar items are resized
--(void)windowDidUpdate:(NSNotification *)ignore
-{
-	if ([toolbar sizeMode] == NSToolbarSizeModeSmall &&
-		[[searchPopUpButton cell] controlSize] == NSRegularControlSize){
-		[[searchPopUpButton cell] setControlSize:NSSmallControlSize];
-		[[searchTextField cell] setControlSize:NSSmallControlSize];
-	}else if ([toolbar sizeMode] == NSToolbarSizeModeRegular &&
-			  [[searchPopUpButton cell] controlSize] == NSSmallControlSize){
-		[[searchPopUpButton cell] setControlSize:NSRegularControlSize];
-		[[searchTextField cell] setControlSize:NSRegularControlSize];
-	}
-}
-
 
 //--------------------------------------------------------------------------------
 #pragma mark MAIN MENU
@@ -507,11 +482,11 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 
     [panel setRequiredFileType: @"txt"];
     [panel beginSheetForDirectory:savePath
-								file:fileName
-					  modalForWindow:window
-					   modalDelegate:self
-					  didEndSelector:@selector(didEnd:returnCode:contextInfo:)
-						 contextInfo:nil];
+			file:fileName
+			modalForWindow:window
+			modalDelegate:self
+			didEndSelector:@selector(didEnd:returnCode:contextInfo:)
+			contextInfo:nil];
 }
 
 -(void)didEnd:(NSSavePanel *)sheet
@@ -555,7 +530,7 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
     NSString *full = nil;
     NSString *divider = @"____________________________________________________\n\n";
 
-    [textView setString: @""];
+    [[textViewController textView] setString: @""];
 
     while (pkg = [e nextObject]){
 		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
@@ -563,10 +538,10 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 			[pkg version],
 			[pkg fulldesc]];
 		if (i > 0){
-			[[textView textStorage] appendAttributedString:
+			[[[textViewController textView] textStorage] appendAttributedString:
 				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
 		}
-		[[textView textStorage] appendAttributedString:
+		[[[textViewController textView] textStorage] appendAttributedString:
 			[[[NSAttributedString alloc] initWithString: full] autorelease]];
 		i++;
     }
@@ -739,13 +714,15 @@ willBeInsertedIntoToolbar:(BOOL)flag
 	       FinkRemoveBinaryItem,
 	       FinkSelfUpdateItem,
 	       FinkSelfUpdateCVSItem,
+		   FinkUpdateallItem,
 	       FinkUpdateBinaryItem,
 	       FinkDescribeItem,
+		   FinkTermInstallItem,
+		   FinkTermCvsItem,
 	       FinkInteractItem,
 	       FinkTerminateCommandItem,
 	       FinkEmailItem,
 	       FinkFilterItem,
-	       FinkUpdateallItem,
 	       nil];
 }
 
@@ -795,7 +772,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 					[subset addObject: pkg];
 				}
 			}
-			[tableView setDisplayedPackages: subset];
+			[tableView setDisplayedPackages:subset];
 		}
 		[tableView resortTableAfterFilter];
 
@@ -870,11 +847,12 @@ willBeInsertedIntoToolbar:(BOOL)flag
 #pragma mark RUNNING AUTHORIZED COMMANDS
 //--------------------------------------------------------------------------------
 
-//Helper for Menu and Toolbar Commands
+/*** Helper for Menu and Toolbar Commands ***/
+
 -(NSMutableArray *)argumentListForCommand:(id)sender
-						  packageSpecific:(BOOL)pkgSpec
+					packageSpecific:(BOOL)pkgSpec
 {
-    NSString *cmd, *exe;
+    NSString *cmd, *exe = @"";
     NSMutableArray *args;
     FinkPackage *pkg;
     NSEnumerator *e;
@@ -924,6 +902,39 @@ willBeInsertedIntoToolbar:(BOOL)flag
     return args;
 }
 
+/*** Run-in-Terminal Commands ***/
+
+-(IBAction)runPackageSpecificCommandInTerminal:(id)sender
+{
+	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:YES]
+						componentsJoinedByString:@" "];
+	[self launchCommandInTerminal:cmd];
+}
+
+-(IBAction)runNonSpecificCommandInTerminal:(id)sender
+{
+	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:NO]
+						componentsJoinedByString:@" "];
+	[self launchCommandInTerminal:cmd];
+}
+
+-(void)launchCommandInTerminal:(NSString *)cmd
+{
+	NSAppleScript *script;
+	NSAppleEventDescriptor *descriptor;
+	NSDictionary *errord;
+
+	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
+	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
+	descriptor = [script executeAndReturnError:&errord];
+	if (! descriptor){
+		NSLog(@"Apple script failed to execute");
+		NSLog(@"Error dictionary:\n%@", [errord description]);
+	}
+}
+
+/*** Run-in-FinkCommander Methods ***/
+
 -(IBAction)runPackageSpecificCommand:(id)sender
 {
     NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:YES];
@@ -943,35 +954,6 @@ willBeInsertedIntoToolbar:(BOOL)flag
 {
     NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:NO];
     [self launchCommandWithArguments:args];
-}
-
--(void)runCommandInTerminal:(NSString *)cmd
-{
-	NSAppleScript *script;
-	NSAppleEventDescriptor *descriptor;
-	NSDictionary *errord;
-
-	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
-	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
-	descriptor = [script executeAndReturnError:&errord];
-	if (! descriptor){
-		NSLog(@"Apple script failed to execute");
-		NSLog(@"Error dictionary:\n%@", [errord description]);
-	}	
-}
-
--(IBAction)runPackageSpecificCommandInTerminal:(id)sender
-{
-	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:YES]
-						componentsJoinedByString:@" "];
-	[self runCommandInTerminal:cmd];
-}
-
--(IBAction)runNonSpecificCommandInTerminal:(id)sender
-{
-	NSString *cmd = [[self argumentListForCommand:sender packageSpecific:NO]
-						componentsJoinedByString:@" "];
-	[self runCommandInTerminal:cmd];	
 }
 
 -(IBAction)runForceRemove:(id)sender
@@ -994,20 +976,25 @@ willBeInsertedIntoToolbar:(BOOL)flag
     NSString *cmd = [args objectAtIndex: 0];
     NSNumber *indicator = [[note userInfo] objectForKey:FinkRunProgressIndicator];
 
+	Dprintf(@"Running command %@ on notification", cmd);
+
     if (commandIsRunning && !toolIsBeingFixed){
 		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
 				  NSLocalizedString(@"YouMustWait", nil),
 				  NSLocalizedString(@"OK", nil), nil, nil);
-		if ([cmd isEqualToString:@"--write_fconf"]){
+		if (preferences && [cmd isEqualToString:@"--write_fconf"]){
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		}
 		return;
-    }
-
+	}
+	if ([cmd contains:@"fink"]){
+		[self setLastCommand:@"index"];
+	}else{
+		[self setLastCommand:cmd];
+	}
     if (indicator){
 		[self startProgressIndicatorAsIndeterminate:[indicator intValue]];
     }
-
     //prevent tasks run by consecutive notifications from tripping over each other
     [self performSelector:@selector(launchCommandWithArguments:)
 					 withObject:args
@@ -1022,16 +1009,18 @@ willBeInsertedIntoToolbar:(BOOL)flag
     toolIsBeingFixed = NO;
     commandIsRunning = YES;
     [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
-														   executable:exec]];
+											  executable:exec]];
     [self displayCommand: args];
 
     [finkTask setArguments:args];
     [finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
     [finkTask authorizeWithQuery];
     [finkTask start];
-    [textView setString: @""];
+	[textViewController setLimits];
+    [[textViewController textView] 
+		replaceCharactersInRange:NSMakeRange(0, [[textView string] length])
+		withString:@""];
 }
-
 
 //--------------------------------------------------------------------------------
 #pragma mark INTERACTION SHEET
@@ -1040,8 +1029,8 @@ willBeInsertedIntoToolbar:(BOOL)flag
 -(IBAction)raiseInteractionWindow:(id)sender
 {
     [splitView expandOutputToMinimumRatio:0.4];
-    [textView scrollRangeToVisible:
-		NSMakeRange([[textView string] length], 0)];
+    [[textViewController textView] scrollRangeToVisible:
+		NSMakeRange([[[textViewController textView] string] length], 0)];
 
     [NSApp beginSheet: interactionWindow
 		  modalForWindow: window
@@ -1068,7 +1057,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 			[finkTask writeToStdin: [NSString stringWithFormat:@"%@\n",
 				[interactionField stringValue]]];
 		}
-		[textView appendString:@"\n"];
+		[textViewController appendString:@"\n"];
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
 			[splitView collapseOutput: nil];
 		}
@@ -1079,7 +1068,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
 #pragma mark AUTHORIZED EXECUTABLE DELEGATE METHODS
 //--------------------------------------------------------------------------------
 
-//----------------------------------------------->Helpers
+/*** Helpers ***/
 
 -(void)startInstall
 {
@@ -1110,7 +1099,6 @@ willBeInsertedIntoToolbar:(BOOL)flag
     }
 }
 
-
 //Scroll to the latest addition to output if user has selected the option
 //to always do so, or if the scroll thumb is at or near the bottom
 -(void)scrollToVisible:(NSNumber *)pixelsBelowView
@@ -1120,12 +1108,12 @@ willBeInsertedIntoToolbar:(BOOL)flag
     //there are 0 pixels below the scroll view
     if ([pixelsBelowView floatValue] <= 100.0 ||
 		[defaults boolForKey: FinkAlwaysScrollToBottom]){
-		[textView scrollRangeToVisible:
-			NSMakeRange([[textView string] length], 0)];
+		[[textViewController textView] scrollRangeToVisible:
+			NSMakeRange([[[textViewController textView] string] length], 0)];
     }
 }
 
-//----------------------------------------------->Methods
+/*** Delegate Methods ***/
 
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore
 {
@@ -1141,9 +1129,9 @@ willBeInsertedIntoToolbar:(BOOL)flag
     //This value is used to determine whether the user has scrolled up.
     //If so, the output view will not automatically scroll to the bottom.
     NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
-				    abs([textView bounds].size.height -
-			[textView visibleRect].origin.y -
-			[textView visibleRect].size.height)];
+				    abs([[textViewController textView] bounds].size.height -
+			[[textViewController textView] visibleRect].origin.y -
+			[[textViewController textView] visibleRect].size.height)];
     int signal = [parser parseOutput:output];
     if (commandTerminated) return;
     switch(signal)
@@ -1199,8 +1187,14 @@ willBeInsertedIntoToolbar:(BOOL)flag
 			output = NSLocalizedString(@"ToolHasSelfRepaired", nil);
 			commandTerminated = YES;
 			break;
+		case RESOURCE_DIR:
+			output = NSLocalizedString(@"ResourceDirChangeFailed", nil);
+			break;
+		case SELF_REPAIR_FAILED:
+			output = NSLocalizedString(@"SelfRepairFailed", nil);
+			break;
     }
-    [textView appendString:output];
+    [textViewController appendString:output];
     //According to Moriarity example, we have to put off scrolling until next event loop
     [self performSelector:@selector(scrollToVisible:)
 					 withObject:pixelsBelowView
@@ -1210,9 +1204,10 @@ willBeInsertedIntoToolbar:(BOOL)flag
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
     int status = [number intValue];
-    int outputLength = [[textView string] length];
-    NSString *last2lines = outputLength < 160 ? [textView string] :
-		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
+    int outputLength = [[[textViewController textView] string] length];
+    NSString *last2lines = outputLength < 160 ? [[textViewController textView] string] :
+		[[[textViewController textView] string] 
+			substringWithRange: NSMakeRange(outputLength - 160, 159)];
 
     Dprintf(@"Finishing command %@ with status %d", lastCommand, status);
     NSBeep();
@@ -1222,7 +1217,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
     // approximately last two lines for "failed."
     [tableView setDisplayedPackages:[packages array]];
     if (status == 0 && ! [last2lines containsCI: @"failed"]){
-		if (CMD_REQUIRES_UPDATE(lastCommand)){
+		if (CMD_REQUIRES_UPDATE(lastCommand) && ! commandTerminated){
 			[self updateTable: nil];   // resetInterface will be called by notification
 		}else{
 			[self resetInterface: nil];
@@ -1242,8 +1237,8 @@ willBeInsertedIntoToolbar:(BOOL)flag
     commandTerminated = NO;
 
     [[NSNotificationCenter defaultCenter]
-	postNotificationName:FinkCommandCompleted
-				  object:[self lastCommand]];
+		postNotificationName:FinkCommandCompleted
+		object:[self lastCommand]];
 }
 
 @end

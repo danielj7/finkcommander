@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
-<plist version="0.9">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
 	<key>FinkDescribeItem</key>
 	<dict>
@@ -126,6 +126,36 @@
 		<key>ToolTip</key>
 		<string>Update package descriptions and package manager</string>
 	</dict>
+	<key>FinkTermCvsItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runNonSpecificCommandInTerminal</string>
+		<key>Image</key>
+		<string>termcvs</string>
+		<key>Label</key>
+		<string>Selfupdate-cvs</string>
+		<key>PaletteLabel</key>
+		<string>Selfupdate-cvs in Terminal</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Run selfupdate-cvs command in Terminal</string>
+	</dict>
+	<key>FinkTermInstallItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runPackageSpecificCommandInTerminal</string>
+		<key>Image</key>
+		<string>terminstall</string>
+		<key>Label</key>
+		<string>Install</string>
+		<key>PaletteLabel</key>
+		<string>Install in Terminal</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Run install command in Terminal</string>
+	</dict>
 	<key>FinkTerminateCommandItem</key>
 	<dict>
 		<key>Action</key>
@@ -136,21 +166,6 @@
 		<string>Terminate</string>
 		<key>ToolTip</key>
 		<string>Terminate current command</string>
-	</dict>
-	<key>FinkUpdateallItem</key>
-	<dict>
-		<key>Action</key>
-		<string>runNonSpecificCommand</string>
-		<key>Image</key>
-		<string>updateall</string>
-		<key>Label</key>
-		<string>Update-all</string>
-		<key>PaletteLabel</key>
-		<string>Update-all</string>
-		<key>Tag</key>
-		<integer>0</integer>
-		<key>ToolTip</key>
-		<string>Update all packages from source</string>
 	</dict>
 	<key>FinkUpdateBinaryItem</key>
 	<dict>
@@ -166,6 +181,21 @@
 		<integer>1</integer>
 		<key>ToolTip</key>
 		<string>Update binary package descriptions</string>
+	</dict>
+	<key>FinkUpdateallItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runNonSpecificCommand</string>
+		<key>Image</key>
+		<string>updateall</string>
+		<key>Label</key>
+		<string>Update-all</string>
+		<key>PaletteLabel</key>
+		<string>Update-all</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Update all packages from source</string>
 	</dict>
 </dict>
 </plist>

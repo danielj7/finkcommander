@@ -24,7 +24,7 @@ communicates with:
 	some signals tell FinkCommander to send a follow-up message for additional 
 	information;
 
-*	FinkTableViewController (VC) and FinkTextViewController (VC) -- control
+*	FinkTableViewController (VC) and FinkTextViewController (C) -- control
 	the primary user interface elements;
 	
 *	a FinkPreferences object (C) -- provides an interface for both the FinkCommander user
@@ -84,7 +84,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 
-#define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
+#define CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
 							[(x) isEqualToString: @"remove"]		|| 				\
 							[(x) isEqualToString: @"index"]			|| 				\
 							[(x) contains: @"build"]				|| 				\
@@ -155,13 +155,13 @@ enum {
 
 @interface FinkController : NSObject
 {
-	//main window outlets
+	//Main window outlets
 	IBOutlet NSWindow *window;
 	IBOutlet id tableView;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet id splitView;
-	IBOutlet id textView;
+	IBOutlet NSTextView *textView;
 	IBOutlet id msgText;
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
@@ -169,30 +169,33 @@ enum {
 	IBOutlet NSMenu *viewMenu;
 	IBOutlet NSMenu *tableContextMenu;
 	
-	//interaction window outlets
+	//Interaction window outlets
 	IBOutlet NSWindow *interactionWindow;
 	IBOutlet NSMatrix *interactionMatrix;
 	IBOutlet NSTextField *interactionField;
 		
-	//search view outlets
+	//Search view outlets
 	IBOutlet id searchView;
 	IBOutlet NSPopUpButton *searchPopUpButton;
 	IBOutlet NSTextField *searchTextField;
 
-	//general instance variables
-
+	//FinkCommander objects
 	FinkDataController *packages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
 	FinkWarningDialog *warningDialog;
 	FinkOutputParser *parser;
+	FinkTextViewController *textViewController;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;
+
+	//Other objects
 	NSUserDefaults *defaults;
 	NSToolbar *toolbar;
-	NSMutableArray *lastParams;
 	NSString *lastCommand;
 	NSString *launcher;
+
+	//Flags
 	BOOL commandIsRunning;
 	BOOL userConfirmedQuit;
 	BOOL commandTerminated;
@@ -204,14 +207,9 @@ enum {
 -(FinkDataController *)packages;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
--(NSMutableArray *)lastParams;
--(void)setLastParams:(NSMutableArray *)a;
 -(void)setParser:(FinkOutputParser *)p;
 -(NSTextField *)searchTextField;
 -(NSPopUpButton *)searchPopUpButton;
-
-//Helper method used by appendOutput
--(void)scrollToVisible:(NSNumber *)n;
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
@@ -239,20 +237,23 @@ enum {
 -(IBAction)refilter:(id)sender;
 
 //Process Control Methods
-// sheet methods for interaction window
+//  sheet methods for interaction window
 -(IBAction)raiseInteractionWindow:(id)sender;
 -(IBAction)endInteractionWindow:(id)sender;
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
 			returnCode:(int)returnCode
 			contextInfo:(void *)contextInfo;
-// run the command
+//  running the command
 -(IBAction)runPackageSpecificCommand:(id)sender;
 -(IBAction)runNonSpecificCommand:(id)sender;
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender;
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender;
 -(IBAction)runForceRemove:(id)sender;
+-(void)launchCommandInTerminal:(NSString *)cmd;
 -(void)launchCommandWithArguments:(NSMutableArray *)args;
-// AuthorizedExecutable delegate methods
+
+//AuthorizedExecutable delegate methods
+-(void)scrollToVisible:(NSNumber *)n;  //helper method used by captureOutput
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;
 

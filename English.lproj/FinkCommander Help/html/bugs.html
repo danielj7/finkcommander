@@ -10,10 +10,6 @@
 <h2>Known Bugs and Limitations</h2>
 
 <dl>
-
-    <dt>Running FinkCommander from accounts without administrative privileges</dt>
-    <dd><p>Unfortunately, you can't do this at present.
-	</p></dd>
 	
     <dt>Interaction sheet display failure</dt>
     <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.  
@@ -28,17 +24,7 @@
 	<dd><p>If you receive an error message after running apt-get update, try running
 		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.
 	</p></dd>
-    
-    <dt>Incorrect table entries</dt>
-    <dd><p>If you turn off the <dfn>Alway update table with Fink</dfn>
-        option, FinkCommander will attempt to update the data in the
-        table, but the result will be at best a very rough
-        approximation of the true state of your installation.  To get
-        a complete update, turn the option back on, or run
-        <kbd>File:Update table</kbd>.
-        <a href="details/fc_tableupdate.html">More detail</a>.
-    </p></dd> 
-    
+        
     <dt>Tcsh package problem</dt>
     <dd><p>The selection of tcsh is disabled, because FinkCommander
         stalls when trying to install this package.  Installing from

@@ -283,7 +283,6 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 //basic sorting method
 -(void)sortTableAtColumn:(NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
-//	[[[self dataSource] displayedPackages] sortUsingSelector:
 	[[self displayedPackages] sortUsingSelector:
 		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:

@@ -4,11 +4,14 @@ File: FinkPreferences.m
  See the header file, FinkPreferences.h, for interface and license information.
 
 */
+
 #import "FinkPreferences.h"
 
 @implementation FinkPreferences
 
-//--------------------------------------------------------------->Startup and Shutdown
+//--------------------------------------------------------------------------------
+#pragma mark STARTUP AND SHUTDOWN
+//--------------------------------------------------------------------------------
 
 -(id)init
 {
@@ -33,8 +36,13 @@ File: FinkPreferences.m
 {
 	[conf release];
 	[environmentSettings release];
+	[environmentKeyList release];
 	[super dealloc];
 }
+
+//--------------------------------------------------------------------------------
+#pragma mark GENERAL HELPERS
+//--------------------------------------------------------------------------------
 
 -(void)validateEnvironmentButtons
 {
@@ -59,27 +67,34 @@ File: FinkPreferences.m
     environmentKeyList = [[environmentSettings allKeys] mutableCopy];
 }
 
-//helper to set or reset state of preference widgets
-//used on startup by windowDidLoad: method and when "Cancel" button is clicked
+//Set preferences to reflect existing defaults and fink.conf settings.
+//Used on startup and by cancel button.
 -(void)resetPreferences
 {
 	NSString *httpProxy;
-	NSString *basePath;
-	NSString *outputPath;
 	NSString *ftpProxy;
 	NSString *fetchAltDir;
 	NSString *downloadMethod;
+	NSString *basePath;
+	NSString *outputPath;
 	int scrollBackLimit;
 	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
 	
 	/***  FinkCommander Preferences ***/
 
-	[self setEnvironment];
-	[self setEnvironmentKeys];
-
+	//Commander Tab
+	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
+	[warnBeforeTerminatingButton setState: [defaults boolForKey: FinkWarnBeforeTerminating]];
+	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
+	[checkForUpdateButton setState:  interval > 0];	
+	if (interval){
+		[checkForUpdateIntervalTextField setIntValue:interval];
+		[checkForUpdateIntervalStepper setIntValue:interval];
+	}
+	
+	//Paths Tab
 	pathChoiceChanged = NO;
-	autoExpandChanged = NO;
-
 	basePath = [defaults objectForKey: FinkBasePath];
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
@@ -91,47 +106,50 @@ File: FinkPreferences.m
 	outputPath = [defaults objectForKey: FinkOutputPath];
 	[outputPathButton setState: [outputPath length] > 0];
 	[outputPathTextField setStringValue: outputPath];
-	
-	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+		
+	//Display Tab
+	autoExpandChanged = NO;
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
-	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
-	[warnBeforeTerminatingButton setState: [defaults boolForKey: FinkWarnBeforeTerminating]];
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
-	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
-	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];
-	[checkForUpdateButton setState:  interval > 0];
-	if (interval){
-		[checkForUpdateIntervalTextField setIntValue:interval];
-		[checkForUpdateIntervalStepper setIntValue:interval];
-	}
-	
-	
-	[self setTitleBarImage: nil];
-	
+	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];	
+	[self setTitleBarImage: self];  //action method
 	scrollBackLimit = [defaults integerForKey:FinkBufferLimit];
 	[scrollBackLimitButton setState: scrollBackLimit];
 	if (scrollBackLimit){
 		[scrollBackLimitTextField setIntValue: scrollBackLimit];
 	}
+
+	//Environment Tab
+	[self setEnvironment];
+	[self setEnvironmentKeys];
+	[environmentTableView reloadData];
 	
-	/***  fink.conf Settings  ***/
+	/***  Fink Settings in fink.conf ***/
 
 	finkConfChanged = NO;
 	
+	//Fink Tab
 	[useUnstableMainButton setState: [conf useUnstableMain]];
 	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
-	[passiveFTPButton setState: [conf passiveFTP]];
-	
 	[verboseOutputPopupButton selectItemAtIndex:[conf verboseOutput]];
+	if ([[conf rootMethod] isEqualToString: @"sudo"]){
+		[rootMethodMatrix selectCellWithTag: 0];
+	}else{
+		[rootMethodMatrix selectCellWithTag: 1];
+	}
+	fetchAltDir = [conf fetchAltDir];
+	[fetchAltDirButton setState: (fetchAltDir != nil ? YES : NO)];
+	[fetchAltDirTextField setStringValue: (fetchAltDir != nil ? fetchAltDir : @"")];
 	
+	//Download Tab
+	[passiveFTPButton setState: [conf passiveFTP]];
 	httpProxy = [environmentSettings objectForKey:@"http_proxy"];
 	if (! httpProxy) httpProxy = [conf useHTTPProxy];
 	if (! httpProxy) httpProxy = @"";
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
-	
 	downloadMethod = [conf downloadMethod];
 	if ([downloadMethod isEqualToString:@"curl"]){
 		[downloadMethodMatrix selectCellWithTag:0];
@@ -140,39 +158,16 @@ File: FinkPreferences.m
 	}else{
 		[downloadMethodMatrix selectCellWithTag:2];
 	}
-	
-	if ([[conf rootMethod] isEqualToString: @"sudo"]){
-		[rootMethodMatrix selectCellWithTag: 0];
-	}else{
-		[rootMethodMatrix selectCellWithTag: 1];
-	}
-
 	ftpProxy = [conf useFTPProxy];
 	[ftpProxyButton setState: (ftpProxy != nil ? YES : NO)];
 	[ftpProxyTextField setStringValue: (ftpProxy != nil ? ftpProxy : @"")];
-	
-	fetchAltDir = [conf fetchAltDir];
-	[fetchAltDirButton setState: (fetchAltDir != nil ? YES : NO)];
-	[fetchAltDirTextField setStringValue: (fetchAltDir != nil ? fetchAltDir : @"")];
-
-	[environmentTableView reloadData];
-	
 }
 
--(void)windowDidBecomeKey:(NSNotification *)ignore
-{
-	[self resetPreferences];
-}
+//--------------------------------------------------------------------------------
+#pragma mark ACTION HELPERS
+//--------------------------------------------------------------------------------
 
--(void)windowDidLoad
-{
-	[self resetPreferences];
-	[self validateEnvironmentButtons];
-}
-
-//---------------------------------------------------------------------->Action Helpers
-
-//FinkCommander settings
+/*** FinkCommander Settings ***/
 
 -(void)setBasePath
 {
@@ -191,7 +186,25 @@ File: FinkPreferences.m
 	[defaults setInteger:scrollBackLimit forKey:FinkBufferLimit];
 }
 
-//fink.conf settings
+/*** Fink Settings in fink.conf ***/
+
+-(void)setRootMethod
+{
+	if ([[rootMethodMatrix selectedCell] tag] == 0){
+		[conf setRootMethod: @"sudo"];
+	}else{
+		[conf setRootMethod: @"su"];
+	}
+}
+
+-(void)setFetchAltDir
+{
+	if ([fetchAltDirButton state] == NSOnState){
+		[conf setFetchAltDir: [fetchAltDirTextField stringValue]];
+	}else{
+		[conf setFetchAltDir: nil];
+	}
+}
 
 -(void)setDownloadMethod
 {
@@ -205,15 +218,6 @@ File: FinkPreferences.m
 		case 2:
 			[conf setDownloadMethod: @"axel"];
 			break;
-	}
-}
-
--(void)setRootMethod
-{
-	if ([[rootMethodMatrix selectedCell] tag] == 0){
-		[conf setRootMethod: @"sudo"];
-	}else{
-		[conf setRootMethod: @"su"];
 	}
 }
 
@@ -237,71 +241,74 @@ File: FinkPreferences.m
 	}
 }
 
--(void)setFetchAltDir
-{
-	if ([fetchAltDirButton state] == NSOnState){
-		[conf setFetchAltDir: [fetchAltDirTextField stringValue]];
-	}else{
-		[conf setFetchAltDir: nil];
-	}
-}
-
-//---------------------------------------------------------------------->Actions
+//--------------------------------------------------------------------------------
+#pragma mark ACTIONS
+//--------------------------------------------------------------------------------
 
 //Apply button
 -(IBAction)setPreferences:(id)sender
 {
-	[self setBasePath];
-	[self setScrollBackLimit];
-	
-	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
-	
+	/*** FinkCommander Preferences ***/
+
+	//Commander Tab
 	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
-	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
-	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
 	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
 	[defaults setBool: [warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
-	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
-	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
-	[defaults setBool: [showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
-	
 	if ([checkForUpdateButton state]){
-		[defaults setInteger:[checkForUpdateIntervalTextField intValue] 
-					forKey:FinkCheckForNewVersionInterval];
+		[defaults setInteger:[checkForUpdateIntervalTextField intValue]
+							   forKey:FinkCheckForNewVersionInterval];
 	}
-
-	//give manually set path a chance to work on startup
+	
+	//Paths Tab
+	[self setBasePath];
+	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
+		//Give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
 	}
 
+	//Display Tab
+	[self setScrollBackLimit];
+	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
+	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
+	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
+	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
+	[defaults setBool: [showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
+		//Notify FinkController to collapse output if user chose to
+		//automatically expand and collapse
 	if (autoExpandChanged && [autoExpandOutputButton state]){
-		[[NSNotificationCenter defaultCenter] 
+		[[NSNotificationCenter defaultCenter]
 			postNotificationName:FinkCollapseOutputView
-			object:nil];
+						  object:nil];
 	}
+	
+	//Environment Tab
+	[defaults setObject: environmentSettings forKey: FinkEnvironmentSettings];
+	[environmentTableView reloadData];
 
+	/***  Fink Settings in fink.conf ***/
+	
 	if (finkConfChanged){
+
+		//Fink Tab
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
 		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
-			
-		[conf setPassiveFTP: [passiveFTPButton state]];
 		[conf setKeepBuildDir: [keepBuildDirectoryButton state]];
 		[conf setKeepRootDir: [keepRootDirectoryButton state]];
-
-		[self setDownloadMethod];
 		[self setRootMethod];
+
+		//Download Tab
+		[self setDownloadMethod];
+		[conf setPassiveFTP: [passiveFTPButton state]];
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
 		[self setFetchAltDir];
-		finkConfChanged = NO;
 
+		finkConfChanged = NO;
 		[conf writeToFile];
 	}
-	[defaults setObject: environmentSettings forKey: FinkEnvironmentSettings];
-	[environmentTableView reloadData];
 }
 
 //OK Button
@@ -318,30 +325,30 @@ File: FinkPreferences.m
 	[self close];
 }
 
-//flag changes that require additional action when the Apply or OK button is clicked
+/*** Flags ***/
 
+//Connected to path-to-fink matrix
 -(IBAction)setPathChoiceChanged:(id)sender
 {
 	pathChoiceChanged = YES;
 }
 
--(IBAction)setAutoExpandChanged:(id)sender
-{
-	autoExpandChanged = YES;
-}
-
+//Connected to all buttons in fink.conf tabs
 -(IBAction)setFinkConfChanged:(id)sender
 {
 	finkConfChanged = YES;
 }
 
+//Connected to use unstable and use unstable crypto buttons
 -(IBAction)setFinkTreesChanged:(id)sender
 {
 	finkConfChanged = YES;
 	[conf setFinkTreesChanged: YES];
-	
 }
 
+/*** Display Tab Buttons ***/
+
+//Change image of title bar in preference panel to reflect user's choice
 -(IBAction)setTitleBarImage:(id)sender
 {
 	if ([showPackagesInTitleButton state]){
@@ -351,7 +358,12 @@ File: FinkPreferences.m
 	}
 }
 
-//Browse button
+-(IBAction)setAutoExpandChanged:(id)sender
+{
+	autoExpandChanged = YES;
+}
+
+/*** Dialog Opened by Browse Buttons ***/
 
 -(IBAction)selectDirectory:(id)sender
 {
@@ -397,7 +409,7 @@ File: FinkPreferences.m
 	}
 }
 
-//Environment tab buttons
+/*** Environment Tab Buttons ***/
 
 -(IBAction)addEnvironmentSetting:(id)sender
 {
@@ -440,7 +452,22 @@ File: FinkPreferences.m
 	[self validateEnvironmentButtons];
 }
 
-//---------------------------------------------------------------------->Delegate Methods
+//--------------------------------------------------------------------------------
+#pragma mark DELEGATE METHODS
+//--------------------------------------------------------------------------------
+
+/*** Window Delegates ***/
+
+-(void)windowDidBecomeKey:(NSNotification *)ignore
+{
+	[self resetPreferences];
+}
+
+-(void)windowDidLoad
+{
+	[self resetPreferences];
+	[self validateEnvironmentButtons];
+}
 
 //NSTextField delegate method; automatically set button state to match text input
 -(void)controlTextDidChange:(NSNotification *)aNotification
@@ -448,9 +475,8 @@ File: FinkPreferences.m
 	int textFieldID = [[aNotification object] tag];
 	NSString *tfString = [[aNotification object] stringValue];
 
-	//select the button that corresponds to the altered text field
-	//the text fields were given the indicated tag #s in IB
-	//
+	//Select the button that corresponds to the altered text field.
+	//The text fields were given the indicated tag numbers in IB.
 	switch(textFieldID){
 		case 0:
 			[pathChoiceMatrix selectCellWithTag:
@@ -480,13 +506,15 @@ File: FinkPreferences.m
 	}
 }
 
-//table view delegate
+//Environment table view delegate
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
 	[self validateEnvironmentButtons];
 }
 
-//---------------------------------------------------------------------->Data Source Methods
+//--------------------------------------------------------------------------------
+#pragma mark ENVIRONMENT TABLE DATA SOURCE METHODS
+//--------------------------------------------------------------------------------
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -506,7 +534,7 @@ File: FinkPreferences.m
 	return columnValue;
 }
 
-- (void)tableView:(NSTableView *)aTableView 
+-(void)tableView:(NSTableView *)aTableView 
 		setObjectValue:(id)anObject 
 		forTableColumn:(NSTableColumn *)aTableColumn 
 		row:(int)rowIndex
@@ -525,6 +553,4 @@ File: FinkPreferences.m
 }
 
 @end
-
-
 

@@ -11,6 +11,8 @@ enum {
 {
 	IBOutlet NSButton *removeWarningButton;
 	IBOutlet NSTextField *warningMessageField;
+	IBOutlet NSButton *confirmButton;
+	IBOutlet NSButton *cancelButton;
 	
 	NSMutableArray *arguments;
 	NSUserDefaults *defaults;

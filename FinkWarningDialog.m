@@ -40,6 +40,8 @@
     }else{
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];
     }
+	[confirmButton setTitle:NSLocalizedString(@"Remove", nil)];
+	[cancelButton setTitle:NSLocalizedString(@"Cancel", nil)];
     [removeWarningButton 
 		setTitle:NSLocalizedString(@"Warn me before removing a package.", nil)];
     [removeWarningButton setState:YES];
@@ -51,6 +53,8 @@
     command = TERMINATE;
     [warningMessageField 
 		setStringValue:NSLocalizedString(@"Are you sure you want to terminate?", nil)];
+	[confirmButton setTitle:NSLocalizedString(@"Terminate", nil)];
+	[cancelButton setTitle:NSLocalizedString(@"Cancel", nil)];
     [removeWarningButton
 		setTitle:NSLocalizedString(@"Warn me before terminating a command.", nil)];
 	[removeWarningButton setState:YES];

@@ -7,24 +7,51 @@ File: FinkTextViewController.m
 
 #import "FinkTextViewController.h"
 
+#define NEWSTORAGE
+
 @implementation FinkTextViewController
 
--(id)initWithFrame:(NSRect)frame
+-(id)initWithView:(NSTextView *)aTextView 
+	 forScrollView:(NSScrollView *)aScrollView
 {
-	if (self = [super initWithFrame:frame]){
-		[self setEditable:NO];
+	if (self = [super init]){
+		[self setTextView:aTextView];
+		[self setScrollView:aScrollView];
+		[textView setDelegate:self];
 	}
 	return self;
 }
 
-//override parent method
--(void)setString:(NSString *)aString
+-(void)dealloc
+{
+	[textView release];
+	[scrollView release];
+}
+
+- (NSTextView *)textView { return textView; }
+
+- (void)setTextView:(NSTextView *)newTextView 
+{
+	[newTextView retain];
+	[textView release];
+	textView = newTextView;
+}
+
+- (NSScrollView *)scrollView { return scrollView; }
+
+- (void)setScrollView:(NSScrollView *)newScrollView
+{
+	[newScrollView retain];
+	[scrollView release];
+	scrollView = newScrollView;
+}
+
+-(void)setLimits
 {
 	lines = 0;
 	bufferLimit = [[NSUserDefaults standardUserDefaults] integerForKey:FinkBufferLimit];
 	minDelete = bufferLimit * 0.10;
 	if (minDelete < 10) minDelete = 10;	
-	[super setString:aString];
 }
 
 -(int)numberOfLinesInString:(NSString *)s
@@ -34,7 +61,7 @@ File: FinkTextViewController.m
 
 -(NSRange)rangeOfLinesAtTopOfView:(int)numlines
 {
-	NSString *viewString = [self string];
+	NSString *viewString = [textView string];
 	int i, test;
 	int lastReturn = 0;
 	
@@ -54,18 +81,18 @@ File: FinkTextViewController.m
 {
 	if (bufferLimit > 0){
 		int overflow;
-		NSRange r;
 			
 		lines += [self numberOfLinesInString:s];
 		overflow = lines - bufferLimit;
+		
 		if (overflow > minDelete){
-			r = [self rangeOfLinesAtTopOfView:overflow];
-			[self replaceCharactersInRange:r withString:@""];
+			NSRange r = [self rangeOfLinesAtTopOfView:overflow];			
+			[textView replaceCharactersInRange:r withString:@""];
 			lines -= overflow;
 		}
 	}
-	[self replaceCharactersInRange:NSMakeRange([[self string] length], 0)
-			withString:s];
+	[textView replaceCharactersInRange:NSMakeRange([[textView string] length], 0)
+		withString:s];
 }
 
 

@@ -39,7 +39,7 @@
                 tableContextMenu = NSMenu; 
                 tableScrollView = NSScrollView; 
                 tableView = id; 
-                textView = id; 
+                textView = NSTextView; 
                 viewMenu = NSMenu; 
                 window = NSWindow; 
             }; 

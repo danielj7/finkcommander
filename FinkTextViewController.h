@@ -29,15 +29,25 @@ File: FinkTextViewController.h
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 
-@interface FinkTextViewController : NSTextView
+@interface FinkTextViewController : NSObject
 {
+	NSTextView *textView;
+	NSScrollView *scrollView;
 	NSUserDefaults *defaults;
 	int lines;
 	int bufferLimit;
 	int minDelete;
 }
 
--(void)setString:(NSString *)aString;
+-(id)initWithView:(NSTextView *)aTextView
+	   forScrollView:(NSScrollView *)aScrollView;
+-(void)setLimits;
 -(void)appendString:(NSString *)s;
+
+- (NSTextView *)textView;
+- (void)setTextView:(NSTextView *)newTextView;
+- (NSScrollView *)scrollView;
+- (void)setScrollView:(NSScrollView *)newScrollView;
+
 
 @end

@@ -2,13 +2,6 @@ Create final binary:
 	Set new version number in Target:Application Settings and localized InfoPlist.strings
 	Compile with DEBUGGING undefined and "Deployment" selected
 	
-Create package installer:
-	Run ~/FCFiles/install.sh
-	Update /FCFiles/PackageInstall/Resources as necessary
-	Open ~/FCFiles/Pinstaller.pmsp in /Applications/PackageMaker (old version)
-	Set new version number and create package
-	Test installation
-	
 Create disk images of package and binary
 	Run Disk Copy and make blank images: FinkCommanderPkg, FinkCommanderBin
 	Copy to images:  package/binary, VERSION_HISTORY.html, README.html, LICENSE.txt

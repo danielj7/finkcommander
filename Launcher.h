@@ -37,6 +37,8 @@
 
  */
 
- //#include <Carbon/Carbon.h>
+#ifndef DEBUGGING
+#include "Debugging.h"
+#endif
 
 extern char* getPathToMyself();

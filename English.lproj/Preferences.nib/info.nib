@@ -8,12 +8,6 @@
 	<string>286.0</string>
 	<key>IBGroupedObjects</key>
 	<dict>
-		<key>100</key>
-		<array>
-			<string>357</string>
-			<string>367</string>
-			<string>358</string>
-		</array>
 		<key>102</key>
 		<array>
 			<string>326</string>
@@ -131,6 +125,18 @@
 			<string>421</string>
 			<string>190</string>
 		</array>
+		<key>129</key>
+		<array>
+			<string>367</string>
+			<string>357</string>
+			<string>358</string>
+		</array>
+		<key>130</key>
+		<array>
+			<string>367</string>
+			<string>357</string>
+			<string>358</string>
+		</array>
 		<key>29</key>
 		<array>
 			<string>120</string>
@@ -210,19 +216,9 @@
 			<string>353</string>
 			<string>354</string>
 		</array>
-		<key>96</key>
-		<array>
-			<string>357</string>
-			<string>367</string>
-			<string>358</string>
-		</array>
 	</dict>
 	<key>IBLastGroupID</key>
-	<string>129</string>
-	<key>IBOpenObjects</key>
-	<array>
-		<integer>5</integer>
-	</array>
+	<string>131</string>
 	<key>IBSystem Version</key>
 	<string>6D52</string>
 </dict>

@@ -207,6 +207,9 @@ int write_fconf(char *basepath)
  * AuthorizationExecuteWithPrivileges() so we need to make
  * ourselves setuid root to avoid the need for this the next time
  * around. 
+ * In addition, we set the owner of the Resources directory to root
+ * to prevent someone without administrator privileges from replacing
+ * Launcher with a malicious version.
  */
 int repair_self()
 {
@@ -214,16 +217,21 @@ int repair_self()
     struct stat st;
     int fd_tool;
     int result = FALSE;
-    int resrep = FALSE;
+    int resrep = TRUE;
     char* path_to_self = getPathToMyself();
     char path_to_res[BUFSIZE];
     char* end_of_dir;
 
+//Don't change ownership of Resource directory during development; 
+//it causes clean build to fail.
+#ifndef DEBUGGING
+	resrep = FALSE;
     /* Get path to Resource directory */
     strcpy(path_to_res, path_to_self);
     end_of_dir = strrchr(path_to_res, '/');
     if (end_of_dir == NULL) path_to_res[0] = 0;  /* signal failure */
     else *end_of_dir = 0;  /* terminate string at slash */
+#endif //DEBUGGING
 
     if (path_to_self != NULL){
         /* Recover the passed in AuthorizationRef. */
@@ -241,6 +249,7 @@ int repair_self()
                 close(fd_tool);
                 result = TRUE;
             }
+#ifndef DEBUGGING
 			/* Set ownership of Resource directory to root and disable group and world
 				writability */
 			if (path_to_res[0] != 0){
@@ -250,6 +259,7 @@ int repair_self()
 					resrep = TRUE;
 				}
 			}
+#endif //DEBUGGING
 		}else{
 			fprintf(stderr, "Authentication as administrator failed.\n");
 		}

@@ -238,7 +238,6 @@
 // the command's output
 -(void)log:(NSString*)str
 {
-//  NSLog(str);
     if ([[self delegate] respondsToSelector:@selector(captureOutput:forExecutable:)])
     {
         [[self delegate] performSelector:@selector(captureOutput:forExecutable:) 
@@ -317,7 +316,7 @@
     }
     else
     {
-        [self logStdErr:[NSString stringWithCString:[inData bytes] 
+        [self logStdOut:[NSString stringWithCString:[inData bytes] 
 			    length:[inData length]]];
         [stdoutHandle readInBackgroundAndNotify];
     }

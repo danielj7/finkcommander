@@ -126,6 +126,36 @@
 		<key>ToolTip</key>
 		<string>Update package descriptions and package manager</string>
 	</dict>
+		<key>FinkTermCvsItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runNonSpecificCommandInTerminal</string>
+		<key>Image</key>
+		<string>termcvs</string>
+		<key>Label</key>
+		<string>Selfupdate-cvs</string>
+		<key>PaletteLabel</key>
+		<string>Selfupdate-cvs in Terminal</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Run selfupdate-cvs command in Terminal</string>
+	</dict>
+	<key>FinkTermInstallItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runPackageSpecificCommandInTerminal</string>
+		<key>Image</key>
+		<string>terminstall</string>
+		<key>Label</key>
+		<string>Install</string>
+		<key>PaletteLabel</key>
+		<string>Install in Terminal</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Run install command in Terminal</string>
+	</dict>
 	<key>FinkTerminateCommandItem</key>
 	<dict>
 		<key>Action</key>

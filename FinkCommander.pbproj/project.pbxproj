@@ -173,6 +173,7 @@
 		29B97315FDCFA39411CA2CEA = {
 			children = (
 				29B97316FDCFA39411CA2CEA,
+				F5D01DA703636C2C01A80165,
 				F54147C202C18B7301A80165,
 				F54147C302C18B7301A80165,
 				F553429102E9F45A015ADE4E,
@@ -341,6 +342,7 @@
 				F5F8FA560331965D01A80166,
 				F55407EF035D0C8601A80170,
 				F5019E9A03625D4201A80165,
+				F5128EE90366617D01A80166,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,6 +379,8 @@
 				F53B4D0603100C3501A80164,
 				F50DF7780359464F01A8016C,
 				F55407F7035D334001A80170,
+				F5D01DAB03636FB201A80165,
+				F5D01DAD03636FC001A80165,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +535,24 @@
 		};
 		F50DF7780359464F01A8016C = {
 			fileRef = F50DF7770359464F01A8016C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5128EE703665ED601A80166 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Dialogs.nib;
+			refType = 4;
+		};
+		F5128EE803665EE101A80166 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Dialogs.nib;
+			refType = 4;
+		};
+		F5128EE90366617D01A80166 = {
+			fileRef = F5D01DA703636C2C01A80165;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -733,7 +755,9 @@
 				F5B9D9EA02B232D501A8016B,
 				F53D651D0280296801A80164,
 				F5B9D9F402B3D67A01A8016B,
+				F5D01DAA03636FB201A80165,
 				F50A22290296AB2801A80166,
+				F5D01DAC03636FC001A80165,
 				F5B9D9F502B3D67A01A8016B,
 				F542437D028CE54B01A80166,
 				F50DF7770359464F01A8016C,
@@ -1067,8 +1091,8 @@
 		F55407F5035D334001A80170 = {
 			children = (
 				F55407F6035D334001A80170,
-				F5FECEAE035E6F3701A80169,
-				F5FECEAF035E6F4501A80169,
+				F5128EE703665ED601A80166,
+				F5128EE803665EE101A80166,
 			);
 			isa = PBXVariantGroup;
 			name = Dialogs.nib;
@@ -1221,6 +1245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F580FC430332C34D01A80166,
+				F5D01DA903636CB601A80165,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1357,7 +1382,6 @@
 				F57DA17B02B4680D01A8016B,
 				F59FF427032134CF01A80175,
 				F59FF428032134D901A80175,
-				F59FF429032134E401A80175,
 			);
 			isa = PBXVariantGroup;
 			name = Credits.html;
@@ -1379,12 +1403,6 @@
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Credits.html;
-			refType = 4;
-		};
-		F59FF429032134E401A80175 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Credits.html;
 			refType = 4;
 		};
 		F5B40B2F033A578801FE217B = {
@@ -1526,6 +1544,39 @@
 			path = French.lproj/Localizable.strings;
 			refType = 4;
 		};
+		F5D01DA703636C2C01A80165 = {
+			isa = PBXFileReference;
+			path = Debugging.h;
+			refType = 4;
+		};
+		F5D01DA903636CB601A80165 = {
+			fileRef = F5D01DA703636C2C01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5D01DAA03636FB201A80165 = {
+			isa = PBXFileReference;
+			path = termcvs.tiff;
+			refType = 4;
+		};
+		F5D01DAB03636FB201A80165 = {
+			fileRef = F5D01DAA03636FB201A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5D01DAC03636FC001A80165 = {
+			isa = PBXFileReference;
+			path = terminstall.tiff;
+			refType = 4;
+		};
+		F5D01DAD03636FC001A80165 = {
+			fileRef = F5D01DAC03636FC001A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5D3EE420336DD8B01A80165 = {
 			fileEncoding = 10;
 			isa = PBXFileReference;
@@ -1591,18 +1642,6 @@
 		F5F8FA5D033196BF01A80166 = {
 			isa = PBXFileReference;
 			path = getpath.c;
-			refType = 4;
-		};
-		F5FECEAE035E6F3701A80169 = {
-			isa = PBXFileReference;
-			name = German;
-			path = German.lproj/Dialogs.nib;
-			refType = 4;
-		};
-		F5FECEAF035E6F4501A80169 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Dialogs.nib;
 			refType = 4;
 		};
 	};
