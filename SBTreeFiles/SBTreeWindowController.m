@@ -228,44 +228,43 @@ enum {
 	}
 }
 
-
+#ifdef UNDEF
 //Resize window vertically but not horizontally when zoom button is clicked.
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 		defaultFrame:(NSRect)defaultFrame
 {
-	float currentHeight = [sender frame].size.height;
-	float newHeight;     
-	float woffset; 
-	//	NSRect scrollViewFrame;
-	NSRect transformFrame;
-	
+
 	if ([[self activeView] isEqualToString:@"browser"]){
 		return defaultFrame;
-	}
-	
-	transformFrame = [NSWindow contentRectForFrameRect:[sender frame] styleMask:[sender styleMask]];
-	woffset = currentHeight - [[outlineView superview] frame].size.height;
-	newHeight = [outlineView frame].size.height;
-	
-	if (newHeight >= transformFrame.size.height){
-		newHeight += woffset;
 	}else{
-		newHeight -= woffset;
-	}
-	
-	transformFrame.origin.y += transformFrame.size.height;
-	transformFrame.origin.y -= newHeight;
-	transformFrame.size.height = newHeight;
-	
-	transformFrame = [NSWindow frameRectForContentRect:transformFrame styleMask:[sender styleMask]];
+		float windowOffset = [[self window] frame].size.height
+			- [[outlineView superview] frame].size.height;
+		float newHeight = [outlineView frame].size.height;
+		NSRect stdFrame =
+			[NSWindow contentRectForFrameRect:[sender frame]
+					  styleMask:[sender styleMask]];
 
-    if (transformFrame.size.height > defaultFrame.size.height){
-		transformFrame.size.height = defaultFrame.size.height;
-		transformFrame.origin.y = defaultFrame.origin.y;
-    }else if (transformFrame.origin.y < defaultFrame.origin.y){
-		transformFrame.origin.y = defaultFrame.origin.y;
-    }
-    return transformFrame;
+		if (newHeight > stdFrame.size.height) {newHeight += windowOffset;}
+
+		stdFrame.origin.y += stdFrame.size.height;
+		stdFrame.origin.y -= newHeight;
+		stdFrame.size.height = newHeight;
+
+		stdFrame =
+			[NSWindow frameRectForContentRect:stdFrame
+					  styleMask:[sender styleMask]];
+
+		//if new height would exceed default frame height,
+		//zoom vertically and horizontally
+		if (stdFrame.size.height > defaultFrame.size.height){
+			stdFrame = defaultFrame;
+			//otherwise zoom vertically just enough to accomodate new height
+		}else if (stdFrame.origin.y < defaultFrame.origin.y){
+			stdFrame.origin.y = defaultFrame.origin.y;
+		}
+		return stdFrame;
+	}
 }
+#endif
 
 @end
