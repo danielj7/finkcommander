@@ -228,7 +228,7 @@ enum {
 		}else{
 			httpProxy = @"";
 		}
-	}	
+	}
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
 	
