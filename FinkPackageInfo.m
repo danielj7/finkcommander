@@ -177,9 +177,7 @@
 							 
 
 	if (stdFrame.size.height > defaultFrame.size.height){
-		stdFrame.size.width += (stdFrame.size.height - defaultFrame.size.height);	
-		stdFrame.size.height = defaultFrame.size.height;
-		stdFrame.origin.y = defaultFrame.origin.y;
+		stdFrame = defaultFrame;
 	}else if (stdFrame.origin.y < defaultFrame.origin.y){
 		stdFrame.origin.y = defaultFrame.origin.y;
 	}

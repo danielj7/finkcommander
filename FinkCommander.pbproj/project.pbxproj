@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 34;
+	objectVersion = 38;
 	objects = {
 		080E96DCFE201CFB7F000001 = {
 			fileRef = 29B97318FDCFA39411CA2CEA;
@@ -14,7 +14,6 @@
 		080E96DDFE201D6D7F000001 = {
 			children = (
 				F53369F60218261B01A80165,
-				F5DE3CDD02CB660701A80164,
 				F527284D0221B4E801A80164,
 				F527284E0221B4E801A80164,
 				F5DE1D8E022845A201A80164,
@@ -182,6 +181,7 @@
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
 				F5C523DC02A33E0A01A80165,
+				F559D2C802CC2C6501A80164,
 				089C165CFE840E0CC02AAC07,
 				F57DA17B02B4680D01A8016B,
 				F538C3C5023496DC01A80164,
@@ -312,10 +312,8 @@
 				F5C523DA02A326B701A80165,
 				F5B9D9ED02B2B13501A8016B,
 				F54147C402C18B7301A80165,
-				F5DE3CDE02CB660701A80164,
 			);
 			isa = PBXHeadersBuildPhase;
-			name = Headers;
 		};
 		29B97328FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -345,9 +343,9 @@
 				F57DA17C02B4680D01A8016B,
 				F5897AAB02C6E37B01A80166,
 				F5DE3CD702CAE98601A80164,
+				F559D2C902CC2C6501A80164,
 			);
 			isa = PBXResourcesBuildPhase;
-			name = "Bundle Resources";
 		};
 		29B9732BFDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -365,10 +363,8 @@
 				F5B9D9E502B1D61C01A8016B,
 				F54147C502C18B7301A80165,
 				F542CFF802C2F03B01A80166,
-				F5DE3CDF02CB660701A80164,
 			);
 			isa = PBXSourcesBuildPhase;
-			name = Sources;
 		};
 		29B9732CFDCFA39411CA2CEA = {
 			fileRef = 29B97316FDCFA39411CA2CEA;
@@ -385,7 +381,6 @@
 				F536582402A89F0D01A8016A,
 			);
 			isa = PBXFrameworksBuildPhase;
-			name = "Frameworks & Libraries";
 		};
 //290
 //291
@@ -774,7 +769,6 @@
 		F54A055E029C9F0101A80166 = {
 			children = (
 				F53369F50218261B01A80165,
-				F5DE3CDC02CB660701A80164,
 				F527284B0221B4E801A80164,
 				F527284C0221B4E801A80164,
 				F5DE1D8F022845A201A80164,
@@ -807,6 +801,17 @@
 		};
 		F554F1DB0266AA4B01A80164 = {
 			fileRef = F554F1D80266AA4B01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F559D2C802CC2C6501A80164 = {
+			isa = PBXFileReference;
+			path = Toolbar.plist;
+			refType = 4;
+		};
+		F559D2C902CC2C6501A80164 = {
+			fileRef = F559D2C802CC2C6501A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -964,6 +969,7 @@
 			refType = 4;
 		};
 		F5C1B062026BFA2501A80164 = {
+			includeInIndex = 0;
 			isa = PBXFolderReference;
 			path = "FinkCommander Help";
 			refType = 4;
@@ -1046,28 +1052,6 @@
 		};
 		F5DE3CD702CAE98601A80164 = {
 			fileRef = F5DE3CD602CAE98601A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5DE3CDC02CB660701A80164 = {
-			isa = PBXFileReference;
-			path = FinkOutputParser.h;
-			refType = 4;
-		};
-		F5DE3CDD02CB660701A80164 = {
-			isa = PBXFileReference;
-			path = FinkOutputParser.m;
-			refType = 4;
-		};
-		F5DE3CDE02CB660701A80164 = {
-			fileRef = F5DE3CDC02CB660701A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5DE3CDF02CB660701A80164 = {
-			fileRef = F5DE3CDD02CB660701A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

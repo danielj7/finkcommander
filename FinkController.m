@@ -44,9 +44,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkGiveEmailCredit];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkWarnBeforeRemoving];
 
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkPackagesInTitleBar];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
@@ -134,11 +134,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				selector: @selector(collapseOutput:)
 				name: FinkCollapseOutputView
 				object: nil];
-		
-					
-		return self;
 	}
-	return nil;
+	return self;
 }
 
 //----------------------------------------------->Dealloc
@@ -178,6 +175,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}else{
 		[self expandOutput: nil];
 	}
+	
+	NSLog(@"Table Column Defaults: %@", [defaults objectForKey: @"NSTableView Columns FinkTable"]);
 	
 	[msgText setStringValue:
 		@"Updating table dataÉ"];
@@ -519,6 +518,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
 	}
+	[[packageInfo window] zoom: nil];
 	[packageInfo showWindow: self];
 	[packageInfo displayDescriptions: [self selectedPackageArray]];
 }
@@ -715,7 +715,48 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Delegate Methods
+-(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
+	   itemForItemIdentifier:(NSString *)itemIdentifier
+   willBeInsertedIntoToolbar:(BOOL)flag
+{
+	NSBundle *b = [NSBundle mainBundle];
+	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:
+				    [b pathForResource: @"Toolbar"
+								ofType: @"plist"]];
+	NSDictionary *itemDict;
+	NSString *value;
+	NSNumber *tag;
+	NSToolbarItem *item = [[NSToolbarItem alloc]
+			  initWithItemIdentifier: itemIdentifier];
+			  
+	itemDict = [d objectForKey: itemIdentifier];
+	if (value = [itemDict objectForKey: @"Label"]){
+		[item setLabel: value];
+		[item setPaletteLabel: value];
+	}
+	if (value = [itemDict objectForKey: @"PaletteLabel"]) 
+		[item setPaletteLabel: value];
+	if (value = [itemDict objectForKey: @"ToolTip"]) 
+		[item setToolTip: value];
+	if (value = [itemDict objectForKey: @"Image"]) 
+		[item setImage: [NSImage imageNamed: value]];
+	if (value = [itemDict objectForKey: @"Action"]){
+		[item setTarget: self];
+		[item setAction: NSSelectorFromString([NSString 
+			stringWithFormat: @"%@:", value])];
+	}
+	if (tag = [itemDict objectForKey: @"Tag"]){
+		[item setTag: [tag intValue]];
+	}
+	if ([itemIdentifier isEqualToString: FinkFilterItem]){
+		[item setView: searchView];
+		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
+		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
+	}
+	return [item autorelease];
+}
 
+#ifdef UNDEF
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
 	   itemForItemIdentifier:(NSString *)itemIdentifier
 	willBeInsertedIntoToolbar:(BOOL)flag
@@ -814,6 +855,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
     return [item autorelease];
 }
+#endif //UNDEF
+
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
