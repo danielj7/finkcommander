@@ -1161,8 +1161,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 			NSBeep();
 			[self raiseInteractionWindow: self];
 	}
-	if ([output rangeOfString:           //handle non-anonymous cvs
-			@"cvs.sourceforge.net's password:"].length > 0){ 
+	if ([output contains: @"cvs.sourceforge.net's password:"] ||
+		[output contains: @"return to continue"]){ 
 		[self raiseInteractionWindow: self];
 	}
 	
