@@ -48,6 +48,12 @@ enum {
 	BINARY_COMMAND
 };
 
+enum {
+	FCWEB,
+	FCBUG,
+	FINKDOC
+};
+
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
 	//main window outlets
@@ -122,6 +128,7 @@ enum {
 -(void)setLastParams:(NSMutableArray *)a;
 -(NSArray *)selectedObjectInfo;
 -(void)setSelectedObjectInfo:(NSArray *)array;
+-(NSArray *)selectedPackageArray;
 
 -(void)scrollToVisible:(NSNumber *)n;
 
@@ -130,6 +137,7 @@ enum {
 -(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
+-(IBAction)saveOutput:(id)sender;
 -(IBAction)runCommand:(id)sender;
 -(IBAction)runUpdater:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
@@ -138,10 +146,7 @@ enum {
 -(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)showDescription:(id)sender;
 //  help menu items
--(IBAction)goToFinkCommanderWebSite:(id)sender;
--(IBAction)goToFinkWebSite:(id)sender;
--(IBAction)goToBugReportPage:(id)sender;
-
+-(IBAction)goToWebSite:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

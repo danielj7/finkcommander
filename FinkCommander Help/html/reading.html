@@ -9,13 +9,6 @@
 
 <h2>Reading the Table</h2>
 
-<h3>Unstable</h3>
-
-<p>If there is an asterisk in the unstable column for a package, it means
-that the most recent available version is in the unstable tree.  It does
-<strong>not necessarily</strong> mean that you have an unstable version 
-installed.</p>
-
 <h3>Version</h3>
 
 <p>The number in the version column represents the most
@@ -27,8 +20,23 @@ unstable packages.</p>
 
 <p>In general, packages with an asterisk in the binary column can
 be installed with the <kbd>Binary:Install</kbd> command.  
-See <a href="running.html#binary">Running Commands/Source v. 
+See <a href="running.html#binary">Running Commands:Source v. 
 Binary</a> for more details.</p>
+
+<h3>Unstable</h3>
+
+<p>If there is an asterisk in the unstable column for a package, it means
+that the most recent available version is in the unstable tree.  It does
+<strong>not necessarily</strong> mean that you have an unstable version 
+installed.</p>
+
+<h3>Installed</h3>
+
+<p>"Current" means you have the most current available version of a package installed.  
+"Outdated" means that the package is installed, but a more recent version is available.
+"Archive" means that you previously installed the package but removed it so that only
+the debian archive remains on your system or that you ran the build command for a package
+but have not yet installed it.</p>
 
 <h3>Finding Packages</h3>
 

@@ -33,6 +33,7 @@ File: FinkPreferences.m
 -(void)resetPreferences
 {
 	NSString *basePath;
+	NSString *outputPath;
 	NSString *httpProxy; 
 	NSString *ftpProxy;
 	NSString *fetchAltDir;
@@ -46,6 +47,9 @@ File: FinkPreferences.m
 		[pathChoiceMatrix selectCellWithTag: 1];
 		[basePathTextField setStringValue: basePath];
 	}
+	outputPath = [defaults objectForKey: FinkOutputPath];
+	[outputPathButton setState: [outputPath length] > 0];
+	[outputPathTextField setStringValue: outputPath];
 	pathChoiceChanged = NO;
 	autoExpandChanged = NO;
 	finkConfChanged = NO;
@@ -165,6 +169,7 @@ File: FinkPreferences.m
 -(IBAction)setPreferences:(id)sender
 {
 	[self setBasePath];
+	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
 	
 	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
@@ -216,7 +221,7 @@ File: FinkPreferences.m
 	[self close];
 }
 
--(IBAction)setPathChoice:(id)sender
+-(IBAction)setPathChoiceChanged:(id)sender
 {
 	pathChoiceChanged = YES;
 }
@@ -279,11 +284,24 @@ File: FinkPreferences.m
 -(IBAction)selectDirectory:(id)sender
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	NSTextField *pathField = ([sender tag] == 0 ? basePathTextField : fetchAltDirTextField);
+	NSTextField *pathField = nil;
+
+	switch([sender tag]){
+		case 0: 
+			pathField = basePathTextField;
+			break;
+		case 3:
+			pathField = fetchAltDirTextField;
+			break;
+		case 4:
+			pathField = outputPathTextField;
+			break;
+	}
 	
 	[panel setCanChooseDirectories: YES];
 	[panel setCanChooseFiles: NO];
 	[panel setAllowsMultipleSelection: NO];
+	[panel setPrompt: @"Choose"];
 	
 	[panel beginSheetForDirectory: NSHomeDirectory()
 		file: nil
@@ -324,6 +342,9 @@ File: FinkPreferences.m
 				([[fetchAltDirTextField stringValue] length] > 0 ? YES : NO)];
 			finkConfChanged = YES;
 			break;
+		case 4:
+			[outputPathButton setState:
+				([tfString length] > 0 ? 1 : 0)];
 	}
 }
 

@@ -34,6 +34,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
 	[defaultValues setObject: @"" forKey: FinkBasePath];
+	[defaultValues setObject: @"" forKey: FinkOutputPath];
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	
@@ -102,13 +103,14 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
 		
-		//Used to avoid duplicate warnings when user terminates in middle of command
+		//Flag used to avoid duplicate warnings when user terminates FC 
+		//in middle of command with something other than App:Quit
 		userChoseToTerminate = NO;
 		
 		//Register for notifications that run commands
 		//  selector runs command if one is pending and password was entered 
 		[center addObserver: self
-				selector: @selector(runCommandWithPassword:)
+				selector: @selector(runCommandAfterPasswordEntered:)
 				name: @"passwordWasEntered"
 				object: nil];
 		//  selector runs commands that change the fink.conf file
@@ -120,7 +122,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		//Register for notification that causes table to update 
 		//and resume normal state
 		[center addObserver: self
-				selector: @selector(refreshTable:)
+				selector: @selector(resetInterface:)
 				name: FinkPackageArrayIsFinished
 				object: nil];
 					
@@ -190,11 +192,11 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
 	
-	[self updateTable: nil];
-	[tableView setHighlightedTableColumn: lastColumn];
-	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
-	if ([defaults boolForKey: FinkAskForPasswordOnStartup]){
-		[self raisePwdWindow: self];
+	[self updateTable:nil];
+	[tableView setHighlightedTableColumn:lastColumn];
+	[tableView setIndicatorImage:normalSortImage inTableColumn:lastColumn];
+	if ([defaults boolForKey:FinkAskForPasswordOnStartup]){
+		[self raisePwdWindow:self];
 	}
 }
 
@@ -293,6 +295,21 @@ NSString *FinkInteractItem = @"FinkInteractItem";
     selectedObjectInfo = array;
 }
 
+//not really an accessor, but close enough for grouping purposes
+-(NSArray *)selectedPackageArray
+{
+	NSEnumerator *e = [tableView selectedRowEnumerator];
+	NSNumber *anIndex;
+	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
+
+	while (anIndex = [e nextObject]){
+		[pkgArray addObject:
+			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
+	}
+	return pkgArray;
+}
+
+
 
 //--------------------------------------------------------------------------------
 //		APPLICATION AND WINDOW DELEGATES
@@ -374,57 +391,38 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	return args;
 }
 
--(NSArray *)selectedPackageArray
-{
-	NSEnumerator *e = [tableView selectedRowEnumerator];
-	NSNumber *anIndex;
-	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
 
-	while (anIndex = [e nextObject]){
-		[pkgArray addObject: 
-			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
+-(void)didEnd:(NSSavePanel *)sheet
+	returnCode:(int)code
+	contextInfo:(void *)contextInfo
+{
+	if (code = NSOKButton){
+		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
+		[odata writeToFile: [sheet filename] atomically: YES];
 	}
-	return pkgArray;
 }
 
 //----------------------------------------------->Menu Actions
+//save output
 
--(IBAction)collapseOutput:(id)sender
+-(IBAction)saveOutput:(id)sender
 {
-	if (! [splitView isSubviewCollapsed: outputScrollView]){
-		NSRect oFrame = [outputScrollView frame];
-		NSRect tFrame = [tableScrollView frame];
-		NSRect sFrame = [splitView frame];
-		float divwidth = [splitView dividerThickness];
-
-		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-			forKey: FinkOutputViewRatio];
-		tFrame.size.height = sFrame.size.height - divwidth;
-		oFrame.size.height = 0.0;
-		oFrame.origin.y = sFrame.size.height;
-
-		[outputScrollView setFrame: oFrame];
-		[tableScrollView setFrame: tFrame];
-		
-		[splitView setNeedsDisplay: YES];
-	}
-}
-
--(IBAction)expandOutput:(id)sender
-{
-	NSRect oFrame = [outputScrollView frame];
-	NSRect tFrame = [tableScrollView frame];
-	NSRect sFrame = [splitView frame];
-	float divwidth = [splitView dividerThickness];
+	NSSavePanel *panel = [NSSavePanel savePanel];
+	NSString *defaultPath = [defaults objectForKey: FinkOutputPath];
+	NSString *savePath = ([defaultPath length] > 0) ? defaultPath : NSHomeDirectory();
+	NSString *fileName = [NSString stringWithFormat: @"%@_%@", 
+			[self lastCommand], 
+			[[NSDate date] descriptionWithCalendarFormat: @"%d%b%Y" timeZone: nil locale: nil]];
 	
-	oFrame.size.height = ceil(sFrame.size.height * [defaults floatForKey: FinkOutputViewRatio]);
-	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
-	oFrame.origin.y = tFrame.size.height + divwidth;
+	[panel setRequiredFileType: @"txt"];
 	
-	[outputScrollView setFrame: oFrame];
-	[tableScrollView setFrame: tFrame];
-
-	[splitView setNeedsDisplay: YES];
+	[panel beginSheetForDirectory: savePath
+		file: fileName
+		modalForWindow: [self window]
+		modalDelegate: self
+		didEndSelector: @selector(didEnd:returnCode:contextInfo:)
+		contextInfo: nil];
+	
 }
 
 //run package-specific command with arguments derived from table selection
@@ -491,7 +489,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[progressIndicator startAnimation: sender];
 	[msgText setStringValue: @"Updating table dataÉ"]; 
 	[self setCommandIsRunning: YES];
-	[packages update]; //calls refreshTable by notification
+	[packages update]; //calls resetInterface by notification
 }
 
 -(IBAction)showDescription:(id)sender
@@ -536,23 +534,64 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[preferences showWindow: self];
 }
 
-//help menu items
--(IBAction)goToFinkCommanderWebSite:(id)sender
+//help menu internet access items
+-(IBAction)goToWebSite:(id)sender
 {
+	NSString *url = nil;
+
+	switch ([sender tag]){
+		case FCWEB:
+			url = @"http://finkcommander.sourceforge.net/";
+			break;
+		case FCBUG:
+			url = @"http://sourceforge.net/tracker/?group_id=48896&atid=454467";
+			break;
+		case FINKDOC:
+			url = @"http://fink.sourceforge.net/doc/index.php";
+			break;
+	}
 	[[NSWorkspace sharedWorkspace] openURL: 
-		[NSURL URLWithString: @"http://finkcommander.sourceforge.net/"]];
+		[NSURL URLWithString: url]];
 }
 
--(IBAction)goToFinkWebSite:(id)sender
+//formerly menu items for testing purposes; now used to implement the
+//automatic collapse preference item and to save split view state
+-(IBAction)collapseOutput:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL: 
-		[NSURL URLWithString: @"http://fink.sourceforge.net/doc/index.php"]];
+	if (! [splitView isSubviewCollapsed: outputScrollView]){
+		NSRect oFrame = [outputScrollView frame];
+		NSRect tFrame = [tableScrollView frame];
+		NSRect sFrame = [splitView frame];
+		float divwidth = [splitView dividerThickness];
+
+		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
+					   forKey: FinkOutputViewRatio];
+		tFrame.size.height = sFrame.size.height - divwidth;
+		oFrame.size.height = 0.0;
+		oFrame.origin.y = sFrame.size.height;
+
+		[outputScrollView setFrame: oFrame];
+		[tableScrollView setFrame: tFrame];
+
+		[splitView setNeedsDisplay: YES];
+	}
 }
 
--(IBAction)goToBugReportPage:(id)sender
+-(IBAction)expandOutput:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:
-		[NSURL URLWithString: @"http://sourceforge.net/tracker/?group_id=48896&atid=454467"]];
+	NSRect oFrame = [outputScrollView frame];
+	NSRect tFrame = [tableScrollView frame];
+	NSRect sFrame = [splitView frame];
+	float divwidth = [splitView dividerThickness];
+
+	oFrame.size.height = ceil(sFrame.size.height * [defaults floatForKey: FinkOutputViewRatio]);
+	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
+	oFrame.origin.y = tFrame.size.height + divwidth;
+
+	[outputScrollView setFrame: oFrame];
+	[tableScrollView setFrame: tFrame];
+
+	[splitView setNeedsDisplay: YES];
 }
 
 //----------------------------------------------->Menu Item Delegate
@@ -570,6 +609,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		([theItem action] == @selector(runCommand:) 		||
 		 [theItem action] == @selector(runUpdater:) 		||
 		 [theItem action] == @selector(showDescription:)	||
+		 [theItem action] == @selector(saveOutput:)			||
 		 [theItem action] == @selector(updateTable:))){
 		return  NO;
 	}
@@ -581,7 +621,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	return YES;
 }
 
-//Disable menu item selections
+//Disable menu items
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
 {
 	return [self validateItem: menuItem];
@@ -604,21 +644,10 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 //reapply filter if popup selection changes
 -(IBAction)refilter:(id)sender
-{
+{	
+	[searchTextField selectText: nil];
 	[self controlTextDidChange: nil];
 }
-
-//refresh table after filter applied without re-validating menu and 
-//toolbar items while a command is running (unlike refreshTable:)
--(void)refreshAfterFilter
-{
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
-
-	[self sortTableAtColumn: lastColumn inDirection: direction];
-}
-
 
 //----------------------------------------------->Delegate Methods
 
@@ -756,6 +785,84 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 }
 
 //----------------------------------------------->Text Field Delegate
+
+//store information needed to scroll back to selection after sort
+-(void)storeSelectedObjectInfo
+{
+    int selectionIndex = [tableView selectedRow];
+
+	if (selectionIndex >= 0){
+		int topRowIndex =  [tableView rowAtPoint:
+			[[tableView superview] bounds].origin];
+		int offset = selectionIndex - topRowIndex;
+		FinkPackage *selectedObject = [[self displayedPackages]
+										objectAtIndex: selectionIndex];
+
+#ifdef DEBUG
+		NSLog(@"Selected row before sort: %d", selectionIndex);
+#endif//DEBUG
+
+		[self setSelectedObjectInfo:
+			[NSArray arrayWithObjects:
+				selectedObject,
+				[NSNumber numberWithInt: offset],
+				nil]];
+	}else{
+		[self setSelectedObjectInfo: nil];
+	}
+}
+
+//scroll back to selection after sort
+-(void)scrollToSelectedObject
+{
+	if ([self selectedObjectInfo]){
+		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
+		int selection = [[self displayedPackages] indexOfObject: selectedObject];
+
+#ifdef DEBUG
+		NSLog(@"Selected row after sort: %d", selection);
+#endif//DEBUG
+
+		if (selection != NSNotFound){
+			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
+			NSPoint offsetRowOrigin = [tableView rectOfRow: selection - offset].origin;
+			NSClipView *contentView = [tableView superview];
+			NSPoint target = [contentView constrainScrollPoint: offsetRowOrigin];
+
+			[contentView scrollToPoint: target];
+			[tableScrollView reflectScrolledClipView: contentView];
+			[tableView selectRow: selection byExtendingSelection: NO];
+		}
+	}
+}
+
+//helper used in following method and in didClickTableColumn: delegate methods
+-(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
+{
+	if ([defaults boolForKey: FinkScrollToSelection]){
+		[self storeSelectedObjectInfo];
+	}
+
+	// sort data source
+	[[self displayedPackages] sortUsingSelector:
+		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
+			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
+	[tableView reloadData];
+
+	if ([defaults boolForKey: FinkScrollToSelection]){
+		[self scrollToSelectedObject];
+	}
+}
+
+-(void)resortTableAfterFilter
+{
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+
+	[self sortTableAtColumn: lastColumn inDirection: direction];
+}
+
 //Used to filter table data
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
@@ -767,11 +874,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		NSEnumerator *e = [[packages array] objectEnumerator];
 		FinkPackage *pkg;
 
-		//deselect rows so automatic scrolling doesn't interfere with filter
 		if ([defaults boolForKey: FinkScrollToSelection]){
-			[tableView deselectAll: self];
+			[tableView deselectAll: self];  //scroll to selection interferes with filter
 		}
-		
 		if ([filterText length] == 0){
 			[self setDisplayedPackages: [packages array]];
 		}else{
@@ -783,7 +888,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 			}
 			[self setDisplayedPackages: subset];
 		}
-		[self refreshAfterFilter];
+		[self resortTableAfterFilter];
 		[self displayNumberOfPackages];
 	}else if ([[aNotification object] tag] == 1){	//interaction sheet text field		
 		if ([[interactionField stringValue] length]){
@@ -814,85 +919,21 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 //----------------------------------------------->Helper Methods
 
-//store information needed to scroll back to selection after sort
--(void)storeSelectedObjectInfo
+
+
+//reset the interface--stop and remove progress indicator, revalidate
+//command menu and toolbar items, reapply filter--after the table data
+//is updated or a command is completed
+-(void)resetInterface:(NSNotification *)ignore
 {
-    int selectionIndex = [tableView selectedRow];
-
-	if (selectionIndex >= 0){
-		int topRowIndex =  [tableView rowAtPoint: 
-								[[tableView superview] bounds].origin]; 
-		int offset = selectionIndex - topRowIndex;
-		FinkPackage *selectedObject = [[self displayedPackages] 
-										objectAtIndex: selectionIndex];
-
-		[self setSelectedObjectInfo:
-			[NSArray arrayWithObjects: 
-				selectedObject, 
-				[NSNumber numberWithInt: offset],
-				nil]];
-	}else{
-		[self setSelectedObjectInfo: nil];
-	}
-}
-
-//scroll back to selection after sort
--(void)scrollToSelectedObject
-{
-	if ([self selectedObjectInfo]){
-		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
-		int selection = [[self displayedPackages] indexOfObject: selectedObject];
-#ifdef DEBUG
-		NSLog(@"package[s] selected");
-#endif //DEBUG
-		if (selection != NSNotFound){
-			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
-			NSPoint offsetRowOrigin = [tableView rectOfRow: selection - offset].origin;
-			NSClipView *contentView = [tableView superview];
-			NSPoint target = [contentView constrainScrollPoint: offsetRowOrigin];
-	
-			[contentView scrollToPoint: target];
-			[tableScrollView reflectScrolledClipView: contentView];
-			[tableView selectRow: selection byExtendingSelection: NO];
-		}
-	}
-}
-
-
-//helper used in refreshTable and in didClickTableColumn: delegate method
--(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
-{
-	if ([defaults boolForKey: FinkScrollToSelection]){
-		[self storeSelectedObjectInfo];
-	}
-	
-	// sort data source
-	[[self displayedPackages] sortUsingSelector:
-		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
-			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
-	[tableView reloadData];
-
-	if ([defaults boolForKey: FinkScrollToSelection]){
-		[self scrollToSelectedObject];
-	}
-}
-
-//method called when FinkDataController is finished updating package
-//or when commands are completed
--(void)refreshTable:(NSNotification *)ignore
-{
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
-
 	if ([progressView isDescendantOf: progressViewHolder]){
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
 	}
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
-	[self controlTextDidChange: nil]; //reapplies filter	
-	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
+	
+	[self controlTextDidChange: nil]; //reapplies filter, which sorts table
 }
 
 //----------------------------------------------->Data Source Methods
@@ -960,7 +1001,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name] contains: @"tcsh"]){
 		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
 				[self window], self, NULL,	NULL, nil,
-					@"FinkCommander is unable to install that package.\nSee Help:FinkCommander Help:Known Bugs and Limitations",
+					@"FinkCommander is unable to install tcsh.\nSee Help:FinkCommander Help:Known Bugs and Limitations",
 					nil);
 		return NO;
 	}
@@ -1057,6 +1098,13 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(void)runCommandWithParams:(NSMutableArray *)params
 {
+	NSString *executable = [params objectAtIndex: 0];
+	NSMutableDictionary *d;
+	NSString *proxy;
+	NSString *basePath = [defaults objectForKey: FinkBasePath];
+	NSString *binPath = [basePath stringByAppendingPathComponent: @"/bin"];
+	char *proxyEnv;
+
 	if ([[self password] length] < 1 && 
 		! [defaults boolForKey: FinkNeverAskForPassword]){
 		
@@ -1080,10 +1128,51 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 			return;
 		}
 	}
+
+	//set up launch path and arguments array
+	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
+	[params insertObject: @"-S" atIndex: 1];
+	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
+		([executable isEqualToString: @"fink"] 			||
+		 [executable isEqualToString: @"apt-get"])){
+		[params insertObject: @"-y" atIndex: 3];
+	}
+	//give apt-get a chance to fix broken dependencies
+	if ([executable isEqualToString: @"apt-get"]){
+		int i = [defaults boolForKey: FinkAlwaysChooseDefaults] ? 4 : 3;
+		[params insertObject: @"-f" atIndex: i];
+	}
+
+#ifdef DEBUG	
+	NSLog(@"%@", [params componentsJoinedByString: @" "]);
+#endif //DEBUG
+	
+	//set up environment variables for task
+	d = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+			[NSString stringWithFormat:
+				@"/%@:/%@/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:",
+				binPath, basePath],
+			@"PATH",
+			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
+			@"PERL5LIB",
+		nil];
+	proxy = [defaults objectForKey: FinkHTTPProxyVariable];
+	if ([proxy length] > 0){
+		[d setObject: proxy forKey: @"http_proxy"];
+	}else if (! [defaults boolForKey: FinkLookedForProxy]){
+		if (proxyEnv = getenv("http_proxy")){
+			proxy = [NSString stringWithCString: proxyEnv];
+			[d setObject: proxy  forKey: @"http_proxy"];
+			[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
+		}
+		[defaults setBool: YES forKey: FinkLookedForProxy];
+	}
+		
 	[self setPendingCommand: NO];
 
-	[finkTask release];
+	if (finkTask) [finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
+	[finkTask setEnvironmentDictionary: d];
 
 	// start the process asynchronously
 	[finkTask startProcessWithArgs: params];
@@ -1091,7 +1180,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 //if last command was not completed because no valid password was entered,
 //run it again after receiving passwordWasEntered notification;
--(void)runCommandWithPassword:(NSNotification *)note
+-(void)runCommandAfterPasswordEntered:(NSNotification *)note
 {
 	if ([self pendingCommand]){
 		[self setCommandIsRunning: YES];
@@ -1219,14 +1308,14 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 			if ([lastCommand contains: @"selfupdate"] ||
 				[lastCommand contains: @"index"]	  ||
 	            [defaults boolForKey: FinkUpdateWithFink]){
-				[self updateTable: nil];   // refreshTable will be called by notification
+				[self updateTable: nil];   // resetInterface will be called by notification
 			}else{
 				[packages updateManuallyWithCommand: [self lastCommand]
 										   packages: [self selectedPackages]];
-				[self refreshTable: nil]; 
+				[self resetInterface: nil]; 
 			}
 		}else{
-			[self refreshTable: nil];
+			[self resetInterface: nil];
 		}
 	}else{
 		if ([defaults boolForKey: FinkAutoExpandOutput]){

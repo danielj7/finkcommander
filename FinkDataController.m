@@ -208,7 +208,7 @@ See the header file, FinkDataController.h, for interface and license information
 	FinkPackage *pkg;
 
 	while (pkg = [e nextObject]){
-		if ([[pkg installed] contains: @"e"]){
+		if ([[pkg installed] contains: @"t"]){
 			count++;
 		}
 	}

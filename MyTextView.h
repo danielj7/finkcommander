@@ -1,5 +1,4 @@
 /* MyTextView.h */
-
 /*
  * Copyright (c) 2002 Hoshi Takanori
  *
@@ -18,6 +17,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MyTextView : NSTextView
+ 
 + (id) myTextViewToReplace: (NSTextView *) textView
 	in: (NSScrollView *) scrollView;
 + (NSCursor *) handCursor;
@@ -25,4 +25,5 @@
 - (NSRect) rectOfRange: (NSRange) range;
 - (void) updateAnchoredRectsInBounds: (NSRect) bounds;
 - (void) resetCursorRects;
+
 @end

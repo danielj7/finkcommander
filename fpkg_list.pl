@@ -40,7 +40,7 @@ foreach $pname (sort @pkglist) {
         $iflag = "outdated";
 	  } elsif ($vo->is_present()) {
 		$iflag = "archive";
-      } else {
+	  } else {
         $iflag = "  ";
       }
     }

@@ -1,5 +1,4 @@
 /* MyTextView.m */
-
 /*
  * Copyright (c) 2002 Hoshi Takanori
  *
@@ -23,6 +22,7 @@
 #define HAND_HOTSPOT_Y 0
 
 @implementation MyTextView
+
 
 /*
  * Initialization.
@@ -133,5 +133,6 @@ static NSCursor *handCursor = nil;
 {
     return [self menu];
 }
+
 
 @end

@@ -10,7 +10,7 @@
                 setAutoExpandChanged = id; 
                 setFinkConfChanged = id; 
                 setFinkTreesChanged = id; 
-                setPathChoice = id; 
+                setPathChoiceChanged = id; 
                 setPreferences = id; 
                 setTitleBarImage = id; 
             }; 
@@ -31,6 +31,8 @@
                 keepBuildDirectoryButton = NSButton; 
                 keepRootDirectoryButton = NSButton; 
                 neverAskButton = NSButton; 
+                outputPathButton = NSButton; 
+                outputPathTextField = NSTextField; 
                 passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
                 rootMethodMatrix = NSMatrix; 

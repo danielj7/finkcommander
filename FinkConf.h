@@ -42,6 +42,7 @@ File: FinkConf.h
 //  Set by user
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
+extern NSString *FinkOutputPath;
 extern NSString *FinkUpdateWithFink;
 extern NSString *FinkAlwaysChooseDefaults;
 extern NSString *FinkScrollToSelection;

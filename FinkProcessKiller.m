@@ -64,7 +64,10 @@
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
 	NSString *cpid = [self childOfProcess: ppid];
-
+	
+	//find FC's child and terminate it
+	//then recursively find child of child and terminate it 
+	//until all descendants have been terminated
 	while (cpid){
 #ifdef DEBUG
 		NSLog(@"Calling terminateProcessWithPID: %@", cpid);

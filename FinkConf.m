@@ -11,6 +11,7 @@ File: FinkConf.m
 //user defaults.
 NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
+NSString *FinkOutputPath = @"FinkOutputPath";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 NSString *FinkScrollToSelection = @"FinkScrollToSelection";

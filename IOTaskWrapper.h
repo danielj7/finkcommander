@@ -10,10 +10,8 @@ http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 
 TaskWrapper is a generalized process handling class that facilitates asynchronous
 interaction with an NSTask.  The modifications in IOTaskWrapper allow the user to send 
-messages to the task's standard input.  The modifications in this version also
-customize the arguments list and environment to run fink and apt-get commands.  I chose
-to take this approach rather than writing a more modular version in order to 
-keep the code relating to running commands out of the FinkController class.  
+messages to the task's standard input and to set the environment for the task.  IOTaskWrapper 
+also includes the process exit status in the process finished protocol method.    
 
 Copyright (C) 2002  Steven J. Burr
 
@@ -55,9 +53,7 @@ Contact the author at sburrious@users.sourceforge.net.
 @interface IOTaskWrapper : NSObject {
     NSTask 				*task;
     id					<IOTaskWrapperController>controller;
-	NSMutableDictionary	*environment;
-	NSString			*password;
-	NSUserDefaults 		*defaults;
+	NSDictionary		*environment;
 }
 
 // Accessor
@@ -65,6 +61,8 @@ Contact the author at sburrious@users.sourceforge.net.
 
 // Designated initializer; 1st item in args should be path to command
 -(id)initWithController:(id <IOTaskWrapperController>)controller;
+
+-(void)setEnvironmentDictionary:(NSDictionary *)d;
 
 // Launch process, setting up asynchronous feedback notifications.
 -(void)startProcessWithArgs:(NSMutableArray *)arguments;

@@ -16,12 +16,12 @@
 				F53369F60218261B01A80165,
 				F527284D0221B4E801A80164,
 				F527284E0221B4E801A80164,
-				F5375A6A0246DDEB01A80164,
-				F5C523D902A326B701A80165,
-				F54436B9027F6AD501A80164,
 				F5DE1D8E022845A201A80164,
 				F569E33802498D1101A80164,
 				F576358B0298AE4E01A80166,
+				F5375A6A0246DDEB01A80164,
+				F54436B9027F6AD501A80164,
+				F5C523D902A326B701A80165,
 				F5B9D9E402B1D61C01A8016B,
 			);
 			isa = PBXGroup;
@@ -180,6 +180,7 @@
 				F5375A6C0246DE1901A80164,
 				F5C523DC02A33E0A01A80165,
 				089C165CFE840E0CC02AAC07,
+				F57DA17B02B4680D01A8016B,
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
 				F5D3F481025306EB01A80164,
@@ -274,13 +275,15 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4</string>
+	<string>0.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.4.0</string>
+	<string>0.3.1</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright (C) 2002 Steven J. Burr, subject to Gnu General Public License\\nSee Help:FinkCommander Help:License to read the GPL</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -333,6 +336,7 @@
 				F5B9D9EB02B232D501A8016B,
 				F5B9D9F602B3D67A01A8016B,
 				F5B9D9F702B3D67A01A8016B,
+				F57DA17C02B4680D01A8016B,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -728,12 +732,12 @@
 				F53369F50218261B01A80165,
 				F527284B0221B4E801A80164,
 				F527284C0221B4E801A80164,
-				F5375A680246DDDC01A80164,
-				F5C523D802A326B701A80165,
-				F54436B8027F6AD501A80164,
 				F5DE1D8F022845A201A80164,
 				F569E33702498D1101A80164,
 				F576358A0298AE4E01A80166,
+				F5375A680246DDDC01A80164,
+				F54436B8027F6AD501A80164,
+				F5C523D802A326B701A80165,
 				F5B9D9EC02B2B13501A8016B,
 			);
 			isa = PBXGroup;
@@ -802,6 +806,17 @@
 		};
 		F576358D0298AE4E01A80166 = {
 			fileRef = F576358B0298AE4E01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F57DA17B02B4680D01A8016B = {
+			isa = PBXFileReference;
+			path = Credits.html;
+			refType = 4;
+		};
+		F57DA17C02B4680D01A8016B = {
+			fileRef = F57DA17B02B4680D01A8016B;
 			isa = PBXBuildFile;
 			settings = {
 			};

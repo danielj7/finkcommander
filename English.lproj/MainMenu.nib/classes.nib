@@ -6,14 +6,14 @@
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
                 expandOutput = id; 
-                goToBugReportPage = id; 
-                goToFinkCommanderWebSite = id; 
-                goToFinkWebSite = id; 
+                goToWebSite = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 refilter = id; 
                 runCommand = id; 
+                runCommandInTerminal = id; 
                 runUpdater = id; 
+                saveOutput = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 

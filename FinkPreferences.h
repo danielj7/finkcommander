@@ -39,6 +39,8 @@ File: FinkPreferences.h
 	//widgets used for general preference settings
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
+	IBOutlet NSTextField *outputPathTextField;
+	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *askOnStartupButton;
 	IBOutlet NSButton *neverAskButton;
@@ -85,7 +87,7 @@ File: FinkPreferences.h
 -(IBAction)selectDirectory:(id)sender;
 
 //record whether certain preference items have changed
--(IBAction)setPathChoice:(id)sender;
+-(IBAction)setPathChoiceChanged:(id)sender;
 -(IBAction)setAutoExpandChanged:(id)sender;
 -(IBAction)setFinkConfChanged:(id)sender;
 -(IBAction)setFinkTreesChanged:(id)sender;
