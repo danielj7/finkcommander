@@ -9,7 +9,7 @@
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
                 expandOutput = id; 
-                internetAccess = id; 
+                goToWebsite = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
                 refilter = id; 
