@@ -138,6 +138,7 @@
 				4A9504CCFFE6A4B311CA0CBA,
 				4A9504CDFFE6A4B311CA0CBA,
 			);
+			hasScannedForEncodings = 1;
 			isa = PBXProject;
 			knownRegions = (
 				English,
@@ -188,6 +189,7 @@
 			refType = 4;
 		};
 		29B97316FDCFA39411CA2CEA = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = main.m;
 			refType = 4;
@@ -269,7 +271,6 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
-				USE_GCC3 = YES;
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
@@ -318,7 +319,6 @@
 </dict>
 </plist>
 ";
-			shouldUseHeadermap = 1;
 		};
 		29B97327FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -478,6 +478,7 @@
 //F53
 //F54
 		F5019E9703625D2701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkToolbar.m;
 			refType = 4;
@@ -489,6 +490,7 @@
 			};
 		};
 		F5019E9903625D4201A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkToolbar.h;
 			refType = 4;
@@ -500,6 +502,7 @@
 			};
 		};
 		F501F21202FDF20001A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = RELEASE_STEPS.txt;
 			refType = 4;
@@ -561,11 +564,13 @@
 			};
 		};
 		F512CBEE02E6749301BD3D51 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkTextViewController.m;
 			refType = 4;
 		};
 		F512CBEF02E6749301BD3D51 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkTextViewController.h;
 			refType = 4;
@@ -583,11 +588,13 @@
 			};
 		};
 		F527284C0221B4E801A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPackage.h;
 			refType = 4;
 		};
 		F527284E0221B4E801A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPackage.m;
 			refType = 4;
@@ -617,6 +624,7 @@
 			};
 		};
 		F531463F022C801601A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = fpkg_list.pl;
 			refType = 4;
@@ -628,11 +636,13 @@
 			};
 		};
 		F53369F50218261B01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkController.h;
 			refType = 4;
 		};
 		F53369F60218261B01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkController.m;
 			refType = 4;
@@ -678,11 +688,13 @@
 			};
 		};
 		F536C03E0280F24501A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBString.h;
 			refType = 4;
 		};
 		F536C03F0280F24501A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBString.m;
 			refType = 4;
@@ -700,6 +712,7 @@
 			};
 		};
 		F5375A680246DDDC01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPreferences.h;
 			refType = 4;
@@ -711,6 +724,7 @@
 			};
 		};
 		F5375A6A0246DDEB01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPreferences.m;
 			refType = 4;
@@ -804,6 +818,7 @@
 			refType = 4;
 		};
 		F53B4CA303100C0E01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = Toolbar.plist;
 			path = English.lproj/Toolbar.plist;
@@ -839,11 +854,13 @@
 			refType = 4;
 		};
 		F53B4D41031079C801A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkSplitView.m;
 			refType = 4;
 		};
 		F53B4D42031079C801A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkSplitView.h;
 			refType = 4;
@@ -897,11 +914,13 @@
 			};
 		};
 		F54147C202C18B7301A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkGlobals.h;
 			refType = 4;
 		};
 		F54147C302C18B7301A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkGlobals.m;
 			refType = 4;
@@ -952,6 +971,7 @@
 			};
 		};
 		F542CFF702C2F03B01A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPackageInfo.m;
 			refType = 4;
@@ -963,11 +983,13 @@
 			};
 		};
 		F54436B8027F6AD501A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkConf.h;
 			refType = 4;
 		};
 		F54436B9027F6AD501A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkConf.m;
 			refType = 4;
@@ -985,6 +1007,7 @@
 			};
 		};
 		F5458DBF0303658001A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = UserDefaults.plist;
 			refType = 4;
@@ -1024,16 +1047,19 @@
 			};
 		};
 		F54A669802DA8F3701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = VERSION_HISTORY.html;
 			refType = 4;
 		};
 		F54BD02602D549F101A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkOutputParser.m;
 			refType = 4;
 		};
 		F54BD02702D549F101A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkOutputParser.h;
 			refType = 4;
@@ -1051,16 +1077,19 @@
 			};
 		};
 		F55057270231E5F701A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = LICENSE.txt;
 			refType = 4;
 		};
 		F553429002E9F45A015ADE4E = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkUtilities.m;
 			refType = 4;
 		};
 		F553429102E9F45A015ADE4E = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkUtilities.h;
 			refType = 4;
@@ -1078,11 +1107,13 @@
 			};
 		};
 		F55407ED035D0C8601A80170 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkWarningDialog.h;
 			refType = 4;
 		};
 		F55407EE035D0C8601A80170 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkWarningDialog.m;
 			refType = 4;
@@ -1139,11 +1170,13 @@
 			};
 		};
 		F55FBB1D02F3B8C901A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkDataController.h;
 			refType = 4;
 		};
 		F55FBB1E02F3B8C901A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkDataController.m;
 			refType = 4;
@@ -1161,11 +1194,13 @@
 			};
 		};
 		F55FF54A02CFC96301A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkInstallationInfo.m;
 			refType = 4;
 		};
 		F55FF54B02CFC96301A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkInstallationInfo.h;
 			refType = 4;
@@ -1183,6 +1218,7 @@
 			};
 		};
 		F5607A9502CE125001A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkTableViewController.m;
 			refType = 4;
@@ -1194,6 +1230,7 @@
 			};
 		};
 		F5607A9702CE125E01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkTableViewController.h;
 			refType = 4;
@@ -1245,6 +1282,7 @@
 			};
 		};
 		F57DA17B02B4680D01A8016B = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = Credits.html;
 			path = English.lproj/Credits.html;
@@ -1307,7 +1345,6 @@
 			productInstallPath = /usr/local/bin;
 			productName = Launcher;
 			productReference = F580FC3F0332C30701A80166;
-			shouldUseHeadermap = 0;
 		};
 		F580FC3F0332C30701A80166 = {
 			isa = PBXExecutableFileReference;
@@ -1402,6 +1439,7 @@
 			};
 		};
 		F59FF428032134D901A80175 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Credits.html;
@@ -1414,6 +1452,7 @@
 			};
 		};
 		F5B9D9E402B1D61C01A8016B = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = MyTextView.m;
 			refType = 4;
@@ -1436,6 +1475,7 @@
 			};
 		};
 		F5B9D9EC02B2B13501A8016B = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = MyTextView.h;
 			refType = 4;
@@ -1481,6 +1521,7 @@
 			refType = 4;
 		};
 		F5BBDFAF023AF89301A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = TODO.txt;
 			refType = 4;
@@ -1493,6 +1534,7 @@
 			refType = 4;
 		};
 		F5C523D802A326B701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = FinkPackageInfo.h;
 			refType = 4;
@@ -1523,27 +1565,30 @@
 			refType = 4;
 		};
 		F5C94461039C68FB01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItemTree.m;
-			path = /Users/sburr/CocoaProjects/Outliner/SBFileItemTree.m;
+			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItemTree.m;
 			refType = 0;
 		};
 		F5C94462039C68FB01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = SBFileItemTree.h;
-			path = /Users/sburr/CocoaProjects/Outliner/SBFileItemTree.h;
-			refType = 0;
+			path = SBFileItemTree.h;
+			refType = 4;
 		};
 		F5C94463039C68FB01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItem.m;
-			path = /Users/sburr/CocoaProjects/Outliner/SBFileItem.m;
+			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItem.m;
 			refType = 0;
 		};
 		F5C94464039C68FB01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItem.h;
-			path = /Users/sburr/CocoaProjects/Outliner/SBFileItem.h;
+			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItem.h;
 			refType = 0;
 		};
 		F5C94465039C68FB01A80164 = {
@@ -1592,11 +1637,13 @@
 			};
 		};
 		F5C94470039C75FC01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBTreeManager.m;
 			refType = 4;
 		};
 		F5C94471039C75FC01A80164 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBTreeManager.h;
 			refType = 4;
@@ -1637,6 +1684,7 @@
 			refType = 4;
 		};
 		F5D01DA703636C2C01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = Debugging.h;
 			refType = 4;
@@ -1677,6 +1725,7 @@
 			refType = 4;
 		};
 		F5D5018B0342BADE01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = README.html;
 			refType = 4;
@@ -1700,6 +1749,7 @@
 			};
 		};
 		F5F8FA550331965D01A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = AuthorizedExecutable.h;
 			refType = 4;
@@ -1711,6 +1761,7 @@
 			};
 		};
 		F5F8FA570331966401A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = AuthorizedExecutable.m;
 			refType = 4;
@@ -1722,16 +1773,19 @@
 			};
 		};
 		F5F8FA59033196AC01A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = Launcher.c;
 			refType = 4;
 		};
 		F5F8FA5B033196B301A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = Launcher.h;
 			refType = 4;
 		};
 		F5F8FA5D033196BF01A80166 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = getpath.c;
 			refType = 4;
