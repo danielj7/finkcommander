@@ -2,7 +2,7 @@
         "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
 <html lang="en">
 <head>
-	<title>Bugs</title>
+	<title>FinkCommander Help--Bugs</title>
 </head>
 <body>
 
@@ -10,15 +10,19 @@
 
 <dl>
     <dt>Terminating commands</dt>
-    <dd><p>There is currently no way to terminate a command other than to quit
-    FinkCommander.</p></dd>
+    <dd><p>There is currently no way to terminate a command other than
+        to quit FinkCommander.  In my experience, quitting in the
+        middle of a command has never caused any problems.  Fink seems
+        to do an excellent job of recovering from aborted commands.
+        YMMV, of course.</p></dd>
 	
-	<dt>Automatic response to prompt failures</dt>
-	<dd><p>In some instances, Fink will not automatically respond to a prompt
+    <dt>Automatic response to prompt failures</dt>
+    <dd><p>In some instances, Fink will not automatically respond to a prompt
 	when <kbd>Preferences...:General:Always choose defaults</kbd> is selected.
 	When this occurs, select <kbd>Tools:Interact with Fink</kbd> to enter
-	a response.  <a href="details/fc_defaults.html">More detail</a>.
-	</p></dd>
+	a response.  <a href="details/fc_defaults.html">More
+	detail</a>.
+    </p></dd>
 	
     <dt>Incorrect error messages</dt>
     <dd><p>FinkCommander sometimes reports possible errors in running a fink
@@ -38,23 +42,24 @@
     </p></dd>
     
     <dt>Incorrect table entries</dt>
-    <dd><p>If you turn off the <dfn>Alway update table with Fink</dfn> option, 
-        FinkCommander will attempt to update the data in the table, but it will be
-        at best a very rough approximation.  To get a complete update, turn the option
-        back on, or run <kbd>File:Update table</kbd>. 
+    <dd><p>If you turn off the <dfn>Alway update table with Fink</dfn>
+        option, FinkCommander will attempt to update the data in the
+        table, but the result will be at best a very rough
+        approximation of the true state of your installation.  To get
+        a complete update, turn the option back on, or run
+        <kbd>File:Update table</kbd>.
         <a href="details/fc_tableupdate.html">More detail</a>.
     </p></dd> 
     
     <dt>Tcsh package problem</dt>
-    <dd><p>The selection of tcsh is disabled, because FinkCommander stalls when trying
-        to install this package.  Installing from the command-line works fine.
+    <dd><p>The selection of tcsh is disabled, because FinkCommander
+        stalls when trying to install this package.  Installing from
+        the command-line works fine.  Please file a <a
+        href="http://sourceforge.net/tracker/?group_id=48896&atid=454467"
+        target="top">bug report</a> if you encounter the same problem
+        with another package.
     </p></dd>  
-	
-	<dt>Apt-get from behind a firewall</dt>
-	<dd><p>Apt-get will not work from behind a firewall unless the http_proxy environment
-	variable is set.  FinkCommander will attempt to read this variable from your environment.  If
-	it fails, you can set it manually in <kbd>FinkCommander:Preferences:General</kbd>.
-	</p></dd>
+
 </dl>
 
 </body>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="en">
+<head>
+	<title>FinkCommander Help--Running Commands</title>
+</head>
+
+<body>
+
+<h2>Running Fink and Apt-Get Commands</h2>
+
+<h3>Basics</h3>
+
+<p>It's pretty straightforward.  If the command is package specific
+(e.g. "install"), select a package or packages in the table and choose
+the command you want from the source or binary menus or the toolbar.
+To select more than one package, just shift- or command-click as you
+would in any other table</p>
+
+<p>To run a command that doesn't apply to specific packages
+(e.g. "selfupdate"), simply choose the command from the menu.</p>
+
+<p>When a command is running, the name of the command and (space
+allowing) a list of the packages it applies to will appear as a text
+message in the lower left-hand corner of the window.  When the command
+is finished, a progress bar and the message "Updating table data" may
+appear.  <a href="details/fc_tableupdate.html">More detail</a>.  While
+either of these processes is underway, the menu and toolbar items for
+running commands will be disabled.
+
+Between commands, the number of packages currently displayed
+by the table will appear.</p>
+
+<h3>Source vs. Binary</h3>
+
+<p>The commands under the <kbd>Source</kbd> menu are run by the fink
+package manager.  The commands under the <kbd>Binary</kbd> menu are
+run by apt-get.  In general, fink handles packages available as source
+code and apt-get handles packages available in binary form.  Hence the
+menu names.</p>
+
+<p>This dichotomy, however, does not always hold true.  For
+example, if you install a source code package,
+remove it and then reinstall it before a newer version becomes
+available, fink will use the dpkg command to reinstall a compressed
+binary package that it has installed on your system.</p>
+
+<h3>Finding Packages</h3>
+
+<p>FinkCommander provides two handy tools for finding the packages you
+might be interested in installing or removing:</p>
+
+<ol>
+<li><p>You can sort the table by clicking on the column headers,
+just as you can in Mail and other applications.  Click a header twice
+in a row to reverse the sort order.</p></li>
+
+<li><p>The toolbar in its default configuration includes a filter
+that can be applied to most of the fields in the table.  (I didn't
+think anyone would want to filter by version number.)  The filter
+works incrementally, so that as you type or delete characters, the
+contents of the table change to include only those packages that
+satisfy your search criteria.  The package count at the bottom of the
+window also changes to reflect the table contents.</p></li>
+</ol>
+
+<p>By combining the use of sorting and filtering, you can effectively
+search the table with two criteria.</p>
+
+<p>The table colums, by the way, can be resized and moved, and any
+such changes you make will be saved between runtimes.</p>
+
+</body>
+</html>
