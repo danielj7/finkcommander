@@ -15,10 +15,19 @@
     <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.  
 		This sometimes occurs because Fink has not automatically responded to a prompt,
 		even though <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
-		is selected.  <a href="details/fc_defaults.html">More detail</a>.If you exprience this 
+		is selected.  <a href="details/fc_defaults.html">More detail</a>.  If you exprience this 
 		problem, select <kbd>Tools:Interact with Fink</kbd> to enter a response.  An optional 
 		Interact with Fink item is also available for the Toolbar.
     </p></dd>
+	
+	<dt>Atlas install problem</dt>
+	<dd><p>The atlas package install process includes a long interactive session where it's
+		necessary to answer several questions from the command line.  When FinkCommander reaches
+		this point in the process, it stalls and doesn't even print the prompts.  I'm not certain
+		why this occurs, but using the FinkCommander interaction dialog to respond to all of the
+		questions presented during the atlas install would in any case be tedious.  If you want
+		to install atlas, you will need to do so in Terminal, either directly or by 
+		running <kdb>Source:Run in Terminal:Install</kbd> in FinkCommander.</p>
 	
 	<dt>Apt-get update failure</dt>
 	<dd><p>If you receive an error message after running apt-get update, try running

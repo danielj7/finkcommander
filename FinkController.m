@@ -417,8 +417,8 @@ File: FinkController.m
     if (! [installedVersion isEqualToString: latestVersion]){
 		int answer = NSRunAlertPanel(NSLocalizedString(@"Download", nil),
 							   NSLocalizedString(@"AMoreCurrentVersion", nil),
-							   NSLocalizedString(@"Yes", nil),
-							   NSLocalizedString(@"No", nil), nil, latestVersion);
+							   NSLocalizedString(@"Download", nil),
+							   NSLocalizedString(@"Cancel", nil), nil, latestVersion);
 		if (answer == NSAlertDefaultReturn){
 			[[NSWorkspace sharedWorkspace] openURL:
 				[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
@@ -531,8 +531,6 @@ File: FinkController.m
 
 -(void)runTerminateCommand:(NSNotification *)ignore
 {
-//    NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
-//    NSString *pgid = processGroupID(ppid);
 	NSString *pgid = [NSString stringWithFormat:@"%d", [parser pgid]];
 		
 	if (!killTask) 	killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
@@ -688,7 +686,6 @@ File: FinkController.m
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
 	return [NSArray arrayWithObjects:
-				NSToolbarSeparatorItemIdentifier,
 				NSToolbarSeparatorItemIdentifier,
 				NSToolbarSpaceItemIdentifier,
 				NSToolbarFlexibleSpaceItemIdentifier,

@@ -354,24 +354,14 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
 	NSString *pname = [[[self displayedPackages] objectAtIndex: rowIndex] name];
-	if ([pname contains:@"tcsh"]){
-		NSBeginAlertSheet(NSLocalizedString(@"Sorry", nil),
-					NSLocalizedString(@"OK", nil),
-					nil,	nil,
-					[self window], self, NULL,	NULL, nil,
-					NSLocalizedString(@"UnableToInstallTcsh", nil),
-					nil);
-		return NO;
-	}
-
-	if ([pname contains:@"term-readkey-pm"]){
-		NSBeginAlertSheet(NSLocalizedString(@"Caution", nil),
+	if ([pname contains:@"tcsh"] 				|| 
+		[pname contains:@"term-readkey-pm"]){
+		NSBeginAlertSheet(NSLocalizedString(@"Warning", nil),
 					NSLocalizedString(@"OK", nil),
 					nil, nil,
 					[self window], self, NULL,	NULL, nil,
-					NSLocalizedString(@"UnableToInstallTerm-Readkey", nil),
+					[NSString stringWithFormat:NSLocalizedString(@"UnableToInstall", nil), pname, pname],
 					nil);
-		return YES;
 	}
 	return YES;
 }

@@ -70,7 +70,7 @@ bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
 
 
 /*
-* Determine if the command is one we really want to run as root
+ * Determine if the command is one we really want to run as root
  */
 int isauthorizedcmd(char * const *cmd, int args)
 {

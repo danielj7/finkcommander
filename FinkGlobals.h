@@ -30,7 +30,6 @@
 
 */
 
-
 #import <Foundation/Foundation.h>
 #import "SBString.h"
 
@@ -83,7 +82,7 @@ extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;
 extern NSString *FinkTerminateNotification;
 
-//UserInfo Keys
+//UserInfo Key
 extern NSString *FinkRunProgressIndicator;
 
 extern NSString *FinkCreditString;

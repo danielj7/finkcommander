@@ -130,7 +130,6 @@ int VERSIONSTART = 9;
 	}
 	
 	Dprintf(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
-	
 	return pkgs;
 }
 
@@ -271,9 +270,9 @@ int VERSIONSTART = 9;
 		[p release];
 		[pool release];
     }
-    [self setArray: [[collector copy] autorelease]];
+    [self setArray:[NSArray arrayWithArray:collector]]; //make immutable
 	[self setBinaryPackages: nil];
-
+	
 	Dprintf(@"Fink package array completed after %f seconds",
 	   -[start timeIntervalSinceNow]);
 	   
@@ -282,6 +281,14 @@ int VERSIONSTART = 9;
 											object: nil];
 }
 
+//---------------------------------------------------------->Utilities
+
+//TBD: Change to:
+//-(NSString *)pathToPackage:(FinkPackage *) 
+//			   fileType:(FinkFileType)type 
+//			   inTree:(FinkTree)tree;
+//create typedef enums for FinkFileType (FinkInfoType and FinkPatchType) 
+//and FinkTree (FinkStableTree and FinkUnstableTree)
 -(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree
 {
 	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];

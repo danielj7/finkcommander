@@ -38,9 +38,15 @@
 
 -(void)showRemoveWarningForArguments:(NSMutableArray *)args
 {
-    command = REMOVE;
+    int optcount = 0;
+	
+	command = REMOVE;
     [self setArguments:args];
-    if ([args count] > 3){
+	
+	if ([args indexOfObject:@"-y"] != NSNotFound) optcount++;
+	if ([args indexOfObject:@"-f"] != NSNotFound) optcount+=2;
+	
+    if ([args count] - optcount > 3){
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected packages?", nil)];
     }else{
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];

@@ -35,8 +35,8 @@
 ### Declarations ###
 
 use strict;
-use lib "/sw/lib/perl5";
-use lib "/sw/lib/perl5/darwin";
+use lib "BASEPATH/lib/perl5";
+use lib "BASEPATH/lib/perl5/darwin";
 use Fink::Services;
 use Fink::Package;
 my ($configpath, $config);                  #used to scan pkgs
@@ -62,7 +62,6 @@ sub latest_version_for_tree {
             push(@tree_versions, $version_string);
         }
     }
-    print "$mytree version(s): @tree_versions\n";
     if (! defined(@tree_versions)) { return " " ;}
     return &Fink::Services::latest_version(@tree_versions); #latest V in tree
 }
@@ -77,7 +76,7 @@ sub latest_installed_version {
 ### Main Routine ###
 
 # read the configuration file
-$configpath = "/sw/etc/fink.conf";   
+$configpath = "BASEPATH/etc/fink.conf";   
 
 if (-f $configpath) {
   $config = &Fink::Services::read_config($configpath);
@@ -91,7 +90,6 @@ Fink::Package->require_packages();
 @pkglist = Fink::Package->list_packages();
 
 foreach $pname (sort @pkglist) {
-    print "-------\n$pname\n";
     $package = Fink::Package->package_by_name($pname);   
     if ($package->is_virtual()) {
       $lvstable = $lvunstable = $iflag = $section = " ";
@@ -116,5 +114,6 @@ foreach $pname (sort @pkglist) {
         $iflag = " ";
       }
   }
-  print "found: $lvstable\n";
+    print "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
+        "$lvunstable**\n$section**\n$description**\n$full\n";
 }

@@ -32,7 +32,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 
-// String representation of the object
+// String representation of the object in NSLog and debugging
 -(NSString *)description
 {
 	return [NSString stringWithFormat:@"%@-%@", [self name], [self version]];
@@ -223,8 +223,7 @@ See the header file, FinkPackage.h, for interface and license information.
 	if (![anObject isKindOfClass: [FinkPackage class]]){
 		return NO;
 	}
-	if ([[anObject name] isEqualToString: [self name]] &&
-		[[anObject version] isEqualToString: [self version]]){
+	if ([[anObject description] isEqualToString:[self description]]){
 		return YES;
 	}else{
 		return NO;
@@ -261,7 +260,9 @@ See the header file, FinkPackage.h, for interface and license information.
 
 
 //Status
-//Reverse alphabetical is default, because it puts outdated at the top.
+//Reverse alphabetical is default, because it puts outdated at the top
+//in all of the languages for which FinkCommander has been localized so far
+//(English, French, German as of 11/10/2002).
 -(NSComparisonResult)normalCompareByStatus:(FinkPackage *)pkg
 {
 	NSComparisonResult result = [[self status] caseInsensitiveCompare:
@@ -392,6 +393,5 @@ See the header file, FinkPackage.h, for interface and license information.
 	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (0 - result);
 }
-
 
 @end
