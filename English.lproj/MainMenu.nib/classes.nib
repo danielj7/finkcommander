@@ -6,6 +6,7 @@
                 raisePwdWindow = id; 
                 runCommand = id; 
                 runUpdater = id; 
+                showPreferencePanel = id; 
                 updateTable = id; 
             }; 
             CLASS = FinkController; 
@@ -18,7 +19,7 @@
                 tableView = id; 
                 textView = id; 
             }; 
-            SUPERCLASS = NSObject; 
+            SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
     ); 
