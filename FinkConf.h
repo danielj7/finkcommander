@@ -9,7 +9,9 @@ File: FinkConf.h
 
  The FinkConf class serves as a model for the /sw/etc/fink.conf configuration
  file.  Its methods are used by FinkPreferences to modify the file and thus
- configure fink itself.
+ configure fink itself.  It currently makes use of the FinkController 
+ runCommandWithParams: method through a notification to make changes that require 
+ root privileges.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -45,7 +47,10 @@ File: FinkConf.h
 	BOOL finkTreesChanged;
 }
 
+//Get settings from the fink.conf file
 -(void)readFinkConf;
+
+//Get and set configuration parameters
 -(BOOL)useUnstableMain;
 -(void)setUseUnstableMain:(BOOL)shouldUseUnstable;
 -(BOOL)useUnstableCrypto;
@@ -68,8 +73,12 @@ File: FinkConf.h
 -(void)setRootMethod:(NSString *)s;
 -(NSString *)fetchAltDir;
 -(void)setFetchAltDir:(NSString *)s;
+
+//Set flag that determines whether fink index
+//command should be run
 -(void)setFinkTreesChanged:(BOOL)b;
 
+//Begin convulted process of writing changes to fink.conf
 -(void)writeToFile;
 
 @end

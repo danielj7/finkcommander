@@ -572,8 +572,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
-//formerly menu items for testing purposes; now used to implement the
-//automatic collapse preference item and to save split view state
+
 -(IBAction)collapseOutput:(id)sender
 {
 	if (! [splitView isSubviewCollapsed: outputScrollView]){
@@ -583,7 +582,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		float divwidth = [splitView dividerThickness];
 
 		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-					   forKey: FinkOutputViewRatio];
+							 forKey: FinkOutputViewRatio];
 		tFrame.size.height = sFrame.size.height - divwidth;
 		oFrame.size.height = 0.0;
 		oFrame.origin.y = sFrame.size.height;
@@ -594,6 +593,53 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[splitView setNeedsDisplay: YES];
 	}
 }
+
+//work in progress:  attempt to make splitview slide down when it collapses
+//so far any combination of increments and timing I try results in very jerky motion
+#ifdef UNDEF
+-(IBAction)collapseOutput:(id)sender
+{	
+	NSRect oFrame = [outputScrollView frame];
+	NSRect sFrame = [splitView frame];
+	float increment = oFrame.size.height / 5;
+	NSDictionary *d = [NSDictionary dictionaryWithObject: [NSNumber numberWithFloat: increment]
+									forKey: @"theIncrement"];
+									
+	if ([splitView isSubviewCollapsed: outputScrollView]) return;
+
+	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
+					forKey: FinkOutputViewRatio];
+	timer = [[NSTimer scheduledTimerWithTimeInterval: 0.1
+						target: self
+						selector: @selector(collapseByIncrements:)
+						userInfo: d
+						repeats: YES] retain];
+}
+
+-(void)collapseByIncrements:(NSTimer *)t
+{
+	NSRect oFrame = [outputScrollView frame];
+	NSRect tFrame = [tableScrollView frame];
+	float maxTFrameHeight = [splitView frame].size.height - [splitView dividerThickness];
+	float increment = [[[t userInfo] objectForKey: @"theIncrement"] floatValue];
+	
+	tFrame.size.height = tFrame.size.height + increment;
+	oFrame.size.height = oFrame.size.height - increment;
+
+	if (oFrame.size.height <= 0 || tFrame.size.height >= maxTFrameHeight){
+		oFrame.size.height = 0;
+		tFrame.size.height = maxTFrameHeight;
+		[timer invalidate];
+		[timer release];
+	}
+	
+	//need to set oFrame.origin.y
+	
+	[outputScrollView setFrame: oFrame];
+	[tableScrollView setFrame: tFrame];
+	[splitView setNeedsDisplay: YES];	
+}
+#endif //UNDEF
 
 -(IBAction)expandOutput:(id)sender
 {
@@ -1179,6 +1225,14 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 				break;
 		}
 	}
+
+	if ([defaults boolForKey: FinkAutoExpandOutput] && 
+		! [progressView isDescendantOf: progressViewHolder]){
+		[progressViewHolder addSubview: progressView];
+		[progressIndicator setUsesThreadedAnimation: YES];
+		[progressIndicator startAnimation: nil];
+}
+	
 
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];

@@ -109,7 +109,8 @@ enum {
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
 	BOOL userChoseToTerminate;
-	NSArray *selectedObjectInfo;	
+	NSArray *selectedObjectInfo;
+	NSTimer *timer;
 
 	//Authentication and Process Control
 	NSString *password;
