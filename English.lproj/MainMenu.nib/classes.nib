@@ -2,6 +2,7 @@
     IBClasses = (
         {
             ACTIONS = {
+                chooseTableColumn = id; 
                 collapseOutput = id; 
                 emailMaintainer = id; 
                 endInteractionWindow = id; 
@@ -39,8 +40,9 @@
                 splitView = NSSplitView; 
                 tableContextMenu = NSMenu; 
                 tableScrollView = NSScrollView; 
-                tableView = NSTableView; 
+                tableView = id; 
                 textView = NSTextView; 
+                viewMenu = NSMenu; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 

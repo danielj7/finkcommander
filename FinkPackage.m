@@ -264,7 +264,23 @@ See the header file, FinkPackage.h, for interface and license information.
 		[pkg unstable]];
 	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (result);
-
 }
+
+-(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare:
+		[pkg maintainer]];
+	if (result == 0) return [self normalCompareByName: pkg];
+	return result;	
+}
+
+-(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare:
+		[pkg maintainer]];
+	if (result == 0) return (0 - [self normalCompareByName: pkg]);
+	return (0 - result);
+}
+
 
 @end  

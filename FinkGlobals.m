@@ -1,9 +1,9 @@
-//
-//  FinkGlobals.m
-//  FinkCommander
-//
-//  Created by Steven Burr on Wed Jun 19 2002.
-//
+/*
+File: FinkGlobals.m
+
+ See the header file, FinkGlobals.h, for interface and license information.
+
+*/
 
 #import "FinkGlobals.h"
 
@@ -30,6 +30,8 @@ NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
+NSString *FinkViewMenuSelectionStates = @"FinkViewMenuSelectionStates";
+NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

@@ -33,6 +33,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	//set "factory defaults"
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
+	NSNumber *on = [NSNumber numberWithInt: NSOnState];
+	NSNumber *off = [NSNumber numberWithInt: NSOffState];
 	
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: @"" forKey: FinkOutputPath];
@@ -55,7 +57,22 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAutoExpandOutput];
 
 	[defaultValues setObject: [NSNumber numberWithFloat: 0.50] forKey: FinkOutputViewRatio];
-		
+	[defaultValues setObject:
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			on, @"Version Column", 
+			on, @"Installed Column",
+			on, @"Binary Column",
+			on, @"Unstable Column",
+			on, @"Category Column",
+			on, @"Description Column",
+			off, @"Maintainer Column",
+			nil]
+		forKey: FinkViewMenuSelectionStates];
+	[defaultValues setObject:
+		[NSArray arrayWithObjects: @"name", @"version", @"binary", @"unstable",
+			@"installed", @"category", @"description", nil]
+		forKey: FinkTableColumnsArray];
+	
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
 
@@ -67,7 +84,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		NSEnumerator *e;
 		NSString *attribute;
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	
+		
 		defaults = [NSUserDefaults standardUserDefaults];
 			
 		[self setWindowFrameAutosaveName: @"MainWindow"];
@@ -91,7 +108,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
 		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
 		// dictionary used to record whether table columns are sorted in normal or reverse order
-		// enables proper sorting behavior; uses macro from FinkPackages to set attributes
+		// enables proper sorting behavior; uses macro from FinkPackage to set attributes
 		columnState = [[NSMutableDictionary alloc] init];
 		e = [[NSArray arrayWithObjects: PACKAGE_ATTRIBUTES, nil] objectEnumerator];
 		while (attribute = [e nextObject]){
@@ -159,28 +176,46 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[super dealloc];
 }
 
-
 //----------------------------------------------->Post-Init Startup
 -(void)awakeFromNib
 {
+	NSDictionary *selStates = [defaults objectForKey: FinkViewMenuSelectionStates];
+	NSEnumerator *e = [selStates keyEnumerator];
+	NSString *key;
+
+#ifdef USE_CUSTOM_TABLE
+	NSSize contentSize = [tableScrollView contentSize];
+
+	tableView = [[FinkTableViewController alloc] initWithFrame:
+		NSMakeRect(0, 0, contentSize.width, contentSize.height)];
+	[tableView setDataSource: self];
+	[tableView setDelegate: self];
+	[tableScrollView setDocumentView: tableView];
+#endif USE_CUSTOM_TABLE
+	
 	[self setupToolbar];
 
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
+	
 	[tableView setMenu: tableContextMenu];
+
+	while (key = [e nextObject])
+	{
+		int menuState = [[selStates objectForKey: key] intValue];
+		[[viewMenu itemWithTitle: key] setState: menuState];
+	}
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self collapseOutput: nil];
 	}else{
 		[self expandOutput: nil];
 	}
-	
-	NSLog(@"Table Column Defaults: %@", [defaults objectForKey: @"NSTableView Columns FinkTable"]);
-	
 	[msgText setStringValue:
 		@"Updating table dataÉ"];
 }
+
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -419,7 +454,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		modalDelegate: self
 		didEndSelector: @selector(didEnd:returnCode:contextInfo:)
 		contextInfo: nil];
-	
 }
 
 //run package-specific command with arguments derived from table selection
@@ -529,6 +563,29 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		preferences = [[FinkPreferences alloc] init];
 	}
 	[preferences showWindow: self];
+}
+
+-(IBAction)chooseTableColumn:(id)sender
+{
+	int loc = [[sender title] rangeOfString: @" "].location;
+	NSString *columnIdentifier = 
+		[[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
+	NSMutableDictionary *selStates = [[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy];
+	NSDictionary *immutable;
+	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
+
+#ifdef USE_CUSTOM_TABLE
+	if (newState == NSOnState){
+		[tableView addColumnWithName: columnIdentifier];
+	}else{
+		[tableView removeColumnWithName: columnIdentifier];
+	}
+#endif //USE_CUSTOM_TABLE
+		
+	[sender setState: newState];
+	[selStates setObject: [NSNumber numberWithInt: newState] forKey: [sender title]];
+	immutable = selStates;
+	[defaults setObject: immutable forKey: FinkViewMenuSelectionStates];
 }
 
 //help menu internet access items
@@ -756,108 +813,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	return [item autorelease];
 }
 
-#ifdef UNDEF
--(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
-	   itemForItemIdentifier:(NSString *)itemIdentifier
-	willBeInsertedIntoToolbar:(BOOL)flag
-{
-	NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
-	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
-		[item setLabel: @"Install"];
-		[item setPaletteLabel: @"Install Source"];
-		[item setToolTip: @"Install package(s) from source"];
-		[item setTag: SOURCE_COMMAND]; 
-		[item setImage: [NSImage imageNamed:@"addsrc"]];
-		[item setTarget: self];
-		[item setAction: @selector(runCommand:)];
-	}else if ([itemIdentifier isEqualToString: FinkInstallBinaryItem]){
-		[item setLabel: @"Install Binary"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Install binary package(s)"];
-		[item setTag: BINARY_COMMAND]; 
-		[item setImage: [NSImage imageNamed:@"addbin"]];
-		[item setTarget: self];
-		[item setAction: @selector(runCommand:)];
-	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
-		[item setLabel: @"Remove"];
-		[item setPaletteLabel: @"Remove Source"];
-		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
-		[item setTag: SOURCE_COMMAND];
-		[item setImage: [NSImage imageNamed:@"delsrc"]];
-		[item setTarget: self];
-		[item setAction: @selector(runCommand:)];
-	}else if ([itemIdentifier isEqualToString: FinkRemoveBinaryItem]){
-		[item setLabel: @"Remove Binary"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
-		[item setTag: BINARY_COMMAND];
-		[item setImage: [NSImage imageNamed:@"delbin"]];
-		[item setTarget: self];
-		[item setAction: @selector(runCommand:)];
-	}else if ([itemIdentifier isEqualToString: FinkDescribeItem]){
-		[item setLabel: @"Inspector"];
-		[item setPaletteLabel: @"Package Inspector"];
-		[item setToolTip: @"Show package inspector panel"];
-		[item setImage: [NSImage imageNamed: @"describe"]];
-		[item setTarget: self];
-		[item setAction: @selector(showPackageInfoPanel:)];
-	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateItem]){
-		[item setLabel: @"Selfupdate"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Update package descriptions and package manager"];
-		[item setTag: SOURCE_COMMAND];
-		[item setImage: [NSImage imageNamed: @"update"]];
-		[item setTarget: self];
-		[item setAction: @selector(runUpdater:)];
-	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateCVSItem]){
-		[item setLabel: @"Selfupdate-cvs"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Update package descriptions and package manager from fink cvs repository"];
-		[item setTag: SOURCE_COMMAND]; 
-		[item setImage: [NSImage imageNamed: @"cvs"]];
-		[item setTarget: self];
-		[item setAction: @selector(runUpdater:)];
-	}else if ([itemIdentifier isEqualToString: FinkUpdateBinaryItem]){
-		[item setLabel: @"Update"];
-		[item setPaletteLabel: @"Apt-Get Update"];
-		[item setToolTip: @"Update binary package descriptions"];
-		[item setTag: BINARY_COMMAND];
-		[item setImage: [NSImage imageNamed: @"updatebin"]];
-		[item setTarget: self];
-		[item setAction: @selector(runUpdater:)];
-	}else if ([itemIdentifier isEqualToString: FinkTerminateCommandItem]){
-		[item setLabel: @"Terminate"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Terminate current command"];
-		[item setImage: [NSImage imageNamed: @"terminate"]];
-		[item setTarget: self];
-		[item setAction: @selector(terminateCommand:)];
-	}else if ([itemIdentifier isEqualToString: FinkInteractItem]){
-		[item setLabel: @"Interact"];
-		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Raise interaction sheet (use if command has stalled)"];
-		[item setImage: [NSImage imageNamed: @"interact"]];
-		[item setTarget: self];
-		[item setAction: @selector(raiseInteractionWindow:)];
-	}else if ([itemIdentifier isEqualToString: FinkEmailItem]){
-		[item setLabel: @"Maintainer"];
-		[item setPaletteLabel: @"Email maintainer"];
-		[item setToolTip: @"Send email to package maintainer"];
-		[item setImage: [NSImage imageNamed: @"email"]];
-		[item setTarget: self];
-		[item setAction: @selector(emailMaintainer:)];
-	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
-		[item setLabel:@"Filter Table Data"];
-		[item setPaletteLabel:[item label]];
-		[item setView: searchView];
-		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
-		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
-	}
-    return [item autorelease];
-}
-#endif //UNDEF
-
-
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
 	return [NSArray arrayWithObjects: 
@@ -960,16 +915,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
-//basic sorting method used in following didClickTableColumn delegate methods
--(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
-{
-	// sort data source
-	[[self displayedPackages] sortUsingSelector:
-		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
-			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
-	[tableView reloadData];
-}
-
 //called by delegate method; much simpler than the didClickTableColumn delegate method,
 //because there is no need to record and adjust sort direction or visual indicators
 -(void)resortTableAfterFilter
@@ -978,7 +923,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self lastIdentifier]];
 	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
 
-	[self sortTableAtColumn: lastColumn inDirection: direction];
+	[tableView sortTableAtColumn: lastColumn inDirection: direction];
 }
 
 //Delegate method:  filters data source each time the filter text field changes
@@ -1073,7 +1018,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkScrollToSelection]){
 		[self storeSelectedObjectInfo];
 	}	
-	[self sortTableAtColumn: aTableColumn inDirection: direction];
+	[tableView sortTableAtColumn: aTableColumn inDirection: direction];
 	if ([defaults boolForKey: FinkScrollToSelection]){
 		[self scrollToSelectedObject];
 	}
@@ -1236,7 +1181,6 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		[self displayNumberOfPackages];
 		return;
 	}
-
 	if ([defaults boolForKey: FinkWarnBeforeRunning]){
 		int answer = NSRunAlertPanel(@"Just Checking", 
 			@"Are you sure you want to run this command:\n%@?",
@@ -1249,11 +1193,10 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			return;
 		}
 	}
-
 	if ([[params objectAtIndex: 1] isEqualToString: @"remove"] && 
 		[defaults boolForKey: FinkWarnBeforeRemoving]){
 		int answer = NSRunCriticalAlertPanel(@"Caution",
-			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Uniphobe or by pressing \"Remove/Don't Warn\" below.)",
+			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Uniphobe or by pressing \"Remove/Don't Warn\".)",
 			@"Don't Remove", @"Remove",  @"Remove/Don't Warn");
 		switch(answer){
 			case NSAlertDefaultReturn:
@@ -1268,15 +1211,12 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 				break;
 		}
 	}
-
 	if ([defaults boolForKey: FinkAutoExpandOutput] && 
 		! [progressView isDescendantOf: progressViewHolder]){
 		[progressViewHolder addSubview: progressView];
 		[progressIndicator setUsesThreadedAnimation: YES];
 		[progressIndicator startAnimation: nil];
-}
-	
-
+	}
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
@@ -1291,7 +1231,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	}
 
 #ifdef DEBUG	
-	NSLog(@"%@", [params componentsJoinedByString: @" "]);
+	NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
 #endif //DEBUG
 	
 	//set up environment variables for task
@@ -1302,6 +1242,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			@"PATH",
 			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
 			@"PERL5LIB",
+			@"ssh",
+			@"CVS_RSH",
 		nil];
 	proxy = [defaults objectForKey: FinkHTTPProxyVariable];
 	if ([proxy length] > 0){
@@ -1336,8 +1278,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	}
 }
 
-//run commands to change fink.conf file after FinkConf object
-//posts a notification
+//run commands to change fink.conf file after FinkConf object posts a notification
 -(void)runFinkConfCommand:(NSNotification *)note
 {
 	NSMutableArray *args = [note object];
@@ -1350,7 +1291,6 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		return;
 	}
-
 	[progressViewHolder addSubview: progressView];
 	[progressIndicator setUsesThreadedAnimation: YES];
 	[progressIndicator startAnimation: nil];	

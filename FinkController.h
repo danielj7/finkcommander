@@ -39,10 +39,13 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
 #import "FinkBasePathUtility.h"
-#import "IOTaskWrapper.h"
 #import "FinkProcessKiller.h"
-
+#import "IOTaskWrapper.h"
 #include <math.h>
+
+#ifdef USE_CUSTOM_TABLE
+#import "FinkTableViewController.h"
+#endif USE_CUSTOM_TABLE
 
 enum {
 	SOURCE_COMMAND,
@@ -68,7 +71,7 @@ enum {
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
 	//main window outlets
-	IBOutlet NSTableView *tableView;
+	IBOutlet id tableView;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet NSSplitView *splitView;
@@ -77,6 +80,7 @@ enum {
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
 	IBOutlet NSProgressIndicator *progressIndicator;
+	IBOutlet NSMenu *viewMenu;
 	IBOutlet NSMenu *tableContextMenu;
 	
 	//password entry window outlets
@@ -162,6 +166,7 @@ enum {
 -(IBAction)internetAccess:(id)sender;
 -(void)sendEmailForPackage:(FinkPackage *)pkg;
 -(IBAction)emailMaintainer:(id)sender;
+-(IBAction)chooseTableColumn:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;
@@ -182,9 +187,6 @@ enum {
 //  delegate method
 -(void)tableView:(NSTableView *)aTableView
 		didClickTableColumn:(NSTableColumn *)aTableColumn;
-//  helper
--(void)sortTableAtColumn: (NSTableColumn *)aTableColumn 
-		inDirection:(NSString *)direction;
 
 //Process Control Methods
 // sheet methods for password window

@@ -35,7 +35,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import <Foundation/Foundation.h>
 #import "FinkGlobals.h"
 
-#define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable"
+#define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
 
 @interface FinkPackage : NSObject 
 {
@@ -108,5 +108,9 @@ Contact the author at sburrious@users.sourceforge.net.
 
 -(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg;
+
 
 @end
