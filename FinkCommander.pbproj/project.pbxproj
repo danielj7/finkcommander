@@ -1567,9 +1567,8 @@
 		F5C94461039C68FB01A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = SBFileItemTree.m;
-			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItemTree.m;
-			refType = 0;
+			path = SBFileItemTree.m;
+			refType = 4;
 		};
 		F5C94462039C68FB01A80164 = {
 			fileEncoding = 30;
@@ -1580,16 +1579,14 @@
 		F5C94463039C68FB01A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = SBFileItem.m;
-			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItem.m;
-			refType = 0;
+			path = SBFileItem.m;
+			refType = 4;
 		};
 		F5C94464039C68FB01A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = SBFileItem.h;
-			path = /Documents/Projects/fink/FinkCommander/FinkCommander/SBFileItem.h;
-			refType = 0;
+			path = SBFileItem.h;
+			refType = 4;
 		};
 		F5C94465039C68FB01A80164 = {
 			fileRef = F5C94461039C68FB01A80164;
