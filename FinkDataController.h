@@ -39,7 +39,6 @@ Contact the author at sburr@mac.com.
 	NSMutableArray *finkArray;
 	NSString *basePath;
 	NSString *binaryPackages;
-	NSString *stablePackages;
 	NSDate *start;
 }
 

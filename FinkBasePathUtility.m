@@ -1,10 +1,9 @@
-//
-//  FinkBasePathUtility.m
-//  FinkCommander
-//
-//  Created by Steven Burr on Wed Mar 20 2002.
-//  Copyright (c) 2001 __MyCompanyName__. All rights reserved.
-//
+/*
+File: FinkController.m
+
+ See the header file, FinkBasePathUtility.h, for interface and license information.
+
+*/
 
 #import "FinkBasePathUtility.h"
 
@@ -48,15 +47,12 @@
 			[defaults setObject: path forKey: FinkBasePath];
 			[defaults setBool: YES forKey: FinkBasePathFound];
 			pathFound = YES;
-			
 #ifdef DEBUG
 			NSLog(@"Found basepath %@ using array", path);
 #endif //DEBUG
-
 			break;
 		}
 	}
-
 	//if that doesn't work, try the which command
 	if (!pathFound){
 		findTask = [[[NSTask alloc] init] autorelease];
@@ -78,11 +74,9 @@
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject: path forKey: FinkBasePath];
 			[defaults setBool: YES forKey: FinkBasePathFound];
-			
 #ifdef DEBUG			
 			NSLog(@"Found basepath %@ using call to which command", path);
 #endif //DEBUG
-			
 		}
 	}
 }
@@ -100,10 +94,10 @@
 	while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
 		[scriptText replaceCharactersInRange: rangeOfBASEPATH withString: basePath];
 	}
-	
+
 	[scriptFile truncateFileAtOffset: 0];
 	[scriptFile writeData: [scriptText dataUsingEncoding: NSUTF8StringEncoding]];
-	[scriptFile closeFile];  // probably not necessary
+	[scriptFile closeFile];
 }
 
 @end

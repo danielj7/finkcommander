@@ -42,7 +42,7 @@ After some commands FinkCommander attempts to update the data in the table manua
 
 VERSION HISTORY
 
-0.1.3	pending:
+0.1.3	04/05/2002:
 	First SourceForge release.
 	/sw no longer hard-coded as fink directory path; FC now searches for path, sets user defaults to reflect result and writes path into fpkg_list.pl script.
 	Interaction with Fink prompts enabled through sheet dialog that appears whenever input is needed.

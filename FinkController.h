@@ -118,8 +118,7 @@ Contact the author at sburr@mac.com.
 
 //Delegates
 -(void)tableView:(NSTableView *)aTableView
-        mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn;
-
+		didClickTableColumn:(NSTableColumn *)aTableColumn;
 //Process control
 -(void)runCommandWithParams:(NSMutableArray *)params;
 

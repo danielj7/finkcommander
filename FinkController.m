@@ -41,20 +41,12 @@ See the header file, FinkController.h, for interface and license information.
 	{
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
-		
-		//needed for rebuilds; after first build, default value is set
-		//and apparently remains set, but rebuilds put unmodified version of
-		//fpkg_list.pl back in FinkCommander.app/Resources
-		[defaults removeObjectForKey: FinkBasePathFound];
-						
-		if (![defaults boolForKey: FinkBasePathFound]){
-#ifdef DEBUG
-			NSLog(@"Looking for fink base path");
-#endif //DEBUG
-			utility = [[[FinkBasePathUtility alloc] init] autorelease];
+
+		utility = [[[FinkBasePathUtility alloc] init] autorelease];
+		if (! [defaults boolForKey: FinkBasePathFound]){
 			[utility findFinkBasePath];
-			[utility fixScript];
-		}		
+		}
+		[utility fixScript];
 	
 		packages = [[FinkDataController alloc] init];		// table data source
 		[self setSelectedPackages: nil];    				// used to update package data
@@ -129,9 +121,9 @@ See the header file, FinkController.h, for interface and license information.
 		[self lastIdentifier]];
 		
 	if (![[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
-		// TBD:  substitute alert and reference to help
-		NSLog(@"FinkCommander was unable to find the path to your fink installation.");
-		NSLog(@"If you know the path, try setting it in Preferences and then run File: Update Table");
+		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
+				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, context info
+				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
 	[packages update];
 	[tableView setHighlightedTableColumn: lastColumn];
@@ -243,14 +235,24 @@ See the header file, FinkController.h, for interface and license information.
 
 
 //--------------------------------------------------------------------------------
-//		WINDOW METHODS
+//		APPLICATION AND WINDOW DELEGATES
 //--------------------------------------------------------------------------------
+
 //single window app; so quit when red button clicked
--(BOOL)applicationShouldTerminateAfterLastWindowClosed:
-	(NSApplication *)theApplication 
+-(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    return YES;
+	int answer;
+	
+	if ([self commandIsRunning]){
+		answer = NSRunCriticalAlertPanel(@"Warning!", @"Quitting now will interrupt a Fink process.",
+			@"Cancel", @"Quit", nil);
+		if (answer == NSAlertDefaultReturn){
+			return NO;
+		}
+	}
+	return YES;
 }
+
 
 //--------------------------------------------------------------------------------
 //		MENU COMMANDS AND HELPERS
@@ -380,7 +382,7 @@ See the header file, FinkController.h, for interface and license information.
 //----------------------------------------------->Delegate Method
 //sort table columns
 -(void)tableView:(NSTableView *)aTableView
-    mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn
+	didClickTableColumn:(NSTableColumn *)aTableColumn
 {
 	NSString *identifier = [aTableColumn identifier];
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
@@ -463,19 +465,22 @@ See the header file, FinkController.h, for interface and license information.
 {
 	[interactionWindow orderOut: sender];
 	[NSApp endSheet:interactionWindow returnCode: 1];
-
 }
 
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
 				   returnCode:(int)returnCode
 						contextInfo:(void *)contextInfo
 {
+	NSAttributedString *areturn = [[[NSAttributedString alloc]
+		initWithString: @"\n"] autorelease];
+
 	if ([[interactionMatrix selectedCell] tag] == 0){
 		[finkTask writeToStdin: @"\n"];
 	}else{
 		[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
 			[interactionField stringValue]]];
 	}
+	[[textView textStorage] appendAttributedString: areturn];
 }
 
 //----------------------------------------------->Process Commands
@@ -555,7 +560,9 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	if ( ! alwaysChooseDefaultSelected        &&
 		 ([self scanForNumberPrompt: output]  ||
-		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0)){
+		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0 ||
+		  [output rangeOfString: [NSString stringWithFormat: @"[%@]", NSUserName()]].length > 0 ||
+		  [output rangeOfString: @"[anonymous]"].length > 0)){
 		[self raiseInteractionWindow: self];
 		NSBeep();
 	}

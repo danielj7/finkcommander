@@ -32,10 +32,8 @@ See the header file, FinkDataController.h, for interface and license information
 -(void)dealloc
 {
 	[basePath release];
-//	[stablePath release];
 	[finkArray release];
 	[binaryPackages release];
-	[stablePackages release];
 	[start release];
 	[super dealloc];
 }
@@ -98,39 +96,14 @@ See the header file, FinkDataController.h, for interface and license information
 }
 
 
--(NSString *)getStableList
-{
-	NSFileManager *manager = [NSFileManager defaultManager];
-	NSMutableString *infoFiles = [NSMutableString stringWithString: @" "];
-	NSString *stableRoot = [basePath stringByAppendingPathComponent: @"fink/dists/stable"];
-	NSDirectoryEnumerator *direnum = [manager enumeratorAtPath: stableRoot];
-	NSString *fname;
-	NSString *pname;
-	NSString *dirContents;
-	BOOL isdir;
-
-	while (fname = [direnum nextObject]){
-		pname = [stableRoot stringByAppendingPathComponent: fname];
-		if ([manager fileExistsAtPath: pname isDirectory: &isdir] && isdir){
-			dirContents = [[manager directoryContentsAtPath: pname] 
-			    componentsJoinedByString: @" "];
-			if ([dirContents rangeOfString: @".info"].length > 0){
-				[infoFiles appendString: dirContents];
-			}
-		}
-	}
-	return infoFiles;
-}
-
-
 -(void)update
 {
 	NSTask *listCmd = [[[NSTask alloc] init] autorelease];
 	NSPipe *pipeIn  = [NSPipe pipe];
 	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
 	NSArray *args = [NSArray arrayWithObjects:
-		[[NSBundle mainBundle] pathForResource: @"fpkg_list" ofType: @"pl"],
-		[NSString stringWithFormat: @"-path=%@", [self basePath]], nil];
+		[[NSBundle mainBundle] pathForResource: @"fpkg_list" ofType: @"pl"], nil];
+//		[NSString stringWithFormat: @"-path=%@", [self basePath]], nil];
 
 	[listCmd setLaunchPath: @"/usr/bin/perl"];
 	[listCmd setArguments: args];
@@ -143,9 +116,9 @@ See the header file, FinkDataController.h, for interface and license information
 	[cmdStdout readToEndOfFileInBackgroundAndNotify];
 	
 	binaryPackages = [[self getBinaryList] retain];
-	stablePackages = [[self getStableList] retain];
+//	stablePackages = [[self getStableList] retain];
 #ifdef DEBUG
-	NSLog(@"Completed binary and stable lists after %f seconds",
+	NSLog(@"Completed binary list after %f seconds",
 	   -[start timeIntervalSinceNow]);
 #endif //DEBUG
 }
@@ -181,7 +154,11 @@ See the header file, FinkDataController.h, for interface and license information
 		[p setInstalled: [listRecord objectAtIndex: 2]];
 		[p setCategory: [listRecord objectAtIndex: 3]];
 		[p setDescription: [listRecord objectAtIndex: 4]];
-		[finkArray addObject: p];
+		if ([[listRecord objectAtIndex: 5] isEqualToString: @"stable"]){
+			[p setUnstable: @" "];
+		}else{
+			[p setUnstable: @"*"];
+		}
 		//make sure FULL name matches package on binary list
 		if ([binaryPackages rangeOfString:
 			[NSString stringWithFormat: @" %@#", [p name]]].length > 0){
@@ -189,13 +166,7 @@ See the header file, FinkDataController.h, for interface and license information
 		}else{
 			[p setBinary: @" "];
 		}
-		if ([stablePackages rangeOfString: [NSString stringWithFormat:
-			@"%@-%@.info", [p name], [p version]]].length > 0 ||
-			[[p category] isEqualToString:@"unknown"]){
-			[p setUnstable: @" "];
-		}else{
-			[p setUnstable: @"*"];
-		}
+		[finkArray addObject: p];
 		[p release];
 	}
 #ifdef DEBUG

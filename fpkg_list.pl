@@ -3,7 +3,7 @@
 use lib "BASEPATH/lib/perl5"; 
 use Fink::Services;
 use Fink::Package;
-my ($configpath, $config, @pkglist, $pname, $lversion, $iflag, $description, $vo);
+my ($configpath, $config, @pkglist, $pname, $lversion, $iflag, $description, $vo, $section, $tree);
 
 # read the configuration file
 $configpath = "BASEPATH/etc/fink.conf";
@@ -30,6 +30,7 @@ foreach $pname (sort @pkglist) {
       $vo = $package->get_version($lversion);
       $description = $vo->get_shortdescription();
       $section = $vo->get_section();
+	  $tree = $vo->get_tree();
       if ($vo->is_installed()) {
         $iflag = "current";
       } elsif ($package->is_any_installed()) {
@@ -38,5 +39,5 @@ foreach $pname (sort @pkglist) {
         $iflag = "  ";
       }
     }
-    print "----\n$pname\n$lversion\n$iflag\n$section\n$description\n";
+    print "----\n$pname\n$lversion\n$iflag\n$section\n$description\n$tree\n";
 }

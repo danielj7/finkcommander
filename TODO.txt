@@ -1,19 +1,13 @@
-DESIGN
-
-Separate components that handle running Fink commands from the GUI components to allow easy substitution of an ObjC-Perl bridge solution when it becomes available.  See DESIGN.txt for more details.
-Use fink list -t instead of fpkg_list.pl to gather package information.  Add method to determine package's category (section).
-
 FUNCTIONALITY
 
-Add support for entry of CVS password
 Allow user to send interrupt message to hanging process
 Add preferences:
 	Manually select path to fink directory tree -- done 3/29/02
-	Fink updates table after each command
-	Ask-first option for dependency and virtual dependency installation; goes with enhanced IPC
+	Fink updates table after each command -- done 4/05/02
+	Ask-first option for dependency and virtual dependency installation -- done 4/05/02
 	Select columns to be viewed (see O'Reilly Cocoa tutorial on preferences)
 	Change fink.conf
-Enhance IPC to allow user choice on dependency and virtual dependency installations
+Enhance IPC to allow user choice on dependency and virtual dependency installations -- done 4/05/02
 Redo authorization and command launch methods to use "correct" approach (see AuthSample)
 Incremental search of table
 Filter table by category
@@ -29,15 +23,9 @@ EASE OF USE
 Add help
 Toolbar; need icons
 Contextual menu to run commands by right- or control-clicking in table view
-Additional visual clue that command is running, like circling arrows in Mail and OmniWeb
+Additional visual clue that table is updating, like circling arrows in Mail and OmniWeb
 
 COSMETICS
 
 Custom application icon
 Use image to show binary, unstable packages, instead of asterisk
-
-REQUESTS
-
-Option to show full description on row selection
-Option to choose shorter description output
-Command or option to display dependencies
