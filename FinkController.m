@@ -115,7 +115,7 @@ See the header file, FinkController.h, for interface and license information.
 	[tableView setAutosaveTableColumns: YES];
 	
 	[msgText setStringValue:
-		@"Gathering data for table; this will take a moment . . ."];
+		@"Updating table data…"];
 }
 
 
@@ -129,7 +129,7 @@ See the header file, FinkController.h, for interface and license information.
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, context info
 				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
-	[packages update];
+	[self updateTable: nil];
 	[tableView setHighlightedTableColumn: lastColumn];
 	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
 }
@@ -137,8 +137,10 @@ See the header file, FinkController.h, for interface and license information.
 //helper used in several methods
 -(void)displayNumberOfPackages
 {
-	[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
-		[[self displayPackages] count]]];
+	if (! [self commandIsRunning]){
+		[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
+			[[self displayPackages] count]]];
+	}
 }
 
 //helper used in refreshTable and in table column clicked delegate
@@ -175,10 +177,14 @@ See the header file, FinkController.h, for interface and license information.
 		[self lastIdentifier]];
 	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
 
-//	[searchTextField setStringValue: @""];
+	if ([progressView isDescendantOf: progressViewHolder]){
+			[progressIndicator stopAnimation: nil];
+		[progressView removeFromSuperview];
+	}
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
 	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
+	[self controlTextDidChange: nil];
 }
 
 //version of same method called when filter applied
@@ -372,7 +378,9 @@ See the header file, FinkController.h, for interface and license information.
 
 //allow user to update table using Fink
 -(IBAction)updateTable:(id)sender
-{
+{	
+	[progressViewHolder addSubview: progressView];
+	[progressIndicator startAnimation: sender];
 	[msgText setStringValue: @"Updating table data…"]; //time lag here
 	[self setCommandIsRunning: YES];
 	[packages update]; //calls refreshTable by notification
@@ -520,23 +528,21 @@ See the header file, FinkController.h, for interface and license information.
 	NSEnumerator *e = [[packages array] objectEnumerator];
 	FinkPackage *pkg;
 
-	if ([[aNotification object] tag] == 0){ //filer text field
+	if ([[aNotification object] tag] == 0){ 		//filter text field
 		if ([filterText length] == 0){
 		[self setDisplayPackages: [packages array]];
-		[self refreshAfterFilter];
-		[self displayNumberOfPackages];
-		return;
-		}
-		while (pkg = [e nextObject]){
-			pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
-			if ([pkgAttribute rangeOfString: filterText].length > 0){
-				[subset addObject: pkg];
+		}else{
+			while (pkg = [e nextObject]){
+				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
+				if ([pkgAttribute rangeOfString: filterText].length > 0){
+					[subset addObject: pkg];
+				}
 			}
+			[self setDisplayPackages: subset];
 		}
-		[self setDisplayPackages: subset];
 		[self refreshAfterFilter];
 		[self displayNumberOfPackages];
-	}else{
+	}else{											//interaction sheet text field
 		[interactionMatrix selectCellWithTag: 1];
 	}	
 }
@@ -789,8 +795,7 @@ See the header file, FinkController.h, for interface and license information.
 		if ([self commandRequiresTableUpdate: [self lastCommand]]){
 			if ([lastCommand rangeOfString: @"selfupdate"].length > 0 ||
 	            [[NSUserDefaults standardUserDefaults] boolForKey: FinkUpdateWithFink]){
-				[msgText setStringValue: @"Updating table data…"];
-				[packages update];   // refreshTable will be called by notification
+				[self updateTable: nil];   // refreshTable will be called by notification
 			}else{
 				[packages updateManuallyWithCommand: [self lastCommand]
 										   packages: [self selectedPackages]];
@@ -802,7 +807,7 @@ See the header file, FinkController.h, for interface and license information.
 	}else{
 		NSBeginAlertSheet(@"Error",	@"OK", nil,	nil, //title, buttons
 		[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
-		@"FinkCommander detected a failure message.\nCheck the output window for problems.",
+		@"FinkCommander detected a possible failure message.\nCheck the output window for problems.",
 		nil);										//msg string params
 		[packages update];
 	}

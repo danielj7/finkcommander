@@ -1,6 +1,7 @@
 #!/usr/bin/perl -s
 
-use lib "BASEPATH/lib/perl5"; 
+use lib "BASEPATH/lib/perl5";
+use lib "BASEPATH/lib/perl5/darwin"; 
 use Fink::Services;
 use Fink::Package;
 my ($configpath, $config, @pkglist, $pname, $lversion, $iflag, $description, $vo, $section, $tree);

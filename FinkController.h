@@ -45,6 +45,9 @@ Contact the author at sburr@mac.com.
 	IBOutlet NSScrollView *scrollView;
 	IBOutlet id textView;
 	IBOutlet id msgText;
+	IBOutlet NSView *progressViewHolder;
+	IBOutlet NSView *progressView;
+	IBOutlet NSProgressIndicator *progressIndicator;
 	
 	//password entry window outlets
 	IBOutlet NSWindow *pwdWindow;

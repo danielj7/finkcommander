@@ -19,6 +19,9 @@
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 
                 msgText = id; 
+                progressIndicator = NSProgressIndicator; 
+                progressView = NSView; 
+                progressViewHolder = NSView; 
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 
                 scrollView = NSScrollView; 
