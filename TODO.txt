@@ -1,8 +1,8 @@
 VERSION 0.5.1 (bug fix); target release date = 3/1/03
 
 Fix bugs in Environment table
-	Crash on setting same item more than once
-	Items disappear during editing
+	d Crash on setting same item more than once
+	Some items disappear during editing
 
 Update perl script whenever base path is set in Preferences
 
@@ -12,13 +12,15 @@ Warn not to change Window Settings and make default when running in Terminal
 
 VERSION 0.5.2:
 
+Option to apply action to selected or flagged packages
+
+Toggle flags by clicking flag cell
+
 Contextual menu for package file browser
 
 Add "Any" filter item; make default
 
 SHORT TERM:
-
-Mark for action; use flag column? or add new column?
 
 Custom command dialog
 

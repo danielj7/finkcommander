@@ -319,7 +319,7 @@ enum {
 											 table:@"Programmatic"];
 
 	if ([identifier isEqualToString:@"flagged"]){
-		NSCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
+		NSImageCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
 		[newColumn setDataCell:dataCell];
 		[dataCell release];
 		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];

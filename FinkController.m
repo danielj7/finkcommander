@@ -658,7 +658,7 @@ enum {
 
 	while (nil != (package = [e nextObject])){
 		[package setFlagged:newState];
-		if (1 == newState){
+		if (IS_FLAGGED == newState){
 			[flagArray addObject:[package name]];
 		}else if ([flagArray containsObject:[package name]]){
 			[flagArray removeObject:[package name]];
