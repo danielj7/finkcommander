@@ -379,6 +379,8 @@
 				F55407F7035D334001A80170,
 				F5D01DAB03636FB201A80165,
 				F5D01DAD03636FC001A80165,
+				F53649820388930201A80164,
+				F5364A1B0388964301A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -632,6 +634,28 @@
 			settings = {
 			};
 		};
+		F53649810388930201A80164 = {
+			isa = PBXFileReference;
+			path = negemail.tiff;
+			refType = 4;
+		};
+		F53649820388930201A80164 = {
+			fileRef = F53649810388930201A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5364A1A0388964301A80164 = {
+			isa = PBXFileReference;
+			path = posemail.tiff;
+			refType = 4;
+		};
+		F5364A1B0388964301A80164 = {
+			fileRef = F5364A1A0388964301A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F536582302A89F0D01A8016A = {
 			isa = PBXFrameworkReference;
 			name = CoreFoundation.framework;
@@ -745,6 +769,8 @@
 				F5897AAA02C6E37B01A80166,
 				F5B9D9EA02B232D501A8016B,
 				F53D651D0280296801A80164,
+				F53649810388930201A80164,
+				F5364A1A0388964301A80164,
 				F5B9D9F402B3D67A01A8016B,
 				F5D01DAA03636FB201A80165,
 				F50A22290296AB2801A80166,

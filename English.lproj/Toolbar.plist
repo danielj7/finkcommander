@@ -15,18 +15,31 @@
 		<key>ToolTip</key>
 		<string>Show package inspector panel</string>
 	</dict>
-	<key>FinkEmailItem</key>
+	<key>FinkNegativeEmailItem</key>
 	<dict>
 		<key>Action</key>
-		<string>emailMaintainer</string>
+		<string>sendNegativeFeedback</string>
 		<key>Image</key>
-		<string>email</string>
+		<string>negemail</string>
 		<key>Label</key>
-		<string>Maintainer</string>
+		<string>Negative</string>
 		<key>PaletteLabel</key>
-		<string>Email Maintainer</string>
+		<string>Negative Feedback</string>
 		<key>ToolTip</key>
-		<string>Send email to package maintainer</string>
+		<string>Tell the maintainer a package is not working</string>
+	</dict>
+	<key>FinkPositiveEmailItem</key>
+	<dict>
+		<key>Action</key>
+		<string>sendPositiveFeedback</string>
+		<key>Image</key>
+		<string>posemail</string>
+		<key>Label</key>
+		<string>Positive</string>
+		<key>PaletteLabel</key>
+		<string>Positive Feedback</string>
+		<key>ToolTip</key>
+		<string>Tell the maintainer that an unstable package is working for you</string>
 	</dict>
 	<key>FinkFilterItem</key>
 	<dict>

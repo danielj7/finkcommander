@@ -45,6 +45,7 @@
     [self setArguments:nil];
 	[self setEnvironment:nil];
     [output release];
+	[super dealloc];
 }
 
 

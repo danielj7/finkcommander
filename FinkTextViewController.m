@@ -24,6 +24,8 @@ File: FinkTextViewController.m
 {
 	[textView release];
 	[scrollView release];
+	
+	[super dealloc];
 }
 
 - (NSTextView *)textView { return textView; }

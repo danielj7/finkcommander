@@ -7,13 +7,13 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
-//Globals: placed here to make it easier to change values if fink output changes
-NSString *WEBKEY = @"Web site:";
-NSString *MAINTAINERKEY = @"Maintainer:";
-int URLSTART = 10;
-int NAMESTART = 12;
-int PACKAGESTART = 9;
-int VERSIONSTART = 9;
+//Constants: placed here to make it easier to change values if fink output changes
+#define WEBKEY @"Web site:"
+#define MAINTAINERKEY @"Maintainer:"
+#define URLSTART 10
+#define NAMESTART 12
+#define PACKAGESTART 9
+#define VERSIONSTART 9
 
 @implementation FinkDataController
 

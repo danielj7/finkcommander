@@ -47,4 +47,6 @@ File: FinkInstallationInfo.h
 //installed on the user's system
 -(NSString *)installationInfo;
 
+-(NSString *)formattedEmailSig;
+
 @end

@@ -4,7 +4,6 @@
             ACTIONS = {
                 checkForLatestVersionAction = id; 
                 chooseTableColumn = id; 
-                emailMaintainer = id; 
                 endInteractionWindow = id; 
                 goToWebsite = id; 
                 raiseInteractionWindow = id; 
@@ -15,6 +14,8 @@
                 runPackageSpecificCommand = id; 
                 runPackageSpecificCommandInTerminal = id; 
                 saveOutput = id; 
+                sendNegativeFeedback = id; 
+                sendPositiveFeedback = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 

@@ -7,7 +7,7 @@ File: FinkInstallationInfo.m
 
 #import "FinkInstallationInfo.h"
 
-//globals
+//Constants
 #define MAY_TOOLS_VERSION  @"2.0.1"
 #define DEVTOOLS_TEST_PATH1 @"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist"
 #define DEVTOOLS_TEST_PATH2 @"/Developer/Applications/Interface Builder.app/Contents/version.plist"
@@ -142,7 +142,7 @@ File: FinkInstallationInfo.m
 	return [NSString stringWithFormat: @"make version: %@", result];
 }
 
-//------------------------------>developerToolsInfo
+//------------------------------>Developer Tools Info
 
 -(NSString *)developerToolsInfo
 {
@@ -170,8 +170,9 @@ File: FinkInstallationInfo.m
 	return error;
 }
 
-//------------------------------>installationInfo
+//------------------------------>All The Information Combined
 
+//As a string
 -(NSString *)installationInfo
 {
 	NSString *finkVersion = [self finkVersion];
@@ -191,6 +192,34 @@ File: FinkInstallationInfo.m
 					finkVersion, macOSXVersion, devTools, gccVersion, makeVersion];
 	}
 	return result;
+}
+
+//As a signature properly formatted for inclusion in a mailto URL
+-(NSString *)formattedEmailSig
+{
+	NSMutableArray *m = [NSMutableArray array];
+	NSEnumerator *e;
+	NSString *line;
+	NSString *emailSig = [self installationInfo];
+	NSString *sig;
+
+	//create body portion of mail URL
+	//set sig format as ordinary string
+	if ([[NSUserDefaults standardUserDefaults] boolForKey: FinkGiveEmailCredit]){
+		sig = [NSString stringWithFormat:
+			@"--\n%@Feedback Courtesy of FinkCommander\n", emailSig];
+	}else{
+		sig = [NSString stringWithFormat: @"--\n%@", emailSig];
+	}
+	//replace linefeeds with %0A and spaces with %20
+	//probably should do this with CFURL
+	e = [[sig componentsSeparatedByString: @"\n"] objectEnumerator];
+	while (nil != (line = [e nextObject])){
+		line = [[line componentsSeparatedByString: @" "] componentsJoinedByString: @"%20"];
+		[m addObject: line];
+	}
+	sig = [m componentsJoinedByString: @"%0A"];
+	return sig;
 }
 
 @end

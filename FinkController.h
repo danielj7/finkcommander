@@ -153,6 +153,11 @@ enum {
 	USER_CHOICE
 };
 
+enum {
+	POSITIVE,
+	NEGATIVE
+};
+
 @interface FinkController : NSObject
 {
 	//Main window outlets
@@ -224,7 +229,9 @@ enum {
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)showPackageInfoPanel:(id)sender;
 -(IBAction)goToWebsite:(id)sender;
--(IBAction)emailMaintainer:(id)sender;
+-(IBAction)sendPositiveFeedback:(id)sender;
+-(IBAction)sendNegativeFeedback:(id)sender;
+//-(IBAction)emailMaintainer:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 
 //Toolbar Methods

@@ -583,6 +583,64 @@ File: FinkController.m
     }
 }
 
+//Helper for feedback commands
+-(void)sendEmailWithMessage:(int)typeOfFeedback
+{
+    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+    FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
+    NSString *sig = [info formattedEmailSig];
+    FinkPackage *pkg;
+	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
+
+    if (!packageInfo){
+		packageInfo = [[FinkPackageInfo alloc] init];
+    }
+
+    [packageInfo setEmailSig:sig];
+    while (nil != (pkg = [e nextObject])){
+		if (typeOfFeedback == POSITIVE && [[pkg installed] isEqualToString:[pkg stable]]){
+			[pkgNames addObject:[pkg name]];
+			continue;
+		}
+		if (typeOfFeedback == NEGATIVE 							&&
+			! [[pkg installed] isEqualToString:[pkg version]]	&&  //version = latest
+			! [[pkg installed] isEqualToString:[pkg stable]]){
+			[pkgNames addObject:[pkg name]];
+			continue;
+		}
+		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
+    }
+	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
+		NSString *msg = [pkgNames count] > 1 ? NSLocalizedString(@"UnnecessaryPositiveFeedbackPlural", nil) :
+		NSLocalizedString(@"UnnecessaryPositiveFeedbackSingular", nil);
+		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
+					NSLocalizedString(@"OK", nil), nil, nil,
+					window, self, NULL, NULL, nil,
+					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
+					nil);
+	}
+	if (typeOfFeedback == NEGATIVE && [pkgNames count] > 0){
+		NSString *msg = [pkgNames count] > 1 ?
+		NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) :
+		NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
+		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
+					NSLocalizedString(@"OK", nil), nil, nil,
+					window, self, NULL, NULL, nil,
+					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
+					nil);
+	}
+}
+
+-(IBAction)sendPositiveFeedback:(id)sender
+{
+	[self sendEmailWithMessage:POSITIVE];
+}
+
+-(IBAction)sendNegativeFeedback:(id)sender
+{
+	[self sendEmailWithMessage:NEGATIVE];
+}
+
 //----------------------------------------------->Help Menu
 #pragma mark Help Menu
 
@@ -603,23 +661,6 @@ File: FinkController.m
 			break;
     }
     [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
-}
-
--(IBAction)emailMaintainer:(id)sender
-{
-    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-    FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-    NSString *sig = [info installationInfo];
-    FinkPackage *pkg;
-
-    if (!packageInfo){
-		packageInfo = [[FinkPackageInfo alloc] init];
-    }
-
-    [packageInfo setEmailSig: sig];
-    while (nil != (pkg = [e nextObject])){
-		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
-    }
 }
 
 //--------------------------------------------------------------------------------
@@ -709,7 +750,8 @@ File: FinkController.m
 				@"FinkTermCvsItem",
 				@"FinkInteractItem",
 				@"FinkTerminateCommandItem",
-				@"FinkEmailItem",
+				@"FinkPositiveEmailItem",
+				@"FinkNegativeEmailItem",
 				@"FinkFilterItem",		
 				nil];
 }
@@ -723,8 +765,8 @@ File: FinkController.m
 				@"FinkSelfUpdateCVSItem",
 				NSToolbarSeparatorItemIdentifier,
 				@"FinkTerminateCommandItem",
-				@"FinkDescribeItem",
-				@"FinkEmailItem",
+				@"FinkPositiveEmailItem",
+				@"FinkNegativeEmailItem",
 				NSToolbarFlexibleSpaceItemIdentifier,
 				@"FinkFilterItem",
 				nil];
@@ -793,7 +835,8 @@ File: FinkController.m
 		[theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
 		[theItem action] == @selector(runForceRemove:)						||
 		[theItem action] == @selector(showDescription:)						||
-		[theItem action] == @selector(emailMaintainer:))){
+		[theItem action] == @selector(sendNegativeFeedback:)				||
+		[theItem action] == @selector(sendPositiveFeedback:))){
 		return NO;
     }
     //disable Source and Binary menu items and table update if command is running

@@ -48,7 +48,9 @@
 }
 
 -(void)displayDescriptions:(NSArray *)packages;
+
 -(void)setEmailSig:(NSString *)s;
+
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg;
 
 @end

@@ -26,6 +26,7 @@
 	defaults = [NSUserDefaults standardUserDefaults];
 	[self setWindowFrameAutosaveName: @"PackageInfo"];
 	[[self window] setTitle:NSLocalizedString(@"Package Inspector", nil)];
+	[self setEmailSig:@""];
 
 	return self;
 }
@@ -34,6 +35,12 @@
 {
 	textView = [MyTextView myTextViewToReplace:textView in:scrollView];
 	[[textView window] setDelegate: self];
+}
+
+-(void)dealloc
+{
+	[emailSig release];
+	[super dealloc];
 }
 
 
@@ -49,41 +56,20 @@
 //used to set URL attribute for email addresses displayed by Package Inspector and
 //in FinkController's emailMaintainer method
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg
-{
-	NSMutableArray *m = [NSMutableArray array];
-	NSEnumerator *e;
-	NSString *line;
-	NSString *sig;
-
-	//create body portion of mail URL
-		//set sig format as ordinary string
-	if ([defaults boolForKey: FinkGiveEmailCredit]){
-		sig = [NSString stringWithFormat:
-			@"--\n%@Feedback Courtesy of FinkCommander\n", emailSig];
-	}else{
-		sig = [NSString stringWithFormat: @"--\n%@", emailSig];
-	}
-		//replace linefeeds with %0A and spaces with %20
-	e = [[sig componentsSeparatedByString: @"\n"] objectEnumerator];
-	while (line = [e nextObject]){
-		line = [[line componentsSeparatedByString: @" "] componentsJoinedByString: @"%20"];
-		[m addObject: line];
-	}
-	sig = [m componentsJoinedByString: @"%0A"];
-		//append to mailto URL body message
-	sig = [ @"&body=%0A%0A" stringByAppendingString: sig];
-	//return body message appended to rest of mail URL 
-	return [NSURL URLWithString: 
-					[NSString stringWithFormat: 
+{ 
+	NSString *body = [@"&body=%0A%0A" stringByAppendingString:emailSig];
+	NSURL *mailURL = [NSURL URLWithString: 
+						[NSString stringWithFormat: 
 								@"mailto:%@?subject=%@-%@%@", [pkg email], [pkg name], 
-								[pkg version], sig]];
+								[pkg version], body]];
+	return mailURL;
 }
 
 //--------------------------------------------------------------->Text Display Methods
 
-//adds font attributes to headings and link attributes to urls; removes hard returns
-//within paragraphs to allow soft wrapping; attempts to preserve author's list formatting
--(NSAttributedString *)formatDescriptionString:(NSString *)s 
+//Add font attributes to headings and link attributes to urls; remove hard returns
+//within paragraphs to allow soft wrapping; attempt to preserve author's list formatting
+-(NSAttributedString *)formattedDescriptionString:(NSString *)s //<--why?
 						forPackage:(FinkPackage *)p
 {
 	NSEnumerator *e = [[s componentsSeparatedByString: @"\n"] objectEnumerator];
@@ -172,7 +158,8 @@
 	return desc;
 }
 
--(NSAttributedString *)formatVersionsForPackage:(FinkPackage *)pkg
+//Add font attributes, spacing and newlines for various versions of package
+-(NSAttributedString *)formattedVersionsForPackage:(FinkPackage *)pkg
 {
 	NSEnumerator *e = [[NSArray arrayWithObjects: @"Installed", @"Unstable", @"Stable",
 		@"Binary", nil] objectEnumerator];
@@ -188,6 +175,7 @@
 	while (nil != (vName = [e nextObject])){
 		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
 		if ([vNumber length] < 2) vNumber = @"None";
+		//NB there must be a better way to do this:
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
 		[desc appendAttributedString:
 			[[[NSMutableAttributedString alloc]
@@ -235,9 +223,9 @@
 										SHORTDESCCOLOR, NSForegroundColorAttributeName,
 										nil]] autorelease]];
 		[[textView textStorage] appendAttributedString:
-			[self formatVersionsForPackage:pkg]];
+			[self formattedVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:
-			[self formatDescriptionString: [pkg fulldesc] forPackage: pkg]];
+			[self formattedDescriptionString: [pkg fulldesc] forPackage: pkg]];
 		if (i != count - 1){  			//don't add newlines after last package
 			[[textView textStorage] appendAttributedString:
 				[[[NSMutableAttributedString alloc] initWithString: @"\n\n\n"] autorelease]];

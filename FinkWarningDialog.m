@@ -22,6 +22,8 @@
 -(void)dealloc
 {
     [arguments release];
+	
+	[super dealloc];
 }
 
 -(NSMutableArray *)arguments 

@@ -15,7 +15,7 @@ File: FinkPreferences.m
 
 -(id)init
 {
-	self = [super initWithWindowNibName: @"Preferences"];
+	self = [super initWithWindowNibName:@"Preferences"];
 	defaults = [NSUserDefaults standardUserDefaults];
 	conf = [[FinkConf alloc] init];
 	
