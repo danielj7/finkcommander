@@ -45,6 +45,7 @@ Contact the author at sburrious@users.sourceforge.net.
 //Accessors
 -(NSMutableArray *)array;
 -(void)setArray:(NSMutableArray *)a;
+-(void)setStart:(NSDate *)d;
 
 //Update array to reflect latest package information.
 -(void)update;

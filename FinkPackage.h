@@ -7,7 +7,7 @@ Graphical user interface for Fink, a software package management system
 that automates the downloading, patching, compilation and installation of
 Unix software on Mac OS X.
 
-Each instance of the FinkPackage class stores the attributes of a single
+Each instance of the FinkPackage class models the attributes of a single
 fink package, including its name, version and category.  The class provides
 methods for comparing packages by each attribute for use in sorting an array
 of packages.

@@ -40,3 +40,4 @@ NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";
 
 NSString *FinkCreditString = @"&body=%0A%0A--%0AFeedback%20courtesy%20%20of%20FinkCommander";
+

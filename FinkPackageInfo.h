@@ -42,9 +42,11 @@
 	IBOutlet NSScrollView *scrollView;
 
 	NSUserDefaults *defaults;
+	NSString *emailSig;
 }
 
 -(void)displayDescriptions:(NSArray *)packages;
-
+-(void)setEmailSig:(NSString *)s;
+-(void)sendEmailForPackage:(FinkPackage *)pkg;
 
 @end

@@ -23,13 +23,12 @@ int NAMESTART = 12;
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
-		array = [[NSMutableArray alloc] initWithCapacity: 1300];
-	}
 
 	[[NSNotificationCenter defaultCenter] addObserver: self
 				selector: @selector(completeUpdate:)
 				name: NSFileHandleReadToEndOfFileCompletionNotification
 				object: nil];
+	}
 	return self;
 }
 
@@ -59,6 +58,13 @@ int NAMESTART = 12;
 	[s retain];
 	[binaryPackages release];
 	binaryPackages = s;
+}
+
+-(void)setStart:(NSDate *)d
+{
+	[d retain];
+	[start release];
+	start = d;
 }
 
 //---------------------------------------------------------->Fink Tools
@@ -122,13 +128,13 @@ int NAMESTART = 12;
 	[listCmd setArguments: args];
 	[listCmd setStandardOutput: pipeIn];
 	
-	start = [[NSDate date] retain];
+	[self setStart: [NSDate date]];
 	[listCmd launch];
 
 	//run task asynchronously; notification will trigger completeUpdate: method
 	[cmdStdout readToEndOfFileInBackgroundAndNotify];
 	
-	binaryPackages = [[self getBinaryList] retain]; 
+	[self setBinaryPackages: [self getBinaryList]]; 
 	
 #ifdef DEBUG
 	NSLog(@"Completed binary list after %f seconds",
@@ -165,7 +171,6 @@ int NAMESTART = 12;
 -(NSArray *)getDescriptionComponentsFromString:(NSString *)s
 {
 	NSString *line;
-	NSString *desc = @"";
 	NSString *web = @"";
 	NSString *maint = @"";
 	NSString *email = @"";
@@ -182,10 +187,6 @@ int NAMESTART = 12;
 			NSArray *info = [self parseMaintainerInfoFromString: line];
 			maint = [info objectAtIndex: 0];
 			email = [info objectAtIndex: 1];
-		}else if([line isEqualToString: @"."]){
-			desc = [NSString stringWithFormat: @"%@\n\n", desc];
-		}else{
-			desc = [NSString stringWithFormat: @"%@ %@", desc, line];
 		}
 	}
 	return [NSArray arrayWithObjects: web, maint, email, nil];
@@ -196,6 +197,7 @@ int NAMESTART = 12;
 	NSData *d;
 	NSString *output; 
 	NSMutableArray *temp;
+	NSMutableArray *collector = [NSMutableArray array];
 	NSArray *listRecord;
 	NSArray *components;
 	NSEnumerator *e;
@@ -211,7 +213,6 @@ int NAMESTART = 12;
 								encoding: NSUTF8StringEncoding] autorelease];
 	temp = [NSMutableArray arrayWithArray:
 		    [output componentsSeparatedByString: @"\n----\n"]];
-	[array removeAllObjects];
 	[temp removeObjectAtIndex: 0];  // "Reading package info . . . "
 	e = [temp objectEnumerator];
 
@@ -239,9 +240,10 @@ int NAMESTART = 12;
 		}else{
 			[p setBinary: @" "];
 		}
-		[array addObject: p];
+		[collector addObject: p];
 		[p release];
 	}
+	[self setArray: collector];
 
 #ifdef DEBUG
 	NSLog(@"Fink package array completed after %f seconds",
@@ -251,7 +253,6 @@ int NAMESTART = 12;
 	//notify FinkController that table needs to be updated
 	[[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished
 		object: nil];
-	
 }
 
 -(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs
@@ -280,7 +281,7 @@ int NAMESTART = 12;
 -(int)installedPackagesCount
 {
 	int count = 0;
-	NSEnumerator *e = [array objectEnumerator];
+	NSEnumerator *e = [[self array] objectEnumerator];
 	FinkPackage *pkg;
 
 	while (pkg = [e nextObject]){

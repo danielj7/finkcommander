@@ -3,7 +3,7 @@
 
  See the header file, FinkPackageInfo.h, for interface and license information.
 
- */
+*/
 
 #import "FinkPackageInfo.h"
 
@@ -29,6 +29,49 @@
 {
 	textView = [MyTextView myTextViewToReplace: textView in: scrollView];
 	[[textView window] setDelegate: self];
+}
+
+
+//--------------------------------------------------------------->Email Methods
+
+-(void)setEmailSig:(NSString *)s
+{
+	[s retain];
+	[emailSig release];
+	emailSig = s;
+}
+
+-(NSString *)formattedEmailSig
+{
+	NSMutableArray *m = [NSMutableArray array];
+	NSEnumerator *e;
+	NSString *line;
+	NSString *sig;
+
+	if ([defaults boolForKey: FinkGiveEmailCredit]){
+		sig = [NSString stringWithFormat:
+			@"--\n%@Feedback Courtesy of FinkCommander\n", emailSig];
+	}else{
+		sig = [NSString stringWithFormat: @"--\n%@", emailSig];
+	}
+	e = [[sig componentsSeparatedByString: @"\n"] objectEnumerator];
+	while (line = [e nextObject]){
+		line = [[line componentsSeparatedByString: @" "] componentsJoinedByString: @"%20"];
+		[m addObject: line];
+	}
+	sig = [m componentsJoinedByString: @"%0A"];
+	sig = [ @"&body=%0A%0A" stringByAppendingString: sig];
+	return sig;
+}
+
+//probb more consistent with MVC to move this back to FinkController
+-(void)sendEmailForPackage:(FinkPackage *)pkg
+{
+	NSMutableString *url = [NSMutableString
+			stringWithFormat: @"mailto:%@?subject=%@%@", [pkg email], [pkg name],
+		[self formattedEmailSig]];
+
+	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
 }
 
 //--------------------------------------------------------------->Text Display Methods
@@ -73,20 +116,31 @@
 					initWithString: [NSString stringWithFormat: @"\n\n%@ ", line]]
 			autorelease]];
 	}
-	
-	//remove line endings from within paragraphs; substitute line endings for periods
-	while (line = [e nextObject]){ 
+
+	while (line = [e nextObject]){
+		//remove linefeed within paragraphs to allow wrapping in text view
 		line = [line strip];
+		//in fink descriptions, paragraph breaks are signified by a period
 		if ([line isEqualToString: @"."]){
-			[desc appendAttributedString:
-				[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
-				continue;
+			if ([[desc string] hasSuffix:@"\n"]){
+				line = @"\n";
+			}else{
+				line = @"\n\n";
+			}
+		//if line begins with punctuation intended as a bullet, put the linefeed back
+		}else if ([line rangeOfCharacterFromSet: 
+			[NSCharacterSet characterSetWithCharactersInString:@"-*"]].location == 0){
+			line = [NSString stringWithFormat: @"%@\n", line];
+			if (! [[desc string] hasSuffix: @"\n"]){
+				line = [NSString stringWithFormat: @"\n%@", line];
+			}
+		}else{
+			line = [NSString stringWithFormat: @"%@ ", line]; 
 		}
 		[desc appendAttributedString:
-				[[[NSMutableAttributedString alloc] 
-					initWithString: [NSString stringWithFormat: @"%@ ", line]] autorelease]];
+			[[[NSMutableAttributedString alloc] initWithString: line] autorelease]];
 	}
-
+	
 	//apply attributes to field names
 	while (field = [f nextObject]){
 		r = [[desc string] rangeOfString: field];
@@ -109,11 +163,8 @@
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
 		NSMutableString *mailurl = [NSMutableString 
-			stringWithFormat: @"mailto:%@?subject=%@", [p email], [p name]];
-
-		if ([defaults boolForKey: FinkGiveEmailCredit]){
-			[mailurl appendString: FinkCreditString];
-		}
+			stringWithFormat: @"mailto:%@?subject=%@%@", [p email], [p name],
+				[self formattedEmailSig]];
 		
 		r = [[desc string] rangeOfString: [p email]];
 		[desc addAttributes: urlAttributes range: r];
@@ -152,11 +203,12 @@
 	}
 }
 
+
 //--------------------------------------------------------------->NSWindow Delegate Methods
 
 //Resize window when zoom button clicked
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
-								defaultFrame:(NSRect)defaultFrame
+		 defaultFrame:(NSRect)defaultFrame
 {	
 	float windowOffset = [[self window] frame].size.height 
 							- [[textView superview] frame].size.height;
@@ -175,9 +227,11 @@
 		[NSWindow frameRectForContentRect:stdFrame 
 							 styleMask:[sender styleMask]];
 							 
-
+	//if new height would exceed default frame height,
+	//zoom vertically and horizontally
 	if (stdFrame.size.height > defaultFrame.size.height){
 		stdFrame = defaultFrame;
+	//otherwise zoom vertically just enough to accomodate new height
 	}else if (stdFrame.origin.y < defaultFrame.origin.y){
 		stdFrame.origin.y = defaultFrame.origin.y;
 	}

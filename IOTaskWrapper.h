@@ -8,10 +8,13 @@ Moriarity sample code at:
 
 http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 
+The copyright and licensing terms set forth in this file extend only to the
+author's modifications to the sample code.
+
 TaskWrapper is a generalized process handling class that facilitates asynchronous
 interaction with an NSTask.  The modifications in IOTaskWrapper allow the user to send 
 messages to the task's standard input and to set the environment for the task.  IOTaskWrapper 
-also includes the process exit status in the process finished protocol method.    
+also includes the process exit status in the processFinishedWithStatus: protocol method.    
 
 Copyright (C) 2002  Steven J. Burr
 
@@ -31,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
 
 #import <Foundation/Foundation.h>

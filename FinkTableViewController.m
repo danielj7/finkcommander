@@ -2,7 +2,6 @@
 File: FinkTableViewController.m
 
  See the header file, FinkTableViewController.h, for interface and license information.
-
 */
 
 #import "FinkTableViewController.h"
@@ -27,6 +26,7 @@ File: FinkTableViewController.m
 		[self setAutosaveTableColumns: YES];
 		[self setAllowsMultipleSelection: YES];
 		[self setAllowsColumnSelection: NO];
+//		[self setAutoresizesAllColumnsToFit: YES];
 	}
 	return self;
 }
@@ -55,14 +55,17 @@ File: FinkTableViewController.m
 {
 	NSArray *columnNames = [defaults objectForKey: FinkTableColumnsArray];
 	NSTableColumn *newColumn = [self makeColumnWithName: identifier];
-	NSTableColumn *lastColumn = [[self tableColumns] objectAtIndex: [self numberOfColumns] - 1];
+	NSTableColumn *lastColumn = [[self tableColumns] lastObject];
+	NSRect oldFrame = [[self window] frame];
+	NSRect newFrame = NSMakeRect(oldFrame.origin.x, oldFrame.origin.y,
+		oldFrame.size.width + 2, oldFrame.size.height);
 	
 	[lastColumn setWidth: [lastColumn width] * 0.5];
-	[newColumn setWidth: [lastColumn width] * 0.5];
-	[self addTableColumn: newColumn];		
+	[newColumn setWidth: [lastColumn width] * 0.5];	
+	[self addTableColumn: newColumn];
+	[[self window] setFrame:newFrame display:YES];
 	[self sizeLastColumnToFit];
-	[lastColumn setWidth: [lastColumn width] + 10.0];  //adding new column leaves small gap
-	
+
 	columnNames = [columnNames arrayByAddingObject: identifier];
 	[defaults setObject: columnNames forKey: FinkTableColumnsArray];
 }

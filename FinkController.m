@@ -80,7 +80,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(id)init
 {
 	if (self = [super init]){
-
+		FinkBasePathUtility *utility;
 		NSEnumerator *e;
 		NSString *attribute;
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -92,7 +92,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
-		utility = [[FinkBasePathUtility alloc] init];
+		utility = [[[FinkBasePathUtility alloc] init] autorelease];
 		if (! [defaults boolForKey: FinkBasePathFound]){
 			[utility findFinkBasePath];
 		}
@@ -163,7 +163,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[displayedPackages release];
 	[selectedPackages release];
 	[preferences release];
-	[utility release];
+	[parser release];
 	[lastCommand release];
 	[lastIdentifier release];
 	[columnState release];
@@ -183,22 +183,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSEnumerator *e = [selStates keyEnumerator];
 	NSString *key;
 
-#ifdef USE_CUSTOM_TABLE
 	NSSize contentSize = [tableScrollView contentSize];
 
 	tableView = [[FinkTableViewController alloc] initWithFrame:
 		NSMakeRect(0, 0, contentSize.width, contentSize.height)];
-	[tableView setDataSource: self];
-	[tableView setDelegate: self];
 	[tableScrollView setDocumentView: tableView];
-#endif USE_CUSTOM_TABLE
-	
-	[self setupToolbar];
+	[tableView setDelegate: self];
+	[tableView setDataSource: self];
+	[tableView sizeLastColumnToFit];
 
-	//save table column state between runs
-	[tableView setAutosaveName: @"FinkTable"];
-	[tableView setAutosaveTableColumns: YES];
-	
 	[tableView setMenu: tableContextMenu];
 
 	while (key = [e nextObject])
@@ -206,6 +199,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		int menuState = [[selStates objectForKey: key] intValue];
 		[[viewMenu itemWithTitle: key] setState: menuState];
 	}
+		
+	[self setupToolbar];
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self collapseOutput: nil];
@@ -215,7 +210,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[msgText setStringValue:
 		@"Updating table data…"];
 }
-
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -330,7 +324,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     selectedObjectInfo = array;
 }
 
-//not really an accessor, but close enough for grouping purposes
+-(void)setParser:(FinkOutputParser *)p
+{
+    [p retain];
+    [parser release];
+    parser = p;
+}
+
+
+//not really an accessor, but it needs to go somewhere
 -(NSArray *)selectedPackageArray
 {
 	NSEnumerator *e = [tableView selectedRowEnumerator];
@@ -422,20 +424,35 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	return args;
 }
 
+-(void)startProgressIndicatorAsIndeterminate:(BOOL)b
+{
+    [progressIndicator setIndeterminate:b];
+    if (! [progressView isDescendantOf: progressViewHolder]){
+		[progressViewHolder addSubview: progressView];
+		[progressIndicator setUsesThreadedAnimation: YES];
+		[progressIndicator startAnimation: nil];
+    }else{
+		;
+#ifdef DEBUG
+		NSLog(@"Called start PI while PI still running");
+#endif //DEBUG
+    }
+}
 
+-(void)stopProgressIndicator
+{
+    if ([progressView isDescendantOf: progressViewHolder]){
+		[progressIndicator stopAnimation: nil];
+		[progressView removeFromSuperview];
+    }else{
+#ifdef DEBUG
+		NSLog(@"Called stop PI when PI not running");
+#endif //DEBUG
+    }
+}
 
 //----------------------------------------------->Menu Actions
 //save output
-
--(void)didEnd:(NSSavePanel *)sheet
-	  returnCode:(int)code
-	 contextInfo:(void *)contextInfo
-{
-	if (code = NSOKButton){
-		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
-		[odata writeToFile: [sheet filename] atomically: YES];
-	}
-}
 
 -(IBAction)saveOutput:(id)sender
 {
@@ -454,6 +471,16 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		modalDelegate: self
 		didEndSelector: @selector(didEnd:returnCode:contextInfo:)
 		contextInfo: nil];
+}
+
+-(void)didEnd:(NSSavePanel *)sheet
+	  returnCode:(int)code
+	 contextInfo:(void *)contextInfo
+{
+	if (code = NSOKButton){
+		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
+		[odata writeToFile: [sheet filename] atomically: YES];
+	}
 }
 
 //run package-specific command with arguments derived from table selection
@@ -514,9 +541,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //update table using Fink
 -(IBAction)updateTable:(id)sender
 {	
-	[progressViewHolder addSubview: progressView];
-	[progressIndicator setUsesThreadedAnimation: YES];
-	[progressIndicator startAnimation: sender];
+	[self startProgressIndicatorAsIndeterminate:YES];
 	[msgText setStringValue: @"Updating table data…"]; 
 	[self setCommandIsRunning: YES];
 	[packages update]; //calls resetInterface by notification
@@ -549,9 +574,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)showPackageInfoPanel:(id)sender
 {
+	FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
+	NSString *sig = [info getInstallationInfo];
+
 	if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
 	}
+	
+	[packageInfo setEmailSig: sig];
 	[[packageInfo window] zoom: nil];
 	[packageInfo showWindow: self];
 	[packageInfo displayDescriptions: [self selectedPackageArray]];
@@ -574,13 +604,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSDictionary *immutable;
 	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
-#ifdef USE_CUSTOM_TABLE
 	if (newState == NSOnState){
 		[tableView addColumnWithName: columnIdentifier];
 	}else{
 		[tableView removeColumnWithName: columnIdentifier];
 	}
-#endif //USE_CUSTOM_TABLE
 		
 	[sender setState: newState];
 	[selStates setObject: [NSNumber numberWithInt: newState] forKey: [sender title]];
@@ -607,25 +635,20 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
 }
 
--(void)sendEmailForPackage:(FinkPackage *)pkg
-{
-	NSMutableString *url = 
-		[NSMutableString stringWithFormat: @"mailto:%@?subject=%@", [pkg email], [pkg name]];
-
-	if ([defaults boolForKey: FinkGiveEmailCredit]){
-		[url appendString: FinkCreditString];
-	}
-	
-	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
-}
-
 -(IBAction)emailMaintainer:(id)sender
 {
 	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+	FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
+	NSString *sig = [info getInstallationInfo];
 	FinkPackage *pkg;
 
+	if (!packageInfo){
+		packageInfo = [[FinkPackageInfo alloc] init];
+	}
+
+	[packageInfo setEmailSig: sig];
 	while (pkg = [e nextObject]){
-		[self sendEmailForPackage: pkg];
+		[packageInfo sendEmailForPackage: pkg];
 	}
 }
 
@@ -1211,11 +1234,8 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 				break;
 		}
 	}
-	if ([defaults boolForKey: FinkAutoExpandOutput] && 
-		! [progressView isDescendantOf: progressViewHolder]){
-		[progressViewHolder addSubview: progressView];
-		[progressIndicator setUsesThreadedAnimation: YES];
-		[progressIndicator startAnimation: nil];
+	if ([defaults boolForKey: FinkAutoExpandOutput]){
+		[self startProgressIndicatorAsIndeterminate:YES];
 	}
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
@@ -1291,9 +1311,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		return;
 	}
-	[progressViewHolder addSubview: progressView];
-	[progressIndicator setUsesThreadedAnimation: YES];
-	[progressIndicator startAnimation: nil];	
+	[self startProgressIndicatorAsIndeterminate:YES];	
 
 	[self setLastCommand: 
 		([cmd contains: @"fink"] ? [args objectAtIndex: 1] : cmd)];
@@ -1315,51 +1333,42 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 }
 
 -(void)appendOutput:(NSString *)output
-{
-	NSAttributedString *lastOutput;
-	BOOL alwaysChooseDefaultSelected = [defaults boolForKey: FinkAlwaysChooseDefaults];
+{	
+	//total document length (in pixels) - length above scroll view (y coord of visible portion) - 
+	//length w/in scroll view = length below scroll view
 	NSNumber *theTest = [NSNumber numberWithFloat: 
 		abs([textView bounds].size.height - [textView visibleRect].origin.y 
 			- [textView visibleRect].size.height)];
-	
-	lastOutput = [[[NSAttributedString alloc] initWithString: output] autorelease];
+	int signal;
 
-	//interaction
-	if ([output contains: @"Password:"] && !passwordError){
-		[finkTask writeToStdin: [self password]];
-		passwordError = YES;
-	}
-	if ( ! alwaysChooseDefaultSelected	&&
-		 ([output contains: @"proceed? ["]	||
-		  [output contains: @"one: ["]		||
-		  [output containsCI: @"[y/n]"]		||
-		  [output contains: @"[anonymous]"]	||
-		  [output contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])){
+	signal = [parser parseOutput: output];
+
+	switch(signal)
+	{
+		case FC_PROMPT_SIGNAL:
 			NSBeep();
 			[self raiseInteractionWindow: self];
+			break;
+		case FC_PASSWORD_ERROR_SIGNAL:
+			passwordError = YES;
+			[self raisePwdWindow: self];
+			break;
+		case FC_PASSWORD_PROMPT_SIGNAL:
+			[finkTask writeToStdin: [self password]];
+			break;
 	}
-	if ([output contains: @"cvs.sourceforge.net's password:"] ||
-		[output contains: @"return to continue"]){ 
-		[self raiseInteractionWindow: self];
-	}
-	
-	//look for password error message from sudo; if it's received, enter a 
-	//return to make sure process terminates
-	if([output contains: @"Sorry, try again."]){
-		NSLog(@"Detected password error");
-		[self raisePwdWindow: self];
-	}
-
-	//display latest output in text view
-	[[textView textStorage] appendAttributedString: lastOutput];
+	[[textView textStorage] appendAttributedString:  
+		[[[NSAttributedString alloc] initWithString: output] autorelease]];
 	//  according to Moriarity example, have to put off scrolling until next event loop
 	[self performSelector: @selector(scrollToVisible:) withObject: theTest 
-		afterDelay: 0.0];
+				  afterDelay: 0.0];
 }
+
 
 -(void)processStarted
 {
-	[textView setString: @""];
+    [textView setString: @""];    
+    [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]]];
 }
 
 //helper for processFinishedWithStatus:
@@ -1380,10 +1389,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 //is updated or a command is completed
 -(void)resetInterface:(NSNotification *)ignore
 {
-	if ([progressView isDescendantOf: progressViewHolder]){
-		[progressIndicator stopAnimation: nil];
-		[progressView removeFromSuperview];
-	}
+	[self stopProgressIndicator];
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
 	[tableView deselectAll:self];

@@ -37,9 +37,6 @@ File: FinkGlobals.h
 //comment out for release version:
 //#define DEBUG
 
-//comment out to go back to normal table view:
-#define USE_CUSTOM_TABLE
-
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;

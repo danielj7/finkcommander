@@ -18,7 +18,12 @@ See the header file, FinkPackage.h, for interface and license information.
 	[installed release];
 	[category release];
 	[description release];
+	[fulldesc release];
 	[binary release];
+	[unstable release];
+	[weburl release];
+	[maintainer release];
+	[email release];
 	[super dealloc];
 }
 

@@ -41,11 +41,10 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkBasePathUtility.h"
 #import "FinkProcessKiller.h"
 #import "IOTaskWrapper.h"
-#include <math.h>
-
-#ifdef USE_CUSTOM_TABLE
 #import "FinkTableViewController.h"
-#endif USE_CUSTOM_TABLE
+#import "FinkInstallationInfo.h"
+#import "FinkOutputParser.h"
+#include <math.h>
 
 enum {
 	SOURCE_COMMAND,
@@ -103,7 +102,7 @@ enum {
 	NSMutableArray *displayedPackages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
-	FinkBasePathUtility *utility;
+	FinkOutputParser *parser;
 	NSArray *selectedPackages;
 	NSString *lastCommand;
 	NSString *lastIdentifier;
@@ -146,6 +145,7 @@ enum {
 -(NSArray *)selectedObjectInfo;
 -(void)setSelectedObjectInfo:(NSArray *)array;
 -(NSArray *)selectedPackageArray;
+-(void)setParser:(FinkOutputParser *)p;
 
 -(void)scrollToVisible:(NSNumber *)n;
 
@@ -155,6 +155,9 @@ enum {
 
 //Menu and Toolbar Action Methods
 -(IBAction)saveOutput:(id)sender;
+-(void)didEnd:(NSSavePanel *)sheet
+	  returnCode:(int)code
+	 contextInfo:(void *)contextInfo;
 -(IBAction)runCommand:(id)sender;
 -(IBAction)runUpdater:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
@@ -164,7 +167,6 @@ enum {
 -(IBAction)showDescription:(id)sender;
 //  help menu items
 -(IBAction)internetAccess:(id)sender;
--(void)sendEmailForPackage:(FinkPackage *)pkg;
 -(IBAction)emailMaintainer:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 
