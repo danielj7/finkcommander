@@ -36,14 +36,15 @@ File: FinkOutputParser.h
 
 #define STARTING_INCREMENT 5.0
 
-#define ISPROMPT(x) ([(x) contains: @"proceed? ["] 	|| \
-					 [(x) contains: @"one: ["] 		|| \
-					 [(x) containsCI: @"[y/n]"] 	|| \
-					 [(x) contains: @"[anonymous]"] || \
+#define ISPROMPT(x) ([(x) contains: @"you want to proceed?"]	|| \
+					 [(x) contains: @"Make your choice:"]		|| \
+					 [(x) contains: @"Pick one:"]				|| \
+					 [(x) containsCI: @"[y/n]"] 				|| \
+					 [(x) contains: @"[anonymous]"] 			|| \
 					 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 #define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || 	\
-								 [(x) contains: @"return to continue"] ||				\
+								 [(x) contains: @"return to continue"] 				||	\
 								 [(x) contains: @"CVS password:"])
 
 enum {
@@ -70,12 +71,13 @@ enum {
 
 	NSMutableDictionary *ptracker;
     NSMutableArray *packageList;
+	NSMutableArray *increments;
 	NSString *command;
     NSString *currentPackage;
 
-    float increments[7];
     float increment;
     int currentPhase;
+	BOOL determinate;
     BOOL passwordErrorHasOccurred;
     BOOL readingPackageList;
     BOOL installStarted;

@@ -43,7 +43,7 @@ File: FinkSplitView.m
 
 -(void)collapseOutput:(NSNotification *)n
 {
-	if (! [self isSubviewCollapsed: outputScrollView]){
+	if (! [self isSubviewCollapsed:outputScrollView]){
 		NSRect oFrame = [outputScrollView frame];
 		NSRect tFrame = [tableScrollView frame];
 		NSRect sFrame = [self frame];
@@ -83,7 +83,8 @@ File: FinkSplitView.m
 -(void)mouseDown:(NSEvent *)theEvent
 {
     if ([theEvent clickCount] == 2){
-		if ([self isSubviewCollapsed:outputScrollView]){
+		NSRect oFrame = [outputScrollView frame];
+		if (oFrame.size.height < 1.0){
 			[self expandOutput];
 		}else{
 			[self collapseOutput:nil];

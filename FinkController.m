@@ -86,7 +86,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				selector: @selector(runCommandOnNotification:)
 				name: FinkRunCommandNotification
 				object: nil];
-		//Register notification that table selection changed in order
+		//Register for notification that table selection changed in order
 		//to update Package Inspector
 		[center addObserver: self
 				selector: @selector(tableViewSelectionDidChange:)
@@ -178,7 +178,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[outputScrollView retain];		// removed from its superview
 	[splitView removeFromSuperview];
 	splitView = [[FinkSplitView alloc] initWithFrame:[splitView frame]];
-//	[splitView setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
 	[splitSuperview addSubview: splitView];
 	[splitView release];  						//retained by superview
 	[splitView addSubview: tableScrollView];  	//placed at top of split view
@@ -210,13 +209,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	[self setupToolbar];
 
-	if ([defaults boolForKey: FinkAutoExpandOutput]){
-		[splitView collapseOutput: nil];
-	}else{
-		//restore to pre-terminate state
-		[splitView expandOutput]; 
-	}
-
 	[msgText setStringValue:
 		NSLocalizedString(@"UpdatingTable", nil)];
 }
@@ -240,14 +232,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[tableView setHighlightedTableColumn:lastColumn];
 	[tableView setIndicatorImage:[tableView normalSortImage] inTableColumn:lastColumn];
 
+	if ([defaults boolForKey: FinkAutoExpandOutput]){
+		[splitView collapseOutput: nil];
+	}
 	if ([defaults boolForKey:FinkAskForPasswordOnStartup]){
 		[self raisePwdWindow:self];
 	}
 	
-#ifdef DEBUGGING
 	NSLog(@"Interval for new version check: %d", interval);
 	NSLog(@"Last checked for new version: %@", lastCheckDate);
-#endif
 	
 	if (interval && -([lastCheckDate timeIntervalSinceNow] / (24 * 60 * 60)) >= interval){
 		NSLog(@"Checking for FinkCommander update");
@@ -913,7 +906,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		TABLEVIEW AND SPLITVIEW NOTIFICATION METHODS
+//		TABLEVIEW NOTIFICATION METHOD
 //--------------------------------------------------------------------------------
 
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
@@ -921,16 +914,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if (packageInfo && [[packageInfo window] isVisible]){
 		[packageInfo displayDescriptions: [tableView selectedPackageArray]];
 	}
-}
-
-//records ratio of textview/splitview so that splitview can be reset on startup
--(void)splitViewDidResizeSubviews:(NSNotification *)aNotification
-{
-	NSRect oFrame = [outputScrollView frame];
-	NSRect sFrame = [splitView frame];
-
-	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-							forKey: FinkOutputViewRatio];
 }
 
 //--------------------------------------------------------------------------------

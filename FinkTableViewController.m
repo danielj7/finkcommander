@@ -352,12 +352,24 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
-	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name] contains: @"tcsh"]){
-		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil,
+	NSString *pname = [[[self displayedPackages] objectAtIndex: rowIndex] name];
+	if ([pname contains:@"tcsh"]){
+		NSBeginAlertSheet(NSLocalizedString(@"Sorry", nil),
+					NSLocalizedString(@"OK", nil),
+					nil,	nil,
 					[self window], self, NULL,	NULL, nil,
-					@"FinkCommander is unable to install tcsh.\nSee Help:FinkCommander Help:Known Bugs and Limitations",
+					NSLocalizedString(@"UnableToInstallTcsh", nil),
 					nil);
 		return NO;
+	}
+	if ([pname contains:@"term-readkey-pm"]){
+		NSBeginAlertSheet(NSLocalizedString(@"Caution", nil),
+					NSLocalizedString(@"OK", nil),
+					nil, nil,
+					[self window], self, NULL,	NULL, nil,
+					NSLocalizedString(@"UnableToInstallTerm-Readkey", nil),
+					nil);
+		return YES;
 	}
 	return YES;
 }

@@ -5,9 +5,7 @@ File: FinkOutputParser.m
 
 */
 
-
 #import "FinkOutputParser.h"
-
 
 @implementation FinkOutputParser
 
@@ -19,8 +17,11 @@ File: FinkOutputParser.m
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
 		packageList = [[NSMutableArray alloc] init];
+		[packageList addObject:@""];
+		increments = [[NSMutableArray alloc] init];
 		[self setCurrentPackage:@""];
-		passwordErrorHasOccurred = readingPackageList = installStarted = NO;
+		passwordErrorHasOccurred = readingPackageList = installStarted = NO;		
+		determinate = [command contains:@"install"] || [command isEqualToString:@"rebuild"];
     }
     return self;
 }
@@ -29,8 +30,10 @@ File: FinkOutputParser.m
 {
 	[ptracker release];
 	[packageList release];
-    [command release];
+	[increments release];
+	[command release];
 	[currentPackage release];
+	
 	[super dealloc];
 }
 
@@ -42,23 +45,36 @@ File: FinkOutputParser.m
 //if a previous phase has been skipped (e.g. b/c pkg was already fetched)
 -(void)setIncrementForCurrentPhase
 {
-    float completed = increments[currentPhase];
-
-    increment = completed - [[ptracker objectForKey:currentPackage] floatValue];    
-    [ptracker setObject:[NSNumber numberWithFloat:completed] forKey:currentPackage];
+    float phaseTotal = [[increments objectAtIndex:currentPhase] floatValue];
+	float pkgTotal;
 	
-	NSLog(@"Increment added: %f; completed so far: %f", increment, completed);
+	if ([currentPackage isEqualToString:@"package"]){
+		pkgTotal = phaseTotal - [[increments objectAtIndex: currentPhase - 1] floatValue];
+	}else{
+		pkgTotal = [[ptracker objectForKey:currentPackage] floatValue];
+	}
+	
+	NSLog(@"Current phase = %d", currentPhase);
+	NSLog(@"Current package = %@", currentPackage);
+	NSLog(@"Total increment for current phase: %f", phaseTotal);
+	NSLog(@"Total increment for package so far: %f", pkgTotal);
+
+    increment = phaseTotal - pkgTotal;
+	
+	NSLog(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
+    
+	[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
 }
 
 -(NSString *)currentPackage { return currentPackage; }
 
 -(void)setCurrentPackage:(NSString *)p
 {
-    [p retain];
+	[p retain];
     [currentPackage release];
     currentPackage = p;
 	
-	NSLog(@"Current package: %@", currentPackage);
+	NSLog(@"Set current package to %@", currentPackage);
 }
 
 //find longest name in packageList that matches a string in this line
@@ -68,24 +84,28 @@ File: FinkOutputParser.m
     NSString *candidate;
     NSString *longestMatch = @"";
 	
-	NSLog(@"Searching for package name in line:\n%@", line);
+//	NSLog(@"Searching for package name in line:\n%@", line);
 
     while (candidate = [e nextObject]){
 		
-		NSLog(@"Candidate = %@", candidate);
+//		NSLog(@"Candidate = %@", candidate);
 		
 		if ([line containsCI:candidate]){
 		
-			NSLog(@"Found %@ in line", candidate);
+//			NSLog(@"Found %@ in line", candidate);
 
  			if ([candidate length] > [longestMatch length]){
 				longestMatch = candidate;
 				
-				NSLog(@"Longest match so far: %@", longestMatch);
+//				NSLog(@"Longest match so far: %@", longestMatch);
 
 			}
 		}
     }
+	
+	if ([longestMatch length] < 1){
+		longestMatch = @"package";
+	}
 	
 	NSLog(@"Returning package %@", longestMatch);
 	
@@ -133,9 +153,14 @@ File: FinkOutputParser.m
 		[ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
     }
     for (i = 0; i < 7; i++){
-		increments[i] = cumulative[i] * perpkg;
+		float newincrement = cumulative[i] * perpkg;
 		
-		NSLog(@"increment %d: %f", i, increments[i]);
+		NSLog(@"new increment = %f", newincrement);
+		
+		[increments insertObject: [NSNumber numberWithFloat: newincrement]
+					atIndex:i];
+		
+		NSLog(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
 
     }
     currentPhase = NONE;
@@ -147,7 +172,7 @@ File: FinkOutputParser.m
 -(int)parseLineOfOutput:(NSString *)line
 {
 	//Look for package lists
-	if (readingPackageList){
+	if (determinate && readingPackageList){
 	
 		NSLog(@"Looking for packages in %@", line);
 	
@@ -175,15 +200,18 @@ File: FinkOutputParser.m
 		return START_INSTALL;
     }
 	//start scanning for names of pkgs to be installed when intro found
-    if ([line contains: @"will be installed"]){
+    if (determinate 							&& 
+		([line contains:@"will be installed"]	||
+		 [line contains:@"will be rebuilt"])){
 		readingPackageList = YES;
 		return NONE;
     }
 	
 	//Look for installation events
-	if ([line hasPrefix: @"wget"]  || 
+	if (determinate && 
+		([line hasPrefix: @"wget"]  || 
 		[line hasPrefix: @"curl"]  ||
-		[line hasPrefix: @"axel"]){
+		[line hasPrefix: @"axel"])){
 		NSString *name = [self packageNameFromLine:line];
 		//no action required if retrying failed download
 		if ([name isEqualToString:currentPackage]) return NONE;
@@ -192,29 +220,34 @@ File: FinkOutputParser.m
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if ([line hasPrefix:@"tar"]     ||
+    if (determinate 				&&
+		([line hasPrefix:@"tar"]    ||
 		[line hasPrefix:@"bzip"]    ||
 		[line contains:@"/tar "]    ||
-		[line contains:@"/bzip2 "]){
+		[line contains:@"/bzip2 "])){
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		[self setIncrementForCurrentPhase];
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (currentPhase != CONFIGURE 					&&
+    if (determinate									&&
+		currentPhase != CONFIGURE 					&&
 		([[line strip] hasPrefix:@"./configure"] 	||
 		 [[line strip] hasPrefix:@"patch"])){
 		[self setIncrementForCurrentPhase];
 		currentPhase = CONFIGURE;
 		return CONFIGURE;
     }
-    if (currentPhase != COMPILE &&
-		[[line strip] hasPrefix: @"make"]){
+    if (determinate								&&
+		currentPhase != COMPILE 				&&
+		([[line strip] hasPrefix: @"make"] 		||
+		 [[line strip] hasPrefix: @"gcc"]		||
+		 [[line strip] hasPrefix: @"building"])){
 		[self setIncrementForCurrentPhase];
 		currentPhase = COMPILE;
 		return COMPILE;
     }
-    if ([line contains: @"dpkg-deb -b"]){
+    if (determinate && [line contains: @"dpkg-deb -b"]){
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		//make sure we catch up if this file is archived
 		if (currentPhase < 1) currentPhase = COMPILE;
@@ -222,7 +255,7 @@ File: FinkOutputParser.m
 		currentPhase = BUILD;
 		return BUILD;
     }
-    if ([line contains: @"dpkg -i"]){
+    if (determinate && [line contains: @"dpkg -i"]){
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		[self setIncrementForCurrentPhase];
 		currentPhase = ACTIVATE;
