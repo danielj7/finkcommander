@@ -250,6 +250,16 @@ See the header file, FinkDataController.h, for interface and license information
 		[p setSummary:[listRecord objectAtIndex: 7]];
 		[p setFulldesc:[listRecord objectAtIndex: 8]];
 
+		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
+			path = [self pathToPackage:p inTree:@"stable" withExtension:@"info"];
+			if ([manager fileExistsAtPath:path]){
+				[p setStable:[p unstable]];
+				if (! [defaults boolForKey:FinkShowRedundantPackages]){
+					[p setUnstable:@" "];
+				}
+			}
+		}
+
 		if ([defaults boolForKey:FinkShowRedundantPackages] &&
 			[[p unstable] length] < 2 						&&
 			[[p stable] length] > 1){
