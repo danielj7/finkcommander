@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<title>FinkCommander Help--Learning About Packages</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h2>Learning About Your Fink Packages</h2>
+
+<p>FinkCommander provides several ways to learn about the software
+packages you have installed with Fink.   All of the commands are applied
+to the packages you have selected in the main window table.</p>
+
+<dl>
+    <dt>File:Open .info/.patch</dt>
+    
+        <dd><p>Also accessible by double clicking or dragging and dropping the
+        selected packages.</p>
+
+        <p>Opens the files used by Fink to install packages from source.  Drag
+		and drop can also be used to copy these files to Finder
+        windows or the Desktop.</p></dd>
+
+	<dt>Tools:Browse Package Files</dt>
+
+		<dd><p>Also accessible from: contextual menu for table, toolbar
+		button.</p>
+		
+		<p>Opens a Finder-like window showing the files installed by Fink for
+		the selected package.  You can open multiple windows with this command, but it
+		can only be applied to one table selection at a time.
+		
+		<p>Buttons in the upper left-hand corner allow you to
+		switch between an outline or browser view.  You can open files displayed 
+		in the window with <kbd>File:Open Selected File(s)</kbd> or by double clicking.  
+		You can also open files or copy them to Finder via drag and drop.  To drag
+		from the browser view, you must hold down the option key.</p>
+		
+		<p>Using the browser view for the larger packages can consume a pretty big 
+		chunk of memory.  The memory is released back to the system, however, when
+		you close the window.  The outline view, in contrast, has a much smaller
+		memory footprint, which is why it's set as the default.</p></dd>
+
+    <dt>Tools:Go to Package Documentation</dt>
+        
+        <dd><p>Also accessible from: contextual menu.</p>
+        
+        <p>Opens a Finder window for the package documentation directory
+        installed as part of the Fink package.</p></dd>
+        
+    <dt>Tools:Show Package Info</dt>
+    
+        <dd><p id="info">Also accessible from: contextual menu, toolbar
+        button.</p>
+        
+        <p>Opens a window showing the Fink description for whichever package 
+        or packages are selected in the table.  The description includes live
+        links to the web page for the package and the package maintainer's 
+        email address.</p></dd>
+
+</dl>
+
+
+</body>
+</html>
