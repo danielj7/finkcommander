@@ -13,70 +13,185 @@
 
 <ul>
 	<li><a href="#description">&Uuml;bersicht</a></li>
+	<li><a href="#installation">Installation und der erste Programmstart</a></li>
+	<li><a href="#timeout">&Auml;ndern des Autorisierungs Timeouts</a></li>
 	<li><a href="#license">Lizenz</a></li>
-	<li><a href="#security">Bemerkung zur Sicherheit</a></li>
 </ul>
 
-<h3>
-<a name="description">&Uuml;bersicht</a>
-</h3>
+<h3> <a name="description">&Uuml;bersicht</a> </h3>
 
-<p>
-<a href="http://finkcommander.sourceforge.net"
-target="top">FinkCommander</a> ist ein graphisches Interface zum <a
-href="http://fink.sourceforge.net" target="top">Fink</a> Paket-Manager.  Um FinkCommander zu verwenden m&uuml;ssen Sie zuerst <a href="http://fink.sourceforge.net/download/"
-target="top">Fink installieren</a></p>
+<p><a href="http://finkcommander.sourceforge.net" target="top">FinkCommander</a>
+ist ein graphisches Interface zum <a href="http://fink.sourceforge.net"
+target="top">Fink</a> Paket-Manager. Um FinkCommander zu verwenden,
+m&uuml;ssen Sie zuerst <a href="http://fink.sourceforge.net/download/" target="top">Fink
+installieren.</a></p>
 
-<p>
-FinkCommander soll eine intuitive Bedienung erlauben. Dennoch enth&auml;lt FinkCommander eine umfangreiche Dokumantation.
-</p>
+<p>FinkCommander sollte eine intuitive Bedienung erlauben. Dennoch enth&auml;lt
+FinkCommander eine ziemlich umfangreiche Dokumantation.</p>
 
-<p>
-Falls Sie Fehler im Programm finden, w&auml;re es hilfreich, wenn Sie diese durch den <a href="http://sourceforge.net/tracker/?group_id=48896&amp;atid=454467"
-target="top">Bug Tracker</a> bei SourceForge melden.
-</p>
+<p>Falls Sie einen Fehler in FinkCommander finden, ist auf
+<a href="http://finkcommander.sourceforge.net/pages/bugs.html">dieser Webseite</A>
+das Vorgehen beschrieben, wie Sie den Fehler melden k&ouml;nnen. Ein Link
+zum SourceForge Bug Tracker ist dort ebenfalls vorhanden.</p>
 
-<p>
-Leider bin ich nicht im Stand, direkten Support f&uuml;r FinkCommander anzubieten, da Software Entwicklung lediglich ein Hobby darstellt und ich daneben einen Beruf aus&uuml;be, der mich auch zeitlich fordert und es mir verunm&ouml;glicht, auf jede Anfrage sofort zu antworten. Ich versuche jedoch alle Anregungen zu ber&uuml;cksichtigen und sie in zuk&uuml;nftige Versionen von FinkCommander einfliessen zu lassen. Senden Sie Ihre Kommentare (keine Fehlermeldungen bitte) an mein <a href="mailto:sburrious@users.sourceforge.net">SourceForge E-Mail Konto</a>.
-</p>
+<p>Ich bin nicht im Stande, direkten Support f&uuml;r FinkCommander anzubieten,
+da Software Entwicklung lediglich ein Hobby f&uuml;r mich darstellt. Ich &uuml;be
+&quot;daneben&quot; einen Beruf aus, der es mir zeitlich verunm&ouml;glicht, auf
+jede Anfrage sofort zu antworten. Ich versuche jedoch, Ihre Anregungen zu
+ber&uuml;cksichtigen und in zuk&uuml;nftige Versionen von FinkCommander einfliessen
+zu lassen. Bitte senden Sie Ihre Kommentare (keine Fehlermeldungen) an mein
+<a href="mailto:sburrious@users.sourceforge.net">SourceForge E-Mail Konto</a>.</p>
 
+<h3><a name="installation">Installation und der erste Programmstart</a></h3>
+
+<p>Falls Sie Version 0.4.2 oder neuer von FinkCommander bereits installiert haben,
+dann m&uuml;ssen Sie diese Version in den Papierkorb legen, bevor Sie die neue
+Version installieren k&ouml;nnen. Der Grund daf&uuml;r sind die &Auml;nderungen
+der Zugriffsrechte einiger internen Dateien, die weiter unten beschrieben werden.
+Aus irgendeinem Grund ist es zwar m&ouml;glich, ein .app Bundle zu l&ouml;schen,
+das Dateien enth&auml;lt, die root geh&ouml;ren; aber es ist nicht m&ouml;glich,
+das Bundle zu &uuml;berschreiben!</p>
+
+<p>Wenn Sie nach der Installation einer neuen Version das erste Mal in FinkCommander
+ein Kommando ausf&uuml;hren, wird das Programm eine Meldung ausgeben, dass es
+&uuml;ber unzureichende Zugriffsrechte verf&uuml;gt und eine Selbstreperatur
+durchf&uuml;hren muss. Daraufhin wird der Mac OS X Sicherheitsdialog angezeigt und
+Sie werden nach dem Administrator Passwort gefragt. Nachdem Sie das Passwort
+zweimal eingeben haben, wird die Selbstreparatur ausgef&uuml;hrt, danach k&ouml;nnen
+Sie das gew&uuml;nschte Kommando noch einmal ausf&uuml;hren.</p>
+  
+<p>Ist die Selbstreperatur einmal erfolgreich ausgef&uuml;hrt worden, sollten Sie Ihr
+Passwort nur noch einmal pro <a href="#timeout">Timeout Periode</a> angeben m&uuml;ssen.</p>
+
+<p>F&uuml;r diejenigen, die es interessiert, folgt hier eine Erkl&auml;rung der &Auml;nderungen,
+die die Selbstreparatur Routine durchf&uuml;hrt. F&uuml;r das Verst&auml;ndnis ist ein
+Basiswissen &uuml;ber Zugriffsrechte von Unix Dateien n&ouml;tig.</p>
+
+<p>Ab Version 0.4.0 verwendet FinkCommander das Security Framework von Apple, um
+Kommandos zu autorisieren, die root Zugriffsrechte erfordern. Eine Anwendung ben&ouml;tigt
+root Zugriffsrechte, wenn sie &Auml;nderungen an Dateien und Verzeichnissen durchf&uuml;hren
+will, deren Eigent&uuml;mer root ist. Dies trifft z.B. auf die Dateien und Verzeichnisse
+in Ihrer Fink Installation zu.</p>
+
+<p>Um root Zugriffsrechte zu erhalten, verlangten &auml;ltere Versionen von FinkCommander
+in einem eigenen Dialogfenster nach dem Passwort des Benutzers, und gaben das eingegebene
+Passwort dann an das sudo Kommando weiter. In &Uuml;bereinstimmung mit Apple's Empfehlungen
+ruft die aktuelle Version von FinkCommander nun aber den OS X Security Server auf, um die
+n&ouml;tigen Zugriffsrechte zu erhalten, und kommt nie mit dem Passwort des Benutzers in
+Ber&uuml;hrung.</p>
+
+<p>Um den Security Server auf die von Apple empfohlene Weise zu verwenden, muss
+FinkCommander ein kleines Hilfsprogramm beinhalten, dessen Eigent&uuml;mer root ist
+und das ein spezielles Zugriffsrecht namens &quot;setuid&quot; besitzt. Normalerweise
+erh&auml;lt ein Unix Programm nach seinem Start die Identit&auml;t und dadurch die
+Zugriffsrechte des Benutzers, der es gestartet hat. Falls ein Programm aber mit dem
+setuid Zugriffsrecht ausgestattet ist, nimmt es nach dem Start die Identit&auml;t des
+Eigent&uuml;mers der Programmdatei an, und dadurch auch dessen Zugriffsrechte. Ein
+Programm, dessen Eigent&uuml;mer root ist und das setuid gesetzt hat, erh&auml;lt auf
+diese Weise die Berechtigung, Dateien zu ver&auml;ndern, die root geh&ouml;ren -
+nat&uuml;rlich immer vorausgesetzt, dass der Benutzer das Administrator Passwort
+angibt.</p>
+
+<p>Das sudo Programm, das weiter oben erw&auml;hnt wurde, ist ein bekanntes Beispiel
+eines setuid Hilfsprogramms. Falls Sie auf der Kommandozeile <kbd>ls -l /usr/bin/sudo</kbd>
+eingeben, sehen Sie dieses Resultat:</p>
+
+<pre>---s--x--x    1 root     wheel       96384 Sep 18 21:23 /usr/bin/sudo</pre>
+
+<p>Dort wo man normalerweise ein &quot;x&quot; erwarten w&uuml;rde, steht ein &quot;s&quot;,
+was bedeutet, dass sudo das setuid Zugriffsrecht besitzt.</p>
+
+<p>Wenn Sie FinkCommander das erste Mal installieren oder kompilieren, hat das Hilfsprogramm
+kein setuid Zugriffsrecht und der Eigent&uuml;mer ist nicht root. Das Programm
+f&uuml;hrt sich deshalb selber noch einmal aus, wozu es eine spezielle Funktion des
+Security Framework verwendet, und setzt sich selbst auf setuid root.</p>
+
+<p>Zus&auml;tzlich zur &Auml;nderung der eigenen Zugriffsrechte setzt das
+Programm auch den Eigent&uuml;mer des &uuml;bergeordneten Verzeichnisses auf root.
+Das ist notwendig um zu verhindern, dass jemand ohne Administrator Rechte das
+Hilfsprogramm ersetzen k&ouml;nnte. Ein Ersatzprogramm k&ouml;nnte die root
+Zugriffsrechte, die es durch Ihre Eingabe des Administrator Passworts erlangt hat,
+dazu verwenden, Ihr System zu besch&auml;digen oder Ihre Privatsph&auml;hre
+zu verletzen.</p>
+
+<h3><a name="timeout">&Auml;ndern des Autorisierungs Timeouts</a></h3>
+
+<p>Normalerweise funktioniert FinkCommander ungef&auml;hr gleich wie sudo. Wenn
+Sie ein Kommando starten und das Passwort eingeben, um root Zugriffsrechte
+zu autorisieren, hat diese Autorisierung ein Timeout von f&uuml;nf Minuten. Sie
+k&ouml;nnen w&auml;hrend f&uuml;nf Minuten weitere Kommandos starten, ohne Ihr
+Passwort erneut eingeben zu m&uuml;ssen. Nach dieser Zeit m&uuml;ssen Sie sich
+wieder neu authentifizieren.</p>
+
+<p>Sie k&ouml;nnen das Timeout f&uuml;r FinkCommander anpassen, indem Sie die Datei
+/private/etc/authorization anpassen. Dazu &ouml;ffnen Sie Terminal und geben die
+folgende Zeile ein:</p>
+
+<p><kbd>sudo [editor] /private/etc/authorization</kbd></p>
+
+<p>wobei [editor] der Name Ihres bevorzugten Kommandozeilen Editors ist. Sie sollten
+nicht den Property List Editor in /Developer/Applications verwenden, um die Datei
+anzupassen, da der Editor die in der Datei enthaltenen Kommentare beim Speichern
+l&ouml;scht.</p>
+
+<p>Um das Timeout f&uuml;r FinkCommander ganz zu entfernen, f&uuml;gen Sie die folgende
+&quot;Regel&quot; in die Datei authorization ein:</p>
+<pre>
+&lt;!-- Hier k&ouml;nnen Sie Ihren Kommentar hinschreiben --&gt;
+    &lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;group&lt;/key&gt;
+            &lt;string&gt;admin&lt;/string&gt;
+            &lt;key&gt;shared&lt;/key&gt;
+            &lt;true/&gt;
+        &lt;/dict&gt;
+</pre>
+
+<p>Sie k&ouml;nnen diese Zeilen vor irgendeiner Kommentarzeile (eine solche Zeile
+beginnt mit &quot;&lt;!--&quot;) plazieren. Der logische Ort w&auml;re direkt vor dem
+letzten Kommentar, der die Default Autorisierungs Regel einleitet. Nachdem Sie diese
+&Auml;nderungen vorgenommen haben, m&uuml;ssen Sie Ihr Passwort nur noch einmal beim
+Programmstart von FinkCommander eingeben, es werden dann alle weiteren Kommandos bis
+zum n&auml;chsten Programmstart von FinkCommander autorisiert.</p>
+
+<p>Um die Timeout Periode zu verl&auml;ngern oder zu verk&uuml;rzen, f&uuml;gen Sie
+das folgende key/value Paar in die Zeilen weiter oben ein, vor dem &lt;&nbsp;/dict&gt;
+Tag.</p> 
+<pre>
+	&lt;key&gt;timeout&lt;/key&gt;
+	&lt;integer&gt;N&lt;/integer&gt; 
+</pre>
+
+<p>wobei N die Timeout Periode in Sekunden darstellt. Setzen Sie N auf 0, wenn Sie
+wollen, dass das Passwort f&uuml;r jedes Kommando angegeben werden muss.</p>
+
+<p>Ich m&ouml;chte dieses Vorgehen in einem zuk&uuml;nftigen Release automatisieren,
+m&ouml;glicherweise mit Hilfe der FinkCommander Einstellungen.</p>
 
 <h3><a name="license">Lizenz</a></h3>
 
-<p>
-Dieses Programm ist freie Software; Sie k&ouml;nnen es weiterverteilen und/oder ab&auml;ndern gem&auml;ss den Bedingungen der GNU General Public License (herausgegeben von der Free Software Foundation), entweder der Version 2 oder, nach Ihrer Wahl, einer sp&auml;teren Version der Lizenz.</p>
+<p>Dieses Programm ist freie Software; Sie k&ouml;nnen es weiterverteilen
+und/oder ab&auml;ndern gem&auml;ss den Bedingungen der GNU General Public License
+(herausgegeben von der Free Software Foundation), entweder der Version 2 oder, nach
+Ihrer Wahl, einer sp&auml;teren Version der Lizenz.</p>
 
-<p>
-Dieses Programm wird ver&ouml;ffentlicht mit der Hoffnung, dass es n&uuml;tzlich sein wird, jedoch OHNE IRGENDEINE GARANTIE. Siehe die GNU General Public License f&uuml;r mehr Details.
-</p>
+<p>Dieses Programm wird ver&ouml;ffentlicht mit der Hoffnung, dass es n&uuml;tzlich sein
+wird, jedoch OHNE IRGENDEINE GARANTIE. Siehe die GNU General Public License f&uuml;r
+mehr Details.</p>
 
-<p>
-Eine Kopie der GPL ist in der Datei "LICENSE.html" im gleichen Verzeichnis wie diese Datei, das README, enthalten. Beides ist auch &uuml;ber die Hilfe zug&auml;nglich.
-</p>
+<p>Eine Kopie der GPL ist in der Datei "LICENSE.html" enthalten. Diese Datei kann
+im Paket-Installations-Programm angesehen werden, und sie ist im Disk Image der bin&auml;ren
+Versionen von FinkCommander enthalten. In der Source Code Version von FinkCommander ist
+die Datei sowohl auf der obersten Verzeichnisebene als auch in der Gruppe Documentation im
+Project Builder verf&uuml;gbar. Die Lizenz kann auch &uuml;ber das Hilfemen&uuml; angesehen
+werden.</p>
 
-<p>
-Falls Sie die bin&auml;re Version dieser Software heruntergeladen haben, aber die Quelldateien auch m&ouml;chten, sind diese unter der <a href="http://sourceforge.net/project/showfiles.php?group_id=48896"
-target="top">FinkCommander Website</a> erh&auml;ltlich.
-</p>
+<p>Falls Sie die bin&auml;re Version dieser Software heruntergeladen haben, aber die
+Quelldateien auch m&ouml;chten, sind diese auf der
+<a href="http://sourceforge.net/project/showfiles.php?group_id=48896" target="top">FinkCommander
+Website</a> erh&auml;ltlich.</p>
 
 
-<h3><a name="security">Bemerkung zur Sicherheit</a></h3>
-
-<p>
-FinkCommander verwendet nicht Apple's Sicherheits Framework zur Authentifizierung von Kommandos, welche die Rechte eines Systemadministrators verlangen. Stattdessen werden Sie aufgefordert Ihr Passwort in ein Textfeld einzugeben, von wo es direkt an das sudo Kommando weitergeleitet wird.</p>
-
-<p>
-FinkCommander selbst l&auml;uft nicht als root sondern verwendet das sudo Kommando, wie dies auch fink selbst macht. Ich denke die gr&ouml;ssten Bedenken bei diesem Ansatz sind, dass <strong>Sie Ihr Passwort an FinkCommander weitergeben</strong>.  
-Wenn FinkCommander b&ouml;se Software w&auml;re, k&ouml;nnte das Programm Ihr Passwort sch&auml;digend f&uuml;r Ihr Computersystem einsetzen.
-</p>
-
-<p>
-Andererseits ist FinkCommander freie Software, so dass Transparenz gew&auml;hrleistet ist, was das Programm mit Ihrem Passwort macht. Falls Sie dennoch Zweifel haben ermutige ich Sie, den Quellcode zu studieren.
-</p>
-
-<p>
-Ich habe das Sicherheits Framework und Apple's Vorschlag zur Authentifizierung von Kommandos, die Privilegien eines Systemadministrators fordern, anhand des Beispieles <a href="http://developer.apple.com/samplecode/Sample_Code/Security/AuthSample.htm">AuthSample</a> angeschaut. Es scheint mir, dass die Anwendung dieser Methode auf die komplexe inter-prozess Kommunikation, die FinkCommander verwendet, extrem schwierig zu implementieren ist - jedenfalls f&uuml;r einen Amateurprogrammierer wie mich. Es ist daher wahrscheinlich, dass FinkCommander auch in Zukunft in dieser Form weiterbesteht.
-</p>
 
 </body>
 </html>
