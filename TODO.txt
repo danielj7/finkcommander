@@ -1,9 +1,12 @@
 VERSION 0.5; Target release date: 1/31/03:
 
-i Package file browser
+Automatically add ftp_proxy to environment variables
+
+No error warning on clicking Cancel in authorization dialog
+
+d Package file browser
 	d Add Browser view
 	d Add buttons to switch from outline to browser (modeled on Finder's)
-	Add contextual menu
 	d Add drag and drop of file icons
 	d Open selected files (File menu, double click, drag and drop)
 	
@@ -22,13 +25,11 @@ d Flag column
 
 d Size new columns appropriately
 
+SHORT TERM:
+
 Warning dialog for first run of command in Terminal
 
-New toolbar items for:
-	d Package browser
-	Fink bug report
-
-SHORT TERM:
+Add contextual menu to package file browser
 
 Command queue
 

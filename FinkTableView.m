@@ -7,7 +7,7 @@ See the header file, FinkTableView.h, for interface and license information.
 #import "FinkTableView.h"
 
 //----------------------------------------------------------
-#pragma mark MACROS
+#pragma mark MACROS AND CONSTANTS
 //----------------------------------------------------------
 
 //Column widths
@@ -22,7 +22,12 @@ See the header file, FinkTableView.h, for interface and license information.
 	[(id) isEqualToString:@"stable"]	||					\
 	[(id) isEqualToString:@"unstable"]	||					\
 	[(id) isEqualToString:@"binary"]	||					\
-	[(id) isEqualToString:@"installed"]	
+	[(id) isEqualToString:@"installed"]
+
+enum {
+    INFO =  101,
+    PATCH = 102
+};
 
 @implementation FinkTableView
 
@@ -120,6 +125,68 @@ See the header file, FinkTableView.h, for interface and license information.
 }
 
 //----------------------------------------------------------
+#pragma mark ACTION
+//----------------------------------------------------------
+
+/* Open the info or patch file or both for selected packages. */
+-(IBAction)openPackageFiles:(id)sender
+{
+    NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+    //Accumulates paths for files that could not be opened
+    NSMutableArray *problemPaths = [NSMutableArray array];
+    FinkPackage *pkg;
+    NSString *path, *tree;
+    int senderTag = [sender tag];
+    //YES if user double-clicked the package name in the table
+	BOOL shouldOpenBoth = senderTag != INFO && senderTag != PATCH;
+    BOOL fileWasOpened;
+
+	Dprintf(@"Sender tag in openPackageFiles: %d", senderTag);
+
+    while (nil != (pkg = [e nextObject])){
+		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
+		if (senderTag == PATCH){
+			path = [pkg pathToPackageInTree:tree withExtension:@"patch"];
+		}else{
+			path = [pkg pathToPackageInTree:tree withExtension:@"info"];
+		}
+		fileWasOpened = openFileAtPath(path);
+		if (! fileWasOpened) [problemPaths addObject:path];
+		if (shouldOpenBoth){
+			path = [pkg pathToPackageInTree:tree withExtension:@"patch"];
+			/* We won't check the return value here.  Some packages
+			don't have patch files.  Letting the user know when the
+			info file could not be opened is sufficient if the user
+			chose to open both by double-clicking.  */
+			openFileAtPath(path);
+		}
+    }
+    alertProblemPaths(problemPaths);
+}
+
+//----------------------------------------------------------
+#pragma mark VALIDATION
+//----------------------------------------------------------
+
+-(BOOL)validateItem:(id)theItem
+{
+	SEL itemAction = [theItem action];
+	
+    if ([self selectedRow] == -1){
+		if (itemAction == @selector(openPackageFiles:) 	||
+			itemAction == @selector(copy:)){
+			return NO;
+		}
+	}
+	return YES;
+}
+
+-(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+{
+    return [self validateItem: menuItem];
+}
+
+//----------------------------------------------------------
 #pragma mark COPY
 //----------------------------------------------------------
 
@@ -166,11 +233,12 @@ See the header file, FinkTableView.h, for interface and license information.
 		[theData appendString:@"\n"];
 	}
 
-	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, NSStringPboardType, nil] owner:nil];
+	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, 
+		NSStringPboardType, nil] owner:nil];
 	[pb setString:[NSString stringWithString:theData]
-			 forType:NSStringPboardType];
+	    forType:NSStringPboardType];
 	[pb setString:[NSString stringWithString:theData]
-			 forType:NSTabularTextPboardType];
+	    forType:NSTabularTextPboardType];
 }
 
 -(IBAction)copy:(id)sender
@@ -235,29 +303,6 @@ See the header file, FinkTableView.h, for interface and license information.
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
 {
     return NSDragOperationCopy;
-}
-
-//----------------------------------------------------------
-#pragma mark ACTION
-//----------------------------------------------------------
-
--(IBAction)openPackageFiles:(id)sender
-{
-	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
-	NSMutableArray *problemPaths = [NSMutableArray array];
-	NSFileManager *manager = [NSFileManager defaultManager];
-	FinkPackage *pkg;
-	NSString *extension = ([sender tag] == 0) ? @"info" : @"patch";
-	NSString *path, *tree;
-
-	while (nil != (pkg = [e nextObject])){
-		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
-		path = [pkg pathToPackageInTree:tree withExtension:extension];
-		if (! [manager fileExistsAtPath:path] || ! openFileAtPath(path)){
-			[problemPaths addObject:path];
-		}
-	}
-	alertProblemPaths(problemPaths);
 }
 
 //----------------------------------------------------------

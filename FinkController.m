@@ -52,6 +52,15 @@ See the header file, FinkController.h, for interface and license information.
 	[NSNumber numberWithInt: NAME], @"name",                \
 	[NSNumber numberWithInt: FLAGGED], @"flagged",			\
 	nil]
+	
+/*  Parse menu item title or toolbar item label to determine 
+	the associated fink or apt-get command */
+#define ACTION_ITEM_IDENTIFIER(theSender)                   \
+	[[[([(theSender) isKindOfClass:[NSMenuItem class]] ?    \
+		[(theSender) title] : [(theSender) label])   		\
+	componentsSeparatedByString:@" "]          				\
+		objectAtIndex:0] lowercaseString];          		\
+
 
 /*
  *  Repeated Localized Strings
@@ -573,10 +582,15 @@ enum {
     NSSavePanel *panel = [NSSavePanel savePanel];
     NSString *defaultPath = [defaults objectForKey: FinkOutputPath];
     NSString *savePath = ([defaultPath length] > 0) ? defaultPath : NSHomeDirectory();
-    NSString *fileName = [NSString stringWithFormat: @"%@_%@",
-			     [self lastCommand],
-			     [[NSDate date] descriptionWithCalendarFormat:
-											  @"%d%b%Y" timeZone: nil locale: nil]];
+    NSString *fileName = @"Untitled";
+	
+	if (nil != [self lastCommand]){
+		fileName = [NSString stringWithFormat: @"%@_%@",
+					[self lastCommand],
+					[[NSDate date] descriptionWithCalendarFormat:
+								@"%d%b%Y" timeZone: nil locale: nil]];
+	} 
+	
 
     [panel setRequiredFileType: @"txt"];
     [panel beginSheetForDirectory:savePath
@@ -692,6 +706,7 @@ enum {
     [killTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
     [killTask authorizeWithQuery];
     [killTask start];
+	commandTerminated = YES;
 }
 
 -(IBAction)terminateCommand:(id)sender
@@ -1050,61 +1065,98 @@ enum {
 #pragma mark VALIDATION
 //================================================================================
 
-//helper for menu item and toolbar item validators
+// Validation logic for menu and toolbar item validation methods
 -(BOOL)validateItem:(id)theItem
 {
-    /* 	Disable package-specific commands if no row selected or if the main window
-		is not key */
-    if (([tableView selectedRow] == -1 	|| ! [window isKeyWindow])				&&
-		([theItem action] == @selector(copy:)									||
-		 [theItem action] == @selector(runPackageSpecificCommand:)  			||
-		 [theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
-		 [theItem action] == @selector(runForceRemove:)							||
-		 [theItem action] == @selector(showDescription:)						||
-		 [theItem action] == @selector(sendNegativeFeedback:)					||
-		 [theItem action] == @selector(sendPositiveFeedback:)					||
-		 [theItem action] == @selector(openDocumentation:)						||
-		 [theItem action] == @selector(openPackageFileViewer:)					||
-		 [theItem action] == @selector(openPackageFiles:)						||
-		 [theItem action] == @selector(toggleFlags:))){
-		return NO;
-    }
-	//disable sorting for columns not in table
-	if ([theItem action] == @selector(sortByPackageElement:) &&
+	SEL itemAction = [theItem action];
+
+    /*
+	 *  Disable menu and toolbar items when the command will not be effective
+	 */
+
+    // If no row is selected, disable commands that operate on packages
+    if ([tableView selectedRow] == -1){
+		if (itemAction == @selector(runPackageSpecificCommand:) 	||
+			itemAction == @selector(runForceRemove:)	           	||
+			itemAction == @selector(showDescription:)           	||
+			itemAction == @selector(sendNegativeFeedback:)	   		||
+			itemAction == @selector(sendPositiveFeedback:)	   		||
+			itemAction == @selector(openDocumentation:)	   			||
+			itemAction == @selector(openPackageFileViewer:)	   		||
+			itemAction == @selector(toggleFlags:)               	||
+			itemAction == @selector(runPackageSpecificCommandInTerminal:)){
+			return NO;
+		}
+		// Otherwise, disable commands that are not appropriate for a particular package
+    }else{
+		// Disable apt-get install if there is no binary version
+		NSString *itemName = ACTION_ITEM_IDENTIFIER(theItem);
+		if ([itemName isEqualToString:@"install"] && [theItem tag] == APT_GET){
+			NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+			FinkPackage *pkg;
+			while (nil != (pkg = [e nextObject])){
+				if ([[pkg binary] length] < 2){
+					return NO;
+				}
+			}
+		}
+		// Disable package file accessors, if the package is not installed
+		if (itemAction == @selector(openDocumentation:) 			||
+			itemAction == @selector(openPackageFileViewer:)){
+			FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
+				[tableView selectedRow]];
+			if (! [[pkg status] contains:@"u"]){ //current or outdated
+				return NO;
+			}
+		}
+	}
+
+	/* 	If a command is running, disable fink, apt-get and dpkg commands,
+		table update and save output */
+	if (commandIsRunning){
+		if (itemAction == @selector(runPackageSpecificCommand:)  	||
+			itemAction == @selector(runNonSpecificCommand:)      	||
+			itemAction == @selector(runForceRemove:)	       		||
+			itemAction == @selector(showDescription:)	       		||
+			itemAction == @selector(saveOutput:)		       		||
+			itemAction == @selector(updateTable:)){
+			return  NO;
+		}
+	// Otherwise disable the interaction and terminate commands
+	}else{
+		if (itemAction == @selector(raiseInteractionWindow:) ||
+			itemAction == @selector(terminateCommand:)){
+			return NO;
+		}
+	}
+
+	// Disable sorting for columns not in the table
+	if (itemAction == @selector(sortByPackageElement:) &&
 		! [[defaults objectForKey:FinkTableColumnsArray] containsObject:
-			[self attributeNameFromTag:[theItem tag]]]){
+				[self attributeNameFromTag:[theItem tag]]]){
 		return NO;
 	}
-    //disable Source and Binary menu items and table update if command is running
-    if (commandIsRunning &&
-		([theItem action] == @selector(runPackageSpecificCommand:) 	||
-		 [theItem action] == @selector(runNonSpecificCommand:) 		||
-		 [theItem action] == @selector(runForceRemove:)				||
-		 [theItem action] == @selector(showDescription:)			||
-		 [theItem action] == @selector(saveOutput:)					||
-		 [theItem action] == @selector(updateTable:))){
-		return  NO;
-    }
-    if (! commandIsRunning &&
-		([theItem action] == @selector(raiseInteractionWindow:) ||
-		 [theItem action] == @selector(terminateCommand:))){
+
+	// Disable save output if there's nothing in the text view
+	if ([[textView string] length] < 1 && [theItem action] == @selector(saveOutput:)){
 		return NO;
-    }
-    // no output to save if lastCommand is null, prevents (null) filename
-    if ([self lastCommand] == 0 		&&
-		[theItem action] == @selector(saveOutput:)){
-		return NO;
-    }
-	// toggle menu item titles
-	if ([theItem action] == @selector(toggleFlags:)){
+	}
+
+	/*
+	 * Toggle menu item titles.
+	 */
+
+	if (itemAction == @selector(toggleFlags:)){
 		if ([[[tableView selectedPackageArray] lastObject] flagged] == 0){
-			[theItem setTitle:NSLocalizedString(@"Mark As Flagged", @"Menu title: Put a flag image in the flag column next to the package")];
+			[theItem setTitle:NSLocalizedString(@"Mark As Flagged",
+									   @"Menu title: Put flag image in table column")];
 		}else{
-			[theItem setTitle:NSLocalizedString(@"Mark As Unflagged", @"Menu title: Remove the flag image from the flag column next to the package")];
+			[theItem setTitle:NSLocalizedString(@"Mark As Unflagged",
+									   @"Menu title: Remove flag image from table column")];
 		}
 		return YES;
 	}
-	if ([theItem action] == @selector(toggleToolbarShown:)){
+	if (itemAction == @selector(toggleToolbarShown:)){
 		if ([toolbar isVisible]){
 			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", @"Menu title")];
 		}else{
@@ -1112,7 +1164,7 @@ enum {
 		}
 		return YES;
 	}
-    return YES;
+	return YES;
 }
 
 //Disable menu items
@@ -1161,8 +1213,7 @@ enum {
 
 	//Put executable, command name and options in argument array
     if (type == FINK || type == APT_GET){
-		cmd = [sender isKindOfClass:[NSMenuItem class]] ? [sender title] : [sender label];
-		cmd = [[[cmd componentsSeparatedByString:@" "] objectAtIndex:0] lowercaseString];
+		cmd = ACTION_ITEM_IDENTIFIER(sender);
 		[self setLastCommand:cmd];
 		args = [NSMutableArray arrayWithObjects: exe, cmd, nil];
 		if ([defaults boolForKey: FinkAlwaysChooseDefaults]){
@@ -1535,23 +1586,24 @@ enum {
      	Checking exit status is not sufficient for some fink commands, so check
 		approximately last two lines for "failed." */
     [tableView setDisplayedPackages:[packages array]];
-    if (status == 0 && ! [last2lines containsCI: @"failed"]){
+    if (status == 0 && ! [last2lines containsCI:@"failed"]){
 		if (CMD_REQUIRES_UPDATE(lastCommand) && ! commandTerminated){
-			[self updateTable: nil];   // resetInterface will be called by notification
+			[self updateTable:nil];   // resetInterface will be called by notification
 		}else{
-			[self resetInterface: nil];
+			[self resetInterface:nil];
 		}
     }else{
-		if (! commandTerminated){
+		NSLog(@"Exit status of process = %d", status);
+		if (! commandTerminated && ! 15 == status){
 			[splitView expandOutputToMinimumRatio:0.0];
 			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,
 					 window, self, NULL, NULL, nil,
 					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", @"Alert sheet message"),
 					 nil);
 		}
-		[self updateTable: nil];
-    }
-
+		[self resetInterface:nil];
+	}
+	
     commandTerminated = NO;
 
     [[NSNotificationCenter defaultCenter]
