@@ -91,24 +91,24 @@ int NAMESTART = 12;
 	NSPipe *pipeIn  = [NSPipe pipe];
 	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
 	NSString *output;
-	NSArray *args = [NSArray arrayWithObjects: @"pkgnames", nil];
-	NSArray *lines;
 	NSEnumerator *e;
 	NSString *line;
-	NSMutableArray *pkgLines = [NSMutableArray arrayWithCapacity: 600];
+	NSMutableArray *pkgLines = [NSMutableArray array];
 
 	[listCmd setLaunchPath: [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 		stringByAppendingPathComponent: @"/bin/apt-cache"]];
-	[listCmd setArguments: args];
+	[listCmd setArguments: [NSArray arrayWithObjects: @"dumpavail", nil]];
 	[listCmd setStandardOutput: pipeIn];
 	
 	[listCmd launch];
 	output = [NSString stringWithCString: [[cmdStdout readDataToEndOfFile] bytes]];
-	lines = [output componentsSeparatedByString: @"\n"];
-	e = [lines reverseObjectEnumerator];
+	e = [[output componentsSeparatedByString: @"\n"] reverseObjectEnumerator];
 	
 	while (line = [e nextObject]){
-		[pkgLines addObject: [NSString stringWithFormat: @" %@#", line]];
+		if ([line contains:@"Package:"]){
+			line = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
+			[pkgLines addObject: [NSString stringWithFormat: @" %@#", line]];
+		}
 	}
  	
  	[listCmd release];
@@ -134,7 +134,9 @@ int NAMESTART = 12;
 	//run task asynchronously; notification will trigger completeUpdate: method
 	[cmdStdout readToEndOfFileInBackgroundAndNotify];
 	
-	[self setBinaryPackages: [self getBinaryList]]; 
+	[self setBinaryPackages: [self getBinaryList]];
+	
+	 NSLog(@"Binary list:\n%@", binaryPackages); 
 	
 #ifdef DEBUG
 	NSLog(@"Completed binary list after %f seconds",
