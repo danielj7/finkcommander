@@ -5,6 +5,10 @@ See the header file, FinkController.h, for interface and license information.
 
 */
 
+//Code that should be moved to separate process control class or deleted
+//to complete the design changes described in "DESIGN.txt" is marked
+//MOVE/ENDMOVE
+
 #import "FinkController.h"
 
 @implementation FinkController
@@ -21,16 +25,20 @@ See the header file, FinkController.h, for interface and license information.
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
 	
-		//initialize miscellaneous instance variables
-		packages = [[FinkDataController alloc] init];
+		packages = [[FinkDataController alloc] init];		// table data source
+
+//MOVE		
 		binPath =  [[NSString alloc] initWithString:
 			[[packages basePath] stringByAppendingPathComponent: @"/bin"]];
 		[self setPassword: nil];
+//ENDMOVE
 
-		//variables that store info on last command chosen by user
-		[self setLastCommand: @""];
+		[self setLastCommand: @""];      					// used to update package data
+		
+//MOVE
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
+//ENDMOVE
 
 		//variables used to display table
 		[self setLastIdentifier: @"name"];  // TBD: retrieve from user defaults
@@ -38,6 +46,7 @@ See the header file, FinkController.h, for interface and license information.
 			[[NSBundle mainBundle] pathForResource: @"reverse" ofType: @"tiff"]];
 		normalSortImage = [[NSImage alloc] initWithContentsOfFile:
 			[[NSBundle mainBundle] pathForResource: @"normal" ofType: @"tiff"]];
+			
 		//stores whether table columns are sorted in normal or reverse order to enable
 		//proper sorting behavior; uses definitions from FinkPackages to set attributes
 		columnState = [[NSMutableDictionary alloc] init];
@@ -46,8 +55,7 @@ See the header file, FinkController.h, for interface and license information.
 			[columnState setObject: @"normal" forKey: attribute];
 		}
 
-		//environment needs to be set in NSTask instance
-		//to run apt-get commands for binary packages
+//MOVE
 		environment = [[NSDictionary alloc] initWithObjectsAndKeys:
 			[NSString stringWithFormat: 
 			  @"/%@:/%@/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:",
@@ -60,6 +68,7 @@ See the header file, FinkController.h, for interface and license information.
 					selector: @selector(runCommandWithPassword:)
 					name: @"passwordWasEntered"
 					object: nil];
+//ENDMOVE
 	}
 	return self;
 }
@@ -112,7 +121,24 @@ See the header file, FinkController.h, for interface and license information.
 
 -(NSString *)binPath {return binPath;}
 
+-(NSString *)lastCommand {return lastCommand;}
+-(void)setLastCommand:(NSString *)s
+{
+	[s retain];
+	[lastCommand release];
+	lastCommand = s;	
+}
 
+-(NSString *)lastIdentifier {return lastIdentifier;}
+-(void)setLastIdentifier:(NSString *)s
+{
+	[s retain];
+	[lastIdentifier release];
+	lastIdentifier = s;
+}
+
+
+//MOVE
 -(NSString *)password {return password;}
 -(void)setPassword:(NSString *)s
 {
@@ -121,13 +147,6 @@ See the header file, FinkController.h, for interface and license information.
 	password = s;
 }
 
--(NSString *)lastCommand {return lastCommand;}
--(void)setLastCommand:(NSString *)s
-{
-	[s retain];
-	[lastCommand release];
-	lastCommand = s;	
-}
 
 -(NSMutableArray *)lastParams {return lastParams;}
 -(void)setLastParams:(NSArray *)a
@@ -142,13 +161,6 @@ See the header file, FinkController.h, for interface and license information.
 	pendingCommand = b;
 }
 
--(NSString *)lastIdentifier {return lastIdentifier;}
--(void)setLastIdentifier:(NSString *)s
-{
-	[s retain];
-	[lastIdentifier release];
-	lastIdentifier = s;
-}
 
 //----------------------------------------------->Sheet Methods
 
@@ -178,9 +190,9 @@ See the header file, FinkController.h, for interface and license information.
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"passwordWasEntered"
 		object: nil];
 }
+//ENDMOVE
 
-
-//----------------------------------------------->Action Methods
+//----------------------------------------------->Action Methods and Helpers
 
 //helper:  display running command above table
 -(void)displayCommand:(NSArray *)params
@@ -239,6 +251,30 @@ See the header file, FinkController.h, for interface and license information.
 	
 	[self runCommandWithParams: args];
 	[args release];
+}
+
+
+-(void)runCommandWithParams:(NSArray *)params
+{
+	NSMutableArray *fullParams = [NSMutableArray arrayWithObjects:
+		@"/usr/bin/sudo", @"-S", nil];
+
+	[fullParams addObjectsFromArray: params];
+
+	if ([[self password] length] < 1){
+		[self raisePwdWindow: self];
+		[self setLastParams: params];
+		[self setPendingCommand: YES];
+		[self displayNumberOfPackages];
+		return;
+	}
+	[self setPendingCommand: NO];
+
+	finkTask = [[IOTaskWrapper alloc] initWithController: self arguments: fullParams
+												environment: environment];
+	// start the process asynchronously
+	[finkTask startProcessWithPassword: [NSData dataWithData:
+		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
 }
 
 //if last command was not completed because no valid password was entered,
@@ -349,32 +385,6 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
-//----------------------------------------------->Process Control
-
--(void)runCommandWithParams:(NSArray *)params
-{
-	NSMutableArray *fullParams = [NSMutableArray arrayWithObjects:
-		@"/usr/bin/sudo", @"-S", nil];
-	
-	[fullParams addObjectsFromArray: params];
-	
-	if ([[self password] length] < 1){
-		[self raisePwdWindow: self];
-		[self setLastParams: params];
-		[self setPendingCommand: YES];
-		[self displayNumberOfPackages];
-		return;
-	}
-	[self setPendingCommand: NO];
-
-	finkTask = [[IOTaskWrapper alloc] initWithController: self arguments: fullParams
-		environment: environment];
-	// start the process asynchronously
-	[finkTask startProcessWithPassword: [NSData dataWithData:
-		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
-}
-
-
 //----------------------------------------------->IOTaskWrapper Protocol Helpers
 
 //somewhat problematic because, e.g., installing one package may result in removal of
@@ -427,8 +437,8 @@ See the header file, FinkController.h, for interface and license information.
 		
 		lastOutput = [[[NSAttributedString alloc] initWithString:
 			output] autorelease];
-		
-		//ADDED: interaction with stdin
+
+//MOVE		
 		//TBD:  respond as specified by user; right now this just enters a return
 		//[i.e. the default] any time Fink asks for a response 
 		if ([[lastOutput string] rangeOfString: @"]"].length > 0){
@@ -457,6 +467,7 @@ See the header file, FinkController.h, for interface and license information.
 				[self raisePwdWindow: self];
 			}
 		}
+//ENDMOVE
 
 		[[textView textStorage] appendAttributedString: lastOutput];
 		
