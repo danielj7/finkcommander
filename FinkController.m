@@ -1,7 +1,7 @@
 /* 
  File: FinkController.m
 
-See the header file, FinkController.h, for interface and license information.
+ See the header file, FinkController.h, for interface and license information.
  
 */
 
@@ -503,6 +503,28 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self runCommandWithParameters: args];
 }
 
+-(IBAction)listContents:(id)sender
+{
+	NSString *dpkg = [NSString stringWithFormat:@"%@/bin/%@", 
+						[defaults objectForKey:FinkBasePath], @"dpkg"];
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:
+		dpkg, @"-L",  nil];
+	NSMutableArray *pkgNames = [NSMutableArray array];
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+	FinkPackage *pkg;
+
+	while (pkg = [e nextObject]){
+		[pkgNames addObject: [pkg name]];
+	}
+	commandIsRunning = YES;
+	[self setLastCommand: @"pkgContents"]; /* if its "dpkg" that makes the table redraw */
+	[self setSelectedPackages:pkgNames];
+	[args addObjectsFromArray:pkgNames];
+	[self displayCommand:args];
+	[self runCommandWithParameters: args];
+}
+
+
 //faster substitute for fink describe command; preserves original
 //formatting, unlike package inspector
 -(IBAction)showDescription:(id)sender
@@ -709,6 +731,14 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[sender setState:newState];
 }
 
+// hide shlibs and dev packages (not useful to most users)
+-(IBAction)hideShlibs:(id)sender
+{
+	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
+	[sender setState:newState];
+ //       hideShlibs = newState;
+        [self updateTable: nil];  
+}
 //----------------------------------------------->Menu Item Delegate
 //helper for menu item and toolbar item validators
 
@@ -718,6 +748,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([tableView selectedRow] == -1 						&&
 	    ([theItem action] == @selector(runCommand:)  		||
 		 [theItem action] == @selector(forceRemove:)		||
+		 [theItem action] == @selector(listContents:)		||
 		 [theItem action] == @selector(showDescription:)	||
 		 [theItem action] == @selector(emailMaintainer:))){
 		return NO;
@@ -727,6 +758,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		([theItem action] == @selector(runCommand:) 		||
 		 [theItem action] == @selector(runUpdater:) 		||
 		 [theItem action] == @selector(forceRemove:)		||
+		 [theItem action] == @selector(listContents:)		||
 		 [theItem action] == @selector(showDescription:)	||
 		 [theItem action] == @selector(saveOutput:)			||
 		 [theItem action] == @selector(updateTable:))){
