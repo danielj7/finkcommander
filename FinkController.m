@@ -35,17 +35,22 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
+	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
+	
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
+	
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
-	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysScrollToBottom];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkWarnBeforeRunning];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAutoExpandOutput];
+
+	[defaultValues setObject: [NSNumber numberWithFloat: 0.50] forKey: FinkOutputViewRatio];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -96,6 +101,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
 		
+		//Used to avoid duplicate warnings when user terminates in middle of command
 		userChoseToTerminate = NO;
 		
 		//Register for notifications that run commands
@@ -152,6 +158,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	//save table column state between runs
 	[tableView setAutosaveName: @"FinkTable"];
 	[tableView setAutosaveTableColumns: YES];
+
+	if ([defaults boolForKey: FinkAutoExpandOutput]){
+		[self collapseOutput: nil];
+	}else{
+		[self expandOutput: nil];
+	}
 	
 	[msgText setStringValue:
 		@"Updating table dataÉ"];
@@ -167,6 +179,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
+	
 	[self updateTable: nil];
 	[tableView setHighlightedTableColumn: lastColumn];
 	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
@@ -182,7 +195,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		if ([defaults boolForKey: FinkPackagesInTitleBar]){
 			[msgText setStringValue: @"Done"];		
 			[[self window] setTitle: [NSString stringWithFormat: 
-				@"Packages: %d Available, %d Installed",
+				@"Packages: %d Displayed, %d Installed",
 				[[self displayedPackages] count], [packages installedPackagesCount]]];
 		}else{
 			[[self window] setTitle: @"FinkCommander"];
@@ -352,6 +365,44 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 }
 
 //----------------------------------------------->Menu Actions
+
+-(IBAction)collapseOutput:(id)sender
+{
+	if (! [splitView isSubviewCollapsed: outputScrollView]){
+		NSRect oFrame = [outputScrollView frame];
+		NSRect tFrame = [tableScrollView frame];
+		NSRect sFrame = [splitView frame];
+		float divwidth = [splitView dividerThickness];
+
+		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
+			forKey: FinkOutputViewRatio];
+		tFrame.size.height = sFrame.size.height - divwidth;
+		oFrame.size.height = 0.0;
+		oFrame.origin.y = sFrame.size.height;
+
+		[outputScrollView setFrame: oFrame];
+		[tableScrollView setFrame: tFrame];
+		
+		[splitView setNeedsDisplay: YES];
+	}
+}
+
+-(IBAction)expandOutput:(id)sender
+{
+	NSRect oFrame = [outputScrollView frame];
+	NSRect tFrame = [tableScrollView frame];
+	NSRect sFrame = [splitView frame];
+	float divwidth = [splitView dividerThickness];
+	
+	oFrame.size.height = ceil(sFrame.size.height * [defaults floatForKey: FinkOutputViewRatio]);
+	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
+	oFrame.origin.y = tFrame.size.height + divwidth;
+	
+	[outputScrollView setFrame: oFrame];
+	[tableScrollView setFrame: tFrame];
+
+	[splitView setNeedsDisplay: YES];
+}
 
 //run package-specific command with arguments derived from table selection
 -(IBAction)runCommand:(id)sender
@@ -714,6 +765,19 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}	
 }
 
+//--------------------------------------------------------------------------------
+//		SPLITVIEW DELEGATE METHOD(S)
+//--------------------------------------------------------------------------------
+
+//records ratio of textview/splitview so that splitview can be reset on startup
+-(void)splitViewDidResizeSubviews:(NSNotification *)aNotification
+{
+	NSRect oFrame = [outputScrollView frame];
+	NSRect sFrame = [splitView frame];
+
+	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
+					  forKey: FinkOutputViewRatio];
+}
 
 //--------------------------------------------------------------------------------
 //		TABLE METHODS
@@ -761,7 +825,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
-	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data	
+	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
 	[self controlTextDidChange: nil]; //reapplies filter	
 }
 
@@ -885,6 +949,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(IBAction)raiseInteractionWindow:(id)sender
 {
+	if ([defaults boolForKey: FinkAutoExpandOutput]){
+		[self expandOutput: nil];
+	}
 	[NSApp beginSheet: interactionWindow
 	   modalForWindow: [self window]
 		modalDelegate: self
@@ -914,6 +981,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 				[interactionField stringValue]]];
 		}
 		[[textView textStorage] appendAttributedString: areturn];
+		if ([defaults boolForKey: FinkAutoExpandOutput]){
+			[self collapseOutput: nil];
+		}
 	}
 }
 
@@ -1093,6 +1163,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 			[self refreshTable: nil];
 		}
 	}else{
+		if ([defaults boolForKey: FinkAutoExpandOutput]){
+			[self expandOutput: nil];
+		}
 		NSBeginAlertSheet(@"Error",	@"OK", nil,	nil, //title, buttons
 		[self window], self, NULL,	NULL, nil,	 	 //window, delegate, selectors, context info
 		@"FinkCommander detected a possible failure message.\nCheck the output window for problems.",

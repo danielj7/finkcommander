@@ -39,21 +39,25 @@ File: FinkConf.h
 //#define DEBUG
 
 //User Default Items
+//  Set by user
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
 extern NSString *FinkAlwaysChooseDefaults;
 extern NSString *FinkScrollToSelection;
-extern NSString *FinkSelectedColumnIdentifier;
-extern NSString *FinkSelectedPopupMenuTitle;
 extern NSString *FinkHTTPProxyVariable;
 extern NSString *FinkFTPProxyVariable;
-extern NSString *FinkLookedForProxy;
 extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
 extern NSString *FinkAlwaysScrollToBottom;
 extern NSString *FinkWarnBeforeRunning;
 extern NSString *FinkPackagesInTitleBar;
+extern NSString *FinkAutoExpandOutput;
+//  Set programmatically
+extern NSString *FinkSelectedColumnIdentifier;
+extern NSString *FinkSelectedPopupMenuTitle;
+extern NSString *FinkOutputViewRatio;
+extern NSString *FinkLookedForProxy;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

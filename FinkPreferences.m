@@ -54,6 +54,7 @@ File: FinkPreferences.m
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
 	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
+	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
 		
 	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
@@ -144,14 +145,15 @@ File: FinkPreferences.m
 {
 	[self setBasePath];
 	
-	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
-	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
-	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelection];
-	[defaults setBool: [askOnStartupButton state] forKey: FinkAskForPasswordOnStartup];
-	[defaults setBool: [neverAskButton state] forKey: FinkNeverAskForPassword];
-	[defaults setBool: [scrollToBottomButton state] forKey: FinkAlwaysScrollToBottom];
-	[defaults setBool: [warnBeforeRunningButton state] forKey: FinkWarnBeforeRunning];
-	[defaults setBool: [showPackagesInTitleButton state] forKey: FinkPackagesInTitleBar];
+	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];
+	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
+	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
+	[defaults setBool: [askOnStartupButton state] 			forKey: FinkAskForPasswordOnStartup];
+	[defaults setBool: [neverAskButton state] 				forKey: FinkNeverAskForPassword];
+	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
+	[defaults setBool: [warnBeforeRunningButton state]	 	forKey: FinkWarnBeforeRunning];
+	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
+	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];

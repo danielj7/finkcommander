@@ -17,6 +17,7 @@
             OUTLETS = {
                 alwaysChooseDefaultsButton = NSButton; 
                 askOnStartupButton = NSButton; 
+                autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
                 downloadMethodMatrix = NSMatrix; 
                 fetchAltDirButton = NSButton; 

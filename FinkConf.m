@@ -24,6 +24,8 @@ NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
 NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
+NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
+NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
 
 //Global variables identifying inter-object notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
@@ -332,7 +334,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 //completes process of writing changes to fink.conf file;
 //performed twice after receiving notifications that previous commands were completed;
-//this implementation is necessary to prevent method calls from overlapping commands
+//this implementation is necessary to prevent method calls from overlapping NSTask
 -(void)completeFinkConfUpdate:(NSNotification *)n
 {
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];

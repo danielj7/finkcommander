@@ -41,6 +41,8 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "IOTaskWrapper.h"
 #import "FinkProcessKiller.h"
 
+#include <math.h>
+
 enum {
 	SOURCE_COMMAND,
 	BINARY_COMMAND
@@ -49,9 +51,11 @@ enum {
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
 	//main window outlets
-	IBOutlet id tableView;
-	IBOutlet NSScrollView *scrollView;
-	IBOutlet id textView;
+	IBOutlet NSTableView *tableView;
+	IBOutlet NSScrollView *tableScrollView;
+	IBOutlet NSScrollView *outputScrollView;
+	IBOutlet NSSplitView *splitView;
+	IBOutlet NSTextView *textView;
 	IBOutlet id msgText;
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
@@ -116,6 +120,9 @@ enum {
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
 
+//Experimental Action Methods
+-(IBAction)collapseOutput:(id)sender;
+-(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
 -(IBAction)runCommand:(id)sender;

@@ -53,30 +53,11 @@ remove it and then reinstall it before a newer version becomes
 available, fink will use the dpkg command to reinstall a compressed
 binary package that it has installed on your system.</p>
 
-<h3>Finding Packages</h3>
-
-<p>FinkCommander provides two handy tools for finding the packages you
-might be interested in installing or removing:</p>
-
-<ol>
-<li><p>You can sort the table by clicking on the column headers,
-just as you can in Mail and other applications.  Click a header twice
-in a row to reverse the sort order.</p></li>
-
-<li><p>The toolbar in its default configuration includes a filter
-that can be applied to most of the fields in the table.  (I didn't
-think anyone would want to filter by version number.)  The filter
-works incrementally, so that as you type or delete characters, the
-contents of the table change to include only those packages that
-satisfy your search criteria.  The package count at the bottom of the
-window also changes to reflect the table contents.</p></li>
-</ol>
-
-<p>By combining the use of sorting and filtering, you can effectively
-search the table with two criteria.</p>
-
-<p>The table colums, by the way, can be resized and moved, and any
-such changes you make will be saved between runtimes.</p>
+<p>Note that some packages that are identified in the table as
+binary cannot be installed by apt-get.  
+<a href="details/fc_binarypkgs.html">More detail</a>.  If
+running <kbd>Binary:Install</kbd> produces an
+error, try <kbd>Source:Install</kbd>.</p>
 
 </body>
 </html>

@@ -2,8 +2,10 @@
     IBClasses = (
         {
             ACTIONS = {
+                collapseOutput = id; 
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
+                expandOutput = id; 
                 goToBugReportPage = id; 
                 goToFinkCommanderWebSite = id; 
                 goToFinkWebSite = id; 
@@ -26,17 +28,19 @@
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 
                 msgText = id; 
+                outputScrollView = NSScrollView; 
                 progressIndicator = NSProgressIndicator; 
                 progressView = NSView; 
                 progressViewHolder = NSView; 
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 
-                scrollView = NSScrollView; 
                 searchPopUpButton = NSPopUpButton; 
                 searchTextField = NSTextField; 
                 searchView = id; 
-                tableView = id; 
-                textView = id; 
+                splitView = NSSplitView; 
+                tableScrollView = NSScrollView; 
+                tableView = NSTableView; 
+                textView = NSTextView; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 

@@ -13,13 +13,11 @@ See the header file, FinkDataController.h, for interface and license information
 
 -(id)init
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (self = [super init])
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
 		finkArray = [[NSMutableArray alloc] initWithCapacity: 1300];
-		basePath = [[defaults objectForKey: FinkBasePath] retain];
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver: self
@@ -31,7 +29,6 @@ See the header file, FinkDataController.h, for interface and license information
 
 -(void)dealloc
 {
-	[basePath release];
 	[finkArray release];
 	[start release];
 	[super dealloc];
@@ -42,12 +39,6 @@ See the header file, FinkDataController.h, for interface and license information
 {
 	return finkArray;
 }
-
--(NSString *)basePath
-{
-	return basePath;
-}
-
 
 //---------------------------------------------------------->Fink Tools
 //
@@ -75,7 +66,8 @@ See the header file, FinkDataController.h, for interface and license information
 	NSString *line;
 	NSMutableArray *pkgLines = [NSMutableArray arrayWithCapacity: 400];
 
-	[listCmd setLaunchPath: [basePath stringByAppendingPathComponent: @"/bin/apt-cache"]];
+	[listCmd setLaunchPath: [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
+		stringByAppendingPathComponent: @"/bin/apt-cache"]];
 	[listCmd setArguments: args];
 	[listCmd setStandardOutput: pipeIn];
 	

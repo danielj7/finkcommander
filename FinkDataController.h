@@ -37,14 +37,12 @@ Contact the author at sburrious@users.sourceforge.net.
 @interface FinkDataController : NSObject
 {
 	NSMutableArray *finkArray;
-	NSString *basePath;
 	NSString *binaryPackages;
 	NSDate *start;
 }
 
 //Accessors
 -(NSMutableArray *)array;
--(NSString *)basePath;
 
 //Update finkArray to reflect latest package information.
 -(void)update;

@@ -9,11 +9,12 @@
 <h2>Known Bugs and Limitations</h2>
 
 <dl>
-    <dt>Terminating commands</dt>
-    <dd><p>There is currently no way to terminate a command other than
-        to quit FinkCommander.  In my experience, Fink has done an excellent 
-		job of recovering from aborted commands.
-        YMMV, of course.</p></dd>
+
+    <dt>Running FinkCommander from Accounts Without Administrative Privileges</dt>
+    <dd><p>Unfortunately, you can't do this at present.  FinkCommander uses
+        sudo to run commands with root privileges, and I haven't found a way
+        to pass an administrator's user name along with the password to sudo.
+        (And no, sudo -u <username> doesn't work.)<p></dd>
 	
     <dt>Automatic response to prompt failures</dt>
     <dd><p>In some instances, Fink will not automatically respond to a prompt
