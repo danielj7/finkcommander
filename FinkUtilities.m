@@ -144,10 +144,9 @@ NSString *ps(void)
 	[ps setArguments: [NSArray arrayWithObjects: @"-acjx", nil]];
 	[ps setStandardOutput: pipeIn];
 	[ps launch];
-	psOutput = [[[NSString alloc] initWithData: 
-									[cmdStdout readDataToEndOfFile] 
-												encoding:NSMacOSRomanStringEncoding] autorelease];
-	Dprintf(@"ps command output:\n%@", psOutput);
+	psOutput = [[[NSString alloc] initWithData:[cmdStdout readDataToEndOfFile] 
+								  encoding:NSMacOSRomanStringEncoding] 
+				 autorelease];
 	return psOutput;
 }
 
@@ -169,7 +168,7 @@ NSString *childOfProcess(NSString *ppid)
 			[pidScanner scanCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
 											   intoString:&cpid];
 			if ([cpid isEqualToString:ppid]){ 
-				Dprintf(@"It's the parent; ignoring");
+				Dprintf(@"It's the line for the parent; ignoring");
 				cpid = nil;
 				continue;
 			}
@@ -179,13 +178,36 @@ NSString *childOfProcess(NSString *ppid)
 	return cpid;
 }
 
-void terminateProcessWithPID(NSString *pid)
+void terminateProcessWithPID(NSString *pid, NSString *password)
 {
-	[NSTask launchedTaskWithLaunchPath: @"/usr/bin/sudo"
-			arguments: [NSArray arrayWithObjects: @"-S", @"kill", @"-KILL", pid, nil]];
+	NSTask *term = [[[NSTask alloc] init] autorelease];
+	NSPipe *pipeIn = [NSPipe pipe];
+	NSPipe *pipeOut = [NSPipe pipe];
+	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
+	NSFileHandle *cmdStdin = [pipeOut fileHandleForWriting];
+	NSData *termData;
+	NSString *termOutput;
+
+	[term setLaunchPath: @"/usr/bin/sudo"];
+ 	[term setArguments: [NSArray arrayWithObjects: @"-S", @"kill", @"-KILL", pid, nil]];
+	[term setStandardOutput: pipeIn];
+	[term setStandardError: [term standardOutput]];
+	[term setStandardInput: pipeOut];
+	[term launch];
+	
+	termData = [cmdStdout availableData];
+	while ([termData length] > 0 ){
+		termOutput = [[[NSString alloc] initWithData:termData
+										encoding:NSMacOSRomanStringEncoding] autorelease];
+		if ([termOutput contains:@"Password"]){
+			[cmdStdin writeData:[password dataUsingEncoding:NSMacOSRomanStringEncoding]];
+			break;
+		}
+		termData = [cmdStdout availableData];
+	}
 }
 
-void terminateChildProcesses()
+void terminateChildProcesses(NSString *password)
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
 	NSString *cpid = childOfProcess(ppid);
@@ -195,7 +217,7 @@ void terminateChildProcesses()
 	
 		Dprintf(@"Calling terminateProcessWithPID: %@", cpid);
 
-		terminateProcessWithPID(cpid);
+		terminateProcessWithPID(cpid, password);
 		ppid = cpid;
 		cpid = childOfProcess(ppid);
 	}

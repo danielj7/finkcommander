@@ -7,10 +7,12 @@ File: FinkInstallationInfo.m
 
 #import "FinkInstallationInfo.h"
 
-#define APRIL_TOOLS_VERSION @"2.2.1"
 #define MAY_TOOLS_VERSION 	@"2.0.1"
 
-NSString *DEVTOOLS_TEST_PATH = 
+NSString *DEVTOOLS_TEST_PATH1 = 
+	@"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist";
+
+NSString *DEVTOOLS_TEST_PATH2 = 
 		@"/Developer/Applications/Interface Builder.app/Contents/version.plist";
 
 @implementation FinkInstallationInfo
@@ -113,24 +115,24 @@ NSString *DEVTOOLS_TEST_PATH =
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *error = @"Unable to determine Developer Tools version";
-	NSString *develFormat = @"Developer Tools: %@";
 	NSString *version;
-	NSComparisonResult comp;
 	
-	if (! [manager fileExistsAtPath: DEVTOOLS_TEST_PATH]) return error;
-	
-	version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH]
+	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
+		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2]
+							objectForKey:@"DevCDVersion"];
+		if (! version  || [version length] < 3) return error;
+		return version;
+	}
+	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
+		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2]
 							objectForKey:@"CFBundleShortVersionString"];
-	if (! version  || [version length] < 3) return error;  //should at least be x.x
-	
-	comp = [version compare:APRIL_TOOLS_VERSION];
-	if (comp == NSOrderedDescending || comp == NSOrderedSame){ 				// >= April 2002
-		return [NSString stringWithFormat: develFormat, @"April 2002 or later"];
+		if (! version  || [version length] < 3) return error;  //should at least be x.x
+		if ([version compare:MAY_TOOLS_VERSION] == NSOrderedDescending){  // > May 2001
+			return @"December 2001 Developer Tools";
+		}
+		return @"Pre-December 2001 Developer Tools";
 	}
-	if ([version compare:MAY_TOOLS_VERSION] == NSOrderedDescending){  		// > May 2001
-		return [NSString stringWithFormat: develFormat, @"December 2001"];
-	}
-	return [NSString stringWithFormat: develFormat, @"Pre-December 2001"];
+	return error;
 }
 
 -(NSString *)makeVersion

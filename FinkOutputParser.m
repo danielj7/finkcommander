@@ -123,10 +123,7 @@ File: FinkOutputParser.m
 		pkgTotal = [[ptracker objectForKey:currentPackage] floatValue];
 	}
 	increment = phaseTotal - pkgTotal;
-	Dprintf(@"Current phase = %d", currentPhase);
-	Dprintf(@"Current package = %@", currentPackage);
-	Dprintf(@"Total increment for current phase: %f", phaseTotal);
-	Dprintf(@"Total increment for package so far: %f", pkgTotal);
+	Dprintf(@"Incrementing for phase = %d, package = %@", currentPhase, currentPackage);
 	Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
 	[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
 }
@@ -143,10 +140,8 @@ File: FinkOutputParser.m
 	//if so, return the longest name that matches 
     while (candidate = [e nextObject]){
 		if ([line containsCI:candidate]){
-			Dprintf(@"Found %@ in line", candidate);
  			if ([candidate length] > [best length]){
 				best = candidate;
-				Dprintf(@"Longest match so far: %@", best);
 			}
 		}
     }
@@ -160,7 +155,6 @@ File: FinkOutputParser.m
 		NSScanner *lineScanner;
 		NSCharacterSet *nums = [NSCharacterSet decimalDigitCharacterSet];
 			
-		Dprintf(@"path: %@", path);
 		lineScanner = [NSScanner scannerWithString:path];
 		while (! [lineScanner isAtEnd]){
 			BOOL foundDash = [lineScanner scanUpToString:@"-" intoString:&chars];
@@ -175,9 +169,8 @@ File: FinkOutputParser.m
 				break;
 			}
 			[fname appendString:chars];
-			Dprintf(@"fname so far: %@", fname);
 		}
-		Dprintf(@"fname to compare to pkg names: %@", fname);
+		Dprintf(@"file name to compare to pkg names: %@", fname);
 		if ([fname length] > 0){
 			NSEnumerator *e = [packageList objectEnumerator];
 			while (candidate = [e nextObject]){
@@ -190,12 +183,10 @@ File: FinkOutputParser.m
 				}
 			}
 		}
-	Dprintf(@"Found pkg name by parsing line: %@", best);
 	}
 	if ([best length] < 1){
 		best = @"package";
 	}
-	Dprintf(@"Returning package %@", best);
     return best;
 }
 
@@ -206,10 +197,8 @@ File: FinkOutputParser.m
 {
 	//Look for package lists
 	if (determinate && readingPackageList){
-		Dprintf(@"Looking for packages in %@", line);
 		//lines listing pkgs to be installed start with a space
 		if ([line hasPrefix:@" "]){
-			Dprintf(@"Parsing line for package names:\n%@", line);
 			[self addPackagesFromLine:line];
 			return NONE;
 		}
@@ -251,9 +240,8 @@ File: FinkOutputParser.m
 		return START_INSTALL;
     }
 	//Look for introduction to package lists
-    if (determinate 							&& 
-		([line contains:@"will be installed"]	||
-		 [line contains:@"will be rebuilt"])){
+    if (determinate && INSTALLTRIGGER(line)){
+		Dprintf(@"Package scan triggered by:\n%@", line);
 		readingPackageList = YES;
 		return NONE;
     }
@@ -316,11 +304,11 @@ File: FinkOutputParser.m
     }
 	
 	//Look for prompts
-    if ((ISPROMPT(line)) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+    if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
 		Dprintf(@"Found prompt: %@", line);
 		return PROMPT;
     } 
-	if ((ISMANDATORY_PROMPT(line))){
+	if (ISMANDATORY_PROMPT(line)){
 		return PROMPT;
     } 
 	return NONE;

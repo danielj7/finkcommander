@@ -12,11 +12,13 @@ D Additional information for table:
 	Stable version
 	Unstable version
 	
+Fix preferences for first run of 0.4.0
+	
 D Same information in package inspector
 
 I Determinate progress bar and more detailed message text for fink command phases
 
-Fix terminate command
+D Fix terminate command
 
 Localizations:
  I	German

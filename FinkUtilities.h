@@ -46,7 +46,7 @@ void setInitialEnvironmentVariables(void);
 
 void fixPreferences(void);
 
-void terminateChildProcesses(void);
+void terminateChildProcesses(NSString *password);
 
 BOOL addEnvironmentVariable(NSString *key, NSString *value);
 NSDictionary *environmentSettingWithName(NSString *name);

@@ -7,8 +7,6 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
-#define BUFFERLEN 128
-
 //Globals: placed here to make it easier to change values if fink output changes
 NSString *WEBKEY = @"Web site:";
 NSString *MAINTAINERKEY = @"Maintainer:";
@@ -100,10 +98,6 @@ int NAMESTART = 12;
     NSEnumerator *e, *f;
     NSString *pkginfo, *line;
 	NSString *pname, *pversion;
-	
-#ifdef DEBUGGING
-	char buffer[BUFFERLEN];
-#endif
 
     [listCmd setLaunchPath: 
 		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
@@ -113,20 +107,7 @@ int NAMESTART = 12;
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
 	[listCmd release];
-
-#ifdef DEBUGGING
-	if (d) {
-		[d getBytes:buffer length:BUFFERLEN-1];
-		NSLog(@"Binary pkg data in buffer:\n%s", buffer);
-	}else{
-		NSLog(@"Data buffer was empty");
-	}
-#endif
-
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
-	
-	Dprintf(@"Output string from data:\n%@", [output substringWithRange: NSMakeRange(0, BUFFERLEN-1)]);
-
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
 	while (pkginfo = [e nextObject]){
 		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];

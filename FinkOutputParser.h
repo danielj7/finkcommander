@@ -48,6 +48,9 @@ File: FinkOutputParser.h
 
 //Line parsing macros
 
+#define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be installed*"] || \
+							 [(x) contains:@"will be rebuilt"])
+
 #define FETCHTRIGGER(x) 	([(x) hasPrefix: @"wget"]  						|| \
 							 [(x) hasPrefix: @"curl"]  						|| \
 							 [(x) hasPrefix: @"axel"])
@@ -56,11 +59,14 @@ File: FinkOutputParser.h
 							 ![(x) contains:@"root"])
 
 #define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 		|| \
+							 [[(x) strip] hasPrefix:@"checking"]			|| \
 							 [[(x) strip] hasPrefix:@"patch"])
 
-#define COMPILETRIGGER(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
+#define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]				&& \
+							  ![[(x) strip] contains:@"makefile"])			|| \
 							 [[(x) strip] containsPattern: @"gcc -[!E]?*"]	|| \
 							 [[(x) strip] hasPrefix: @"g77 -"]				|| \
+							 [[(x) strip] hasPrefix: @"cc -"]				|| \
 							 [[(x) strip] hasPrefix: @"building"])
 
 #define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]		|| \
@@ -70,7 +76,7 @@ File: FinkOutputParser.h
 							 [(x) contains: @"[anonymous]"] 				|| \
 							 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
-//fink's --yes option does not work for these prompts:
+	//fink's --yes option does not work for these prompts:
 #define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || 	\
 								 [(x) contains: @"return to continue"] 				||	\
 								 [(x) contains: @"CVS password:"])

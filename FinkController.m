@@ -46,11 +46,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		
 		defaults = [NSUserDefaults standardUserDefaults];
-		
-		Dprintf(@"Testing debug printf");
-		
 		[NSApp setDelegate: self];
-
+		
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
 		findFinkBasePath(); 
@@ -357,10 +354,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		MENU COMMANDS AND HELPERS
+//	 	HELPERS
 //--------------------------------------------------------------------------------
-
-//----------------------------------------------->Helpers Used In Various Methods
 
 //display running command below table
 -(void)displayCommand:(NSArray *)params
@@ -369,23 +364,22 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[params componentsJoinedByString: @" "]]];
 }
 
--(void)startProgressIndicatorAsIndeterminate:(BOOL)b
-{
-    [progressIndicator setIndeterminate:b];
-	[progressIndicator setDoubleValue:0.0];
-    if (! [progressView isDescendantOf: progressViewHolder]){
-		[progressViewHolder addSubview: progressView];
-		[progressIndicator setUsesThreadedAnimation: YES];
-		[progressIndicator startAnimation: nil];
-    }
-}
-
 -(void)stopProgressIndicator
 {
     if ([progressView isDescendantOf: progressViewHolder]){
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
 	}
+}
+
+-(void)startProgressIndicatorAsIndeterminate:(BOOL)b
+{
+	[self stopProgressIndicator];
+	[progressViewHolder addSubview: progressView];
+	[progressIndicator setIndeterminate:b];
+	[progressIndicator setDoubleValue:0.0];
+	[progressIndicator setUsesThreadedAnimation: YES];
+	[progressIndicator startAnimation: nil];
 }
 
 -(void)incrementPIBy:(float)inc
@@ -407,6 +401,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
 }
 
+
+//--------------------------------------------------------------------------------
+//		MENU COMMANDS
+//--------------------------------------------------------------------------------
 
 //----------------------------------------------->Running Commands
 
@@ -496,7 +494,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 							  NSLocalizedString(@"RunningForceRemove", nil),
 							  NSLocalizedString(@"Yes", nil),
 							  NSLocalizedString(@"No", nil), nil);
-
 	if (answer == NSAlertAlternateReturn){
 		return;
 	}
@@ -617,25 +614,32 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)terminateCommand:(id)sender
 {
+	int i;
 	int answer1 = NSRunAlertPanel(NSLocalizedString(@"Caution", nil),
 			NSLocalizedString(@"TheTerminateCommand", nil),
 			NSLocalizedString(@"Terminate", nil), 
 			NSLocalizedString(@"Continue", nil), nil);
 
-	if (answer1 == NSAlertDefaultReturn){
-		terminateChildProcesses();
+	if (answer1 == NSAlertAlternateReturn) return;
 
+	terminateChildProcesses(password);
+
+	for (i = 0; i < 5; i++){
 		sleep(1);
+		if (![finkTask isRunning]){
+			break;
+		}
+		Dprintf(@"Task still running after %d seconds", i);
+	}
 
-		if ([finkTask isRunning]){
-			int answer2 = NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
-					NSLocalizedString(@"TheCurrentProcess", nil),
-					NSLocalizedString(@"Quit", nil), 
-					NSLocalizedString(@"Continue", nil), nil);
-			if (answer2 == NSAlertDefaultReturn){
-				userChoseToTerminate = YES;
-				[NSApp terminate: self];
-			}
+	if ([finkTask isRunning]){
+		int answer2 = NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
+								NSLocalizedString(@"TheCurrentProcess", nil),
+								NSLocalizedString(@"Quit", nil),
+								NSLocalizedString(@"Continue", nil), nil);
+		if (answer2 == NSAlertDefaultReturn){
+			userChoseToTerminate = YES;
+			[NSApp terminate: self];
 		}
 	}
 }
@@ -870,9 +874,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 //----------------------------------------------->Text Field Delegate
 
-//filter data source each time the filter text field changes
+
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
+	//filter data source each time the filter text field changes
 	if ([[aNotification object] tag] == FILTER){
 		NSString *field = [self attributeNameFromTag:[[searchPopUpButton selectedItem] tag]];
 		NSString *filterText = [[searchTextField stringValue] lowercaseString];
@@ -905,6 +910,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[tableView scrollToSelectedObject];
 		}
 		[self displayNumberOfPackages];
+	//in interaction dialogue, automatically select the radio button appropriate
+	//for the state of the text entry field
 	}else if ([[aNotification object] tag] == INTERACTION){		
 		if ([[interactionField stringValue] length]){
 			[interactionMatrix selectCellWithTag: USER_CHOICE];
@@ -1057,8 +1064,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[self startProgressIndicatorAsIndeterminate:YES];
 	}
-
-
 	//set up launch path and arguments array
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
@@ -1129,7 +1134,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)startInstall
 {
-	[self stopProgressIndicator];
 	[self startProgressIndicatorAsIndeterminate:NO];
 	[self incrementPIBy:STARTING_INCREMENT];
 }

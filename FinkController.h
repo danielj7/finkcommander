@@ -20,8 +20,8 @@ communicates with:
 
 *	FinkOutputParser (M) -- parses the output from fink and apt-get commands and
 	returns signals indicating what type of action, if any, is appropriate for that output; 
-	will in a future release include signals that tell FinkCommander to send a follow-up
-	message for additional instructions;
+	some signals tell FinkCommander to send a follow-up message for additional 
+	information;
 
 *	FinkTableViewController (VC) and FinkTextViewController (VC) -- control
 	the primary user interface elements;
