@@ -607,7 +607,6 @@ File: FinkController.m
 			! [[pkg installed] isEqualToString:[pkg version]]	&&  //version = latest
 			! [[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
-			continue;
 		}
 		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
     }
@@ -624,7 +623,7 @@ File: FinkController.m
 		NSString *msg = [pkgNames count] > 1 ?
 		NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) :
 		NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
-		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
+		NSBeginAlertSheet(NSLocalizedString(@"Warning", nil),
 					NSLocalizedString(@"OK", nil), nil, nil,
 					window, self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
