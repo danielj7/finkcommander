@@ -156,15 +156,15 @@ int NAMESTART = 12;
     [self setBinaryPackages: [self getBinaryList]];
 
 #ifdef DEBUGGING
-		NSLog(@"User's shell: %s", getenv("SHELL"));
-		NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
-		if (binaryPackages){
-			int slen, rlen;
-			slen = [binaryPackages length];
-			rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
-			NSLog(@"Binary package string:\n%@", 
-				[binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
-		}
+	NSLog(@"User's shell: %s", getenv("SHELL"));
+	NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
+	if (binaryPackages){
+		int slen, rlen;
+		slen = [binaryPackages length];
+		rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
+		NSLog(@"Binary package string:\n%@",
+		[binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
+	}
 #endif //DEBUGGING
 }
 

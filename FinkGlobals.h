@@ -60,9 +60,9 @@ extern NSString *FinkCheckForNewVersion;
 extern NSString *FinkBufferLimit;
 extern NSString *FinkEnvironmentSettings;
 extern NSString *FinkInitialEnvironmentHasBeenSet;
-//  not yet implemented
 extern NSString *FinkLastCheckedForNewVersion;
 extern NSString *FinkCheckForNewVersionInterval;
+
 //  Set programmatically
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;

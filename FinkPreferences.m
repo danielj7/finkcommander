@@ -62,6 +62,7 @@ File: FinkPreferences.m
 	NSString *fetchAltDir;
 	NSString *downloadMethod;
 	int scrollBackLimit;
+	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
 	
 	/***  FinkCommander Preferences ***/
 
@@ -94,6 +95,11 @@ File: FinkPreferences.m
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
+	[checkForUpdateButton setState:  interval > 0];
+	if (interval){
+		[checkForUpdateIntervalTextField setIntValue:interval];
+	}
+	
 	
 	[self setTitleBarImage: nil];
 	
@@ -261,6 +267,11 @@ File: FinkPreferences.m
 	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
 	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
+	
+	if ([checkForUpdateButton state]){
+		[defaults setInteger:[checkForUpdateIntervalTextField intValue] 
+					forKey:FinkCheckForNewVersionInterval];
+	}
 
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){

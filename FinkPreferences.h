@@ -45,6 +45,7 @@ File: FinkPreferences.h
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSTextField *outputPathTextField;
 	IBOutlet NSTextField *scrollBackLimitTextField;
+	IBOutlet NSTextField *checkForUpdateIntervalTextField;
 	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
@@ -56,6 +57,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
+	IBOutlet NSButton *checkForUpdateButton;
 	
 	//widgets used for environment settings
 	IBOutlet NSTableView *environmentTableView;

@@ -18,6 +18,8 @@
 	<integer>10000</integer>
 	<key>FinkCheckForNewVersion</key>
 	<true/>
+	<key>FinkCheckForNewVersionInterval</key>
+	<integer>0</integer>
 	<key>FinkEnvironmentSettings</key>
 	<dict>
 		<key>CVS_RSH</key>
@@ -29,6 +31,8 @@
 	<string></string>
 	<key>FinkInitialEnvironmentHasBeenSet</key>
 	<false/>
+	<key>FinkLastCheckedForNewVersion</key>
+	<date>2002-08-01T03:07:31Z</date>
 	<key>FinkLookedForProxy</key>
 	<false/>
 	<key>FinkNeverAskForPassword</key>

@@ -172,6 +172,7 @@ enum {
 -(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
+-(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
 -(IBAction)checkForLatestVersionAction:(id)sender;
 -(IBAction)saveOutput:(id)sender;
 -(void)didEnd:(NSSavePanel *)sheet

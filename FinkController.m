@@ -170,6 +170,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[tableView lastIdentifier]];
 	NSString *basePath = [defaults objectForKey:FinkBasePath];
+	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
+	NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
 				
 	if ([basePath length] <= 0 ){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
@@ -183,6 +185,16 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	if ([defaults boolForKey:FinkAskForPasswordOnStartup]){
 		[self raisePwdWindow:self];
+	}
+	
+#ifdef DEBUGGING
+	NSLog(@"Interval for new version check: %d", interval);
+	NSLog(@"Last checked for new version: %@", lastCheckDate);
+#endif
+	
+	if (interval && -([lastCheckDate timeIntervalSinceNow] / (24 * 60 * 60)) >= interval){
+		NSLog(@"Checking for FinkCommander update");
+		[self checkForLatestVersion:NO]; //don't notify if current
 	}
 }
 
@@ -443,7 +455,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 //----------------------------------------------->Version Checker
 
-//helper
+//helper; separated from action method because also called on schedule
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
 	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
@@ -477,6 +489,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				  @"The latest version of FinkCommander is installed on your system.",
 				  @"OK", nil, nil);
 	}
+	[defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
 }
 
 -(IBAction)checkForLatestVersionAction:(id)sender

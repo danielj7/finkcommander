@@ -25,6 +25,8 @@
                 askOnStartupButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
+                checkForUpdateButton = NSButton; 
+                checkForUpdateIntervalTextField = NSTextField; 
                 deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 
                 environmentTableView = NSTableView; 
