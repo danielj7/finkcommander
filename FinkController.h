@@ -81,6 +81,12 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 
+#define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| \
+								 [(x) isEqualToString: @"remove"]	|| \
+								 [(x) isEqualToString: @"index"]	|| \
+								 [(x) contains: @"build"]			|| \
+								 [(x) contains: @"dpkg"]			|| \
+								 [(x) contains: @"update"])
 
 enum {
 	FCWEB = 1000,

@@ -37,7 +37,6 @@ int NAMESTART = 12;
 
 -(void)dealloc
 {
-	[finkListCommand release];
     [array release];
     [binaryPackages release];
 	[pathToDists release];
@@ -156,9 +155,7 @@ int NAMESTART = 12;
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
     NSArray *args;
-
-	[finkListCommand release];
-	finkListCommand = [[[NSTask alloc] init] autorelease];
+	NSTask *finkListCommand = [[[NSTask alloc] init] autorelease];
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
 			@"Library/Application Support/FinkCommander/FinkCommander.pl"], nil];

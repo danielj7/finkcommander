@@ -12,6 +12,7 @@ File: FinkOutputParser.m
 //------------------------------------------>Create and Destroy
 
 -(id)initForCommand:(NSString *)cmd
+		executable:(NSString *)exe;
 {
     if (self = [super init]){
 		defaults = [NSUserDefaults standardUserDefaults];
@@ -21,7 +22,7 @@ File: FinkOutputParser.m
 		increments = [[NSMutableArray alloc] init];
 		[self setCurrentPackage:@""];
 		passwordErrorHasOccurred = readingPackageList = installStarted = NO;		
-		determinate = [command contains:@"install"] || [command isEqualToString:@"rebuild"];
+		determinate = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
     }
     return self;
 }
@@ -138,6 +139,8 @@ File: FinkOutputParser.m
     NSString *candidate;
     NSString *best = @"";
 	
+	//first see if the line contains any of the names in the package list;
+	//if so, return the longest name that matches 
     while (candidate = [e nextObject]){
 		if ([line containsCI:candidate]){
 			Dprintf(@"Found %@ in line", candidate);
@@ -147,6 +150,48 @@ File: FinkOutputParser.m
 			}
 		}
     }
+	//sometimes the actual file name doesn't include the fink package name,
+	//e.g.  <pkg>-ssl is built from <pkg>-<version>.tgz;
+	//so parse the line for the file name and look for it in the package name
+	if ([best length] < 1){
+		NSString *path = [[[line componentsSeparatedByString:@" "] lastObject] lastPathComponent];
+		NSString *chars;
+		NSMutableString *fname = [NSMutableString stringWithString:@""];
+		NSScanner *lineScanner;
+		NSCharacterSet *nums = [NSCharacterSet decimalDigitCharacterSet];
+			
+		Dprintf(@"path: %@", path);
+		lineScanner = [NSScanner scannerWithString:path];
+		while (! [lineScanner isAtEnd]){
+			BOOL foundDash = [lineScanner scanUpToString:@"-" intoString:&chars];
+			if  (! foundDash){
+				break;
+			}
+			[fname appendString:chars];
+			[lineScanner scanString:@"-" intoString:&chars];
+			//for almost all packages, the version starts with a number;
+			//so break when we come to a dash followed by a number
+			if ([lineScanner scanCharactersFromSet:nums intoString:nil]){
+				break;
+			}
+			[fname appendString:chars];
+			Dprintf(@"fname so far: %@", fname);
+		}
+		Dprintf(@"fname to compare to pkg names: %@", fname);
+		if ([fname length] > 0){
+			NSEnumerator *e = [packageList objectEnumerator];
+			while (candidate = [e nextObject]){
+				if ([candidate contains:fname]){  //e.g. wget-ssl contains wget
+					if ([best length] < 1){
+						best = candidate;
+					}else if ([candidate length] < [best length]){
+						best = candidate;
+					}
+				}
+			}
+		}
+	Dprintf(@"Found pkg name by parsing line: %@", best);
+	}
 	if ([best length] < 1){
 		best = @"package";
 	}

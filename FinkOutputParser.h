@@ -37,18 +37,25 @@ File: FinkOutputParser.h
 #import "FinkGlobals.h"
 
 //Increment added to progress indicator at start
+
 #define STARTING_INCREMENT 5.0
+
+//Commands for which determinate PI is displayed
+
+#define IS_INSTALL_CMD(x) 	([(x) contains:@"install"]		|| \
+							 [(x) contains:@"build"]		|| \
+							 [(x) contains:@"selfupdate"])
 
 //Line parsing macros
 
-#define FETCHTRIGGER(x) ([(x) hasPrefix: @"wget"]  		|| \
-						 [(x) hasPrefix: @"curl"]  		|| \
-						 [(x) hasPrefix: @"axel"])
+#define FETCHTRIGGER(x) 	([(x) hasPrefix: @"wget"]  						|| \
+							 [(x) hasPrefix: @"curl"]  						|| \
+							 [(x) hasPrefix: @"axel"])
 
-#define UNPACKTRIGGER(x) ([(x) hasPrefix:@"mkdir -p"]    	&& \
-						  ![(x) contains:@"root"])
+#define UNPACKTRIGGER(x) 	([(x) hasPrefix:@"mkdir -p"]    				&& \
+							 ![(x) contains:@"root"])
 
-#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 	|| \
+#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 		|| \
 							 [[(x) strip] hasPrefix:@"patch"])
 
 #define COMPILETRIGGER(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
@@ -56,12 +63,12 @@ File: FinkOutputParser.h
 							 [[(x) strip] hasPrefix: @"g77 -"]				|| \
 							 [[(x) strip] hasPrefix: @"building"])
 
-#define ISPROMPT(x) ([(x) contains: @"you want to proceed?"]	|| \
-					 [(x) contains: @"Make your choice:"]		|| \
-					 [(x) contains: @"Pick one:"]				|| \
-					 [(x) containsCI: @"[y/n]"] 				|| \
-					 [(x) contains: @"[anonymous]"] 			|| \
-					 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
+#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]		|| \
+							 [(x) contains: @"Make your choice:"]			|| \
+							 [(x) contains: @"Pick one:"]					|| \
+							 [(x) containsCI: @"[y/n]"] 					|| \
+							 [(x) contains: @"[anonymous]"] 				|| \
+							 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 //fink's --yes option does not work for these prompts:
 #define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || 	\
@@ -107,7 +114,8 @@ enum {
     BOOL installStarted;
 }
 
--(id)initForCommand:(NSString *)cmd;
+-(id)initForCommand:(NSString *)cmd
+	executable:(NSString *)exe;
 
 -(float)increment;
 

@@ -59,7 +59,9 @@ Command inspector: show currently running command, list of all packages subject 
 
 Dock icon customization: show status of command
 
-Installed package browser
+Installed package browser; dpkg -c <path to .deb file>
+
+Tools menu item to copy package description from unstable to stable
 
 Show info panel for fink installation; mirror information in email sig
 

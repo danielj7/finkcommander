@@ -392,7 +392,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	double progress = 100.0 - [progressIndicator doubleValue];
 	//failsafe to make sure we don't go beyond 100
-	[progressIndicator incrementBy:MIN(inc, progress * 0.75)];
+	[progressIndicator incrementBy:MIN(inc, progress * 0.85)];
 }
 
 //reset the interface--stop and remove progress indicator, revalidate
@@ -1008,7 +1008,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)runCommandWithParameters:(NSMutableArray *)params
 {
-	NSString *executable = [params objectAtIndex: 0];
+	NSString *exec = [params objectAtIndex: 0];
 	
 	passwordError = NO;
 
@@ -1063,15 +1063,17 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
 	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
-		([executable contains: @"fink"] 			||
-		 [executable contains: @"apt-get"])){
+		([exec contains: @"fink"] 			||
+		 [exec contains: @"apt-get"])){
 		[params insertObject: @"-y" atIndex: 3];
 	}
-	if ([executable isEqualToString: @"apt-get"]){ 
+	if ([exec isEqualToString: @"apt-get"]){ 
 		[params insertObject: @"-f" atIndex: 3];
+		[params insertObject: @"-q0" atIndex: 3];
 	}
 	pendingCommand = NO;
-	
+	[self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
+												executable:exec]];
 	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
 	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
@@ -1109,6 +1111,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
+
+-(void)processStarted
+{
+    [textView setString: @""];
+}
+
 
 -(void)scrollToVisible:(NSNumber *)n
 {
@@ -1149,12 +1157,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 									abs([textView bounds].size.height 
 									- [textView visibleRect].origin.y 
 									- [textView visibleRect].size.height)];
-	int signal;
-
-	signal = [parser parseOutput:output];
+	int signal = [parser parseOutput:output];
 
 	switch(signal)
 	{
+		case NONE:
+			break;
 		case PASSWORD_ERROR:
 			passwordError = YES;
 			[self raisePwdWindow: self];
@@ -1200,25 +1208,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 	[textView appendString:output];
 	//according to Moriarity example, we have to put off scrolling until next event loop
-	[self performSelector:@selector(scrollToVisible:) withObject:theTest 
-				  afterDelay:0.0];
-}
-
--(void)processStarted
-{
-    [textView setString: @""];    
-    [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]]];
-}
-
-//helper for processFinishedWithStatus:
--(BOOL)commandRequiresTableUpdate:(NSString *)cmd
-{
-	return  [cmd isEqualToString: @"install"]	||
-			[cmd isEqualToString: @"remove"]	||
-			[cmd isEqualToString: @"index"]		||
-			[cmd contains: @"build"]			|| 
-			[cmd contains: @"dpkg"]				|| 
-			[cmd contains: @"update"];
+	[self performSelector:@selector(scrollToVisible:) 
+			withObject:theTest 
+			afterDelay:0.0];
 }
 
 -(void)processFinishedWithStatus:(int)status
@@ -1226,6 +1218,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int outputLength = [[textView string] length];
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
+		
+	if (IS_INSTALL_CMD(lastCommand)){
+		[progressIndicator setDoubleValue:99.0];
+	}
 		
 	Dprintf(@"Finishing; lastCommand = %@", lastCommand);
 
@@ -1239,7 +1235,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	// approximately last two lines for "failed"
 	[tableView setDisplayedPackages: [packages array]];
 	if (status == 0 && ! [last2lines containsCI: @"failed"]){
-		if ([self commandRequiresTableUpdate: lastCommand]){
+		if (CMD_REQUIRES_UPDATE(lastCommand)){
 			if ([lastCommand contains: @"selfupdate"] 	||
 				[lastCommand contains: @"dpkg"]			||
 				[lastCommand contains: @"index"]	  	||
@@ -1259,7 +1255,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),		//title
 			NSLocalizedString(@"OK", nil), nil,	nil, 			//buttons
-			window, self, NULL, NULL, nil,	 					//window, delegate, selectors, context
+			window, self, NULL, NULL, nil,	 			//window, delegate, selectors, context
 			NSLocalizedString(@"FinkCommanderDetected", nil),	//msg string
 			nil);												//msg string params
 		[self updateTable: nil];
