@@ -5,10 +5,6 @@ See the header file, FinkController.h, for interface and license information.
 
 */
 
-//Code that should be moved to separate process control class or deleted
-//to complete the design changes described in "DESIGN.txt" is marked
-//MOVE/ENDMOVE
-
 #import "FinkController.h"
 
 @implementation FinkController
@@ -56,7 +52,8 @@ See the header file, FinkController.h, for interface and license information.
 		}		
 	
 		packages = [[FinkDataController alloc] init];		// table data source
-		[self setLastCommand: @""];      					// used to update package data
+		[self setSelectedPackages: nil];    				// used to update package data
+		[self setLastCommand: @""];  
 
 		//variables used to display table
 		[self setLastIdentifier: @"name"];
@@ -72,10 +69,8 @@ See the header file, FinkController.h, for interface and license information.
 		}
 		
 		[self setCommandIsRunning: NO];
-
-//MOVE
-		binPath =  [[NSString alloc] initWithString:
-				   [[defaults objectForKey: FinkBasePath] stringByAppendingPathComponent: @"/bin"]];
+		
+#ifndef REFACTOR
 		[self setPassword: nil];
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];		
@@ -85,12 +80,11 @@ See the header file, FinkController.h, for interface and license information.
 					selector: @selector(runCommandWithPassword:)
 					name: @"passwordWasEntered"
 					object: nil];
-//ENDMOVE
+#endif //REFACTOR
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(refreshTable:)
 					name: @"packageArrayIsFinished"
 					object: nil];
-
 	}
 	return self;
 }
@@ -99,6 +93,7 @@ See the header file, FinkController.h, for interface and license information.
 -(void)dealloc
 {
 	[packages release];
+	[selectedPackages release];
 	[preferences release];
 	[utility release];
 	[lastCommand release];
@@ -106,15 +101,12 @@ See the header file, FinkController.h, for interface and license information.
 	[columnState release];
 	[reverseSortImage release];
 	[normalSortImage release];
-	
-//MOVE
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[binPath release];
+#ifndef REFACTOR
 	[lastParams release];
 	[password release];
-	[environment release];
+#endif //REFACTOR	
 	[finkTask release];
-//ENDMOVE
 	[super dealloc];
 }
 
@@ -151,11 +143,12 @@ See the header file, FinkController.h, for interface and license information.
 		[[packages array] count]]];
 }
 
-
+//method called when FinkDataController is finished updating package
 -(void)refreshTable:(NSNotification *)ignore
 {
 	[tableView reloadData];
 	[self displayNumberOfPackages];
+	[self setCommandIsRunning: NO];
 }
 
 
@@ -164,7 +157,13 @@ See the header file, FinkController.h, for interface and license information.
 
 -(FinkDataController *)packages  {return packages;}
 
--(NSString *)binPath {return binPath;}
+-(NSArray *)selectedPackages {return selectedPackages;}
+-(void)setSelectedPackages:(NSArray *)a
+{
+	[a retain];
+	[selectedPackages release];
+	selectedPackages = a;
+}
 
 -(NSString *)lastCommand {return lastCommand;}
 -(void)setLastCommand:(NSString *)s
@@ -187,8 +186,7 @@ See the header file, FinkController.h, for interface and license information.
 	commandIsRunning = b;
 }
 
-
-//MOVE
+#ifndef REFACTOR
 -(NSString *)password {return password;}
 -(void)setPassword:(NSString *)s
 {
@@ -198,7 +196,7 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 -(NSMutableArray *)lastParams {return lastParams;}
--(void)setLastParams:(NSArray *)a
+-(void)setLastParams:(NSMutableArray *)a
 {
 	[lastParams removeAllObjects];
 	[lastParams addObjectsFromArray: a];
@@ -209,7 +207,7 @@ See the header file, FinkController.h, for interface and license information.
 {
 	pendingCommand = b;
 }
-
+#endif //REFACTOR
 
 //----------------------------------------------->Sheet Methods
 
@@ -239,7 +237,6 @@ See the header file, FinkController.h, for interface and license information.
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"passwordWasEntered"
 		object: nil];
 }
-//ENDMOVE
 
 //----------------------------------------------->Action Methods and Helpers
 
@@ -251,7 +248,7 @@ See the header file, FinkController.h, for interface and license information.
 		componentsJoinedByString: @" "]]];
 }
 
-//helper:  set up the argument list for either action method
+//helper:  set up the argument list for either command method
 -(NSMutableArray *)setupCommandFrom:(id)sender
 {
 	NSString *cmd = [[sender title] lowercaseString];
@@ -261,11 +258,8 @@ See the header file, FinkController.h, for interface and license information.
 
 	[self setCommandIsRunning: YES];
 	executable = [theMenu isEqualToString: @"Source"] ? @"fink" : @"apt-get";
-	args = [NSMutableArray arrayWithObjects:
-		[[self binPath] stringByAppendingPathComponent: executable],
-		cmd, nil];
+	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
 	[self setLastCommand: cmd];
-
 	return args;
 }
 
@@ -273,15 +267,27 @@ See the header file, FinkController.h, for interface and license information.
 -(IBAction)runCommand:(id)sender
 {
 	NSMutableArray *args = [[self setupCommandFrom: sender] retain];
+	NSMutableArray *pkgs = [NSMutableArray array];
 	NSNumber *anIndex;
-	NSEnumerator *e = [[tableView selectedRowEnumerator] retain];
+	NSEnumerator *e1 = [tableView selectedRowEnumerator];
+	NSEnumerator *e2 = [tableView selectedRowEnumerator];
 	
-	while(anIndex = [e nextObject]){
+	//set up selectedPackages array for later use
+	while(anIndex = [e1 nextObject]){
+		[pkgs addObject: [[packages array] objectAtIndex: [anIndex intValue]]];
+	}
+	[self setSelectedPackages: pkgs];
+
+#ifdef DEBUG
+	NSLog(@"selectedPackages contains %d items", [selectedPackages count]);
+#endif //DEBUG
+
+	//set up args array to run the command
+	while(anIndex = [e2 nextObject]){
 		[args addObject: [[[packages array] objectAtIndex: [anIndex intValue]] name]];
 	}
 	
-	[self displayCommand: args];
-		
+	[self displayCommand: args];		
 	[self runCommandWithParams: args];
 	[args release];
 }
@@ -291,26 +297,16 @@ See the header file, FinkController.h, for interface and license information.
 {
 	NSMutableArray *args = [[self setupCommandFrom: sender] retain];
 	
-	[msgText setStringValue: [NSString stringWithFormat: @"Running %@ . . .",
-		[args lastObject]]];
-		
-	[self displayCommand: args];
-	
+	[self displayCommand: args];	
 	[self runCommandWithParams: args];
 	[args release];
 }
 
-//MOVE
--(void)runCommandWithParams:(NSArray *)params
+-(void)runCommandWithParams:(NSMutableArray *)params
 {
-	NSMutableArray *fullParams = [NSMutableArray arrayWithObjects:
-		@"/usr/bin/sudo", @"-S", nil];
-
-	[fullParams addObjectsFromArray: params];
-	[self setLastParams: params];
-
 	if ([[self password] length] < 1){
 		[self raisePwdWindow: self];
+		[self setLastParams: params];
 		[self setPendingCommand: YES];
 		[self setCommandIsRunning: NO];
 		[self displayNumberOfPackages];
@@ -318,10 +314,15 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	[self setPendingCommand: NO];
 
-	finkTask = [[IOTaskWrapper alloc] initWithController: self arguments: fullParams];
-	// start the process asynchronously
-	[finkTask startProcessWithPassword: [NSData dataWithData:
+	if (finkTask){
+		[finkTask release];
+	}
+	finkTask = [[IOTaskWrapper alloc] initWithController: self];
+	
+	[finkTask setPassword: [NSData dataWithData:
 		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
+	// start the process asynchronously	
+	[finkTask startProcessWithArgs: params];
 }
 
 //if last command was not completed because no valid password was entered,
@@ -333,18 +334,14 @@ See the header file, FinkController.h, for interface and license information.
 		[self runCommandWithParams: [self lastParams]];
 	}	
 }
-//ENDMOVE
 
 //allow user to update table using Fink, rather than relying on 
 //FinkCommander's manual update
 -(IBAction)updateTable:(id)sender
 {
+	[msgText setStringValue: @"Updating table data . . . "]; //time lag here
 	[self setCommandIsRunning: YES];
-	[msgText setStringValue: @"Updating table data . . . "];  //not working
 	[packages update];
-	[tableView reloadData];
-	[self displayNumberOfPackages];
-	[self setCommandIsRunning: NO];
 }
 
 -(IBAction)showPreferencePanel:(id)sender
@@ -418,16 +415,6 @@ See the header file, FinkController.h, for interface and license information.
 	[tableView setHighlightedTableColumn: aTableColumn];
 }
 
-//Disable row selection change while command is running
-- (BOOL)selectionShouldChangeInTableView:(NSTableView *)aTableView
-{
-	if ([self commandIsRunning]){
-		NSBeep();
-		return NO;
-	}
-	return YES;
-}
-
 //Disable menu item selections
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
 {
@@ -448,65 +435,23 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
-//----------------------------------------------->IOTaskWrapper Protocol Helpers
+//----------------------------------------------->IOTaskWrapper Protocol Implementation
 
-
--(void)updatePackageData
-{
-	NSString *cmd = [self lastCommand];
-	FinkPackage *pkg;
-	NSEnumerator *e = [tableView selectedRowEnumerator];
-	NSNumber *row;
-	BOOL updateWithFink = [[NSUserDefaults standardUserDefaults] boolForKey: FinkUpdateWithFink];
-
-	if ([cmd rangeOfString: @"selfupdate"].length > 0   ||
-	    (updateWithFink                              &&
-	     ([cmd isEqualToString: @"install"]       ||
-		  [cmd isEqualToString: @"remove"]        ||
-		  [cmd isEqualToString: @"update-all"]))){
-		[msgText setStringValue: @"Updating table data . . . "];  //not working
-		NSLog(@"Should post updating table message");
-		[packages update];
-	}else if ([cmd isEqualToString: @"install"]){
-		while (row = [e nextObject]){
-			pkg = [[packages array] objectAtIndex: [row intValue]];
-			[pkg setInstalled: @"current"];
-		}
-	}else if ([cmd isEqualToString: @"remove"]){
-		while (row = [e nextObject]){
-			pkg = [[packages array] objectAtIndex: [row intValue]];
-			[pkg setInstalled: @" "];
-		}
-	}else if ([cmd isEqualToString: @"update-all"]){
-		e = [[packages array] objectEnumerator];
-		while (pkg = [e nextObject]){
-			if ([[pkg installed] isEqualToString: @"outdated"]){
-				[pkg setInstalled: @"current"];
-			}
-		}
-	}
-}
-
+//helper
 - (void)scrollToVisible:(id)ignore
 {
 	[textView scrollRangeToVisible:
 		NSMakeRange([[textView string] length], 0)];
 }
 
-
-//----------------------------------------------->IOTaskWrapper Protocol Implementation
-
 //much of the code in this method was borrowed from the Moriarity example at
 //http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 - (void)appendOutput:(NSString *)output
 {
 		NSAttributedString *lastOutput;
-		int alertChoice;
-		
 		lastOutput = [[[NSAttributedString alloc] initWithString:
 			output] autorelease];
 
-//MOVE
 		//TBD:  respond as specified by user; right now this just enters a return
 		//[i.e. the default] any time Fink asks for a response 
 		if ([[lastOutput string] rangeOfString: @"]"].length > 0){
@@ -524,26 +469,13 @@ See the header file, FinkController.h, for interface and license information.
 		//look for password error message from sudo; if it's received, enter a 
 		//return to terminate the process, then notify the user
 		if([[lastOutput string] rangeOfString: @"Sorry, try again."].length > 0){
-			[[finkTask task] terminate];
+			NSLog(@"Detected password error.");
+			[finkTask writeToStdin: @"\n\n\n"];
 			[finkTask stopProcess];
 			[self setPassword: nil];
-			[self setPendingCommand: YES];
-			alertChoice = NSRunAlertPanel(@"Password Rejected", @"Please try again.",
-								 @"OK", @"Cancel", nil);
-			if (alertChoice == NSAlertDefaultReturn){
-				[self raisePwdWindow: self];
-			}
 		}
-//ENDMOVE
 
-		[[textView textStorage] appendAttributedString: lastOutput];
-		
-		// This next bit's a tad mysterious, so I've included the explanation from Moriarity
-		// to remind myself why it's here:
-		// set up a selector to be called the next time through the event loop to scroll
-        // the view to the just pasted text.  We don't want to scroll right now,
-        // because of a bug in Mac OS X version 10.1 that causes scrolling in the context
-        // of a text storage update to starve the app of events
+		[[textView textStorage] appendAttributedString: lastOutput];		
 		[self performSelector: @selector(scrollToVisible:) withObject: nil afterDelay: 0.0];
 }
 
@@ -552,33 +484,49 @@ See the header file, FinkController.h, for interface and license information.
 	[textView setString: @""];
 }
 
+//helper
+-(BOOL)commandRequiresTableUpdate:(NSString *)cmd
+{
+	if ([cmd isEqualToString: @"install"] 	  ||
+		[cmd isEqualToString: @"remove"]	  ||
+		[cmd isEqualToString: @"update-all"]  ||
+	    [cmd rangeOfString: @"selfupdate"].length > 0){
+		return YES;
+	}
+	return NO;
+}
+
 -(void)processFinishedWithStatus:(int)status
 {
 	NSString *output = [NSString stringWithString: [textView string]];
-	
 	NSBeep();
-
-	// Checking status is not sufficient for some fink commands
+	
+	// Make sure command was succesful before updating table
+	// Checking exit status is not sufficient for some fink commands, so check
+	// last 50 chars of output for "failed"
 	if (status == 0 && [output rangeOfString:@"failed"
 						options: NSCaseInsensitiveSearch
 						range: NSMakeRange([output length] - 50, 49)].length == 0){
-		[self updatePackageData];
-		[tableView reloadData];
+		if ([self commandRequiresTableUpdate: [self lastCommand]]){
+			if ([lastCommand rangeOfString: @"selfupdate"].length > 0 ||
+	            [[NSUserDefaults standardUserDefaults] boolForKey: FinkUpdateWithFink]){
+				[msgText setStringValue: @"Updating table data . . . "];
+				[packages update];   // refreshTable will be called by notification
+			}else{
+				[packages updateManuallyWithCommand: [self lastCommand]
+										   packages: [self selectedPackages]];
+				[self refreshTable: nil]; 
+			}
+		}else{
+			[self refreshTable: nil];
+		}
 	}else{
-		NSBeginAlertSheet(@"Error",		//title
-		@"OK",							//default button label
-		nil,							//alternate button label
-		nil,							//other button label
-		[self window],					//window
-		self,							//modal delegate
-		NULL,							//didEnd selector
-		NULL,							//didDismiss selector
-		nil,							//context info
+		NSBeginAlertSheet(@"Error",	@"OK", nil,	nil, //title, buttons
+		[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
 		@"FinkCommander detected a failure message.\nCheck the output window for problems.",
-		nil);							//msg string params
+		nil);										//msg string params
+		[self refreshTable: nil];
 	}
-	[self setCommandIsRunning: NO];
-	[self displayNumberOfPackages];
 }
 
 @end

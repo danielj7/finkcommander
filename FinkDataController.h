@@ -50,5 +50,6 @@ Contact the author at sburr@mac.com.
 
 //Update finkArray to reflect latest package information.
 -(void)update;
+-(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs;
 
 @end

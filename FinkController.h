@@ -54,6 +54,7 @@ Contact the author at sburr@mac.com.
 	FinkDataController *packages;
 	FinkPreferences *preferences;
 	FinkBasePathUtility *utility;
+	NSArray *selectedPackages;
 	NSString *lastCommand;
 	NSString *lastIdentifier;
 	NSMutableDictionary *columnState;
@@ -62,11 +63,9 @@ Contact the author at sburr@mac.com.
 	BOOL commandIsRunning;
 
 //MOVE	
-	NSString *binPath;
 	NSString *password;
 	BOOL pendingCommand;
 	NSMutableArray *lastParams;
-	NSDictionary *environment;
 	IOTaskWrapper *finkTask;
 //ENDMOVE
 }
@@ -75,15 +74,16 @@ Contact the author at sburr@mac.com.
 -(FinkDataController *)packages;
 
 //MOVE
--(NSString *)binPath;
 -(NSString *)password;
 -(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
--(void)setLastParams:(NSArray *)a;
+-(void)setLastParams:(NSMutableArray *)a;
 -(BOOL)pendingCommand;
 -(void)setPendingCommand:(BOOL)b;
 //ENDMOVE
 
+-(NSArray *)selectedPackages;
+-(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
 -(NSString *)lastIdentifier;
@@ -114,9 +114,9 @@ Contact the author at sburr@mac.com.
 -(void)tableView:(NSTableView *)aTableView
         mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn;
 
-//MOVE
+#ifndef REFACTOR
 //Process control
--(void)runCommandWithParams:(NSArray *)params;
-//ENDMOVE
+-(void)runCommandWithParams:(NSMutableArray *)params;
+#endif REFACTOR
 
 @end

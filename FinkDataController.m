@@ -208,4 +208,28 @@ See the header file, FinkDataController.h, for interface and license information
 	
 }
 
+-(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs
+{
+	FinkPackage *pkg;
+	NSEnumerator *e = [pkgs objectEnumerator];
+
+	if ([cmd isEqualToString: @"install"]){
+		while (pkg = [e nextObject]){
+			[pkg setInstalled: @"current"];
+		}
+	}else if ([cmd isEqualToString: @"remove"]){
+		while (pkg = [e nextObject]){
+			[pkg setInstalled: @" "];
+		}
+	}else if ([cmd isEqualToString: @"update-all"]){
+		e = [[self array] objectEnumerator];
+		while (pkg = [e nextObject]){
+			if ([[pkg installed] isEqualToString: @"outdated"]){
+				[pkg setInstalled: @"current"];
+			}
+		}
+	}
+}
+
+
 @end
