@@ -1,0 +1,67 @@
+--------------------------------------------------------------------------------
+A) Getting the current files
+--------------------------------------------------------------------------------
+
+1) Go to destination folder
+   cd /Volumes/data/Development
+
+2) Set the following environment variables
+   export CVS_RSH=ssh
+   export CVSROOT=:ext:<username>@cvs.sourceforge.net:/cvsroot/finkcommander
+
+3) If necessary, login to the CVS server
+   cvs login
+
+4) Checkout the current files of the FinkCommander module
+   cvs checkout FinkCommander
+
+
+--------------------------------------------------------------------------------
+B) Determine which files need to be translated
+--------------------------------------------------------------------------------
+
+1) Go to the sub-directory with the files to be translated
+   cd FinkCommander/German.lproj
+
+2) Compare the revision of the files you just checked out in A)
+   to their revision from the last release.
+   cvs diff -r <last_release_tag>
+
+3) If you don't know the tag for the last release, ask Steven, or
+   try to find out yourself with the following command:
+   cvs history -Ta Localizable.strings
+      or
+   cvs history -Ta -f Localizable.strings
+
+--------------------------------------------------------------------------------
+C) What to keep in mind when translating
+--------------------------------------------------------------------------------
+
+1) All .strings files must be edited in ProjectBuilder, so as not to change
+   the file format. Set ProjectBuilder to use UTF-8 as default format.
+
+2) Common terms
+   Toolbar = Werkzeugleiste
+   Progress bar = Fortschrittsanzeige
+   Drag = ? (Ziehen)
+
+--------------------------------------------------------------------------------
+D) Get changes back into CVS
+--------------------------------------------------------------------------------
+
+1) Go to the top-most sub-directory that contains translated files
+   cd FinkCommander/German.lproj
+
+2) Commit changes back into CVS
+   cvs commit -m "Updated German translation"
+
+3) Troubleshooting: The ":ext:" string in the CVSROOT variable setting
+   (see A) should advise cvs to authenticate via the external program ssh.
+   If it doesn't work and you get an error message that tells you that
+   you don't have write access, this is because cvs has logged you in by
+   using the pserver protocol (check this in ~/.cvspass). Knock on cvs'
+   head three times while uttering seven vile curses, then type the
+   following command with only your left ring finger on a Microsoft
+   keyboard:
+   cvs -z3 -d:ext:<username>@cvs.sourceforge.net:/cvsroot/finkcommander commit -m "Updated German translation"
+
