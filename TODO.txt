@@ -13,6 +13,8 @@ FUNCTIONALITY
 
 **Short Term
 
+Allow user to specify administrator name in password entry sheet (if possible)
+
 Show info panel for fink installation
 
 Command to update fink from cvs
@@ -22,8 +24,6 @@ Use Camelbones and thread to gather package information
 Add installed version instance variable to package objects; allow display in table; display in Package Inspector
 
 Command inspector:  show currently running command with list of all packages subject to command (parse output to determine); show start time and duration; include refresh button
-
-Allow user to specify administrator name in password entry sheet
 
 Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences or tool
 

@@ -15,6 +15,7 @@
 			children = (
 				F53369F60218261B01A80165,
 				F527284D0221B4E801A80164,
+				F535A64402F266D501A80164,
 				F527284E0221B4E801A80164,
 				F5DE1D8E022845A201A80164,
 				F54BD02602D549F101A80165,
@@ -191,6 +192,7 @@
 				F57DA17B02B4680D01A8016B,
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
+				F54523C702F345DF01A80164,
 				F5DE3CD602CAE98601A80164,
 				F5C1B062026BFA2501A80164,
 			);
@@ -216,6 +218,7 @@
 		};
 		29B97323FDCFA39411CA2CEA = {
 			children = (
+				F535A6C302F3199601A80164,
 				1058C7A0FEA54F0111CA2CBB,
 				1058C7A2FEA54F0111CA2CBB,
 			);
@@ -242,9 +245,10 @@
 				29B97328FDCFA39411CA2CEA,
 				29B9732BFDCFA39411CA2CEA,
 				29B9732DFDCFA39411CA2CEA,
+				F535A6CE02F319A001A80164,
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "/Users/sburr/CamelBones/build /Users/sburr/Library/Frameworks";
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";
@@ -305,7 +309,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F53369F70218261B01A80165,
-				F527284F0221B4E801A80164,
 				F52728500221B4E801A80164,
 				F5DE1D90022845A201A80164,
 				F5375A690246DDDC01A80164,
@@ -319,6 +322,8 @@
 				F54BD02902D549F101A80165,
 				F512CBF102E6749301BD3D51,
 				F553429302E9F45A015ADE4E,
+				F535A66602F308E601A80164,
+				F5DA058C02F35FC501A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 		};
@@ -351,6 +356,7 @@
 				F5DE3CD702CAE98601A80164,
 				F559D2C902CC2C6501A80164,
 				F513D60502DB42D70135C1EB,
+				F54523C802F345DF01A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 		};
@@ -358,7 +364,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29B9732CFDCFA39411CA2CEA,
-				F52728510221B4E801A80164,
 				F52728520221B4E801A80164,
 				F5DE1D91022845A201A80164,
 				F5375A6B0246DDEB01A80164,
@@ -373,6 +378,8 @@
 				F54BD02802D549F101A80165,
 				F512CBF002E6749301BD3D51,
 				F553429202E9F45A015ADE4E,
+				F535A66702F308E801A80164,
+				F5DA058B02F35FC001A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 		};
@@ -389,6 +396,7 @@
 			files = (
 				1058C7A3FEA54F0111CA2CBB,
 				F536582402A89F0D01A8016A,
+				F535A6CD02F3199601A80164,
 			);
 			isa = PBXFrameworksBuildPhase;
 		};
@@ -517,20 +525,8 @@
 			path = FinkPackage.m;
 			refType = 4;
 		};
-		F527284F0221B4E801A80164 = {
-			fileRef = F527284B0221B4E801A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F52728500221B4E801A80164 = {
 			fileRef = F527284C0221B4E801A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F52728510221B4E801A80164 = {
-			fileRef = F527284D0221B4E801A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -564,6 +560,55 @@
 		};
 		F53369F70218261B01A80165 = {
 			fileRef = F53369F50218261B01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F535A64402F266D501A80164 = {
+			isa = PBXFileReference;
+			path = FinkData.m;
+			refType = 4;
+		};
+		F535A64602F266E801A80164 = {
+			isa = PBXFileReference;
+			path = FinkData.h;
+			refType = 4;
+		};
+		F535A66602F308E601A80164 = {
+			fileRef = F535A64602F266E801A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F535A66702F308E801A80164 = {
+			fileRef = F535A64402F266D501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F535A6C302F3199601A80164 = {
+			isa = PBXFrameworkReference;
+			name = CamelBones.framework;
+			path = /Users/sburr/Library/Frameworks/CamelBones.framework;
+			refType = 0;
+		};
+		F535A6CD02F3199601A80164 = {
+			fileRef = F535A6C302F3199601A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F535A6CE02F319A001A80164 = {
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F535A6CF02F319A801A80164,
+			);
+			isa = PBXCopyFilesBuildPhase;
+		};
+		F535A6CF02F319A801A80164 = {
+			fileRef = F535A6C302F3199601A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -809,6 +854,17 @@
 			settings = {
 			};
 		};
+		F54523C702F345DF01A80164 = {
+			isa = PBXFileReference;
+			path = scriptfile.txt;
+			refType = 4;
+		};
+		F54523C802F345DF01A80164 = {
+			fileRef = F54523C702F345DF01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F546BA0402D8EA6B01A80165 = {
 			isa = PBXFileReference;
 			path = version.xml;
@@ -818,6 +874,7 @@
 			children = (
 				F53369F50218261B01A80165,
 				F527284B0221B4E801A80164,
+				F535A64602F266E801A80164,
 				F527284C0221B4E801A80164,
 				F5DE1D8F022845A201A80164,
 				F54BD02702D549F101A80165,
@@ -1109,6 +1166,18 @@
 		};
 		F5C523DE02A33E0A01A80165 = {
 			fileRef = F5C523DC02A33E0A01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DA058B02F35FC001A80164 = {
+			fileRef = F527284D0221B4E801A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DA058C02F35FC501A80164 = {
+			fileRef = F527284B0221B4E801A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

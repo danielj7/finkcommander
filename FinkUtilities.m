@@ -73,17 +73,25 @@ void findFinkBasePath(void)
 
 void fixScript(void)
 {
-	NSString *pathToScript = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
-	NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile: pathToScript];
-	NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath];
-	NSRange rangeOfBASEPATH;
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSString *home = NSHomeDirectory();
+	NSString *wpath = [home stringByAppendingPathComponent:
+						@"Library/Application Support/FinkCommander.pl"];
+	
+	if (! [manager fileExistsAtPath:wpath]){
+		NSString *rpath = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
+		NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath];
+		NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
+		NSRange rangeOfBASEPATH;
 
-	while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
-		LOGIFDEBUG(@"Replacing BASEPATH with path to fink");
-		[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
+		while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
+			LOGIFDEBUG(@"Replacing BASEPATH");
+			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
+		}
+		NSLog(@"Fixed script:\n%@", scriptText);
+		[scriptText writeToFile:wpath atomically:YES];
 	}
-
-	[scriptText writeToFile:pathToScript atomically:YES];
+	
 }
 
 //------------------------------------------------------------>Environment Defaults

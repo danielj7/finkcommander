@@ -26,7 +26,7 @@ File: FinkTableViewController.m
 		[self setAutosaveName: @"FinkTableView"];
 		[self setAutosaveTableColumns: YES];
 		[self setAllowsMultipleSelection: YES];
-		[self setAllowsColumnSelection: NO];		
+		[self setAllowsColumnSelection: NO];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
@@ -101,12 +101,13 @@ File: FinkTableViewController.m
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
 {
-	NSTableColumn *newColumn= [[[NSTableColumn alloc]
-				initWithIdentifier:identifier] autorelease];
+	NSTableColumn *newColumn= 
+		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
 				
 	[[newColumn headerCell] setStringValue: [identifier capitalizedString]];
 	[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
-	[newColumn setEditable: NO];
+	[newColumn setEditable:YES];
+	//center text in unstable and installed columns
 	if ([identifier isEqualToString: @"binary"] || [identifier isEqualToString: @"unstable"]){
 	 		NSTextFieldCell *cell = [[[NSTextFieldCell alloc] initTextCell: @""]
 			autorelease]; //setDataCell: retains
@@ -166,8 +167,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 
 //------------------------------------------------->Sorting Methods
 
-//The following two methods are used in the filter delegate method and the
-//didClickTableColumn method to scroll back to the previously selected row
+//The following two methods are used to scroll back to the previously selected row
 //after the table is sorted.  It works almost the same way Mail does, except
 //that only the latest selection is preserved.  For the filter, sorting and
 //scrolling methods to work together, information on the selected object must

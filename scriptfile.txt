@@ -1,0 +1,37 @@
+print "*********\nRunning perl script\n*********\n";
+
+Fink::Package->forget_packages();
+Fink::Package->scan_all();
+@pkglist = Fink::Package->list_packages();
+$result = "";
+
+foreach $pname (sort @pkglist) {
+    $package = Fink::Package->package_by_name($pname);
+    if ($package->is_virtual()) {
+      $lversion = " ";
+      $iflag = " ";
+	  $section = " ";
+	  $tree = " ";
+      $description = "virtual package";
+	  $full = "virtual package";
+    } else {
+      $lversion = &Fink::Services::latest_version($package->list_versions());
+      $vo = $package->get_version($lversion);
+      $description = $vo->get_shortdescription();
+	  $full = $vo->get_description();
+      $section = $vo->get_section();
+	  $tree = $vo->get_tree();
+      if ($vo->is_installed()) {
+        $iflag = "current";
+      } elsif ($package->is_any_installed()) {
+        $iflag = "outdated";
+	  } elsif ($vo->is_present()) {
+		$iflag = "archived";
+	  } else {
+        $iflag = "  ";
+      }
+	  print "$pname $iflag\n";
+    }
+    $result.="\n----\n$pname**\n$lversion**\n$iflag**\n$section**\n$description**\n$tree**\n$full\n";
+}
+

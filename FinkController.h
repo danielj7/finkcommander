@@ -80,6 +80,10 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 
+#ifdef USE_CAMELBONES
+#import "FinkData.h"
+#endif
+
 enum {
 	SOURCE_COMMAND,
 	BINARY_COMMAND
@@ -131,8 +135,14 @@ enum {
 	IBOutlet NSTextField *searchTextField;
 
 	//general instance variables
-	NSUserDefaults *defaults;
+#ifndef USE_CAMELBONES
 	FinkDataController *packages;
+#else
+	FinkData *packages;
+#endif
+	
+	NSUserDefaults *defaults;
+	
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
 	FinkOutputParser *parser;
@@ -151,7 +161,12 @@ enum {
 }
 
 //Accessors
+#ifndef USE_CAMELBONES
 -(FinkDataController *)packages;
+#else
+-(FinkData *)packages;
+#endif
+
 -(NSArray *)selectedPackages;
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;

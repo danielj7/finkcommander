@@ -122,9 +122,10 @@ int NAMESTART = 12;
 	NSPipe *pipeIn  = [NSPipe pipe];
 	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
 	NSArray *args = [NSArray arrayWithObjects:
-		[[NSBundle mainBundle] pathForResource: @"fpkg_list" ofType: @"pl"], nil];
+		[NSHomeDirectory() stringByAppendingPathComponent:
+				@"Library/Application Support/FinkCommander.pl"], nil];
 
-	[listCmd setLaunchPath: @"/usr/bin/perl"];
+ 	[listCmd setLaunchPath: @"/usr/bin/perl"];
 	[listCmd setArguments: args];
 	[listCmd setStandardOutput: pipeIn];
 	

@@ -52,9 +52,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
-		if (! [defaults boolForKey: FinkBasePathFound]) { 
-			findFinkBasePath(); 
-		}
+		findFinkBasePath(); 
 		fixScript();
 		
 		if (! [defaults boolForKey:FinkInitialEnvironmentHasBeenSet]){
@@ -63,7 +61,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 
 		//Set instance variables used to store information related to fink package data
+
+#ifndef USE_CAMELBONES
 		packages = [[FinkDataController alloc] init];		// data used in table
+#else
+		packages = [[FinkData alloc] init];
+#endif
 		[self setSelectedPackages: nil];    				// used to update package data
 		
 		//Set instance variables used to store objects and state information  
@@ -76,18 +79,27 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		//Flag used to avoid duplicate warnings when user terminates FC 
 		//in middle of command with something other than App:Quit
 		userChoseToTerminate = NO;
+
+		//Register for notification that causes table to update
+		//and resume normal state
+#ifndef USE_CAMELBONES
+		[center addObserver: self
+				selector: @selector(resetInterface:)
+				name: FinkPackageArrayIsFinished
+				object: nil];
+#else
+		[[NSDistributedNotificationCenter defaultCenter]
+				addObserver: self 
+				selector: @selector(resetInterface:)
+				name: FinkPackageArrayIsFinished
+				object: nil];
+#endif
 		
 		//Register for notification that another object needs to run
 		//a command with root privileges
 		[center addObserver: self
 				selector: @selector(runCommandOnNotification:)
 				name: FinkRunCommandNotification
-				object: nil];
-		//Register for notification that causes table to update 
-		//and resume normal state
-		[center addObserver: self
-				selector: @selector(resetInterface:)
-				name: FinkPackageArrayIsFinished
 				object: nil];
 		//Register for notification that causes output to collapse when
 		//user selects the auto expand option
@@ -208,7 +220,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //		ACCESSORS
 //--------------------------------------------------------------------------------
 
+#ifndef USE_CAMELBONES
 -(FinkDataController *)packages  {return packages;}
+#else
+-(FinkData *)packages { return packages; }
+#endif
 
 -(NSArray *)selectedPackages {return selectedPackages;}
 -(void)setSelectedPackages:(NSArray *)a
@@ -325,7 +341,35 @@ NSString *FinkEmailItem = @"FinkEmailItem";
     }
 }
 
+//reset the interface--stop and remove progress indicator, revalidate
+//command menu and toolbar items, reapply filter--after the table data
+//is updated or a command is completed
+-(void)resetInterface:(NSNotification *)ignore
+{
+	[self stopProgressIndicator];
+	[self displayNumberOfPackages];
+	commandIsRunning = NO;
+	[tableView deselectAll: self];
+	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
+}
+
 //----------------------------------------------->Running Commands
+
+//usually called by other methods after a command runs
+-(IBAction)updateTable:(id)sender
+{
+	[self startProgressIndicatorAsIndeterminate:YES];
+	[msgText setStringValue: @"Updating table data"];
+	commandIsRunning = YES;
+
+#ifndef USE_CAMELBONES
+	[packages update];
+#else
+	[NSThread detachNewThreadSelector:@selector(update:) 
+				toTarget:packages 
+				withObject:nil]; 
+#endif
+}
 
 //there are separate action methods for running package-specific and
 //non-package-specific commands; this allows choosing the appropriate
@@ -413,15 +457,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[[[NSAttributedString alloc] initWithString: full] autorelease]];
 		i++;
 	}
-}
-
-//usually called by other methods after a command runs
--(IBAction)updateTable:(id)sender
-{
-	[self startProgressIndicatorAsIndeterminate:YES];
-	[msgText setStringValue: @"Updating table data"];
-	commandIsRunning = YES;
-	[packages update]; //calls resetInterface by notification
 }
 
 //----------------------------------------------->Version Checker
@@ -1096,17 +1131,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[cmd contains: @"update"];
 }
 
-//reset the interface--stop and remove progress indicator, revalidate
-//command menu and toolbar items, reapply filter--after the table data
-//is updated or a command is completed
--(void)resetInterface:(NSNotification *)ignore
-{
-	[self stopProgressIndicator];
-	[self displayNumberOfPackages];
-	commandIsRunning = NO;
-	[tableView deselectAll: self];
-	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
-}
 
 -(void)processFinishedWithStatus:(int)status
 {
