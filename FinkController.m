@@ -27,8 +27,9 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 //----------------------------------------------->Initialize
 +(void)initialize
 {
-	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	//set "factory defaults"
+	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
+	
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
@@ -37,6 +38,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAutoUpdateTable];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -44,55 +46,71 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 //----------------------------------------------->Init
 -(id)init
 {
-	NSEnumerator *e;
-	NSString *attribute;
+	if (self = [super init]){
+
+		NSEnumerator *e;
+		NSString *attribute;
 	
-	if (self = [super init])
-	{
 		defaults = [NSUserDefaults standardUserDefaults];
-	
+			
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
 
+		//Set base path default, if necessary; write base path into perl script used
+		//to obtain fink package data
 		utility = [[[FinkBasePathUtility alloc] init] autorelease];
 		if (! [defaults boolForKey: FinkBasePathFound]){
 			[utility findFinkBasePath];
 		}
 		[utility fixScript];
 	
+		//Set instance variables used to store information related to fink package data
 		packages = [[FinkDataController alloc] init];		// data used in table
-		[self setDisplayPackages: [packages array]];
+		[self setDisplayedPackages: [packages array]];		// modifiable version for filter
 		[self setSelectedPackages: nil];    				// used to update package data
-		[self setLastCommand: @""];  
+		[self setLastCommand: @""];  						// ditto
 
-		//variables used to display table
+		//Set instance variables used to display table
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
 		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
-			
-		//stores whether table columns are sorted in normal or reverse order to enable
-		//proper sorting behavior; uses definitions from FinkPackages to set attributes
+		// dictionary used to record whether table columns are sorted in normal or reverse order
+		// enables proper sorting behavior; uses macro from FinkPackages to set attributes
 		columnState = [[NSMutableDictionary alloc] init];
 		e = [[NSArray arrayWithObjects: PACKAGE_ATTRIBUTES, nil] objectEnumerator];
 		while (attribute = [e nextObject]){
 			[columnState setObject: @"normal" forKey: attribute];
 		}
 		
+		//Set instance variables used to store objects and state information  
+		//needed to run fink and apt-get commands
 		[self setCommandIsRunning: NO];		
 		[self setPassword: nil];
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
-			
+		
+		//Register for notifications that run commands
+		//  selector runs command if one is pending and password was entered 
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(runCommandWithPassword:)
 					name: @"passwordWasEntered"
 					object: nil];
+		//  selector runs commands that change the fink.conf file
+		[[NSNotificationCenter defaultCenter] addObserver: self
+					selector: @selector(runFinkConfCommand:)
+					name: FinkConfChangeIsPending
+					object: nil];
+					
+		//Register for notification that causes table to update 
+		//and resume normal state
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(refreshTable:)
 					name: @"packageArrayIsFinished"
 					object: nil];
+					
+		return self;
 	}
-	return self;
+	return nil;
 }
 
 //----------------------------------------------->Dealloc
@@ -100,7 +118,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[packages release];
-	[displayPackages release];
+	[displayedPackages release];
 	[selectedPackages release];
 	[preferences release];
 	[utility release];
@@ -130,13 +148,12 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		@"Updating table dataÉ"];
 }
 
-
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
 				
-	if (![[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
+	if (! [[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
@@ -151,64 +168,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 {
 	if (! [self commandIsRunning]){
 		[msgText setStringValue: [NSString stringWithFormat: @"%d packages",
-			[[self displayPackages] count]]];
+			[[self displayedPackages] count]]];
 	}
-}
-
-//helper used in refreshTable and in table column clicked delegate
--(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
-{
-	FinkPackage *pkg = nil;
-	int indexBeforeSort;
-	int indexAfterSort = 0;
-	BOOL shouldScroll = [defaults boolForKey: FinkScrollToSelection];
-
-	indexBeforeSort = [tableView selectedRow];
-	if (indexBeforeSort >= 0 && shouldScroll){
-		pkg = [[packages array] objectAtIndex: [tableView selectedRow]];
-	}
-	
-	// sort data source; reload table; reset visual indicators
-	[[self displayPackages] sortUsingSelector:
-		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
-			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
-	[tableView reloadData];
-
-	if (indexBeforeSort >= 0 && shouldScroll){
-		indexAfterSort = [[packages array] indexOfObject: pkg];
-		[tableView scrollRowToVisible: indexAfterSort];
-		[tableView selectRow: indexAfterSort byExtendingSelection: NO];
-	}
-}
-
-
-//method called when FinkDataController is finished updating package
--(void)refreshTable:(NSNotification *)ignore
-{
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
-
-	if ([progressView isDescendantOf: progressViewHolder]){
-		[progressIndicator stopAnimation: nil];
-		[progressView removeFromSuperview];
-	}
-	[self displayNumberOfPackages];
-	[self setCommandIsRunning: NO];
-	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
-	[self controlTextDidChange: nil];
-}
-
-//version of same method called when filter applied
-//avoids re-validating command controls if filter is applied while a 
-//command is running
--(void)refreshAfterFilter
-{
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
-
-	[self sortTableAtColumn: lastColumn inDirection: direction];
 }
 
 
@@ -218,12 +179,12 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(FinkDataController *)packages  {return packages;}
 
--(NSMutableArray *)displayPackages {return displayPackages;}
--(void)setDisplayPackages:(NSMutableArray *)a
+-(NSMutableArray *)displayedPackages {return displayedPackages;}
+-(void)setDisplayedPackages:(NSMutableArray *)a
 {
 	[a retain];
-	[displayPackages release];
-	displayPackages = a;
+	[displayedPackages release];
+	displayedPackages = a;
 }
 
 -(NSArray *)selectedPackages {return selectedPackages;}
@@ -323,8 +284,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 -(void)displayCommand:(NSArray *)params
 {
 	[msgText setStringValue: [NSString stringWithFormat: @"Running %@É",
-		[[params subarrayWithRange: NSMakeRange(1, [params count] - 1)]
-		componentsJoinedByString: @" "]]];
+		[params componentsJoinedByString: @" "]]];
 }
 
 //set up the argument list for either command method
@@ -346,8 +306,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	executable = ([sender tag] == 0 ? @"fink" : @"apt-get");
 	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
 	
-	
-	[self setCommandIsRunning: YES];	
+	[self setCommandIsRunning: YES];
 	[self setLastCommand: cmd];
 	return args;
 }
@@ -365,13 +324,13 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	
 	//set up selectedPackages array for later use
 	while(anIndex = [e1 nextObject]){
-		[pkgs addObject: [[self displayPackages] objectAtIndex: [anIndex intValue]]];
+		[pkgs addObject: [[self displayedPackages] objectAtIndex: [anIndex intValue]]];
 	}
 	[self setSelectedPackages: pkgs];
 
 	//set up args array to run the command
 	while(anIndex = [e2 nextObject]){
-		[args addObject: [[[self displayPackages] objectAtIndex: [anIndex intValue]] name]];
+		[args addObject: [[[self displayedPackages] objectAtIndex: [anIndex intValue]] name]];
 	}
 	
 	[self displayCommand: args];		
@@ -395,10 +354,11 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	NSLog(@"Found running task; trying to interrupt");
 #endif //DEBUG
 		[[finkTask task] interrupt];
+		[[finkTask task] terminate];
 	}
 }
 
-//allow user to update table using Fink
+//update table using Fink
 -(IBAction)updateTable:(id)sender
 {	
 	[progressViewHolder addSubview: progressView];
@@ -479,6 +439,18 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 {
 	[self controlTextDidChange: nil];
 }
+
+//refresh table after filter applied without re-validating menu and 
+//toolbar items while a command is running (unlike refreshTable:)
+-(void)refreshAfterFilter
+{
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+
+	[self sortTableAtColumn: lastColumn inDirection: direction];
+}
+
 
 //----------------------------------------------->Delegate Methods
 
@@ -622,7 +594,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 	if ([[aNotification object] tag] == 0){ 		//filter text field
 		if ([filterText length] == 0){
-			[self setDisplayPackages: [packages array]];
+			[self setDisplayedPackages: [packages array]];
 		}else{
 			//deselect rows so autoscroll doesn't interfere
 			[tableView deselectAll: self];
@@ -632,7 +604,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 					[subset addObject: pkg];
 				}
 			}
-			[self setDisplayPackages: subset];
+			[self setDisplayedPackages: subset];
 		}
 		[self refreshAfterFilter];
 		[self displayNumberOfPackages];
@@ -642,16 +614,61 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 }
 
 
-
 //--------------------------------------------------------------------------------
 //		TABLE METHODS
 //--------------------------------------------------------------------------------
+
+//----------------------------------------------->Helper Methods
+
+//helper used in refreshTable and in didClickTableColumn: delegate method
+-(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
+{
+	FinkPackage *pkg = nil;
+	int indexBeforeSort;
+	int indexAfterSort = 0;
+	BOOL shouldScroll = [defaults boolForKey: FinkScrollToSelection];
+
+	indexBeforeSort = [tableView selectedRow];
+	if (indexBeforeSort >= 0 && shouldScroll){
+		pkg = [[packages array] objectAtIndex: [tableView selectedRow]];
+	}
+
+	// sort data source; reload table; reset visual indicators
+	[[self displayedPackages] sortUsingSelector:
+		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
+			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
+	[tableView reloadData];
+
+	if (indexBeforeSort >= 0 && shouldScroll){
+		indexAfterSort = [[packages array] indexOfObject: pkg];
+		[tableView scrollRowToVisible: indexAfterSort];
+		[tableView selectRow: indexAfterSort byExtendingSelection: NO];
+	}
+}
+
+//method called when FinkDataController is finished updating package
+//or when commands are completed
+-(void)refreshTable:(NSNotification *)ignore
+{
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+
+	if ([progressView isDescendantOf: progressViewHolder]){
+		[progressIndicator stopAnimation: nil];
+		[progressView removeFromSuperview];
+	}
+	[self displayNumberOfPackages];
+	[self setCommandIsRunning: NO];
+	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
+	[self controlTextDidChange: nil]; //reapplies filter
+}
 
 //----------------------------------------------->Data Source Methods
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [[self displayPackages] count];
+	return [[self displayedPackages] count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
@@ -659,15 +676,13 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	FinkPackage *package = [[self displayPackages] objectAtIndex: rowIndex];
+	FinkPackage *package = [[self displayedPackages] objectAtIndex: rowIndex];
 	return [package valueForKey: identifier];
 }
 
 
 //----------------------------------------------->Delegate Method
-//sorts table when column header clicked
-//note:  response is faster when mouseDownInTableColumnHeader method is used;
-//but then table re-sorts any time a column is resized, which is annoying
+//sorts table when column header is clicked
 -(void)tableView:(NSTableView *)aTableView
 	didClickTableColumn:(NSTableColumn *)aTableColumn
 {
@@ -710,7 +725,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
-	if ([[[[self displayPackages] objectAtIndex: rowIndex] name]
+	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name]
 		rangeOfString: @"tcsh"].length > 0){
 		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
 				[self window], self, NULL,	NULL, nil,
@@ -721,8 +736,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	return YES;
 }
 
-//allows selection of table cells for copying, unlike setting
-//the column to be non-editable
+//allows selection of table cells for copying, unlike setting the column to be non-editable
 -(BOOL)textShouldBeginEditing:(NSText *)textObject
 {
 	return NO;
@@ -756,7 +770,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[self setPassword: [NSString stringWithFormat:
 		@"%@\n", [pwdField stringValue]]];
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"passwordWasEntered"
-														   object: nil];
+										object: nil];
 }
 
 //----------------------------------------------->Interaction Sheet Methods
@@ -785,9 +799,6 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		initWithString: @"\n"] autorelease];
 
 	if (returnCode){  // Submit rather than Cancel
-#ifdef DEBUG
-	NSLog(@"Submit button chosen");
-#endif //DEBUG
 		if ([[interactionMatrix selectedCell] tag] == 0){
 			[finkTask writeToStdin: @"\n"];
 		}else{
@@ -822,7 +833,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 }
 
 //if last command was not completed because no valid password was entered,
-//run it again after receiving passwordWasEntered notification
+//run it again after receiving passwordWasEntered notification;
 -(void)runCommandWithPassword:(NSNotification *)note
 {
 	if ([self pendingCommand]){
@@ -830,6 +841,23 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		[self displayCommand: [self lastParams]];
 		[self runCommandWithParams: [self lastParams]];
 	}
+}
+
+//run commands to change fink.conf file
+-(void)runFinkConfCommand:(NSNotification *)note
+{
+	NSMutableArray *args = [note object];
+	NSString *cmd = [args objectAtIndex: 0];
+
+	[progressViewHolder addSubview: progressView];
+	[progressIndicator setUsesThreadedAnimation: YES];
+	[progressIndicator startAnimation: nil];	
+
+	[self setLastCommand: 
+		([cmd contains: @"fink"] ? [args objectAtIndex: 1] : cmd)];
+	[self setCommandIsRunning: YES];
+	[msgText setStringValue: @"Updating fink.conf file"];
+	[self performSelector:@selector(runCommandWithParams:) withObject: args afterDelay: 1.0];
 }
 
 
@@ -852,8 +880,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		abs([textView bounds].size.height - [textView visibleRect].origin.y 
 			- [textView visibleRect].size.height)];
 	
-	lastOutput = [[[NSAttributedString alloc] initWithString:
-		output] autorelease];
+	lastOutput = [[[NSAttributedString alloc] initWithString: output] autorelease];
 
 	//interaction
 	if ([output rangeOfString: @"Password:"].length > 0){
@@ -875,15 +902,16 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	
 	//look for password error message from sudo; if it's received, enter a 
 	//return to make sure process terminates
-	if([output rangeOfString: @"Sorry, try again."].length > 0){
-		NSLog(@"Detected password error.");
+	if([output contains: @"Sorry, try again."]){
+		NSLog(@"Detected password error");
 		[finkTask writeToStdin: @"\n"];
 		[finkTask stopProcess];
 		[self setPassword: nil];
 	}
 
+	//display latest output in text view
 	[[textView textStorage] appendAttributedString: lastOutput];
-	//according to Moriarity example, have to put off scrolling until next event loop
+	//  according to Moriarity example, have to put off scrolling until next event loop
 	[self performSelector: @selector(scrollToVisible:) withObject: theTest 
 		afterDelay: 0.0];
 }
@@ -893,13 +921,14 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[textView setString: @""];
 }
 
-//helper
+//helper for processFinishedWithStatus:
 -(BOOL)commandRequiresTableUpdate:(NSString *)cmd
 {
 	if ([cmd isEqualToString: @"install"] 	  ||
 		[cmd isEqualToString: @"remove"]	  ||
 		[cmd isEqualToString: @"update-all"]  ||
-	    [cmd rangeOfString: @"selfupdate"].length > 0){
+		[cmd contains: @"index"]			  ||
+	    [cmd contains: @"selfupdate"]){
 		return YES;
 	}
 	return NO;
@@ -907,26 +936,30 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(void)processFinishedWithStatus:(int)status
 {
-	NSString *output = [NSString stringWithString: [textView string]];
-	NSBeep();
+	int outputLength = [[textView string] length];
+	NSString *output = outputLength < 160 ? [textView string] : 
+		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
+
+	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"mv"]){
+		NSBeep();
+	}
 	
 	// Make sure command was succesful before updating table
 	// Checking exit status is not sufficient for some fink commands, so check
-	// last 50 chars of output for "failed"
-	[self setDisplayPackages: [packages array]];
-	if (status == 0 && [output rangeOfString:@"failed"
-						options: NSCaseInsensitiveSearch
-						range: NSMakeRange(0, [output length] - 1)].length == 0){
+	// approximately last two lines for "failed"
+	[self setDisplayedPackages: [packages array]];
+	if (status == 0 && ! [output containsCI: @"failed"]){
 		if ([self commandRequiresTableUpdate: [self lastCommand]]){
-			if ([lastCommand rangeOfString: @"selfupdate"].length > 0 ||
-	            [[NSUserDefaults standardUserDefaults] boolForKey: FinkUpdateWithFink]){
+			if ([lastCommand contains: @"selfupdate"] ||
+				[lastCommand contains: @"index"]	  ||
+	            [defaults boolForKey: FinkUpdateWithFink]){
 				[self updateTable: nil];   // refreshTable will be called by notification
 			}else{
 				[packages updateManuallyWithCommand: [self lastCommand]
 										   packages: [self selectedPackages]];
 				[self refreshTable: nil]; 
 			}
-		}else{
+		}else if (! [lastCommand contains: @"cp"] && ! [lastCommand contains: @"mv"]){
 			[self refreshTable: nil];
 		}
 	}else{
@@ -936,6 +969,9 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		nil);										//msg string params
 		[packages update];
 	}
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName: FinkCommandCompleted 
+		object: [self lastCommand]]; 
 }
 
 @end

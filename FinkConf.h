@@ -32,10 +32,11 @@ File: FinkConf.h
  */
 
 #import <Cocoa/Cocoa.h>
+#import "SBString.h"
 
 //---------------------------------------------->Global Variables
 // eliminate for release version:
-#define DEBUG
+//#define DEBUG
 
 //User Default Items
 extern NSString *FinkBasePath;
@@ -46,14 +47,19 @@ extern NSString *FinkScrollToSelection;
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;
 extern NSString *FinkHTTPProxyVariable;
+extern NSString *FinkFTPProxyVariable;
 extern NSString *FinkLookedForProxy;
+extern NSString *FinkAutoUpdateTable;
 
+//Notification Names
+extern NSString *FinkConfChangeIsPending;
+extern NSString *FinkCommandCompleted;
 
 @interface FinkConf : NSObject 
 {
 	NSMutableDictionary *finkConfDict;
 	NSUserDefaults *defaults;
-	
+	NSString *proxyHTTP;
 }
 
 -(void)readFinkConf;
@@ -63,8 +69,12 @@ extern NSString *FinkLookedForProxy;
 -(void)setUseUnstableCrypto:(BOOL)shouldUseUnstable;
 -(BOOL)verboseOutput;
 -(void)setVerboseOutput:(BOOL)verboseOutput;
-
-
+-(BOOL)passiveFTP;
+-(void)setPassiveFTP:(BOOL)passiveFTP;
+-(NSString *)useHTTPProxy;
+-(void)setUseHTTPProxy:(NSString *)s;
+-(NSString *)useFTPProxy;
+-(void)setUseFTPProxy:(NSString *)s;
 
 -(void)writeToFile;
 

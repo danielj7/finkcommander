@@ -12,8 +12,11 @@
             OUTLETS = {
                 alwaysChooseDefaultsButton = NSButton; 
                 basePathTextField = NSTextField; 
+                ftpProxyButton = NSButton; 
+                ftpProxyTextField = NSTextField; 
                 httpProxyButton = NSButton; 
                 httpProxyTextField = NSTextField; 
+                passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
                 scrollToSelectionButton = NSButton; 
                 updateWithFinkButton = NSButton; 

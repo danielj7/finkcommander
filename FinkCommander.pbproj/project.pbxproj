@@ -21,12 +21,12 @@
 				F527284E0221B4E801A80164,
 				F5375A680246DDDC01A80164,
 				F5375A6A0246DDEB01A80164,
+				F54436B8027F6AD501A80164,
+				F54436B9027F6AD501A80164,
 				F5DE1D8F022845A201A80164,
 				F5DE1D8E022845A201A80164,
 				F569E33702498D1101A80164,
 				F569E33802498D1101A80164,
-				F54436B8027F6AD501A80164,
-				F54436B9027F6AD501A80164,
 				F536C03E0280F24501A80164,
 				F536C03F0280F24501A80164,
 			);
@@ -195,6 +195,7 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
+				F547E70102846D1F01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -546,6 +547,7 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
+				F547E70202846D8B01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -645,6 +647,18 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		F547E70102846D1F01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F547E70202846D8B01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Preferences.nib;
+			refType = 4;
 		};
 		F55057270231E5F701A80164 = {
 			isa = PBXFileReference;

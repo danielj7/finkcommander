@@ -17,8 +17,17 @@ NSString *FinkScrollToSelection = @"FinkScrollToSelection";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
+NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";
+NSString *FinkAutoUpdateTable = @"FinkAutoUpdateTable";
 
+//Global variables identifying inter-object notifications
+NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
+NSString *FinkCommandCompleted = @"FinkCommandCompleted";
+
+//Globals for this file
+NSString *gProxyHTTP = @"ProxyHTTP";
+NSString *gProxyFTP = @"ProxyFTP";
 
 @implementation FinkConf
 
@@ -27,11 +36,20 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 	defaults = [NSUserDefaults standardUserDefaults];
 
 	if (self = [super init]){
-		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 15];
+		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
 		[self readFinkConf];
+
+	[[NSNotificationCenter defaultCenter] 
+		addObserver: self
+		selector: @selector(completeFinkConfUpdate:)
+		name: FinkCommandCompleted
+		object: nil];
+		
+		return self;
 	}
-	return self;
+	return nil;
 }
+
 
 -(void)readFinkConf
 {
@@ -50,12 +68,12 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 				forKey: [line substringToIndex: split]];
 		}
 	}
-	[finkConfDict setObject: 
-						[NSMutableArray arrayWithArray:
-							[[finkConfDict objectForKey: @"Trees"] 
+	[finkConfDict setObject: [NSMutableArray arrayWithArray:
+								[[finkConfDict objectForKey: @"Trees"] 
 								componentsSeparatedByString: @" "]]
 				  forKey: @"Trees"];				
 }
+
 
 -(BOOL)useUnstableMain
 {
@@ -80,6 +98,7 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 		}
 	}
 }
+
 
 -(BOOL)useUnstableCrypto
 {
@@ -122,25 +141,76 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 	}
 }
 
+-(BOOL)passiveFTP
+{
+	if ([[finkConfDict objectForKey: @"ProxyPassiveFTP"] isEqualToString: @"true"]){
+		return YES;
+	}
+	return NO;
+}
 
+-(void)setPassiveFTP:(BOOL)passiveFTP
+{
+	if (passiveFTP){
+		[finkConfDict setObject: @"true" forKey: @"ProxyPassiveFTP"];
+	}else{
+		[finkConfDict setObject: @"false" forKey: @"ProxyPassiveFTP"];
+	}
+}
+
+-(NSString *)useHTTPProxy
+{
+	return [finkConfDict objectForKey: gProxyHTTP];
+}
+
+-(void)setUseHTTPProxy:(NSString *)s
+{
+	if (s != nil){
+		[finkConfDict setObject: s forKey: gProxyHTTP];
+	}else{
+		[finkConfDict removeObjectForKey: gProxyHTTP];
+	}
+}
+
+-(NSString *)useFTPProxy
+{
+	return [finkConfDict objectForKey: gProxyFTP];
+}
+
+-(void)setUseFTPProxy:(NSString *)s
+{
+	if (s != nil){
+		[finkConfDict setObject: s forKey: gProxyFTP];
+	}else{
+		[finkConfDict removeObjectForKey: gProxyFTP];
+	}
+}
+
+
+
+//helper used in writeToFile:
 -(NSString *)stringFromDictionary
 {
     NSMutableString *fconfString = [NSMutableString stringWithString:
 		@"# Fink configuration, initially created by bootstrap.pl\n"];
 	NSEnumerator *e;
     NSString *k;
-
+	NSString *v;
+	
+	//turn tree list into string
     [finkConfDict setObject: [[finkConfDict objectForKey: @"Trees"] 
 								componentsJoinedByString: @" "]
 				  forKey: @"Trees"];
 
+	//get string from dictionary of fink.conf values
     e = [finkConfDict keyEnumerator];
     while (k = [e nextObject]){
+		v = [finkConfDict objectForKey: k];
 		[fconfString appendString: 
-		   [NSString stringWithFormat:
-				@"%@: %@\n", k, [finkConfDict objectForKey: k]]];
+		   [NSString stringWithFormat: @"%@: %@\n", k, v]];
     }
 
+	//turn tree list back into an array for additional changes
     [finkConfDict setObject: [[finkConfDict objectForKey: @"Trees"]
 								componentsSeparatedByString: @" "]
 				  forKey: @"Trees"];
@@ -148,61 +218,64 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
     return fconfString;
 }
 
+
+//starts process of writing changes to fink.conf file
 -(void)writeToFile
 {
-    NSString *fconfString = [self stringFromDictionary];
-	NSLog(@"New configuration: %@", fconfString);
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	NSString *basePath = [defaults objectForKey: FinkBasePath];
+	NSString *backupFile = [NSString stringWithFormat: @"%@/etc/fink.conf~", basePath];
+	NSMutableArray *backupFinkConfArray = [NSMutableArray arrayWithObjects:
+		@"/bin/cp",
+		[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
+		backupFile,
+		nil];
 
-#ifdef UNDEF
-	//NEED TO ADD PIPES TO STDOUT & STDIN TO DETECT REQUEST FOR AND WRITE PASSWORD
-	//OR USE IOTASKWRAPPER
-    NSTask *backupTask = [[NSTask alloc] init];
-    NSTask *writeTask = [[NSTask alloc] init];
-    NSString *basePath = [defaults objectForKey: FinkBasePath];
-    int error;
+	[center postNotificationName: FinkConfChangeIsPending
+			object: backupFinkConfArray];
+}
 
-    // Back up existing fink.conf; check for successful completion
-    [backupTask setLaunchPath: @"/usr/bin/sudo"];
-    [backupTask setArguments: 
-		[NSArray arrayWithObjects: @"-S",
-			@"/bin/cp", 
+//completes process of writing changes to fink.conf file;
+//performed twice after receiving notifications that previous commands were completed;
+//done this way to prevent method calls from overlapping commands running asynchronously
+-(void)completeFinkConfUpdate:(NSNotification *)n
+{
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	NSString *basePath = [defaults objectForKey: FinkBasePath];
+
+	//if backup performed, write out temp fink.conf file and move to /sw/etc
+	if ([[n object] contains: @"cp"]){
+		NSString *fconfString = [self stringFromDictionary];
+		NSFileManager *manager = [NSFileManager defaultManager];
+		NSString *backupFile = [NSString stringWithFormat: @"%@/etc/fink.conf~", basePath];
+		NSMutableArray *writeFinkConfArray = [NSMutableArray arrayWithObjects:
+			@"/bin/mv",
+			@"/private/tmp/fink.conf.tmp",
 			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
-			[NSString stringWithFormat: @"%@/etc/fink.conf.bak", basePath],
-			nil]];
-    [backupTask launch];
-    while ([backupTask isRunning]){
-		continue;
-    }
-    error = [backupTask terminationStatus];
-    [backupTask release];
-    if (error){
-		NSRunCriticalAlertPanel(@"Error", 
-			@"FinkCommander was unable to create a backup for fink.conf.\nFink.conf has not been altered.",
-			@"OK", nil, nil);
-		return;
-    }
+			nil];
+		
+		//note: NSString write to file method returns boolean YES if successful
+		if ([manager fileExistsAtPath: backupFile] &&
+			[fconfString writeToFile: @"/private/tmp/fink.conf.tmp" atomically: YES]){
 
-    // Write new settings to file; check again
-    [writeTask setLaunchPath: @"/usr/bin/sudo"];
-    [writeTask setArguments:
-		[NSArray arrayWithObjects: @"-S", @"/bin/echo", 
-			[NSString stringWithFormat: @"%@>%@/etc/fink.conf", 
-				fconfString, basePath],
-			nil]];
-    [writeTask launch];
-    while ([writeTask isRunning]){
-		continue;
-    }
-    error = [writeTask terminationStatus];
-    [writeTask release];
-    if (error){
-       	NSRunCriticalAlertPanel(@"Error", 
-				@"FinkCommander was unable to write changes to fink.conf.",
-				@"OK", nil, nil);
-    }
-	
-#endif //UNDEF
+			[center postNotificationName: FinkConfChangeIsPending
+								  object: writeFinkConfArray];
+		}else{			
+			NSRunCriticalAlertPanel(@"Error",
+						   @"FinkCommander was unable to write changes to fink.conf.",
+						   @"OK", nil, nil);
+		}
+	//if fink.conf file changed by mv command, call index to make table data reflect
+	//new fink.conf settings
+	}else if ([[n object] contains: @"mv"]){
+		NSMutableArray *indexCommandArray = [NSMutableArray arrayWithObjects:
+			@"fink",
+			@"index",
+			nil];
 
+		[center postNotificationName: FinkConfChangeIsPending
+				object: indexCommandArray];
+	}
 }
 
 @end

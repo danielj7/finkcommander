@@ -19,6 +19,7 @@
             CLASS = FinkController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                indexMenuItem = NSMenuItem; 
                 interactionField = NSTextField; 
                 interactionMatrix = NSMatrix; 
                 interactionWindow = NSWindow; 

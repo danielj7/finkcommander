@@ -59,6 +59,7 @@ extern NSString *FinkDescribeItem;
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
 	IBOutlet NSProgressIndicator *progressIndicator;
+	IBOutlet NSMenuItem *indexMenuItem;
 	
 	//password entry window outlets
 	IBOutlet NSWindow *pwdWindow;
@@ -74,9 +75,10 @@ extern NSString *FinkDescribeItem;
 	IBOutlet NSPopUpButton *searchPopUpButton;
 	IBOutlet NSTextField *searchTextField;
 
+	//general instance variables
 	NSUserDefaults *defaults;
 	FinkDataController *packages;
-	NSMutableArray *displayPackages;
+	NSMutableArray *displayedPackages;
 	FinkPreferences *preferences;
 	FinkBasePathUtility *utility;
 	NSArray *selectedPackages;
@@ -97,8 +99,8 @@ extern NSString *FinkDescribeItem;
 
 //Accessors
 -(FinkDataController *)packages;
--(NSMutableArray *)displayPackages;
--(void)setDisplayPackages:(NSMutableArray *)a;
+-(NSMutableArray *)displayedPackages;
+-(void)setDisplayedPackages:(NSMutableArray *)a;
 -(BOOL)pendingCommand;
 -(void)setPendingCommand:(BOOL)b;
 -(NSArray *)selectedPackages;
@@ -115,51 +117,58 @@ extern NSString *FinkDescribeItem;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
 
-//toolbar method
--(IBAction)refilter:(id)sender;
 
-//Action and sheet methods
--(IBAction)raisePwdWindow:(id)sender;
--(IBAction)endPwdWindow:(id)sender;
--(void)sheetDidEnd:(NSWindow *)sheet
-	   returnCode:(int)returnCode
-	   contextInfo:(void *)contextInfo;
-	   
--(IBAction)raiseInteractionWindow:(id)sender;
--(IBAction)endInteractionWindow:(id)sender;
--(void)interactionSheetDidEnd:(NSWindow *)sheet
-        returnCode:(int)returnCode
-		contextInfo:(void *)contextInfo;
-
+//Menu and Toolbar Action Methods
 -(IBAction)runCommand:(id)sender;
 -(IBAction)runUpdater:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
+-(IBAction)showPreferencePanel:(id)sender;
+//  help menu items
 -(IBAction)goToFinkCommanderWebSite:(id)sender;
 -(IBAction)goToFinkWebSite:(id)sender;
 -(IBAction)goToBugReportPage:(id)sender;
 
--(IBAction)showPreferencePanel:(id)sender;
 
-//Data source methods
+//Toolbar Methods
+-(void)setupToolbar;
+-(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
+	   itemForItemIdentifier:(NSString *)itemIdentifier
+   willBeInsertedIntoToolbar:(BOOL)flag;
+-(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
+-(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
+// reapplies filter if filter popup menu changes 
+-(IBAction)refilter:(id)sender;
+
+
+//Table Methods
+//  data source methods
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView;
 -(id)tableView:(NSTableView *)aTableView 
 		objectValueForTableColumn:(NSTableColumn *)aTableColumn
 		row:(int)rowIndex;
-
-//Table delegate method
+//  delegate method
 -(void)tableView:(NSTableView *)aTableView
 		didClickTableColumn:(NSTableColumn *)aTableColumn;
-		
-//Toolbar methods
--(void)setupToolbar;
--(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
-	itemForItemIdentifier:(NSString *)itemIdentifier
-	willBeInsertedIntoToolbar:(BOOL)flag;
--(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
--(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
+//  helper
+-(void)sortTableAtColumn: (NSTableColumn *)aTableColumn 
+		inDirection:(NSString *)direction;
 
-//Process control
+
+//Process Control Methods
+// sheet methods for password window
+-(IBAction)raisePwdWindow:(id)sender;
+-(IBAction)endPwdWindow:(id)sender;
+-(void)sheetDidEnd:(NSWindow *)sheet
+		   returnCode:(int)returnCode
+		  contextInfo:(void *)contextInfo;
+// sheet methods for interaction window
+-(IBAction)raiseInteractionWindow:(id)sender;
+-(IBAction)endInteractionWindow:(id)sender;
+-(void)interactionSheetDidEnd:(NSWindow *)sheet
+			returnCode:(int)returnCode
+			contextInfo:(void *)contextInfo;
+// run the command
 -(void)runCommandWithParams:(NSMutableArray *)params;
 
 @end

@@ -33,7 +33,8 @@ File: FinkPreferences.m
 -(void)resetPreferences
 {
 	NSString *basePath;
-	NSString *proxy = [defaults objectForKey: FinkHTTPProxyVariable];
+	NSString *httpProxy; 
+	NSString *ftpProxy;
 	
 	//General preferences
 	basePath = [defaults objectForKey: FinkBasePath];
@@ -46,9 +47,7 @@ File: FinkPreferences.m
 	}
 	pathChoiceChanged = NO;
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
-	[httpProxyButton setState: ([proxy length] > 0 ? YES : NO)];
-	[httpProxyTextField setStringValue: [defaults objectForKey: FinkHTTPProxyVariable]];
-	
+		
 	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
@@ -57,6 +56,19 @@ File: FinkPreferences.m
 	[useUnstableMainButton setState: [conf useUnstableMain]];
 	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
 	[verboseOutputButton setState: [conf verboseOutput]];
+	[passiveFTPButton setState: [conf passiveFTP]];
+	httpProxy = [defaults objectForKey: FinkHTTPProxyVariable];
+
+	if ([httpProxy length] == 0 && [conf useHTTPProxy] != nil){
+		httpProxy = [conf useHTTPProxy];
+		[defaults setBool: YES forKey: FinkLookedForProxy];
+	}
+	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
+	[httpProxyTextField setStringValue: httpProxy];
+
+	ftpProxy = [conf useFTPProxy];
+	[ftpProxyButton setState: (ftpProxy != nil ? YES : NO)];
+	[ftpProxyTextField setStringValue: (ftpProxy != nil ? ftpProxy : @"")];
 }
 
 -(void)windowDidLoad
@@ -78,9 +90,22 @@ File: FinkPreferences.m
 -(void)setHTTPProxyVariable
 {
 	if ([httpProxyButton state] == NSOnState){
-		[defaults setObject: [httpProxyTextField stringValue] forKey: FinkHTTPProxyVariable];
-	}else
+		NSString *proxy = [httpProxyTextField stringValue];
+		[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
+		[conf setUseHTTPProxy: proxy];
+	}else{
 		[defaults setObject: @"" forKey: FinkHTTPProxyVariable];
+		[conf setUseHTTPProxy: nil];
+	}
+}
+
+-(void)setFTPProxyVariable
+{
+	if ([ftpProxyButton state] == NSOnState){
+		[conf setUseFTPProxy: [ftpProxyTextField stringValue]];
+	}else{
+		[conf setUseFTPProxy: nil];
+	}
 }
 
 //---------------------------------------------------------------------->Actions
@@ -89,7 +114,6 @@ File: FinkPreferences.m
 -(IBAction)setPreferences:(id)sender
 {
 	[self setBasePath];
-	[self setHTTPProxyVariable];
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
@@ -103,11 +127,17 @@ File: FinkPreferences.m
 		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
 		[conf setVerboseOutput: [verboseOutputButton state]];
+		[conf setPassiveFTP: [passiveFTPButton state]];
+
+		[self setHTTPProxyVariable];
+		[self setFTPProxyVariable];
+
 		[conf writeToFile];
 	}
 	
 	[self close];
 }
+
 
 -(IBAction)cancel:(id)sender
 {
@@ -115,10 +145,12 @@ File: FinkPreferences.m
 	[self close];
 }
 
+
 -(IBAction)setPathChoice:(id)sender
 {
 	pathChoiceChanged = YES;
 }
+
 
 -(IBAction)setFinkConfChanged:(id)sender
 {
@@ -127,11 +159,19 @@ File: FinkPreferences.m
 
 
 //---------------------------------------------------------------------->Delegate Methods
-//automatically select alternate path radio button if user starts to type in 
-//path choice text field
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
-	[pathChoiceMatrix selectCellWithTag: 1];
+	int textFieldID = [[aNotification object] tag];
+	
+	if (textFieldID == 0){ //basePathTextField
+		//automatically select alternate path radio button if user starts to type in 
+		//path choice text field
+		[pathChoiceMatrix selectCellWithTag: 1];
+	}else if (textFieldID == 1){
+		//automatically select http_proxy button if 
+		[httpProxyButton setState: 
+			([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];	
+	}
 }
 
 

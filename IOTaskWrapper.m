@@ -34,20 +34,10 @@
 		if ([proxy length] > 0){
 			[environment setObject: proxy forKey: @"http_proxy"];
 		}else if (! [defaults boolForKey: FinkLookedForProxy]){
-#ifdef DEBUG
-			NSLog(@"Looking for http_proxy environment variable");
-#endif //DEBUG
 			if (proxyEnv = getenv("http_proxy")){
 				proxy = [NSString stringWithCString: proxyEnv];
-#ifdef DEBUG
-				NSLog(@"Found http_proxy variable: %@", proxy);
-#endif //DEBUG
 				[environment setObject: proxy  forKey: @"http_proxy"];
 				[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
-			}else {
-#ifdef DEBUG
-				NSLog(@"Proxy environment variable not found");
-#endif //DEBUG
 			}
 			[defaults setBool: YES forKey: FinkLookedForProxy];
 		}
@@ -94,16 +84,11 @@
         name: NSFileHandleReadCompletionNotification 
         object: [[task standardOutput] fileHandleForReading]];
 
-
     [[[task standardOutput] fileHandleForReading] readInBackgroundAndNotify];
-#ifdef DEBUG
-	NSLog(@"Environment set to %@", [task environment]);
-#endif
 
     // launch the task asynchronously
     [task launch];
 }
-
 
 -(void)stopProcess
 {
@@ -114,14 +99,12 @@
 		continue;
 	}
 	
-	[controller processFinishedWithStatus: [task terminationStatus]];    
+	[controller processFinishedWithStatus: [task terminationStatus]];
     controller = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
-	  name: NSFileHandleReadCompletionNotification object: [[task standardOutput] fileHandleForReading]];
-    
-    // Probably superfluous given change made above
-    //[task terminate];
+	  name: NSFileHandleReadCompletionNotification 
+	  object: [[task standardOutput] fileHandleForReading]];
 }
 
 // Get data asynchronously from process's standard output
@@ -135,7 +118,7 @@
         [self stopProcess];
     }
     
-    // need to schedule the file handle go read more data in the background again.
+    //schedule the file handle go read more data in the background again.
     [[aNotification object] readInBackgroundAndNotify];
 }
 

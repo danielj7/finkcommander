@@ -8,8 +8,8 @@ File: FinkPreferences.h
  Unix software on Mac OS X.
 
  FinkPreferences connects the user's choices in the preferences windows to 
- values stored in the application's NSUserDefaults dictionary.  It also defines
- global variables used throughout the application.
+ values stored in the application's NSUserDefaults dictionary or to values
+ in the fink.conf file.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -36,18 +36,24 @@ File: FinkPreferences.h
 
 @interface FinkPreferences : NSWindowController 
 {
+	//widgets used for general preference settings
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
-	IBOutlet NSButton *httpProxyButton;
-	IBOutlet NSTextField *httpProxyTextField;
 	
+	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
 	IBOutlet NSButton *updateWithFinkButton;
 	
+	//widgets used to alter fink.conf
 	IBOutlet NSButton *useUnstableMainButton;
 	IBOutlet NSButton *useUnstableCryptoButton;
 	IBOutlet NSButton *verboseOutputButton;
+	IBOutlet NSButton *passiveFTPButton;
+	IBOutlet NSButton *httpProxyButton;
+	IBOutlet NSTextField *httpProxyTextField;
+	IBOutlet NSButton *ftpProxyButton;
+	IBOutlet NSTextField *ftpProxyTextField;
 	
 	NSUserDefaults *defaults;
 	FinkConf *conf;
