@@ -12,10 +12,10 @@
             CLASS = FinkController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                mainWindow = id; 
                 msgText = id; 
                 pwdField = NSSecureTextField; 
                 pwdWindow = NSWindow; 
+                scrollView = NSScrollView; 
                 tableView = id; 
                 textView = id; 
             }; 

@@ -1,7 +1,7 @@
 // !$*UTF8*$!
 {
 	29B97313FDCFA39411CA2CEA = {
-		activeBuildStyle = 4A9504CCFFE6A4B311CA0CBA;
+		activeBuildStyle = 4A9504CDFFE6A4B311CA0CBA;
 		activeTarget = 29B97326FDCFA39411CA2CEA;
 		addToTargets = (
 			29B97326FDCFA39411CA2CEA,
@@ -10,15 +10,14 @@
 		);
 		perUserDictionary = {
 			PBXWorkspaceConfiguration = {
-				ContentSize = "{877, 684}";
+				ContentSize = "{892, 684}";
 				LeftSlideOut = {
-					ActiveTab = 3;
-					Frame = "{{0, 23}, {877, 661}}";
+					ActiveTab = 0;
+					Frame = "{{0, 23}, {892, 661}}";
 					Split0 = {
-						ActiveTab = 2;
-						Frame = "{{224, 0}, {653, 661}}";
+						Frame = "{{245, 0}, {647, 661}}";
 						Split0 = {
-							Frame = "{{0, 263}, {653, 398}}";
+							Frame = "{{0, 24}, {647, 637}}";
 						};
 						SplitCount = 1;
 						Tab0 = {
@@ -48,16 +47,16 @@
 							LauncherConfigVersion = 4;
 						};
 						Tab1 = {
-							Frame = "{{0, 0}, {632, 205}}";
+							Frame = "{{0, 0}, {647, 205}}";
 							LauncherConfigVersion = 3;
 							Runner = {
-								Frame = "{{0, 0}, {632, 205}}";
+								Frame = "{{0, 0}, {647, 205}}";
 							};
 						};
 						Tab2 = {
-							BuildMessageFrame = "{{0, 0}, {655, 106}}";
-							BuildTranscriptFrame = "{{0, 115}, {655, 126}}";
-							Frame = "{{0, 0}, {653, 239}}";
+							BuildMessageFrame = "{{0, 0}, {649, 106}}";
+							BuildTranscriptFrame = "{{0, 115}, {649, 126}}";
+							Frame = "{{0, 0}, {647, 239}}";
 						};
 						Tab3 = {
 							Frame = "{{0, 0}, {629, 176}}";
@@ -92,7 +91,7 @@
 					};
 					TabCount = 5;
 				};
-				WindowLocation = "{-7, 0}";
+				WindowLocation = "{11, 0}";
 			};
 		};
 		wantsIndex = 1;
@@ -125,5 +124,10 @@
 		);
 		sourceDirectories = (
 		);
+	};
+	F5D3F481025306EB01A80164 = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 239}, {750, 502}}";
+		};
 	};
 }

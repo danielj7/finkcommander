@@ -9,8 +9,11 @@ See the header file, FinkController.h, for interface and license information.
 
 @implementation FinkController
 
-//----------------------------------------------->Startup and Dealloc
+//--------------------------------------------------------------------------------
+//		STARTUP AND SHUTDOWN
+//--------------------------------------------------------------------------------
 
+//----------------------------------------------->Initialize
 +(void)initialize
 {
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
@@ -26,7 +29,7 @@ See the header file, FinkController.h, for interface and license information.
 #endif //DEBUG
 }
 
-
+//----------------------------------------------->Init
 -(id)init
 {
 	NSEnumerator *e;
@@ -90,7 +93,7 @@ See the header file, FinkController.h, for interface and license information.
 	return self;
 }
 
-
+//----------------------------------------------->Dealloc
 -(void)dealloc
 {
 	[packages release];
@@ -112,8 +115,11 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
+//----------------------------------------------->Post-Init Startup
 -(void)awakeFromNib
 {
+	[tableView setAutosaveName: @"FinkTable"];
+	[tableView setAutosaveTableColumns: YES];
 	[msgText setStringValue:
 		@"Gathering data for table; this will take a moment . . ."];
 }
@@ -152,8 +158,9 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
-
-//----------------------------------------------->Accessors
+//--------------------------------------------------------------------------------
+//		ACCESSORS
+//--------------------------------------------------------------------------------
 
 -(FinkDataController *)packages  {return packages;}
 
@@ -209,10 +216,25 @@ See the header file, FinkController.h, for interface and license information.
 }
 #endif //REFACTOR
 
+//--------------------------------------------------------------------------------
+//		WINDOW METHODS
+//--------------------------------------------------------------------------------
 
-//----------------------------------------------->Action Methods and Helpers
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:
+	(NSApplication *)theApplication 
+{
+    return YES;
+}
 
-//helper:  display running command above table
+
+
+//--------------------------------------------------------------------------------
+//		MENU COMMANDS AND HELPERS
+//--------------------------------------------------------------------------------
+
+//----------------------------------------------->Helpers
+
+//display running command above table
 -(void)displayCommand:(NSArray *)params
 {
 	[msgText setStringValue: [NSString stringWithFormat: @"Running %@ . . .",
@@ -220,7 +242,7 @@ See the header file, FinkController.h, for interface and license information.
 		componentsJoinedByString: @" "]]];
 }
 
-//helper:  set up the argument list for either command method
+//set up the argument list for either command method
 -(NSMutableArray *)setupCommandFrom:(id)sender
 {
 	NSString *cmd = [[sender title] lowercaseString];
@@ -234,6 +256,8 @@ See the header file, FinkController.h, for interface and license information.
 	[self setLastCommand: cmd];
 	return args;
 }
+
+//----------------------------------------------->Menu Actions
 
 //run package-specific command with arguments derived from table selection
 -(IBAction)runCommand:(id)sender
@@ -274,8 +298,7 @@ See the header file, FinkController.h, for interface and license information.
 	[args release];
 }
 
-//allow user to update table using Fink, rather than relying on 
-//FinkCommander's manual update
+//allow user to update table using Fink
 -(IBAction)updateTable:(id)sender
 {
 	[msgText setStringValue: @"Updating table data . . . "]; //time lag here
@@ -291,7 +314,33 @@ See the header file, FinkController.h, for interface and license information.
 	[preferences showWindow: self];
 }
 
-//----------------------------------------------->Table Data Source Methods
+//----------------------------------------------->Menu Item Delegate
+
+//Disable menu item selections
+-(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+{
+	//disable package-specific commands if no row selected
+	if ([tableView selectedRow] == -1 &&
+	    [menuItem action] == @selector(runCommand:)){
+		return NO;
+	}
+	//disable Source and Binary menu items if command is running
+	if (([self commandIsRunning])
+	 &&
+	 ([[[menuItem menu] title] isEqualToString: @"Source"] ||
+   [[[menuItem menu] title] isEqualToString: @"Binary"] ||
+   [[menuItem title] isEqualToString: @"Update table"])){
+		return NO;
+	}
+	return YES;
+}
+
+
+//--------------------------------------------------------------------------------
+//		TABLE METHODS
+//--------------------------------------------------------------------------------
+
+//----------------------------------------------->Data Source Methods
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
@@ -309,7 +358,8 @@ See the header file, FinkController.h, for interface and license information.
 }
 
 
-//----------------------------------------------->Delegate Methods
+//----------------------------------------------->Delegate Method
+
 
 //sort table columns
 -(void)tableView:(NSTableView *)aTableView
@@ -321,14 +371,14 @@ See the header file, FinkController.h, for interface and license information.
 	NSString *direction;
 	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
 		FinkScrollToSelectedRow];
-	FinkPackage *pkg;
+	FinkPackage *pkg =  nil;
 	int row = [aTableView selectedRow];
 	int newrow;
 
 	if (scrollToSelection && row >= 0){
 		pkg = [[packages array] objectAtIndex: row];
 	}
-
+	
 	// remove sort direction indicator from last selected column
 	[tableView setIndicatorImage: nil inTableColumn: lastColumn];
 	
@@ -362,30 +412,11 @@ See the header file, FinkController.h, for interface and license information.
 	
 	if (scrollToSelection && row >= 0){
 		newrow = [[packages array] indexOfObject: pkg];
-		[tableView scrollRowToVisible: newrow];
 		[tableView selectRow: newrow byExtendingSelection: NO];
+		[tableView scrollRowToVisible: newrow];
 	}
-	
 }
 
-//Disable menu item selections
--(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
-{
-	//disable package-specific commands if no row selected
-	if ([tableView selectedRow] == -1 &&
-	    [menuItem action] == @selector(runCommand:)){
-		return NO;
-	}
-	//disable Source and Binary menu items if command is running
-	if (([self commandIsRunning])
-	      &&
-	     ([[[menuItem menu] title] isEqualToString: @"Source"] ||
-		  [[[menuItem menu] title] isEqualToString: @"Binary"] ||
-		  [[menuItem title] isEqualToString: @"Update table"])){
-		return NO;
-	}
-	return YES;	
-}
 
 //--------------------------------------------------------------------------------
 //		AUTHENTICATION AND PROCESS CONTROL
@@ -466,8 +497,6 @@ See the header file, FinkController.h, for interface and license information.
 		NSMakeRange([[textView string] length], 0)];
 }
 
-//much of the code in this method was borrowed from the Moriarity example at
-//http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 - (void)appendOutput:(NSString *)output
 {
 		NSAttributedString *lastOutput;
@@ -492,7 +521,7 @@ See the header file, FinkController.h, for interface and license information.
 		//return to terminate the process, then notify the user
 		if([[lastOutput string] rangeOfString: @"Sorry, try again."].length > 0){
 			NSLog(@"Detected password error.");
-			[finkTask writeToStdin: @"\n\n\n"];
+			[finkTask writeToStdin: @"\n"];
 			[finkTask stopProcess];
 			[self setPassword: nil];
 		}

@@ -9,7 +9,7 @@
 #import <AppKit/AppKit.h>
 
 // eliminate for release version:
-#define DEBUG 
+//#define DEBUG 
 
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
@@ -22,6 +22,8 @@ extern NSString *FinkScrollToSelectedRow;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *updateWithFinkButton;
 	IBOutlet NSButton *scrollToSelectionButton;
+	
+	NSUserDefaults *defaults;
 }
 
 -(IBAction)setPreferences:(id)sender;

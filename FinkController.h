@@ -44,6 +44,7 @@ Contact the author at sburr@mac.com.
 {
 	//main window outlets
 	IBOutlet id tableView;
+	IBOutlet NSScrollView *scrollView;
 	IBOutlet id textView;
 	IBOutlet id msgText;
 	

@@ -18,12 +18,12 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 -(id)init
 {
 	self = [super initWithWindowNibName: @"Preferences"];
+	defaults = [NSUserDefaults standardUserDefaults];
 	return self;
 }
 
 -(void)windowDidLoad
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *basePath;
 	
 	basePath = [defaults objectForKey: FinkBasePath];
@@ -44,10 +44,7 @@ NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 }
 
 -(IBAction)setPreferences:(id)sender
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-
+{	
 	if ([[pathChoiceMatrix selectedCell] tag] == 0){
 		[defaults setObject: @"/sw" forKey: FinkBasePath];
 	}else{
