@@ -1,11 +1,12 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "FinkController.h"
 
 @interface FinkDialogs : NSObject 
 {
-	IBOutlet NSButton turnOffWarningButton;
-	IBOutlet NSTextField questionTextField;
+	IBOutlet NSButton *turnOffWarningButton;
+	IBOutlet NSTextField *questionTextField;
 	
 	id controller;
 	NSArray *arguments;
