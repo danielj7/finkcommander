@@ -153,24 +153,26 @@ See the header file, FinkData.h, for interface and license information.
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
     NSArray *args;
 	NSTask *finkListCommand = [[[NSTask alloc] init] autorelease];
+
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
 			@"Library/Application Support/FinkCommander/FinkCommander.pl"], nil];
-	[finkListCommand setLaunchPath: @"/usr/bin/perl"];
 
-    [finkListCommand setArguments: args];
-    [finkListCommand setStandardOutput: pipeIn];
+	[finkListCommand setLaunchPath:[defaults objectForKey:FinkPerlPath]];
+	[finkListCommand setArguments:args];
+	[finkListCommand setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+    [finkListCommand setStandardOutput:pipeIn];
 
-    [self setStart: [NSDate date]];
+    [self setStart:[NSDate date]];
 
-    //run task asynchronously; this can take anywhere from a few seconds to a minute
+    //Run task asynchronously; this can take anywhere from a few seconds to a minute
     [finkListCommand launch];
-    //the notification this method refers to will trigger the completeUpdate: method
+    //The notification this method refers to will trigger the completeUpdate: method
     [cmdStdout readToEndOfFileInBackgroundAndNotify];
 
-    //in the meantime, run the task that obtains the binary package names, which takes only
-    //a second or two, synchronously
-	[self setBinaryPackages: [self makeBinaryDictionary]];
+    /*	In the meantime, run the task that obtains the binary package names, which takes only
+    	a second or two, synchronously */
+	[self setBinaryPackages:[self makeBinaryDictionary]];
 }
 
 -(NSString *)parseWeburlFromString:(NSString *)s
@@ -295,7 +297,7 @@ See the header file, FinkData.h, for interface and license information.
 				[p setUnstable:[p stable]];
 			}
 		}
-		descriptionComponents = [self descriptionComponentsFromString: [p fulldesc]];
+		descriptionComponents = [self descriptionComponentsFromString:[p fulldesc]];
 		[p setWeburl: [descriptionComponents objectAtIndex: 0]];
 		[p setMaintainer: [descriptionComponents objectAtIndex: 1]];
 		[p setEmail: [descriptionComponents objectAtIndex: 2]];

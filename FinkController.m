@@ -146,9 +146,11 @@ enum {
 			fixPreferences();
 		}
 
-		//Set base path default, if necessary; write base path into perl script used
-		//to obtain fink package data
+		/*	Set base path and perl path defaults, if necessary; 
+			write base path into perl script used
+			to obtain fink package data */
 		findFinkBasePath();
+		findPerlPath();
 		fixScript();
 
 		//Set environment variables for use in authorized commands, if

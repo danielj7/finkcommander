@@ -45,7 +45,7 @@
     [newTree retain];
     [tree release];
     tree = newTree;
-	[self setTitle:[[tree rootItem] path] ofColumn:0];
+	//[self setTitle:[[tree rootItem] path] ofColumn:0];
 }
 
 //----------------------------------------------------------
@@ -61,14 +61,13 @@ message. */
 	NSBrowserCell *parentCell;
     SBFileItem *item;
 	
-    if (0 == column){
-		//return [[tree rootItem] numberOfChildren];
+    if (0 == column){ //We're at the root
 		return 1;
 	} 
 
 	parentCell = [self selectedCellInColumn:column-1];
 	item = [parentCell representedObject];
-	[self setTitle:[item path] ofColumn:column];
+	//[self setTitle:[item path] ofColumn:column];
     return [item numberOfChildren];
 }
 
@@ -84,7 +83,6 @@ message. */
 
     if (0 == column){
 		/* Fill the first column (index 0) with the children of the root item. */
-		//item = [[tree rootItem] childAtIndex:row];
 		item = [tree rootItem];
     }else{
 		/* The representedObject of the selected item in the parent column

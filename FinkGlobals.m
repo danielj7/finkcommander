@@ -10,6 +10,7 @@ File: FinkGlobals.m
 //Global variables used throughout FinkCommander source code to set
 //user defaults.
 NSString *FinkBasePath = @"FinkBasePath";
+NSString *FinkPerlPath = @"FinkPerlPath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkOutputPath = @"FinkOutputPath";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";

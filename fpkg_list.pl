@@ -1,4 +1,4 @@
-###!/usr/bin/perl -s
+#!/usr/bin/env perl -s
 
 #File: fpkg_list.pl
 #

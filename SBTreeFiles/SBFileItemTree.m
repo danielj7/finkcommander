@@ -83,6 +83,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 -(void)dealloc
 {
 	[_sbrootItem release];
+	[_sbName release];
 	[sbLock release];
 	NSLog(@"Deallocating %@", [self description]);
 	
@@ -105,13 +106,13 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 	_sbrootItem = newRootItem;
 }
 
--(NSString *)name { return sbName; }
+-(NSString *)name { return _sbName; }
 
 -(void)setName:(NSString *)newName
 {
     [newName retain];
-    [sbName release];
-    sbName = newName;
+    [_sbName release];
+    _sbName = newName;
 }
 
 //----------------------------------------------------------
@@ -133,7 +134,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 		return [self rootItem];
     }
 
-    //Otherwise make an array of the full path of each ancestor in the tree
+    //Otherwise make an array of the full paths of each ancestor in the tree
     while ([ppath length] > [[[self rootItem] path] length]){
 		[componentArray addObject:ppath];
 		ppath = [ppath stringByDeletingLastPathComponent];
@@ -162,12 +163,14 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 		return;
     }
     pitem = [self parentOfItem:item];
+	//There is no gap; add this item to its parent's children
     if (nil != pitem){
 		if (nil != [pitem children] && ! [pitem hasChild:item]){
 			[pitem addChild:item];  //adds to children array
 		}
 		return;
     }
+	//There is a gap, we have to add the parent before adding this item
     pitem = [[[SBFileItem alloc] initWithPath:[item pathToParent]] autorelease];
     [self addItemToTree:pitem];
     [self addItemToTree:item];
@@ -183,8 +186,8 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 	while (nil != (apath = [e nextObject]) && [apath length] > 0){
 		[sbLock lock];
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
-		[self addItemToTree:item];  //adds to array, retain count = 2
-		if (nil == [item children]){
+		[self addItemToTree:item];  	//adds to array, retain count = 2
+		if (nil == [item children]){ 	//not dir, so add to size and item count
 			totalSize += [item size];
 			itemCount++;
 		}
@@ -196,8 +199,10 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 		of an ugly hack to prevent this from happening, but it's all I can come up 
 		with for now.  */
 	if (itemCount < 200){
-		[NSThread sleepUntilDate: [NSDate dateWithTimeIntervalSinceNow:1]];
+		[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 	}
+	/* 	Let the window controller, which is running in another thread, know that
+		the tree is ready for display.  */
 	[[NSDistributedNotificationCenter defaultCenter]
 			postNotificationName:@"SBTreeCompleteNotification"
 			object:[self name]];
@@ -210,6 +215,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 #pragma mark SORTING METHODS
 //----------------------------------------------------------
 
+/* Recursively sort each file item's children */
 -(void)sortChildrenOfItem:(SBFileItem *)pitem
 		byElement:(NSString *)element
 		inOrder:(NSString *)order
@@ -231,8 +237,8 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     //Sort children
     newArray = [[pitem children]
 				sortedArrayUsingFunction:sorter
-								 context:order
-									hint:sortHint];
+				context:order
+				hint:sortHint];
     [pitem setChildren:newArray];
 
     //Sort descendants of children
@@ -246,7 +252,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     }
 }
 
-
+/* Provides entry to recursive sort messages sent to each item's children */
 -(void)sortTreeByElement:(NSString *)element
     inOrder:(NSString *)order
 {

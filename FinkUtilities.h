@@ -41,6 +41,7 @@ File: FinkUtilities.h
 #include <signal.h>
 
 void findFinkBasePath(void);
+void findPerlPath(void);
 void fixScript(void);
 void setInitialEnvironmentVariables(void);
 

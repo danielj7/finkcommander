@@ -42,6 +42,8 @@
                 outputPathTextField = NSTextField; 
                 passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
+                perlPathButton = NSButton; 
+                perlPathTextField = NSTextField; 
                 rootMethodMatrix = NSMatrix; 
                 scrollBackLimitButton = NSButton; 
                 scrollBackLimitTextField = NSTextField; 

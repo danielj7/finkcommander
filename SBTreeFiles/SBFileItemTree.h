@@ -13,7 +13,7 @@ extern void alertProblemPaths(NSArray *);
 @interface SBFileItemTree: NSObject
 {
     SBFileItem *_sbrootItem;
-    NSString *sbName;
+    NSString *_sbName;
     NSLock *sbLock;
 
     unsigned long totalSize;

@@ -8,7 +8,7 @@ File: FinkUtilities.m
 #import "FinkUtilities.h"
 
 
-//------------------------------------------------------------>Base Path Functions
+//------------------------------------------------------------>Path Functions
 
 void findFinkBasePath(void)
 {
@@ -37,6 +37,33 @@ void findFinkBasePath(void)
 	if (! [oldBasePath isEqualToString:path]){
 		NSLog(@"Fink base path has changed from %@ to %@", oldBasePath, path);
 		[defaults setBool:YES forKey:FinkBasePathFound];
+	}
+}
+
+void findPerlPath(void)
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSString *pathToPerl = [defaults objectForKey:FinkPerlPath];
+	
+	if (nil == pathToPerl){
+		NSArray *possiblePaths = [NSArray arrayWithObjects: 
+									@"/usr/local/bin/perl", 
+									@"/opt/bin/perl", 
+									@"/opt/local/bin/perl", 
+									[NSHomeDirectory() 
+										stringByAppendingPathComponent:@"bin/perl"], 
+									nil];
+		NSEnumerator *binPathEnumerator = [possiblePaths objectEnumerator];
+		while (nil != (pathToPerl = [binPathEnumerator nextObject])){
+			if ([manager isExecutableFileAtPath:pathToPerl]){
+				[defaults setObject:pathToPerl forKey:FinkPerlPath];
+				Dprintf(@"Found perl at %@", pathToPerl);
+				return;
+			}
+		}
+		NSLog(@"Failed to find executable perl path; setting to /usr/bin/perl as default");
+		[defaults setObject:@"/usr/bin/perl" forKey:FinkPerlPath];
 	}
 }
 
@@ -115,6 +142,10 @@ void setInitialEnvironmentVariables(void)
 				@"CVS_RSH",
 				NSHomeDirectory(),
 				@"HOME",
+				@"Apple_Terminal",
+				@"TERM_PROGRAM",
+				@"C",
+				@"LC_ALL",
 				nil];
 	
 	proxy = [defaults objectForKey:FinkHTTPProxyVariable];

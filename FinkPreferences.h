@@ -46,9 +46,11 @@ File: FinkPreferences.h
 	IBOutlet NSTextField *outputPathTextField;
 	IBOutlet NSTextField *scrollBackLimitTextField;
 	IBOutlet NSTextField *checkForUpdateIntervalTextField;
+	IBOutlet NSTextField *perlPathTextField;
 	IBOutlet NSStepper *checkForUpdateIntervalStepper;
 	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
+	IBOutlet NSButton *perlPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *scrollToBottomButton;
 	IBOutlet NSButton *warnBeforeRemovingButton;

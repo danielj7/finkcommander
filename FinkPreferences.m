@@ -7,6 +7,24 @@ File: FinkPreferences.m
 
 #import "FinkPreferences.h"
 
+/* Radio button tags */
+enum {
+	CURL,
+	WGET,
+	AXEL
+};
+
+/* Text field tags */
+enum {
+	FINK_BASEPATH = 0,
+	HTTP_PROXY = 1,
+	FTP_PROXY = 2,
+	FETCH_ALT_DIR = 3,
+	OUTPUT_PATH = 4,
+	ENVIRONMENT_SETTING = 5,
+	PERL_PATH = 6
+};
+
 @implementation FinkPreferences
 
 //--------------------------------------------------------------------------------
@@ -113,6 +131,7 @@ File: FinkPreferences.m
 	outputPath = [defaults objectForKey: FinkOutputPath];
 	[outputPathButton setState: [outputPath length] > 0];
 	[outputPathTextField setStringValue: outputPath];
+	[perlPathTextField setStringValue:[defaults objectForKey:FinkPerlPath]];
 		
 	//Display Tab
 	autoExpandChanged = NO;
@@ -216,13 +235,13 @@ File: FinkPreferences.m
 -(void)setDownloadMethod
 {
 	switch ([[downloadMethodMatrix selectedCell] tag]){
-		case 0: 
+		case CURL: 
 			[conf setDownloadMethod:@"curl"];
 			break;
-		case 1:
+		case WGET:
 			[conf setDownloadMethod: @"wget"];
 			break;
-		case 2:
+		case AXEL:
 			[conf setDownloadMethod: @"axel"];
 			break;
 	}
@@ -271,7 +290,8 @@ File: FinkPreferences.m
 	
 	//Paths Tab
 	[self setBasePath];
-	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
+	[defaults setObject:[outputPathTextField stringValue] forKey: FinkOutputPath];
+	[defaults setObject:[perlPathTextField stringValue] forKey:FinkPerlPath];
 		//Give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
@@ -381,17 +401,23 @@ File: FinkPreferences.m
 -(IBAction)selectDirectory:(id)sender
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	NSString *directory = NSHomeDirectory();
 	NSTextField *pathField = nil;
 
 	switch([sender tag]){
-		case 0: 
+		case FINK_BASEPATH: 
 			pathField = basePathTextField;
+			directory = @"/usr";
 			break;
-		case 3:
+		case FETCH_ALT_DIR:
 			pathField = fetchAltDirTextField;
 			break;
-		case 4:
+		case OUTPUT_PATH:
 			pathField = outputPathTextField;
+			break;
+		case PERL_PATH:
+			pathField = perlPathTextField;
+			directory = @"/usr";
 			break;
 	}
 	
@@ -400,7 +426,7 @@ File: FinkPreferences.m
 	[panel setAllowsMultipleSelection: NO];
 	[panel setPrompt: NSLocalizedString(@"Choose", nil)];
 	
-	[panel beginSheetForDirectory: NSHomeDirectory()
+	[panel beginSheetForDirectory:directory
 		file: nil
 		types: nil
 		modalForWindow: [self window]
@@ -493,31 +519,31 @@ File: FinkPreferences.m
 	//Select the button that corresponds to the altered text field.
 	//The text fields were given the indicated tag numbers in IB.
 	switch(textFieldID){
-		case 0:
+		case FINK_BASEPATH:
 			[pathChoiceMatrix selectCellWithTag:
 				([tfString length] > 0 ? 1 : 0)]; //0 == default
 			break;
-		case 1:
+		case HTTP_PROXY:
 			[httpProxyButton setState: 
 				([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];
 			finkConfChanged = YES;
 			break;
-		case 2:
+		case FTP_PROXY:
 			[ftpProxyButton setState:
 				([[ftpProxyTextField stringValue] length] > 0 ? YES : NO)];
 			finkConfChanged = YES;
 			break;
-		case 3:
+		case FETCH_ALT_DIR:
 			[fetchAltDirButton setState:
 				([[fetchAltDirTextField stringValue] length] > 0 ? YES : NO)];
 			finkConfChanged = YES;
 			break;
-		case 4:
+		case OUTPUT_PATH:
 			[outputPathButton setState:
 				([tfString length] > 0 ? YES : NO)];
 			Dprintf(@"Button state: %d", [outputPathButton state]);
 			break;
-		case 5:
+		case ENVIRONMENT_SETTING:
 			[self validateEnvironmentButtons];
 	}
 }

@@ -40,6 +40,7 @@
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;
+extern NSString *FinkPerlPath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkOutputPath;
 extern NSString *FinkUpdateWithFink;
