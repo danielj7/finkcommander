@@ -137,6 +137,21 @@
 		<key>ToolTip</key>
 		<string>Terminate current command</string>
 	</dict>
+	<key>FinkUpdateallItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runUpdater</string>
+		<key>Image</key>
+		<string>updateall</string>
+		<key>Label</key>
+		<string>Update-all</string>
+		<key>PaletteLabel</key>
+		<string>Update-all</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Update all packages from source</string>
+	</dict>
 	<key>FinkUpdateBinaryItem</key>
 	<dict>
 		<key>Action</key>

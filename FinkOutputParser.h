@@ -67,6 +67,7 @@ File: FinkOutputParser.h
 
 #define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]						&& \
 							  ![(x) contains:@"makefile"])							|| \
+							 [[(x) strip] hasPrefix: @"Compiling"]					|| \
 							 [[(x) strip] containsPattern: @"g77 [- ]*"]			|| \
 							 [[(x) strip] containsPattern: @"g[c+][c+] -[!E]*"]		|| \
 							 [[(x) strip] containsPattern: @"cc -[!E]*"]			|| \

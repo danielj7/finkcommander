@@ -20,6 +20,7 @@ NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
 NSString *FinkFilterItem = @"FinkFilterItem";
 NSString *FinkInteractItem = @"FinkInteractItem";
 NSString *FinkEmailItem = @"FinkEmailItem";
+NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 
 
 @implementation FinkController
@@ -808,6 +809,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		FinkTerminateCommandItem,
 		FinkEmailItem,
 		FinkFilterItem,
+		FinkUpdateallItem,
 		nil];
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
-<plist version="0.9">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
 <dict>
 	<key>FinkDescribeItem</key>
 	<dict>
@@ -28,7 +28,7 @@
 		<key>ToolTip</key>
 		<string>Email an den Maintainer des Pakets senden</string>
 	</dict>
-	<key>FinkFilterItem</key> 
+	<key>FinkFilterItem</key>
 	<dict>
 		<key>Label</key>
 		<string>Paket-Filter</string>
@@ -163,6 +163,21 @@
 		<integer>1</integer>
 		<key>ToolTip</key>
 		<string>Beschreibungen der Binär-Pakete aktualisieren (apt-get update)</string>
+	</dict>
+	<key>FinkUpdateallItem</key>
+	<dict>
+		<key>Action</key>
+		<string>runUpdater</string>
+		<key>Image</key>
+		<string>updateall</string>
+		<key>Label</key>
+		<string>Update-all</string>
+		<key>PaletteLabel</key>
+		<string>Update-all</string>
+		<key>Tag</key>
+		<integer>0</integer>
+		<key>ToolTip</key>
+		<string>Alle Pakete aktualisieren</string>
 	</dict>
 </dict>
 </plist>

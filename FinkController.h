@@ -82,56 +82,56 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 
-#define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| \
-								 [(x) isEqualToString: @"remove"]	|| \
-								 [(x) isEqualToString: @"index"]	|| \
-								 [(x) contains: @"build"]			|| \
-								 [(x) contains: @"dpkg"]			|| \
-								 [(x) contains: @"update"])
+#define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
+							[(x) isEqualToString: @"remove"]		|| 				\
+							[(x) isEqualToString: @"index"]			|| 				\
+							[(x) contains: @"build"]				|| 				\
+							[(x) contains: @"dpkg"]					|| 				\
+							[(x) contains: @"update"])
 
-#define TAG_NAME_ARRAY [NSArray arrayWithObjects: 	\
-							@"version",           	\
-							@"binary",           	\
-							@"stable",				\
-							@"unstable",			\
-							@"status",				\
-							@"category",			\
-							@"summary",				\
-							@"maintainer",			\
-							@"installed",			\
-							@"name",				\
+#define TAG_NAME_ARRAY [NSArray arrayWithObjects: 									\
+							@"version",           									\
+							@"binary",           									\
+							@"stable",												\
+							@"unstable",											\
+							@"status",												\
+							@"category",											\
+							@"summary",												\
+							@"maintainer",											\
+							@"installed",											\
+							@"name",												\
 							nil]
 
-#define NAME_TAG_DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 	\
-					[NSNumber numberWithInt: VERSION], @"version",          \
-					[NSNumber numberWithInt: BINARY], @"binary",            \
-					[NSNumber numberWithInt: STABLE], @"stable",            \
-					[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
-					[NSNumber numberWithInt: STATUS], @"status",            \
-					[NSNumber numberWithInt: CATEGORY], @"category",        \
-					[NSNumber numberWithInt: SUMMARY], @"summary",          \
-					[NSNumber numberWithInt: MAINTAINER], @"maintainer",    \
-					[NSNumber numberWithInt: INSTALLED], @"installed",      \
-					[NSNumber numberWithInt: NAME], @"name",                \
-					nil]
+#define NAME_TAG_DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 			\
+							[NSNumber numberWithInt: VERSION], @"version",          \
+							[NSNumber numberWithInt: BINARY], @"binary",            \
+							[NSNumber numberWithInt: STABLE], @"stable",            \
+							[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
+							[NSNumber numberWithInt: STATUS], @"status",            \
+							[NSNumber numberWithInt: CATEGORY], @"category",        \
+							[NSNumber numberWithInt: SUMMARY], @"summary",          \
+							[NSNumber numberWithInt: MAINTAINER], @"maintainer",	\
+							[NSNumber numberWithInt: INSTALLED], @"installed",      \
+							[NSNumber numberWithInt: NAME], @"name",                \
+							nil]
 
 enum {
-    VERSION    = 2000, 
-    BINARY     = 2001,
-    STABLE     = 2002,
-    UNSTABLE   = 2003,
-    STATUS     = 2004,
-    CATEGORY   = 2005,
-    SUMMARY    = 2006,
-    MAINTAINER = 2007,
-    INSTALLED  = 2008,
-	NAME	   = 2009
+    VERSION    	= 2000, 
+    BINARY     	= 2001,
+    STABLE     	= 2002,
+    UNSTABLE   	= 2003,
+    STATUS     	= 2004,
+    CATEGORY   	= 2005,
+    SUMMARY    	= 2006,
+    MAINTAINER 	= 2007,
+    INSTALLED  	= 2008,
+	NAME	   	= 2009
 };
 
 enum {
-	FCWEB = 1000,
-	FCBUG = 1001,
-	FINKDOC = 1002
+	FCWEB 		= 1000,
+	FCBUG 		= 1001,
+	FINKDOC 	= 1002
 };
 
 enum {
@@ -149,7 +149,7 @@ enum {
 	USER_CHOICE
 };
 
-@interface FinkController : NSObject //<IOTaskWrapperController>
+@interface FinkController : NSObject
 {
 	//main window outlets
 	IBOutlet NSWindow *window;
@@ -169,7 +169,7 @@ enum {
 	IBOutlet NSWindow *interactionWindow;
 	IBOutlet NSMatrix *interactionMatrix;
 	IBOutlet NSTextField *interactionField;
-	
+		
 	//search view outlets
 	IBOutlet id searchView;
 	IBOutlet NSPopUpButton *searchPopUpButton;
@@ -198,7 +198,6 @@ enum {
 
 //Accessors
 -(FinkDataController *)packages;
-
 -(NSArray *)selectedPackages;
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
