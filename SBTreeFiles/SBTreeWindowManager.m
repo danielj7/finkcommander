@@ -52,7 +52,6 @@
 	[task release];
     s = [[[NSString alloc] initWithData:d
 							encoding:NSMacOSRomanStringEncoding] autorelease];
-	//Dprintf(@"In SBTWM, return value from dpkg -L:\n%@", s);
     fileList = [[[s componentsSeparatedByString:@"\n"] mutableCopy] autorelease];
     [fileList removeObjectAtIndex:0]; /* "/." */
 
@@ -70,13 +69,13 @@
 	NSString *windowTitle = pkgName;
 	int windowNumber = 1;
 		
-	while ([[self windows] containsObject:pkgName]){
+	while ([[self windows] containsObject:windowTitle]){
 		windowNumber++;
 		if (windowNumber > 1){
 			windowTitle = [NSString stringWithFormat:@"%@ (%d)", pkgName, windowNumber];
 		}		
 	}
-	[[self windows] addObject:pkgName];
+	[[self windows] addObject:windowTitle];
 		
 	tcontroller = [[SBTreeWindowController alloc]
 							initWithFileList:fileList

@@ -1,8 +1,8 @@
 VERSION 0.5; Target release date: 1/14/03:
 
 i Package file browser
-	Fix instability
-	i Add Browser view
+	i Fix instability
+	d Add Browser view
 	d Add buttons to switch from outline to browser (modeled on Finder's)
 	Add button popup to change number of columns in browser
 	Add contextual menu

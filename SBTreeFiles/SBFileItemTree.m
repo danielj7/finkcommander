@@ -179,7 +179,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     NSEnumerator *e = [flist objectEnumerator];;
     NSString *apath;
     SBFileItem *item;
-
+	
 	while (nil != (apath = [e nextObject]) && [apath length] > 0){
 		[sbLock lock];
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
