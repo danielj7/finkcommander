@@ -46,7 +46,10 @@ File: FinkPreferences.m
 		[basePathTextField setStringValue: basePath];
 	}
 	pathChoiceChanged = NO;
+	finkConfChanged = NO;
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+	[askOnStartupButton setState: [defaults boolForKey: FinkAskForPasswordOnStartup]];
+	[neverAskButton setState: [defaults boolForKey: FinkNeverAskForPassword]];
 		
 	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
@@ -118,6 +121,8 @@ File: FinkPreferences.m
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
 	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelection];
+	[defaults setBool: [askOnStartupButton state] forKey: FinkAskForPasswordOnStartup];
+	[defaults setBool: [neverAskButton state] forKey: FinkNeverAskForPassword];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
@@ -131,6 +136,7 @@ File: FinkPreferences.m
 
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
+		finkConfChanged = NO;
 
 		[conf writeToFile];
 	}
@@ -162,15 +168,26 @@ File: FinkPreferences.m
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	int textFieldID = [[aNotification object] tag];
-	
-	if (textFieldID == 0){ //basePathTextField
-		//automatically select alternate path radio button if user starts to type in 
-		//path choice text field
-		[pathChoiceMatrix selectCellWithTag: 1];
-	}else if (textFieldID == 1){
-		//automatically select http_proxy button if 
-		[httpProxyButton setState: 
-			([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];	
+	NSString *tfString = [[aNotification object] stringValue];
+
+	//select appropriate button to correspond to changes in text fields
+	//the text fields were given the indicated tag #s in IB
+	switch(textFieldID){
+		case 0:
+			if ([tfString length] > 0){
+				[pathChoiceMatrix selectCellWithTag: 1];
+			}else{
+				[pathChoiceMatrix selectCellWithTag: 0];
+			}
+			break;
+		case 1:
+			[httpProxyButton setState: 
+				([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];
+			break;
+		case 2:
+			[ftpProxyButton setState:
+				([[ftpProxyTextField stringValue] length] > 0 ? YES : NO)];
+			break;
 	}
 }
 

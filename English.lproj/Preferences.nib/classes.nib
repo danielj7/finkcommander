@@ -11,11 +11,13 @@
             LANGUAGE = ObjC; 
             OUTLETS = {
                 alwaysChooseDefaultsButton = NSButton; 
+                askOnStartupButton = NSButton; 
                 basePathTextField = NSTextField; 
                 ftpProxyButton = NSButton; 
                 ftpProxyTextField = NSTextField; 
                 httpProxyButton = NSButton; 
                 httpProxyTextField = NSTextField; 
+                neverAskButton = NSButton; 
                 passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
                 scrollToSelectionButton = NSButton; 

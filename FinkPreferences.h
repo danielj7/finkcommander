@@ -40,6 +40,8 @@ File: FinkPreferences.h
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
+	IBOutlet NSButton *askOnStartupButton;
+	IBOutlet NSButton *neverAskButton;
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;

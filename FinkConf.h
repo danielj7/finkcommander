@@ -50,6 +50,8 @@ extern NSString *FinkHTTPProxyVariable;
 extern NSString *FinkFTPProxyVariable;
 extern NSString *FinkLookedForProxy;
 extern NSString *FinkAutoUpdateTable;
+extern NSString *FinkAskForPasswordOnStartup;
+extern NSString *FinkNeverAskForPassword;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

@@ -20,6 +20,8 @@ NSString *FinkHTTPProxyVariable = @"FinkHTTPProxyVariable";
 NSString *FinkFTPProxyVariable = @"FinkFTPProxyVariable";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 NSString *FinkAutoUpdateTable = @"FinkAutoUpdateTable";
+NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
+NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
 
 //Global variables identifying inter-object notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

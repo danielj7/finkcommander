@@ -39,6 +39,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAutoUpdateTable];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -161,6 +163,9 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[self updateTable: nil];
 	[tableView setHighlightedTableColumn: lastColumn];
 	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
+	if ([defaults boolForKey: FinkAskForPasswordOnStartup]){
+		[self raisePwdWindow: self];
+	}
 }
 
 //helper used in several methods
@@ -813,7 +818,9 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(void)runCommandWithParams:(NSMutableArray *)params
 {
-	if ([[self password] length] < 1){
+	if ([[self password] length] < 1 && 
+		! [defaults boolForKey: FinkNeverAskForPassword]){
+		
 		[self raisePwdWindow: self];
 		[self setLastParams: params];
 		[self setPendingCommand: YES];
