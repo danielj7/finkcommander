@@ -249,6 +249,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
+//----------------------------------------------->Shutdown
+
+-(void)applicationWillTerminate:(NSNotification*)anotification
+{
+    [finkTask unAuthorize];
+}
+
 //--------------------------------------------------------------------------------
 #pragma mark ACCESSORS
 //--------------------------------------------------------------------------------
@@ -892,7 +899,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)raiseInteractionWindow:(id)sender
 {
-	[splitView expandOutput];
+	[splitView expandOutputToMinimumRatio:0.4];
 	[textView scrollRangeToVisible:
 		NSMakeRange([[textView string] length], 0)];
 
@@ -1091,7 +1098,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			break;
 		case PASSWORD_PROMPT:
 			output = @"";
-			[finkTask stop];
+			//[finkTask stop];
 			break;
 		case PROMPT:
 			[self interactIfRequired];
@@ -1132,7 +1139,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[self setGUIForPhase:ACTIVATE];
 			break;
 		case SELF_REPAIR:
-			output = NSLocalizedString(@"Error:\nThe tool used to run fink commands lost its administrative privileges and had to repair itself.\nPlease re-try the command.\n", nil);
+			output = NSLocalizedString(@"\nThe tool has successfully repaired itself.\nIf you receive an error message, please re-try the command you just attempted.\n", nil);
 			break;
 	}
 	[textView appendString:output];
@@ -1178,7 +1185,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 	}else{
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
-			[splitView expandOutput];
+			[splitView expandOutputToMinimumRatio:0.0];
 		}
 		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),		//title
 			NSLocalizedString(@"OK", nil), nil,	nil, 			//buttons

@@ -115,7 +115,7 @@ void setInitialEnvironmentVariables(void)
 				NSHomeDirectory(),
 				@"HOME",
 				nil];
-
+	
 	proxy = [defaults objectForKey:FinkHTTPProxyVariable];
 	if ([proxy length] > 0){
 		[settings setObject:proxy forKey:@"http_proxy"];

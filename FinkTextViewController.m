@@ -29,11 +29,6 @@ File: FinkTextViewController.m
 
 -(int)numberOfLinesInString:(NSString *)s
 {
-//	NSArray *slines = [s componentsSeparatedByString:@"\n"];
-//	int numlines = [slines count];
-	
-//	return numlines - 1;
-
  	return [[s componentsSeparatedByString:@"\n"] count] - 1;
 }
 

@@ -13,11 +13,11 @@ File: FinkSplitView.m
 {
 	if (self = [super initWithFrame: rect]){
 		defaults = [NSUserDefaults standardUserDefaults];
+		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
+		[self setIsPaneSplitter:YES];
+		[self setDelegate:self];
 		//Register for notification that causes output to collapse when
 		//user selects the auto expand option
-		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
-		[self setIsPaneSplitter:NO];
-		
 		[[NSNotificationCenter defaultCenter] 
 						addObserver: self
 						selector: @selector(collapseOutput:)
@@ -40,6 +40,20 @@ File: FinkSplitView.m
 	outputScrollView = [[self subviews] objectAtIndex:1];
 }
 
+//Delegate method:
+//preserve user's adjustment of splitview for future use,
+//such as the expandOutputToMinimumRatio: method, 
+//unless the output view height after the adjustment is 0
+-(void)splitViewDidResizeSubviews:(NSNotification *)aNotification
+{
+	NSRect oFrame = [outputScrollView frame];
+	NSRect sFrame = [self frame];
+
+	if (oFrame.size.height > 0.0){
+		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
+											forKey: FinkOutputViewRatio];
+	}
+}
 
 -(void)collapseOutput:(NSNotification *)n
 {
@@ -49,8 +63,6 @@ File: FinkSplitView.m
 		NSRect sFrame = [self frame];
 		float divwidth = [self dividerThickness];
 
-		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-								   forKey: FinkOutputViewRatio];
 		tFrame.size.height = sFrame.size.height - divwidth;
 		oFrame.size.height = 0.0;
 		oFrame.origin.y = sFrame.size.height;
@@ -62,20 +74,26 @@ File: FinkSplitView.m
 	}
 }
 
--(void)expandOutput
+//pass 0.0 as argument to expand output to last height stored in user defaults
+-(void)expandOutputToMinimumRatio:(float)r
 {
 	NSRect oFrame = [outputScrollView frame];
 	NSRect tFrame = [tableScrollView frame];
 	NSRect sFrame = [self frame];
 	float divwidth = [self dividerThickness];
+	float hratio = [defaults floatForKey: FinkOutputViewRatio];
+	
+	if (r > 0.0){
+		hratio = MAX(hratio, r);
+		Dprintf(@"Output view ratio: %f", hratio);
+	}
 
-	oFrame.size.height = ceil(sFrame.size.height * [defaults floatForKey: FinkOutputViewRatio]);
+	oFrame.size.height = ceil(sFrame.size.height * hratio);
 	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
 	oFrame.origin.y = tFrame.size.height + divwidth;
 
 	[outputScrollView setFrame: oFrame];
 	[tableScrollView setFrame: tFrame];
-
 	[self setNeedsDisplay: YES];
 }
 
@@ -85,7 +103,7 @@ File: FinkSplitView.m
     if ([theEvent clickCount] == 2){
 		NSRect oFrame = [outputScrollView frame];
 		if (oFrame.size.height < 1.0){
-			[self expandOutput];
+			[self expandOutputToMinimumRatio:0.0]; //use value from user defaults
 		}else{
 			[self collapseOutput:nil];
 		}
@@ -93,5 +111,6 @@ File: FinkSplitView.m
 		[super mouseDown:theEvent];
 	}
 }
+
 
 @end

@@ -112,10 +112,9 @@
         // they should hold a pointer to a C string containing the path to
         // the tool you want to execute, and the length of the C string path.
         // There needs to be one item for each tool you want to execute.
-        items[0].name = kAuthorizationRightExecute;
-        items[0].value = (char*)[[NSFileManager defaultManager] 
-		fileSystemRepresentationWithPath:[self authExecutable]];
-        items[0].valueLength = [[self authExecutable] length];
+		items[0].name = "com.sburrious.finkcommander";
+		items[0].value = 0;
+		items[0].valueLength = 0;		
         items[0].flags = 0;
         rights.count=1;
         rights.items = items;

@@ -43,6 +43,6 @@
 
 -(void)connectSubviews;
 -(void)collapseOutput:(NSNotification *)n;
--(void)expandOutput;
+-(void)expandOutputToMinimumRatio:(float)r;
 
 @end

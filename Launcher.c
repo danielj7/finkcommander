@@ -46,7 +46,7 @@ bool readAuthorization(AuthorizationRef *auth)
 
 bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
 {
-    AuthorizationItem right = { cmd, 0, NULL, 0 } ;
+    AuthorizationItem right = { "com.sburrious.finkcommander", 0, NULL, 0 };
     AuthorizationRights rights = { 1, &right };
     AuthorizationFlags flags =
         kAuthorizationFlagDefaults | kAuthorizationFlagExtendRights;
@@ -257,7 +257,7 @@ int launch_to_repair_self(AuthorizationRef* auth)
         /* Set our own stdin and stdout to be the communication channel
         * with ourself. */
 
-        fprintf(stderr, "The authorized tool is about to re-execute itself in order to self-repair.\n");
+        fprintf(stderr, "The tool that FinkCommander uses to run commands as root does not have the necessary permissions.\nBy entering your password you will give the tool the authorization it needs to repair itself.\nUnder some circumstances you may need to enter your password twice.\n");
 
         if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe) == errAuthorizationSuccess)
         {
