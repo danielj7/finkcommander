@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>FinkAlwaysChooseDefaults</key>
+	<false/>
+	<key>FinkAlwaysScrollToBottom</key>
+	<false/>
+	<key>FinkAskForPasswordOnStartup</key>
+	<false/>
+	<key>FinkAutoExpandOutput</key>
+	<false/>
+	<key>FinkBasePath</key>
+	<string> </string>
+	<key>FinkBasePathFound</key>
+	<true/>
+	<key>FinkBufferLimit</key>
+	<integer>10000</integer>
+	<key>FinkCheckForNewVersion</key>
+	<true/>
+	<key>FinkCheckForNewVersionInterval</key>
+	<integer>7</integer>
+	<key>FinkEnvironmentSettings</key>
+	<dict>
+		<key>CVS_RSH</key>
+		<string>ssh</string>
+	</dict>
+	<key>FinkExtendedVerbosity</key>
+	<false/>
+	<key>FinkGiveEmailCredit</key>
+	<true/>
+	<key>FinkHTTPProxyVariable</key>
+	<string></string>
+	<key>FinkInitialEnvironmentHasBeenSet</key>
+	<false/>
+	<key>FinkLastCheckedForNewVersion</key>
+	<date>2002-08-01T03:07:31Z</date>
+	<key>FinkLookedForProxy</key>
+	<false/>
+	<key>FinkNeverAskForPassword</key>
+	<false/>
+	<key>FinkOutputPath</key>
+	<string></string>
+	<key>FinkOutputViewRatio</key>
+	<real>5.000000000000000e-01</real>
+	<key>FinkPackagesInTitleBar</key>
+	<true/>
+	<key>FinkScrollToSelection</key>
+	<false/>
+	<key>FinkSelectedColumnIdentifier</key>
+	<string>name</string>
+	<key>FinkTableColumnsArray</key>
+	<array>
+		<string>name</string>
+		<string>version</string>
+		<string>binary</string>
+		<string>unstable</string>
+		<string>installed</string>
+		<string>category</string>
+		<string>description</string>
+	</array>
+	<key>FinkUpdateWithFink</key>
+	<true/>
+	<key>FinkViewMenuSelectionStates</key>
+	<dict>
+		<key>Colonne Binaire</key>
+		<integer>1</integer>
+		<key>Colonne Catégorie</key>
+		<integer>1</integer>
+		<key>Colonne Description</key>
+		<integer>1</integer>
+		<key>Colonne Installé</key>
+		<integer>1</integer>
+		<key>Colonne Mainteneur</key>
+		<integer>0</integer>
+		<key>Colonne Unstable</key>
+		<integer>1</integer>
+		<key>Colonne Version</key>
+		<integer>1</integer>
+	</dict>
+	<key>FinkWarnBeforeRemoving</key>
+	<true/>
+	<key>FinkWarnBeforeRunning</key>
+	<false/>
+</dict>
+</plist>
