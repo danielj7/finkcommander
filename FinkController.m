@@ -623,34 +623,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)terminateCommand:(id)sender
 {
-	int i;
 	int answer1 = NSRunAlertPanel(NSLocalizedString(@"Caution", nil),
 			NSLocalizedString(@"TheTerminateCommand", nil),
 			NSLocalizedString(@"Terminate", nil), 
 			NSLocalizedString(@"Continue", nil), nil);
 
 	if (answer1 == NSAlertAlternateReturn) return;
-
 	terminateChildProcesses(password);
-
-	for (i = 0; i < 5; i++){
-		sleep(1);
-		if (![finkTask isRunning]){
-			break;
-		}
-		Dprintf(@"Task still running after %d seconds", i);
-	}
-
-	if ([finkTask isRunning]){
-		int answer2 = NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
-								NSLocalizedString(@"TheCurrentProcess", nil),
-								NSLocalizedString(@"Quit", nil),
-								NSLocalizedString(@"Continue", nil), nil);
-		if (answer2 == NSAlertDefaultReturn){
-			userChoseToTerminate = YES;
-			[NSApp terminate: self];
-		}
-	}
 }
 
 //----------------------------------------------->Show Windows/Panels

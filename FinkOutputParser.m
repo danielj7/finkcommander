@@ -17,7 +17,7 @@ File: FinkOutputParser.m
     if (self = [super init]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
-		passwordErrorHasOccurred = readingPackageList = installStarted = NO;		
+		passwordErrorHasOccurred = readingPackageList = NO;		
 		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
 		
 		if (installing){
@@ -53,7 +53,7 @@ File: FinkOutputParser.m
     [currentPackage release];
     currentPackage = p;
 
-	NSLog(@"Setting new current package to %@", currentPackage);
+	Dprintf(@"Setting new current package to %@", currentPackage);
 }
 
 
@@ -62,18 +62,7 @@ File: FinkOutputParser.m
 //create array of packages to be installed
 -(void)addPackagesFromLine:(NSString *)line
 {
-	NSString *pname;
-	int i;
-
     [packageList addObjectsFromArray:[[line strip] componentsSeparatedByString:@" "]];
-	for (i = 0; i < [packageList count]; i++){
-		pname = [packageList objectAtIndex:i];
-		if ([pname contains:@"-base"]){
-			int index = [pname rangeOfString:@"-"].location;
-			[packageList replaceObjectAtIndex:i
-						 withObject:[pname substringToIndex:index]];
-		}
-	}
 	Dprintf(@"Package list: %@", packageList);
 }
 
@@ -177,17 +166,20 @@ File: FinkOutputParser.m
 	//e.g.  <pkg>-ssl is built from <pkg>-<version>.tgz;
 	//so parse the line for the file name and look for it in the package name
 	if ([best length] < 1 && [line contains:@"-"]){
-		NSString *path = [[[line componentsSeparatedByString:@" "] lastObject] lastPathComponent];
+		NSString *path = [[[[line strip] componentsSeparatedByString:@" "] lastObject] lastPathComponent];
 		NSString *chars;
 		NSMutableString *fname = [NSMutableString stringWithString:@""];
 		NSScanner *lineScanner;
 		NSCharacterSet *nums = [NSCharacterSet decimalDigitCharacterSet];
 		BOOL foundDash;
-			
+		
+		Dprintf(@"Failed to find listed package in line:%@", line);
+		Dprintf(@"Found full file name+version %@ in line", path);
 		lineScanner = [NSScanner scannerWithString:path];
 		while (! [lineScanner isAtEnd]){
 			foundDash = [lineScanner scanUpToString:@"-" intoString:&chars];
 			if  (! foundDash){
+				Dprintf(@"Stopped scanning");
 				break;
 			}
 			[fname appendString:chars];
@@ -197,7 +189,8 @@ File: FinkOutputParser.m
 			}
 			[fname appendString:@"-"];
 		}
-		Dprintf(@"Failed to find listed package in line; trying to find best match for %@", fname);
+		Dprintf(@"Looking for best match for %@ in:\n%@", fname,
+				[packageList componentsJoinedByString:@" "]);
 		if ([fname length] > 0){
 			NSEnumerator *e = [packageList objectEnumerator];
 			while (candidate = [e nextObject]){
@@ -290,7 +283,7 @@ File: FinkOutputParser.m
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if (installing && UNPACKTRIGGER(line)){
+    if (installing && (currentPhase != UNPACK) && UNPACKTRIGGER(line)){
 		Dprintf(@"Unpack phase triggered by:\n%@", line);
 		[self setIncrementForLastPhase];
 		[self setCurrentPackage:[self packageNameFromLine:line]];		

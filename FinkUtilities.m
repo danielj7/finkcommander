@@ -152,7 +152,35 @@ NSString *ps(void)
 	return psOutput;
 }
 
-NSString *childOfProcess(NSString *ppid)
+NSString *processGroupID(NSString *ppid)
+{
+	NSString *psOutput = ps();
+	NSEnumerator *e = [[psOutput componentsSeparatedByString:@"\n"] objectEnumerator];
+	NSString *line;
+	NSString *pgid = nil;
+
+	while (line = [e nextObject]){
+		if ([line contains: ppid] 					&& 
+			([[line strip] hasSuffix:@"perl"]		||
+			 [[line strip] hasSuffix:@"apt-get"])){
+			NSEnumerator *e1 = [[[line strip] componentsSeparatedByString:@" "] objectEnumerator];
+			NSString *element;
+
+			Dprintf(@"Looking for group id in:\n  %@", line);
+			while (element = [e1 nextObject]){
+				if ([element containsPattern:@"*[0-9]*"]){
+					Dprintf(@"Found a process id number: %@", element);
+					pgid = element;
+					break;
+				}
+			}
+			break;
+		}
+	}
+	return pgid;
+}
+
+NSString *processInGroup(NSString *pgid)
 {
 	NSString *psOutput = ps();
 	NSEnumerator *e = [[psOutput componentsSeparatedByString:@"\n"] objectEnumerator];
@@ -161,19 +189,14 @@ NSString *childOfProcess(NSString *ppid)
 	NSScanner *pidScanner;
 
 	while (line = [e nextObject]){
-		if ([line contains: ppid]){
-			Dprintf(@"Found line with parent pid %@:\n%@", ppid, line);
+		if ([line contains: pgid] && ![[line strip] hasSuffix:@"ps"]){
+			Dprintf(@"Found line with pgid %@:\n  %@", pgid, line);
 			pidScanner = [NSScanner scannerWithString:line];
 			//child pid is first set of decimal digits in line
 			[pidScanner scanUpToCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
-												   intoString: nil];
+						intoString: nil];
 			[pidScanner scanCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
-											   intoString:&cpid];
-			if ([cpid isEqualToString:ppid]){ 
-				Dprintf(@"It's the line for the parent; ignoring");
-				cpid = nil;
-				continue;
-			}
+						intoString:&cpid];
 			break;
 		}
 	}
@@ -212,15 +235,16 @@ void terminateProcessWithPID(NSString *pid, NSString *password)
 void terminateChildProcesses(NSString *password)
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
-	NSString *cpid = childOfProcess(ppid);
-
-	//The sins of the father are visited on his children.
-	while (cpid){
+	NSString *pgid = processGroupID(ppid);
+	NSString *cpid;
 	
-		Dprintf(@"Calling terminateProcessWithPID: %@", cpid);
-
+	if (pgid) {
+		terminateProcessWithPID(pgid, password);
+	}else return;
+	cpid = processInGroup(pgid);
+	while (cpid){	
+		NSLog(@"Terminating process with pid: %@", cpid);
 		terminateProcessWithPID(cpid, password);
-		ppid = cpid;
-		cpid = childOfProcess(ppid);
+		cpid = processInGroup(pgid);
 	}
 }

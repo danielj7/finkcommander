@@ -13,7 +13,6 @@ File: FinkTextViewController.m
 {
 	if (self = [super initWithFrame:frame]){
 		[self setEditable:NO];
-		Dprintf(@"Text view allows undo: %d", [self allowsUndo]);
 	}
 	return self;
 }

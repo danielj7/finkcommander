@@ -52,15 +52,17 @@ File: FinkOutputParser.h
 #define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be installed*"] || \
 							 [(x) contains:@"will be rebuilt"])
 
-#define FETCHTRIGGER(x) 	([[(x) strip] hasPrefix: @"wget"]  				|| \
-							 [[(x) strip] hasPrefix: @"curl"]  				|| \
-							 [[(x) strip] hasPrefix: @"axel"])
+#define FETCHTRIGGER(x) 	([[(x) strip] hasPrefix: @"wget -"]  					|| \
+							 [[(x) strip] hasPrefix: @"curl -"]  					|| \
+							 [[(x) strip] hasPrefix: @"axel -"])
 
-#define UNPACKTRIGGER(x) 	([[(x) strip] containsPattern:@"mkdir -p */src/*"]    	&& \
-							 ![(x) contains:@"root"])
+#define UNPACKTRIGGER(x) 	(([[(x) strip] containsPattern:@"mkdir -p */src/*"]    	&& \
+							  ![(x) contains:@"root"])								|| \
+							 [[(x) strip] containsPattern:@"*/bin/tar -*"]			|| \
+							 [[(x) strip] containsPattern:@"*/bin/bzip2 -*"])
 
-#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 		|| \
-							 [[(x) strip] hasPrefix:@"checking for"]		|| \
+#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 				|| \
+							 [[(x) strip] hasPrefix:@"checking for"]				|| \
 							 [[(x) strip] hasPrefix:@"patching file"])
 
 #define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]						&& \
@@ -68,14 +70,13 @@ File: FinkOutputParser.h
 							 [[(x) strip] hasPrefix: @"g77 -"]						|| \
 							 [[(x) strip] containsPattern: @"g[c+][c+] -[!E]?*"]	|| \
 							 [[(x) strip] containsPattern: @"cc -[!E]?*"]			|| \
-							 [[(x) strip] containsPattern: @"c++ -[!E]?*"]			|| \
-							 [[(x) strip] hasPrefix: @"building"])
+							 [[(x) strip] containsPattern: @"c++ -[!E]?*"])
 
-#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]		|| \
-							 [(x) contains: @"Make your choice:"]			|| \
-							 [(x) contains: @"Pick one:"]					|| \
-							 [(x) containsCI: @"[y/n]"] 					|| \
-							 [(x) contains: @"[anonymous]"] 				|| \
+#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]				|| \
+							 [(x) contains: @"Make your choice:"]					|| \
+							 [(x) contains: @"Pick one:"]							|| \
+							 [(x) containsCI: @"[y/n]"] 							|| \
+							 [(x) contains: @"[anonymous]"] 						|| \
 							 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 	//fink's --yes option does not work for these prompts:
@@ -119,7 +120,6 @@ enum {
 	BOOL installing;
     BOOL passwordErrorHasOccurred;
     BOOL readingPackageList;
-    BOOL installStarted;
 }
 
 -(id)initForCommand:(NSString *)cmd
