@@ -409,7 +409,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	//set up args array to run the command
 	[args addObjectsFromArray: pkgNames];
-
 	[self displayCommand: args];
 	[self runCommandWithParameters: args];
 }
@@ -536,7 +535,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[[NSDate date] descriptionWithCalendarFormat: @"%d%b%Y" timeZone: nil locale: nil]];
 	
 	[panel setRequiredFileType: @"txt"];
-	
 	[panel beginSheetForDirectory: savePath
 		file: fileName
 		modalForWindow: [self window]
@@ -592,7 +590,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
 	}
-	
 	[packageInfo setEmailSig: sig];
 	[[packageInfo window] zoom: nil];
 	[packageInfo showWindow: self];
@@ -884,9 +881,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		if ([defaults boolForKey: FinkScrollToSelection]){
 			[tableView scrollToSelectedObject];
 		}
-
 		[self displayNumberOfPackages];
-
 	}else if ([[aNotification object] tag] == INTERACTION){		
 		if ([[interactionField stringValue] length]){
 			[interactionMatrix selectCellWithTag: USER_CHOICE];
@@ -974,8 +969,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)endInteractionWindow:(id)sender
 {
 	int returnValue = [sender tag];  // 1 for Submit, 0 for Cancel
-	[interactionWindow orderOut: sender];
-	[NSApp endSheet:interactionWindow returnCode: returnValue];
+	[interactionWindow orderOut:sender];
+	[NSApp endSheet:interactionWindow returnCode:returnValue];
 }
 
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
@@ -986,7 +981,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		if ([[interactionMatrix selectedCell] tag] == 0){
 			[finkTask writeToStdin: @"\n"];
 		}else{
-			[finkTask writeToStdin: [NSString stringWithFormat: @"%@\n",
+			[finkTask writeToStdin: [NSString stringWithFormat:@"%@\n",
 				[interactionField stringValue]]];
 		}
 		[textView appendString:@"\n"];

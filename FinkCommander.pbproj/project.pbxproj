@@ -205,6 +205,7 @@
 			children = (
 				29B97319FDCFA39411CA2CEA,
 				F5458DBB030364F501A80164,
+				F5D387C10303960001A80164,
 				F5458DBC0303651C01A80164,
 			);
 			isa = PBXVariantGroup;
@@ -1048,6 +1049,7 @@
 				F568C4A302FC9D6101A80164,
 				F53DA0DC02FCEC1D01A80164,
 				F53DA0DD02FCF29E01A80164,
+				F5D387C20303A2B101A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;
@@ -1215,6 +1217,18 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		F5D387C10303960001A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F5D387C20303A2B101A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Localizable.strings;
+			refType = 4;
 		};
 		F5DE1D8E022845A201A80164 = {
 			isa = PBXFileReference;
