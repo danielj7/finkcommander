@@ -11,6 +11,16 @@
                 outlineView = NSOutlineView; 
             }; 
             SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = SBTreeWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                loadingIndicator = NSProgressIndicator; 
+                msgTextField = NSTextField; 
+                outlineView = NSOutlineView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
         }
     ); 
     IBVersion = 1; 

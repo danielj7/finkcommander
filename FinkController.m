@@ -65,7 +65,7 @@ File: FinkController.m
 		pendingCommand = NO;
 		
 		//Set the instance variable for the package tree manager
-		treeManager = [[SBTreeManager alloc] init];
+		treeManager = [[SBTreeWindowManager alloc] init];
 
 		//Set flag used to avoid duplicate warnings when user terminates FC
 		//in middle of command with something other than App:Quit
@@ -906,6 +906,14 @@ File: FinkController.m
 		return NO;
     }
     if ([theItem action] == @selector(copy:)) return NO;
+	if ([theItem action] == @selector(toggleToolbarShown:)){
+		if ([toolbar isVisible]){
+			[theItem setTitle:@"Hide Toolbar"];
+		}else{
+			[theItem setTitle:@"Show Toolbar"];
+		}
+		return YES;
+	}
     return YES;
 }
 

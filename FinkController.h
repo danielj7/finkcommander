@@ -86,7 +86,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
-#import "SBTreeManager.h"
+#import "SBTreeWindowManager.h"
 
 #define CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
 							[(x) isEqualToString: @"remove"]		|| 				\
@@ -198,7 +198,7 @@ enum {
 	FinkToolbar *toolbar;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;
-	SBTreeManager *treeManager;
+	SBTreeWindowManager *treeManager;
 
 	//Other objects
 	NSUserDefaults *defaults;
