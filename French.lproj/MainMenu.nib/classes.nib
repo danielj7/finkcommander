@@ -1,0 +1,43 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                endInteractionWindow = id; 
+                endPwdWindow = id; 
+                goToBugReportPage = id; 
+                goToFinkCommanderWebSite = id; 
+                goToFinkWebSite = id; 
+                raiseInteractionWindow = id; 
+                raisePwdWindow = id; 
+                refilter = id; 
+                runCommand = id; 
+                runUpdater = id; 
+                showPreferencePanel = id; 
+                terminateCommand = id; 
+                updateTable = id; 
+            }; 
+            CLASS = FinkController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                interactionField = NSTextField; 
+                interactionMatrix = NSMatrix; 
+                interactionWindow = NSWindow; 
+                msgText = id; 
+                progressIndicator = NSProgressIndicator; 
+                progressView = NSView; 
+                progressViewHolder = NSView; 
+                pwdField = NSSecureTextField; 
+                pwdWindow = NSWindow; 
+                scrollView = NSScrollView; 
+                searchPopUpButton = NSPopUpButton; 
+                searchTextField = NSTextField; 
+                searchView = id; 
+                tableView = id; 
+                textView = id; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

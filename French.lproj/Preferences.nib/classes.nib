@@ -1,0 +1,29 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                cancel = id; 
+                setFinkConfChanged = id; 
+                setPathChoice = id; 
+                setPreferences = id; 
+            }; 
+            CLASS = FinkPreferences; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                alwaysChooseDefaultsButton = NSButton; 
+                basePathTextField = NSTextField; 
+                httpProxyButton = NSButton; 
+                httpProxyTextField = NSTextField; 
+                pathChoiceMatrix = NSMatrix; 
+                scrollToSelectionButton = NSButton; 
+                updateWithFinkButton = NSButton; 
+                useUnstableCryptoButton = NSButton; 
+                useUnstableMainButton = NSButton; 
+                verboseOutputButton = NSButton; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
