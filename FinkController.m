@@ -408,6 +408,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	commandIsRunning = NO;
 	[tableView deselectAll: self];
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
+	[toolbar validateVisibleItems];
 }
 
 

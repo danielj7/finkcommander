@@ -15,7 +15,8 @@
 
 <em>The following consists primarily of excerpts from the fink manual.
 To see the complete version, open Terminal and type &quot;fink man&quot; at the
-prompt.</em>
+prompt.  References to /sw should be read as the directory where your fink 
+installation is located.</em>
 
 <dl>
     <dt>Install</dt>   
@@ -83,7 +84,11 @@ prompt.</em>
 	<dl>
 	
 		<dt>Cleanup</dt>
-		<dd><p>Removes outdated .deb and source archives and broken links.
+		<dd><p>Removes outdated .deb files, source directories, source archives and broken links.  
+				This command is still in development.  It may remove some files that are not truly
+				outdated and may leave some outdated files in place.  If the former occurs, you may
+				have to re-download or re-compile a package that otherwise could have been 
+				installed from the debian archive.
 			</p></dd>
 		
 		<dt>Index</dt>   

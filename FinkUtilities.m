@@ -169,7 +169,6 @@ NSString *processGroupID(NSString *ppid)
 			Dprintf(@"Looking for group id in:\n  %@", line);
 			while (element = [e1 nextObject]){
 				if ([element containsPattern:@"*[0-9]*"]){
-					Dprintf(@"Found a process id number: %@", element);
 					pgid = element;
 					break;
 				}
@@ -203,7 +202,7 @@ NSString *processInGroup(NSString *pgid)
 	return cpid;
 }
 
-void terminateProcessWithPID(NSString *pid, NSString *password)
+void terminateProcess(NSString *pid, NSString *password)
 {
 	NSTask *term = [[[NSTask alloc] init] autorelease];
 	NSPipe *pipeIn = [NSPipe pipe];
@@ -236,15 +235,11 @@ void terminateChildProcesses(NSString *password)
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
 	NSString *pgid = processGroupID(ppid);
-	NSString *cpid;
+	NSString *cpid = pgid;
 	
-	if (pgid) {
-		terminateProcessWithPID(pgid, password);
-	}else return;
-	cpid = processInGroup(pgid);
 	while (cpid){	
 		NSLog(@"Terminating process with pid: %@", cpid);
-		terminateProcessWithPID(cpid, password);
+		terminateProcess(cpid, password);
 		cpid = processInGroup(pgid);
 	}
 }

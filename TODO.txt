@@ -13,7 +13,7 @@ D Additional information for table:
 	Stable version
 	Unstable version
 	
-Fix preferences for first run of 0.4.0
+D Fix preferences for first run of 0.4.0
 	
 D Same information in package inspector
 
@@ -34,6 +34,8 @@ D Jaguar bug fixes
 RELEASE 0.4.1
 
 Target date: 11/15/2002
+
+Thread terminate command and provide user feedback
 
 Security fixes (2 possible tracks):
 
