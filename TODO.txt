@@ -1,69 +1,76 @@
+D = done
+I = in progress
+
 RELEASE 0.4.0
 
 Target date: 09/07/2002
 
-X Additional information for table:
+D Additional information for table:
 	Installed version
 	Binary version
 	Stable version
 	Unstable version
 	
-X Same information in package inspector
+D Same information in package inspector
+
+I Determinate progress bar and more detailed message text for fink command phases
+
+Fix terminate command
 
 Localizations:
-	German
-	French
+ I	German
+ I	French
 	Spanish
-	
-Run command in terminal option (with Jaguar's new AppleScript class); may need 
-to disable on systems running 10.1
+		
+D Collapse and expand output with double click (like Mail.app)
 
-Allow user to specify administrator name in password entry sheet (if
-possible)
-	
-X Collapse and expand output with double click (like Mail.app)
-
-Jaguar bug fixes
+D Jaguar bug fixes
 
 
 RELEASE 0.4.1
 
-Target date: 10/15/2002
+Target date: 11/15/2002
 
-(P) = Parsing group: requires finer parsing of command output
-(S) = Scheduling group: requires system for tracking dates of installs
-    and updates
+Security fixes (2 possible tracks):
 
-Command inspector: 
-show currently running command, list of all
-packages subject to command (including those added by fink or apt-get)
-in a table showing the status of each (e.g. "compiled," "upacked"),,
-when command started, how long command has been running; include
-refresh button (P)
+	(1)	Use Security Framework:
+		Write prototype for testing
+		Test changes to Fink perl mods
+		
+	(2) Improve existing system:
+		Option to run command in Terminal via NSAppleScript; FC would no longer touch password
+		Default to not storing password in memory (will require re-entry if > 5 min. since last); Preferences:Commander option to store
 
-Determinate progress bar and more detailed message text for fink
-command phases (P)
+New View menu item:  hide/show splitoffs
 
-Additional fink installation info (P), (S):
+New command: update fink from cvs (raise warning alert)
+
+Additional fink installation info:
 	   last selfupdate-cvs 
 	   last apt-get update
 
-Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences (S)
+Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences
+
+
+RELEASE 0.4.2
+	   
+Command inspector: show currently running command, list of all packages subject to command (including those added by fink or apt-get) in a table showing the status of each (e.g. "compiled," "upacked"), when command started, how long command has been running; include refresh button
+
+Dock icon customization: show status of command
+
+Installed package browser
 
 Show info panel for fink installation; mirror information in email sig
 
 Customize sound
 
-New command: 
-	update fink from cvs
-	raise warning alert
+Better toolbar icons
+
 
 LONG TERM:
 
 Initial startup routine: selfupdate/selfupdate-cvs, apt-get update, scanpackages;
 panel that steps through process
-
-Dock icon customization: show status of command
 
 Custom script suite
 
@@ -71,5 +78,4 @@ Command to display a package's dependencies
 
 Dependency browser
 
-If feasible: Redo authorization and command launch methods to use
-"correct" approach (see AuthSample)
+Try CamelBones again
