@@ -107,16 +107,38 @@ File: FinkInstallationInfo.m
 
 -(NSString *)macOSXVersion
 {
-	NSString *result = [self versionOutputForExecutable:@"/usr/bin/sw_vers"
-								usingArgument:nil];
+	NSString *sysVerPlistPath = @"/System/Library/CoreServices/SystemVersion.plist";
+	NSDictionary *sysVerPlistDict;
+	NSString *sysVerString;
 	
-	result = [self numericVersionFromString:result];
-	if (!result) return @"Unable to determine Mac OS X Version";
-	return [NSString stringWithFormat: @"Mac OS X version: %@", result];
+	/*
+	 *	Try to get the version number from SystemVersion.plist file
+	 */
+	sysVerPlistDict = [NSDictionary dictionaryWithContentsOfFile:sysVerPlistPath];
+	/* 	dictionaryWithContentsOfFile returns nil for file error or if file is not validly
+		formatted plist */
+	if (nil != sysVerPlistDict){
+		sysVerString = [sysVerPlistDict objectForKey:@"ProductVersion"];
+		if (nil != sysVerString){
+			return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
+		}
+	}
+	
+	/* 
+	 * If that doesn't work, try sw_vers
+	 */
+	sysVerString = [self versionOutputForExecutable:@"/usr/bin/sw_vers"
+								usingArgument:nil];
+	if (nil != sysVerString){
+		sysVerString = [self numericVersionFromString:sysVerString];
+	}
+
+	return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
 }
 
 -(NSString *)gccVersion
 {
+	NSString *error = @"Unable to determine gcc version";
 	NSString *result; 
 	
 	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
@@ -124,8 +146,9 @@ File: FinkInstallationInfo.m
 	}
 	
 	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
+	if (nil == result) return error;
 	result = [self numericVersionFromString:result];
-	if (!result) return @"Unable to determine gcc version";
+	if (nil == result) return error;
 	return [NSString stringWithFormat: @"gcc version: %@", result];
 }
 
@@ -149,8 +172,9 @@ File: FinkInstallationInfo.m
 	Dprintf(@"Make is %@", pathToMake);
 	
 	result = [self versionOutputForExecutable:pathToMake];
+	if (nil == result) return error;
 	result = [self numericVersionFromString:result];
-	if (!result) return error;
+	if (nil == result) return error;
 	return [NSString stringWithFormat: @"make version: %@", result];
 }
 

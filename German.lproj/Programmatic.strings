@@ -1,28 +1,35 @@
+/* 	Programmatic.strings
+
+	Translation table for strings that are returned by methods and therefore cannot be
+	included in tables created by genstrings  */
+
 {
+	/* Table Header Column Labels */
 	"archived" = "archiviert";
-
     "binary" = "Binär";
-
     "category" = "Kategorie";
-
     "current" = "aktuell";
-
+	"flagged" = "Flag";
     "installed" = "Installiert";
-
     "maintainer" = "Maintainer";
-
     "name" = "Name";
-
     "outdated" = "veraltet";
-
     "stable" = "Stable";
-
     "status" = "Zustand";
-
     "summary" = "Beschreibung";
-
     "unstable" = "Unstable";
-
     "version" = "Aktuell";
-	
+
+	/* Status bar messages for package installation phases */
+    "Activating %@" = "%@ wird aktiviert";
+	"Building %@" = "%@ wird erstellt";
+	"Compiling %@" = "%@ wird kompiliert"; 
+	"Configuring %@" = "Konfiguriere %@"; 
+	"Fetching %@" = "%@ wird übertragen";
+	"Installing %@" = "%@ wird installiert"; 
+
+	/* Header column labels for outline view in package browser */
+	"Name" = "Name";
+	"Modified" = "Modified";
+	"Size" = "Size";	
 }

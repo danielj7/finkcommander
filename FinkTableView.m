@@ -268,7 +268,9 @@ See the header file, FinkTableView.h, for interface and license information.
 {
 	NSTableColumn *newColumn = 
 		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
-	NSString *title = NSLocalizedString(identifier, nil);
+	NSString *title = [[NSBundle mainBundle] localizedStringForKey:identifier
+											 value:identifier
+											 table:@"Programmatic"];
 
 	if ([identifier isEqualToString:@"flagged"]){
 		NSCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
@@ -495,7 +497,7 @@ and before the table is sorted. */
 					LS_OK,
 					nil, nil,
 					[self window], self, NULL,	NULL, nil,
-					[NSString stringWithFormat:NSLocalizedString(@"UnableToInstall", nil), pname, pname],
+					[NSString stringWithFormat:NSLocalizedString(@"FinkCommander is unable to install %@ from source.  Please install the binary or use the Source:Run in Terminal menu command to install %@.", nil), pname, pname],
 					nil);
 	}
 	return YES;

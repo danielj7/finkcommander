@@ -49,14 +49,15 @@
 	if ([args indexOfObject:@"-f"] != NSNotFound) optcount+=2;
 	
     if ([args count] - optcount > 3){
-		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected packages?", nil)];
+		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected packages?", @"Warning dialog message, plural version")];
     }else{
-		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];
+		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", @"Warning dialog message, singular version")];
     }
 	[confirmButton setTitle:LS_REMOVE];
 	[cancelButton setTitle:LS_CANCEL];
     [removeWarningButton 
-		setTitle:NSLocalizedString(@"Warn me before removing a package.", nil)];
+		setTitle:NSLocalizedString(@"Warn me before removing a package.", 
+								   @"Check button title")];
     [removeWarningButton setState:YES];
     [NSApp runModalForWindow:[self window]];
 }
@@ -65,11 +66,13 @@
 {
     command = TERMINATE;
     [warningMessageField 
-		setStringValue:NSLocalizedString(@"Are you sure you want to terminate?", nil)];
-	[confirmButton setTitle:NSLocalizedString(@"Terminate", nil)];
+		setStringValue:NSLocalizedString(@"Are you sure you want to terminate?", 
+											@"Warning dialog message")];
+	[confirmButton setTitle:NSLocalizedString(@"Terminate", @"Button title")];
 	[cancelButton setTitle:LS_CANCEL];
     [removeWarningButton
-		setTitle:NSLocalizedString(@"Warn me before terminating a command.", nil)];
+		setTitle:NSLocalizedString(@"Warn me before terminating a command.", 
+									@"Check button title")];
 	[removeWarningButton setState:YES];
     [NSApp runModalForWindow:[self window]];
 }

@@ -988,16 +988,20 @@ enum {
 
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
-    //filter data source each time the filter text field changes
+    /* 	When this notification is received from the text field in the filter, apply
+		the filter to the table data source */
     if ([[aNotification object] tag] == FILTER){
+		/* 	Translate the tag for the selected menu in the popup button into a string
+			corresponding to a fink package attribute */
 		NSString *field = [self attributeNameFromTag:[[searchPopUpButton selectedItem] tag]];
 		NSString *filterText = [[searchTextField stringValue] lowercaseString];
 		NSString *pkgAttribute;
+		/* 	Used to store the subset of the packages array that matches the filter text */
 		NSMutableArray *subset = [NSMutableArray array];
 		NSEnumerator *e = [[packages array] objectEnumerator];
 		FinkPackage *pkg;
 
-		//store selected object information before the filter is applied
+		//Store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
 			[tableView storeSelectedObjectInfo];
 		}
@@ -1006,29 +1010,31 @@ enum {
 			[tableView setDisplayedPackages: [packages array]];
 		}else{
 			while (nil != (pkg = [e nextObject])){
-				pkgAttribute = 
-					NSLocalizedString([[pkg performSelector: NSSelectorFromString(field)]
-												lowercaseString], nil);
-				if ([pkgAttribute contains: filterText]){
-					[subset addObject: pkg];
+				/* 	Translate the attribute string into a selector and apply it to 
+					the selected package to get the value */
+				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)]
+									lowercaseString];
+				/* 	If the value matches the filter term, add it to the subset */
+				if ([pkgAttribute contains:filterText]){
+					[subset addObject:pkg];
 				}
 			}
 			[tableView setDisplayedPackages:[[subset copy] autorelease]];
 		}
 		[tableView resortTableAfterFilter];
 
-		//restore the selection and scroll back to it after the table is sorted
+		//Restore the selection and scroll back to it after the table is sorted
 		if ([defaults boolForKey: FinkScrollToSelection]){
 			[tableView scrollToSelectedObject];
 		}
 		[self displayNumberOfPackages];
-	//in interaction dialogue, automatically select the radio button appropriate
-	//for the state of the text entry field
+	/* 	When the notification is received from the interaction dialog, automatically 
+		select the radio button appropriate for the state of the text entry field  */
     }else if ([[aNotification object] tag] == INTERACTION){
-		if ([[interactionField stringValue] length]){
-			[interactionMatrix selectCellWithTag: USER_CHOICE];
+		if ([[interactionField stringValue] length] > 0){
+			[interactionMatrix selectCellWithTag:USER_CHOICE];
 		}else{
-			[interactionMatrix selectCellWithTag: DEFAULT];
+			[interactionMatrix selectCellWithTag:DEFAULT];
 		}
     }
 }
@@ -1040,20 +1046,19 @@ enum {
 //helper for menu item and toolbar item validators
 -(BOOL)validateItem:(id)theItem
 {
-    //disable package-specific commands if no row selected
-    if (([tableView selectedRow] == -1 			||	
-		 ! [window isKeyWindow])									&&
-
-		([theItem action] == @selector(runPackageSpecificCommand:)  		||
-		[theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
-		[theItem action] == @selector(runForceRemove:)						||
-		[theItem action] == @selector(showDescription:)						||
-		[theItem action] == @selector(sendNegativeFeedback:)				||
-		[theItem action] == @selector(sendPositiveFeedback:)				||
-		[theItem action] == @selector(openDocumentation:)					||
-		[theItem action] == @selector(openPackageFileViewer:)				||
-		[theItem action] == @selector(openPackageFiles:)					||
-		[theItem action] == @selector(toggleFlags:))){
+    /* 	Disable package-specific commands if no row selected or if the main window
+		is not key */
+    if (([tableView selectedRow] == -1 	|| ! [window isKeyWindow])				&&
+		([theItem action] == @selector(runPackageSpecificCommand:)  			||
+		 [theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
+		 [theItem action] == @selector(runForceRemove:)							||
+		 [theItem action] == @selector(showDescription:)						||
+		 [theItem action] == @selector(sendNegativeFeedback:)					||
+		 [theItem action] == @selector(sendPositiveFeedback:)					||
+		 [theItem action] == @selector(openDocumentation:)						||
+		 [theItem action] == @selector(openPackageFileViewer:)					||
+		 [theItem action] == @selector(openPackageFiles:)						||
+		 [theItem action] == @selector(toggleFlags:))){
 		return NO;
     }
 	//disable sorting for columns not in table
@@ -1065,16 +1070,16 @@ enum {
     //disable Source and Binary menu items and table update if command is running
     if (commandIsRunning &&
 		([theItem action] == @selector(runPackageSpecificCommand:) 	||
-		[theItem action] == @selector(runNonSpecificCommand:) 		||
-		[theItem action] == @selector(runForceRemove:)				||
-		[theItem action] == @selector(showDescription:)				||
-		[theItem action] == @selector(saveOutput:)					||
-		[theItem action] == @selector(updateTable:))){
+		 [theItem action] == @selector(runNonSpecificCommand:) 		||
+		 [theItem action] == @selector(runForceRemove:)				||
+		 [theItem action] == @selector(showDescription:)			||
+		 [theItem action] == @selector(saveOutput:)					||
+		 [theItem action] == @selector(updateTable:))){
 		return  NO;
     }
     if (! commandIsRunning &&
 		([theItem action] == @selector(raiseInteractionWindow:) ||
-		[theItem action] == @selector(terminateCommand:))){
+		 [theItem action] == @selector(terminateCommand:))){
 		return NO;
     }
     // no output to save if lastCommand is null, prevents (null) filename
@@ -1085,17 +1090,17 @@ enum {
 	// toggle menu item titles
 	if ([theItem action] == @selector(toggleFlags:)){
 		if ([[[tableView selectedPackageArray] lastObject] flagged] == 0){
-			[theItem setTitle:NSLocalizedString(@"Mark As Flagged", nil)];
+			[theItem setTitle:NSLocalizedString(@"Mark As Flagged", @"Menu title: Put a flag image in the flag column next to the package")];
 		}else{
-			[theItem setTitle:NSLocalizedString(@"Mark As Unflagged", nil)];
+			[theItem setTitle:NSLocalizedString(@"Mark As Unflagged", @"Menu title: Remove the flag image from the flag column next to the package")];
 		}
 		return YES;
 	}
 	if ([theItem action] == @selector(toggleToolbarShown:)){
 		if ([toolbar isVisible]){
-			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", nil)];
+			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", @"Menu title")];
 		}else{
-			[theItem setTitle:NSLocalizedString(@"Show Toolbar", nil)];
+			[theItem setTitle:NSLocalizedString(@"Show Toolbar", @"Menu title")];
 		}
 		return YES;
 	}
@@ -1236,9 +1241,10 @@ enum {
 -(IBAction)runForceRemove:(id)sender
 {
     NSMutableArray *args;
-    int answer = NSRunCriticalAlertPanel(LS_WARNING,
-										 NSLocalizedString(@"RunningForceRemove", nil),
-										 LS_REMOVE, LS_CANCEL, nil);
+    int answer = 
+		NSRunCriticalAlertPanel(LS_WARNING,
+								NSLocalizedString(@"Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?", nil),
+								LS_REMOVE, LS_CANCEL, nil);
     if (answer == NSAlertAlternateReturn) return;
 
     args = [self argumentListForCommand:sender packageSpecific:YES];
@@ -1256,7 +1262,7 @@ enum {
 
     if (commandIsRunning && !toolIsBeingFixed){
 		NSRunAlertPanel(LS_SORRY,
-				  NSLocalizedString(@"YouMustWait", nil),
+				  NSLocalizedString(@"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.", nil),
 				  LS_OK, nil, nil);
 		return;
 	}
@@ -1268,7 +1274,7 @@ enum {
     if (indicator){
 		[self startProgressIndicatorAsIndeterminate:[indicator intValue]];
     }
-    //prevent tasks run by consecutive notifications from tripping over each other
+    //Prevent tasks run by consecutive notifications from tripping over each other
     [self performSelector:@selector(launchCommandWithArguments:)
 					 withObject:args
 					 afterDelay:1.0];
@@ -1278,7 +1284,7 @@ enum {
 {
     NSString *exec = [args objectAtIndex:0];
 
-    pendingCommand = NO;
+    pendingCommand = NO; 	//no command waiting in line
     toolIsBeingFixed = NO;
     commandIsRunning = YES;
     [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
@@ -1325,15 +1331,15 @@ enum {
 				  contextInfo:(void *)contextInfo
 {
     if (returnCode){  // Submit rather than Cancel
-		if ([[interactionMatrix selectedCell] tag] == 0){
+		if ([[interactionMatrix selectedCell] tag] == DEFAULT){
 			[finkTask writeToStdin: @"\n"];
 		}else{
 			[finkTask writeToStdin: [NSString stringWithFormat:@"%@\n",
 				[interactionField stringValue]]];
 		}
 		[textViewController appendString:@"\n"];
-		if ([defaults boolForKey: FinkAutoExpandOutput]){
-			[splitView collapseOutput: nil];
+		if ([defaults boolForKey:FinkAutoExpandOutput]){
+			[splitView collapseOutput:nil];
 		}
     }
 }
@@ -1355,15 +1361,19 @@ enum {
 -(void)setGUIForPhase:(int)phaseIndex
 {
     NSArray *phases = [NSArray arrayWithObjects:
-		@"", @"Fetching", @"Unpacking",
-		@"Configuring", @"Compiling",
-		@"Building", @"Activating", nil];
+		@"", @"Fetching %@", @"Unpacking %@",
+		@"Configuring %@", @"Compiling %@",
+		@"Building %@", @"Activating %@", nil];
     NSString *pname, *phaseString;
 
     pname = [parser currentPackage];
     phaseString = [phases objectAtIndex:phaseIndex];
-    [msgText setStringValue:[NSString stringWithFormat:
-		NSLocalizedString(phaseString, nil), pname]];
+	phaseString = 
+		[[NSBundle mainBundle] 
+			localizedStringForKey:phaseString
+			value:phaseString
+			table:@"Programmatic"];
+    [msgText setStringValue:[NSString stringWithFormat:phaseString, pname]];
     [self incrementProgressIndicator:[parser increment]];
 }
 
@@ -1391,6 +1401,7 @@ enum {
 
 -(void)processOutput:(NSString *)output
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     /* Determine how much output is below the scroll view based on
        the following calculation (in vertical pixels):
 
@@ -1402,7 +1413,6 @@ enum {
 
     This value is used to determine whether the user has scrolled up.
     If so, the output view will not automatically scroll to the bottom. */
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
 		abs([[textViewController textView] bounds].size.height 			-
 			[[textViewController textView] visibleRect].origin.y 		-
@@ -1459,17 +1469,17 @@ enum {
 			[self setGUIForPhase:ACTIVATE];
 			break;
 		case RUNNING_SELF_REPAIR:
-			output = NSLocalizedString(@"ToolWillSelfRepair", nil);
+			output = NSLocalizedString(@"The tool that FinkCommander uses to run commands as root does not have the necessary permissions.\nBy entering your password you will give the tool the authorization it needs to repair itself.\nUnder some circumstances you may need to enter your password twice.\n", @"Text displayed in output view");
 			break;
 		case SELF_REPAIR_COMPLETE:
-			output = NSLocalizedString(@"ToolHasSelfRepaired", nil);
+			output = NSLocalizedString(@"\nSelf-repair succeeded.  Please re-try your command.\n", @"Text displayed in output view");
 			commandTerminated = YES;
 			break;
 		case RESOURCE_DIR:
-			output = NSLocalizedString(@"ResourceDirChangeFailed", nil);
+			output = NSLocalizedString(@"\nSelf-repair succeeded, but FinkCommander was unable to change the permissions of the FinkCommander.app/Contents/Resources directory.\nPlease see the README.html file, available at http://finkcommander.sourceforge.net, for instructions on changing the permissions manually.\n", @"Error message that may be displayed in output view");
 			break;
 		case SELF_REPAIR_FAILED:
-			output = NSLocalizedString(@"SelfRepairFailed", nil);
+			output = NSLocalizedString(@"\nThe tool used to run Fink commands as root was unable to repair itself.\n", @"Error message that may be displayed in output view");
 			break;
 		case PGID:
 			Dprintf(@"pgid for Launcher = %d", [parser pgid]);
@@ -1526,7 +1536,7 @@ enum {
 			[splitView expandOutputToMinimumRatio:0.0];
 			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,
 					 window, self, NULL, NULL, nil,
-					 NSLocalizedString(@"FinkCommanderDetected", nil),
+					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", nil),
 					 nil);
 		}
 		[self updateTable: nil];

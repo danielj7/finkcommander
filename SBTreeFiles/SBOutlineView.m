@@ -31,9 +31,10 @@
 		NSTableColumn *newColumn = [[[NSTableColumn alloc]
 										initWithIdentifier:identifier]
 			autorelease];
-		NSString *title = 
-			NSLocalizedStringFromTable([SB_COLUMNS objectForKey:identifier],
-										@"Programmatic", nil);
+		NSString *title = [SB_COLUMNS objectForKey:identifier];
+		title = [[NSBundle mainBundle] localizedStringForKey:title
+										value:title
+										table:@"Programmatic"];
 		[[newColumn headerCell] setStringValue:title];
 		[newColumn setEditable:NO];
 		if ([identifier isEqualToString:@"size"]){
