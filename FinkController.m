@@ -832,7 +832,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 //----------------------------------------------->Text Field Delegate
 
-
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	//filter data source each time the filter text field changes

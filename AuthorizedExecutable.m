@@ -1,10 +1,13 @@
-//
-//  AuthorizedExecutable.m
-//
-//  Created by David Love on Thu Jul 18 2002.
-//  Copyright (c) 2002 Cashmere Software, Inc. All rights reserved.
-//  $Id$
-//
+/*
+ File: AuthorizedExecutable.m
+
+ Created by David Love on Thu Jul 18 2002.
+ Copyright (c) 2002 Cashmere Software, Inc.
+ Released to Steven J. Burr on August 21, 2002, under the Gnu General Public License.
+
+ See the header file, AuthorizedExecutable.h for more information on the license.
+
+*/
 
 #import "AuthorizedExecutable.h"
 #import <Security/AuthorizationTags.h>
@@ -178,7 +181,6 @@
 -(bool)isExecutable
 {
     NSString* exe = [self authExecutable];
-	Dprintf(@"Launcher at path: %@", [self authExecutable]);
     return exe != nil && [[NSFileManager defaultManager] isExecutableFileAtPath:exe];
 }
 
@@ -313,16 +315,6 @@
         [task waitUntilExit];
         status = [task terminationStatus];
         [self stop];
-#ifdef UNDEF
-        if ([[self delegate]
-				respondsToSelector:@selector(executableFinished:withStatus:)])
-        {
-            [[self delegate] 
-				performSelector:@selector(executableFinished:withStatus:) 
-				withObject:self 
-				withObject:[NSNumber numberWithInt:status]];
-        }
-#endif
     }
     else
     {

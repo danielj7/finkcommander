@@ -16,7 +16,8 @@ communicates with:
 * 	FinkDataController (MC) -- gathers and updates information on the user's fink
 	installation in the form of an array of FinkPackage objects (M);
 
-*	IOTaskWrapper (M) -- runs fink commands asynchronously in separate processes;
+*	AuthorizedExecutable (M) -- runs fink commands asynchronously in separate processes using
+	Apple's Security Framework for authorization;
 
 *	FinkOutputParser (M) -- parses the output from fink and apt-get commands and
 	returns signals indicating what type of action, if any, is appropriate for that output; 

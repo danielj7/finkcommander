@@ -29,9 +29,7 @@ void findFinkBasePath(void)
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject:path forKey:FinkBasePath];
-
 			Dprintf(@"Found basepath %@ using array", path);
-
 			break;
 		}
 	}
@@ -69,9 +67,7 @@ void fixScript(void)
 		while((rangeOfBASEPATH = [scriptText rangeOfString:@"BASEPATH"]).length > 0){
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
-
 		NSLog(@"Writing table update script to %@", wpath);
-
 		[scriptText writeToFile:wpath atomically:YES];
 		[defaults setBool:NO forKey:FinkBasePathFound];
 	}
@@ -79,7 +75,7 @@ void fixScript(void)
 
 
 //------------------------------------------------------------>Fix Preferences
-
+//delete table preferences before running 0.4.0 for the first time
 void fixPreferences(void)
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -134,8 +130,9 @@ void setInitialEnvironmentVariables(void)
 }
 
 
-//Termination utilities
+//--------------------------------------------------->Process Info for Terminate Command
 
+//get output of ps command, including process, group and parent id
 NSString *ps()
 {
 	NSTask *ps = [[[NSTask alloc] init] autorelease];

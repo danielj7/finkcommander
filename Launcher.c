@@ -1,12 +1,13 @@
 /*
- *  Launcher.c
- *  NMapFE
- *
- *  Created by David Love on Fri Jun 21 2002.
- *  Copyright (c) 2002 Cashmere Software, Inc. All rights reserved.
- *
- * $Id$
- */
+File: Launcher.c
+
+ Created by David Love on Thu Jul 18 2002.
+ Copyright (c) 2002 Cashmere Software, Inc.
+ Released to Steven J. Burr on August 21, 2002, under the Gnu General Public License.
+ 
+ See the header file, Launcher.h for more information on the license.
+
+*/
 
 #include "Launcher.h"
 
@@ -21,6 +22,8 @@
 #include <signal.h>
 #include <mach-o/dyld.h>
 #include <Security/Authorization.h>
+
+#define BUFSIZE 4096
 
 static AuthorizationExternalForm extAuth;
 
@@ -59,8 +62,7 @@ bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
     return result;
 }
 
-int
-perform(const char* cmd, char * const *argv)
+int perform(const char* cmd, char * const *argv)
 {
    int status;
    int result = 1;
@@ -93,6 +95,79 @@ perform(const char* cmd, char * const *argv)
        }
    }
    return result;
+}
+
+/* 
+ *  mycopy
+ *
+ *  Copy function used by write_fconf 
+ */
+int mycopy(const char *fromfile, const char *tofile, bool create)
+{
+	char buffer[BUFSIZE];
+	int in_file, out_file;
+	int rsize, wsize;
+	int wflags = create ? O_WRONLY|O_TRUNC|O_CREAT : O_WRONLY|O_TRUNC;
+	
+	/* 	Open fromfile for reading */
+	in_file = open(fromfile, O_RDONLY);
+	if (in_file == -1) {
+		fprintf(stderr, "Error, %s: opening %s for reading\n", strerror(errno), fromfile);
+		return 1;
+	}
+	/*	Open tofile for writing */
+	out_file = open(tofile, wflags, 0644);
+	if (out_file == -1) {
+		fprintf(stderr,"%s: opening %s for writing\n", strerror(errno), tofile);
+		return 1;
+	}
+	while (1){
+		/*	Read fromfile */
+		rsize = read(in_file, buffer, sizeof(buffer));
+		if (rsize == 0){	/* EOF */
+			break;  
+		}
+		if (rsize == -1){
+			fprintf(stderr,"%s: reading %s\n", strerror(errno), fromfile);
+			return 2;
+		}
+		/*	Write tofile  */
+		wsize = write(out_file, buffer, (unsigned int)rsize);
+		if (wsize == -1){
+			fprintf(stderr,"%s: writing to %s\n", strerror(errno), tofile);
+			return 3;
+		}
+	}
+	close(in_file);
+	close(out_file);
+	return 0;
+}
+
+/*
+ *  write_conf
+ *
+ *  Back up fink.conf to fink.conf~.
+ *  Read in fink.conf.tmp (created by FinkConf object).
+ *  Write contents to fink.conf.
+ */
+int write_fconf(char *basepath)
+{
+	char fcpath[256];
+	char bkpath[256];
+	const char *tmpath = "/private/tmp/fink.conf.tmp";
+	int result;
+	
+	strcpy(fcpath, basepath);
+	strcpy(bkpath, basepath);
+	strcat(fcpath, "/etc/fink.conf");
+	strcat(bkpath, "/etc/fink.conf~");
+	
+	/* Back up fink.conf to fink.conf~ */
+	result = mycopy(fcpath, bkpath, 1);
+	if (result > 0) return result;
+	/* Write new fink.conf */
+	result = mycopy(tmpath, fcpath, 0);
+	return result;
 }
 
 
@@ -197,47 +272,44 @@ main(int argc, char * const *argv)
     /* The caller *must* pass in a valid AuthorizationExternalForm structure on stdin
      * before they're allowed to go any further.
      */
-    if (! readAuthorization(&auth))
-    {
+    if (! readAuthorization(&auth)){
         fprintf(stderr,"Failed to read authorization from stdin\n");
         exit(1);
     }
     
-    if (argc == 2 && 0 == strcmp(argv[1], "--self-repair"))
-    {
+    if (argc == 2 && 0 == strcmp(argv[1], "--self-repair")){
         result = repair_self();
-    }
-	else if (argc == 3 && 0 == strcmp(argv[1], "--kill"))
-	{
-		pid_t pid = (pid_t)strtol(argv[2], nil, 10);
-		fprintf(stdout, "Killing process %s", argv[2]);
-		result = killpg(pid, SIGKILL);
-	}
-    else 
-    {
+    }else{
         /* If the effective uid isn't root's (0), then we need to reset 
          * the setuid bit on the executable, if possible.
          */
-        if (geteuid() != 0)
-        {
+        if (geteuid() != 0){
             launch_to_repair_self(&auth);
-        }
-		else
-        {
+        }else{
             setuid(geteuid());
         }
 		
-        if (! authorizedToExecute(&auth, argv[1]))
-        {
+        if (! authorizedToExecute(&auth, argv[1])){
             /* If the caller isn't authorized to run as root, then reset
-             * the effective uid before spawning nmap
+             * the effective uid before spawning command
              */
             seteuid(getuid());
         }
-        /* Run the command. */
-        result = perform(argv[1], &argv[1]);
-    }
 
+		if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
+			/* Kill command being run by Launcher in another process */
+			pid_t pid = (pid_t)strtol(argv[2], nil, 10);
+			fprintf(stdout, "Killing process %s", argv[2]);
+			result = killpg(pid, SIGKILL);
+		}else if (argc == 3 && 0 == strcmp(argv[1], "--write_fconf")){
+			/* Write changes to fink.conf */
+			result = write_fconf(argv[2]);
+		}else{
+			/* Run a fink or apt-get command */
+			result = perform(argv[1], &argv[1]);
+		}
+    }
+	
     exit(result);
 }
 
