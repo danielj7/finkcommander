@@ -408,7 +408,7 @@ See the header file, FinkController.h, for interface and license information.
 			[pkg setInstalled: @" "];
 		}
 	}else if ([cmd isEqualToString: @"selfupdate"]){
-		[self updateTable: self];
+		[packages update];
 	}else if ([cmd isEqualToString: @"update-all"]){
 		e = [[packages array] objectEnumerator];
 		while (pkg = [e nextObject]){
@@ -491,7 +491,6 @@ See the header file, FinkController.h, for interface and license information.
 	
 	NSBeep();
 
-	// Need to check whether this is an accurate test for success
 	// Checking status is not sufficient for some fink commands
 	if (status == 0 && [output rangeOfString:@"failed"
 						options: NSCaseInsensitiveSearch
