@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>FinkAlwaysChooseDefaults</key>
+	<false/>
+	<key>FinkAlwaysScrollToBottom</key>
+	<true/>
+	<key>FinkAskForPasswordOnStartup</key>
+	<false/>
+	<key>FinkAutoExpandOutput</key>
+	<false/>
+	<key>FinkBasePath</key>
+	<string></string>
+	<key>FinkBasePathFound</key>
+	<false/>
+	<key>FinkCheckForNewVersion</key>
+	<true/>
+	<key>FinkGiveEmailCredit</key>
+	<true/>
+	<key>FinkHTTPProxyVariable</key>
+	<string></string>
+	<key>FinkLookedForProxy</key>
+	<false/>
+	<key>FinkNeverAskForPassword</key>
+	<false/>
+	<key>FinkOutputPath</key>
+	<string></string>
+	<key>FinkOutputViewRatio</key>
+	<real>5.000000000000000e-01</real>
+	<key>FinkPackagesInTitleBar</key>
+	<true/>
+	<key>FinkScrollToSelection</key>
+	<false/>
+	<key>FinkSelectedColumnIdentifier</key>
+	<string>name</string>
+	<key>FinkTableColumnsArray</key>
+	<array>
+		<string>name</string>
+		<string>version</string>
+		<string>binary</string>
+		<string>unstable</string>
+		<string>installed</string>
+		<string>category</string>
+		<string>description</string>
+	</array>
+	<key>FinkUpdateWithFink</key>
+	<true/>
+	<key>FinkViewMenuSelectionStates</key>
+	<dict>
+		<key>Binary Column</key>
+		<integer>1</integer>
+		<key>Category Column</key>
+		<integer>1</integer>
+		<key>Description Column</key>
+		<integer>1</integer>
+		<key>Installed Column</key>
+		<integer>1</integer>
+		<key>Maintainer Column</key>
+		<integer>0</integer>
+		<key>Unstable Column</key>
+		<integer>1</integer>
+		<key>Version Column</key>
+		<integer>1</integer>
+	</dict>
+	<key>FinkWarnBeforeRemoving</key>
+	<true/>
+	<key>FinkWarnBeforeRunning</key>
+	<false/>
+	<key>FinkBufferLimit</key>
+	<integer>0</integer>
+</dict>
+</plist>
