@@ -41,7 +41,6 @@ File: FinkTextViewController.m
 		test = [viewString rangeOfString:@"\n"
 					options:0
 					range:NSMakeRange(lastReturn + 1, [viewString length] - lastReturn - 1)].location;
-		if (DEBUGGING) { NSLog(@"test: %d, lastReturn: %d", test, lastReturn); }
 		if (test == NSNotFound) break;
 		lastReturn = test;
 	}
@@ -59,9 +58,6 @@ File: FinkTextViewController.m
 		overflow = lines - bufferLimit;
 		if (overflow > 10){
 			r = [self rangeOfLinesAtTopOfView:overflow];		
-			if (DEBUGGING) { 
-				NSLog(@"Deleting characters 0 to %d", lines, r.length - 1); 
-			} 
 			[[self textStorage] deleteCharactersInRange:r];
 			lines = 0;
 		}

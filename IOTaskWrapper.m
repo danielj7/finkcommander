@@ -14,7 +14,7 @@
     if (self = [super init]){
 
 		controller = cont;
-
+		useCustomEnvironment = NO;
 		task = [[NSTask alloc] init];
 	}
     return self;
@@ -39,6 +39,7 @@
 	[d retain];
 	[environment release];
 	environment = d;
+	useCustomEnvironment = YES;
 }
 
 // Start the process via an NSTask.
@@ -52,7 +53,9 @@
     [task setLaunchPath: [arguments objectAtIndex: 0]];
 	[arguments removeObjectAtIndex: 0];
     [task setArguments: arguments];
-	[task setEnvironment: environment];
+	if (useCustomEnvironment){
+		[task setEnvironment: environment];
+	}
 
     [[NSNotificationCenter defaultCenter] addObserver:self 
         selector:@selector(getData:) 
@@ -86,7 +89,7 @@
 
 	//if process is still returning data, send it to the controller object
     if ([data length]){
-        [controller appendOutput: [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]];
+        [controller appendOutput: [[[NSString alloc] initWithData:data encoding:NSMacOSRomanStringEncoding] autorelease]];
     } else {
         [self stopProcess];
     }
@@ -99,7 +102,7 @@
 -(void)writeToStdin: (NSString *)s
 {
 	[[[task standardInput] fileHandleForWriting] writeData:
-		[s dataUsingEncoding: NSUTF8StringEncoding]];
+		[s dataUsingEncoding: NSMacOSRomanStringEncoding]];
 }
 
 @end

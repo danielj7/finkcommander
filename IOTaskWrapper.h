@@ -57,6 +57,7 @@ Contact the author at sburrious@users.sourceforge.net.
     NSTask *task;
     id <IOTaskWrapperController>controller;
 	NSDictionary *environment;
+	BOOL useCustomEnvironment;
 }
 
 // Accessor

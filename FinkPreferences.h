@@ -71,7 +71,7 @@ File: FinkPreferences.h
 	//widgets used to alter fink.conf
 	IBOutlet NSButton *useUnstableMainButton;
 	IBOutlet NSButton *useUnstableCryptoButton;
-	IBOutlet NSButton *verboseOutputButton;
+	IBOutlet NSPopUpButton *verboseOutputPopupButton;
 	IBOutlet NSButton *passiveFTPButton;
 	IBOutlet NSButton *keepBuildDirectoryButton;
 	IBOutlet NSButton *keepRootDirectoryButton;

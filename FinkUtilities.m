@@ -29,7 +29,9 @@ void findFinkBasePath(void)
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject:path forKey:FinkBasePath];
-			if (DEBUGGING) {NSLog(@"Found basepath %@ using array", path);}
+#ifdef DEBUGGING
+			NSLog(@"Found basepath %@ using array", path);
+#endif
 			break;
 		}
 	}
@@ -90,6 +92,8 @@ void setInitialEnvironmentVariables(void)
 				@"PERL5LIB", 
 				@"ssh",
 				@"CVS_RSH",
+				NSHomeDirectory(),
+				@"HOME",
 				nil];
 
 	proxy = [defaults objectForKey:FinkHTTPProxyVariable];
@@ -120,7 +124,7 @@ NSString *ps(void)
 	[ps launch];
 	psOutput = [[[NSString alloc] initWithData: 
 									[cmdStdout readDataToEndOfFile] 
-												encoding:NSUTF8StringEncoding] autorelease];
+												encoding:NSMacOSRomanStringEncoding] autorelease];
 
 	return psOutput;
 }
@@ -135,7 +139,9 @@ NSString *childOfProcess(NSString *ppid)
 
 	while (line = [e nextObject]){
 		if ([line contains: ppid]){
-			if (DEBUGGING) {NSLog(@"Found line with pid %@:\n%@", ppid, line);}
+#ifdef DEBUGGING
+			NSLog(@"Found line with pid %@:\n%@", ppid, line);
+#endif
 			pidScanner = [NSScanner scannerWithString:line];
 			//child pid is first set of decimal digits in line
 			[pidScanner scanUpToCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
@@ -165,7 +171,9 @@ void terminateChildProcesses(void)
 
 	//The sins of the father are visited on his children.
 	while (cpid){
-		if (DEBUGGING) {NSLog(@"Calling terminateProcessWithPID: %@", cpid);}
+#ifdef DEBUGGING
+		NSLog(@"Calling terminateProcessWithPID: %@", cpid);
+#endif
 		terminateProcessWithPID(cpid);
 		ppid = cpid;
 		cpid = childOfProcess(ppid);

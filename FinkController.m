@@ -374,6 +374,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	//determine executable
 	executable = ([sender tag] == SOURCE_COMMAND ? @"fink" : @"apt-get");
+	executable = [NSString stringWithFormat:@"%@/bin/%@", 
+					[defaults objectForKey:FinkBasePath], executable];
 	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
 
 	commandIsRunning = YES;
@@ -508,7 +510,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	 contextInfo:(void *)contextInfo
 {
 	if (code = NSOKButton){
-		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
+		NSData *odata = [[textView string] dataUsingEncoding: NSMacOSRomanStringEncoding];
 		[odata writeToFile: [sheet filename] atomically:YES];
 	}
 }
@@ -1010,15 +1012,19 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([executable isEqualToString: @"apt-get"]){ //give apt-get a chance to fix broken dependencies
 		[params insertObject: @"-f" atIndex: 3];
 	}
-	if (DEBUGGING){
-		NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
-		NSLog(@"Environment for command: %@", [defaults objectForKey:FinkEnvironmentSettings]);
-	} 
 	pendingCommand = NO;
 
 	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
-	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
+
+//	if (! [executable isEqualToString:@"fink"]){
+//		[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
+//	}
+
+#ifdef DEBUGGING
+	NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
+	NSLog(@"Environment for command =\n%@", [defaults objectForKey:FinkEnvironmentSettings]);
+#endif
 
 	// start the process asynchronously
 	[finkTask startProcessWithArgs: params];

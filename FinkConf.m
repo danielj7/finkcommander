@@ -111,22 +111,37 @@ File: FinkConf.m
 	}
 }
 
-
--(BOOL)verboseOutput
+-(BOOL)extendedVerboseOptions
 {
-	if ([[finkConfDict objectForKey: @"Verbose"] isEqualToString: @"true"]){
-		return YES;
-	}
-	return NO;
+	return [[finkConfDict objectForKey:@"Verbose"] 
+				rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].length > 0;
 }
 
--(void)setVerboseOutput:(BOOL)verboseOutput
+-(int)verboseOutput
 {
-	if (verboseOutput){
-		[finkConfDict setObject: @"true" forKey: @"Verbose"];
-	}else{
-		[finkConfDict setObject: @"false" forKey: @"Verbose"];
+	NSString *verbose = [finkConfDict objectForKey:@"Verbose"];
+	
+	if ([self extendedVerboseOptions]){
+		return [verbose intValue] - 1;
 	}
+	if ([verbose isEqualToString:@"true"]){
+		return 1;
+	}
+	return 0;
+}
+
+-(void)setVerboseOutput:(int)verboseOutput
+{
+	NSString *loquacity;
+	
+	if ([self extendedVerboseOptions]){
+		loquacity = [NSString stringWithFormat:@"%d", verboseOutput + 1];
+	}else if (verboseOutput){
+		loquacity = @"true";
+	}else{
+		loquacity = @"false";
+	}
+	[finkConfDict setObject:loquacity forKey:@"Verbose"];
 }
 
 
@@ -340,9 +355,9 @@ File: FinkConf.m
 			@"root",
 			tempFile,
 			nil];
-		if (DEBUGGING){
+#ifdef DEBUGGING
 			NSLog(@"Writing following to fink.conf:\n%@", fconfString);
-		}
+#endif
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&
 			[fconfString writeToFile: tempFile atomically: YES]){

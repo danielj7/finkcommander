@@ -30,7 +30,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	[versionTask launch];
 
 	result = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSUTF8StringEncoding] autorelease];
+								encoding: NSMacOSRomanStringEncoding] autorelease];
 	[versionTask release];
 	[taskStdout closeFile];
 	return result;
@@ -52,7 +52,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	[versionTask launch];
 
 	output = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSUTF8StringEncoding] autorelease];
+								encoding: NSMacOSRomanStringEncoding] autorelease];
 	[versionTask release];
 	[taskStdout closeFile];
 	
@@ -88,7 +88,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	[versionTask launch];
 
 	result = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSUTF8StringEncoding] autorelease];
+								encoding: NSMacOSRomanStringEncoding] autorelease];
 	result = [result strip];
 	result = [NSString stringWithFormat: @"gcc version: %@", result];
 	[versionTask release];
@@ -138,7 +138,7 @@ NSString *DEVTOOLS_TEST_PATH =
 	[whichTask setStandardOutput: whichPipe];
 	[whichTask launch];
 	pathToMake = [[[NSString alloc] initWithData: [whichStdout readDataToEndOfFile]
-									encoding: NSUTF8StringEncoding] autorelease];
+									encoding: NSMacOSRomanStringEncoding] autorelease];
 	[whichTask release];
 	[whichStdout closeFile];
 	
@@ -150,14 +150,13 @@ NSString *DEVTOOLS_TEST_PATH =
 	pathToMake = [pathComponents count] > 1 ? 
 					[pathComponents objectAtIndex: [pathComponents count] - 2] :
 					[pathComponents objectAtIndex:0];
-	if (DEBUGGING) { NSLog(@"Path to make: %@", pathToMake); }
 	//get the result of make -v
 	[versionTask setLaunchPath: [pathToMake strip]];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"-v", nil]];
 	[versionTask setStandardOutput: versionPipe];
 	[versionTask launch];
 	versionString = [[[NSString alloc] initWithData: [versionStdout readDataToEndOfFile]
-										encoding: NSUTF8StringEncoding] autorelease];
+										encoding: NSMacOSRomanStringEncoding] autorelease];
 	[versionTask release];
 	[versionStdout closeFile];
 	//parse the result for the version number

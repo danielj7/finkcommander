@@ -55,7 +55,7 @@
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
                 valueTextField = NSTextField; 
-                verboseOutputButton = NSButton; 
+                verboseOutputPopupButton = NSPopUpButton; 
                 warnBeforeRemovingButton = NSButton; 
                 warnBeforeRunningButton = NSButton; 
             }; 

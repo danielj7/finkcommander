@@ -55,8 +55,9 @@ File: FinkConf.h
 -(void)setUseUnstableMain:(BOOL)shouldUseUnstable;
 -(BOOL)useUnstableCrypto;
 -(void)setUseUnstableCrypto:(BOOL)shouldUseUnstable;
--(BOOL)verboseOutput;
--(void)setVerboseOutput:(BOOL)verboseOutput;
+-(BOOL)extendedVerboseOptions;
+-(int)verboseOutput;
+-(void)setVerboseOutput:(int)verboseOutput;
 -(BOOL)passiveFTP;
 -(void)setPassiveFTP:(BOOL)passiveFTP;
 -(BOOL)keepBuildDir;

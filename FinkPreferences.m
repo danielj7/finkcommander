@@ -36,8 +36,6 @@ File: FinkPreferences.m
 	
 	[addEnvironmentSettingButton setEnabled:addEnabled];
 	[deleteEnvironmentSettingButton setEnabled:deleteEnabled];
-	[nameTextField setNextKeyView:valueTextField];
-	[valueTextField setNextKeyView:nameTextField];
 }
 
 -(void)setEnvironment
@@ -111,8 +109,13 @@ File: FinkPreferences.m
 	
 	[useUnstableMainButton setState: [conf useUnstableMain]];
 	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
-	[verboseOutputButton setState: [conf verboseOutput]];
 	[passiveFTPButton setState: [conf passiveFTP]];
+	
+	if ([conf extendedVerboseOptions]){
+		[verboseOutputPopupButton insertItemWithTitle:@"Medium" atIndex:1];
+		[verboseOutputPopupButton insertItemWithTitle:@"Low" atIndex:2];
+	}
+	[verboseOutputPopupButton selectItemAtIndex:[conf verboseOutput]];
 	
 	httpProxy = [environmentSettings objectForKey:@"http_proxy"];
 	if (! httpProxy) httpProxy = [conf useHTTPProxy];
@@ -273,7 +276,13 @@ File: FinkPreferences.m
 	if (finkConfChanged){
 		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
-		[conf setVerboseOutput: [verboseOutputButton state]];
+
+		if ([conf extendedVerboseOptions]){
+			[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
+		}else{
+			[conf setVerboseOutput:[[verboseOutputPopupButton selectedItem] tag]];
+		}
+			
 		[conf setPassiveFTP: [passiveFTPButton state]];
 		[conf setKeepBuildDir: [keepBuildDirectoryButton state]];
 		[conf setKeepRootDir: [keepRootDirectoryButton state]];

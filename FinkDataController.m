@@ -116,7 +116,7 @@ int NAMESTART = 12;
 	}
 #endif
 	
-	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanEncoding] autorelease];
+	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
     e = [[output componentsSeparatedByString: @"\n"] reverseObjectEnumerator];
     while (line = [e nextObject]){
 		if ([line contains:@"Package:"]){
@@ -155,17 +155,17 @@ int NAMESTART = 12;
     //a second or two, synchronously
     [self setBinaryPackages: [self getBinaryList]];
 
-    if (DEBUGGING) {
-		int slen, rlen;
+#ifdef DEBUGGING
 		NSLog(@"User's shell: %s", getenv("SHELL"));
 		NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
 		if (binaryPackages){
+			int slen, rlen;
 			slen = [binaryPackages length];
 			rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
 			NSLog(@"Binary package string:\n%@", 
 				[binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
 		}
-    }
+#endif //DEBUGGING
 }
 
 -(NSString *)parseWeburlFromString:(NSString *)s
