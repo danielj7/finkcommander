@@ -357,13 +357,19 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 -(IBAction)runCommand:(id)sender
 {
 	NSMutableArray *args = [self setupCommandFrom: sender];
-	NSArray *pkgs = [self selectedPackageArray];
+	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity: 5];
+	FinkPackage *pkg;
+	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+
+	while (pkg = [e nextObject]){
+		[pkgNames addObject: [pkg name]];
+	}
 	
 	//set up selectedPackages array for later use
-	[self setSelectedPackages: pkgs];
+	[self setSelectedPackages: pkgNames];
 
 	//set up args array to run the command
-	[args addObjectsFromArray: pkgs];
+	[args addObjectsFromArray: pkgNames];
 	
 	[self displayCommand: args];		
 	[self runCommandWithParams: args];
