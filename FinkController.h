@@ -39,16 +39,6 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
 
-//Global Variables for Toolbar Items
-extern NSString *FinkInstallSourceItem;
-extern NSString *FinkInstallBinaryItem;
-extern NSString *FinkRemoveSourceItem;
-extern NSString *FinkRemoveBinaryItem;
-extern NSString *FinkTerminateCommandItem;
-extern NSString *FinkFilterItem;
-extern NSString *FinkInteractItem;
-extern NSString *FinkDescribeItem;
-
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
 	//main window outlets

@@ -194,7 +194,6 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
-				F547E70102846D1F01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -325,6 +324,9 @@
 				F58205F90270087601A80166,
 				F53D651E0280296801A80164,
 				F53D652002802F3101A80164,
+				F542437C028CE53E01A80166,
+				F542437E028CE54B01A80166,
+				F5424380028CE59801A80166,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -546,7 +548,6 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
-				F547E70202846D8B01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -589,15 +590,18 @@
 		};
 		F538C3C5023496DC01A80164 = {
 			children = (
-				F50C7FBB026BD8BD01A80164,
-				F50C7FBD026BD92B01A80164,
-				F53D651D0280296801A80164,
-				F53D651F02802F3101A80164,
-				F59BDD90026817BF01A80164,
-				F554F1D80266AA4B01A80164,
 				F538C3C1023495CF01A80164,
 				F538C3C2023495CF01A80164,
+				F59BDD90026817BF01A80164,
+				F554F1D80266AA4B01A80164,
+				F542437B028CE53E01A80166,
+				F50C7FBB026BD8BD01A80164,
+				F50C7FBD026BD92B01A80164,
+				F53D651F02802F3101A80164,
+				F53D651D0280296801A80164,
 				F58205F80270087601A80166,
+				F542437D028CE54B01A80166,
+				F542437F028CE59801A80166,
 			);
 			isa = PBXGroup;
 			name = Images;
@@ -634,6 +638,39 @@
 			settings = {
 			};
 		};
+		F542437B028CE53E01A80166 = {
+			isa = PBXFileReference;
+			path = cvs.tiff;
+			refType = 4;
+		};
+		F542437C028CE53E01A80166 = {
+			fileRef = F542437B028CE53E01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F542437D028CE54B01A80166 = {
+			isa = PBXFileReference;
+			path = update.tiff;
+			refType = 4;
+		};
+		F542437E028CE54B01A80166 = {
+			fileRef = F542437D028CE54B01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F542437F028CE59801A80166 = {
+			isa = PBXFileReference;
+			path = updatebin.tiff;
+			refType = 4;
+		};
+		F5424380028CE59801A80166 = {
+			fileRef = F542437F028CE59801A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F54436B8027F6AD501A80164 = {
 			isa = PBXFileReference;
 			path = FinkConf.h;
@@ -655,18 +692,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F547E70102846D1F01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/MainMenu.nib;
-			refType = 4;
-		};
-		F547E70202846D8B01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Preferences.nib;
-			refType = 4;
 		};
 		F55057270231E5F701A80164 = {
 			isa = PBXFileReference;

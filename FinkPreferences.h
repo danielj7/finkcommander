@@ -34,7 +34,7 @@ File: FinkPreferences.h
 #import <AppKit/AppKit.h>
 #import "FinkConf.h"
 
-@interface FinkPreferences : NSWindowController 
+@interface FinkPreferences : NSWindowController
 {
 	//widgets used for general preference settings
 	IBOutlet NSMatrix *pathChoiceMatrix;
@@ -42,6 +42,8 @@ File: FinkPreferences.h
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	IBOutlet NSButton *askOnStartupButton;
 	IBOutlet NSButton *neverAskButton;
+	IBOutlet NSButton *scrollToBottomButton;
+	IBOutlet NSButton *warnBeforeRunningButton;
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
@@ -64,10 +66,18 @@ File: FinkPreferences.h
 	BOOL finkConfChanged;
 }
 
+//main button actions ("Apply", "OK", "Cancel")
 -(IBAction)setPreferences:(id)sender;
+-(IBAction)setAndClose:(id)sender;
 -(IBAction)cancel:(id)sender;
+
+//record whether certain preference items have changed
 -(IBAction)setPathChoice:(id)sender;
 -(IBAction)setFinkConfChanged:(id)sender;
 -(IBAction)setFinkTreesChanged:(id)sender;
+
+//keep password options consistent
+-(IBAction)neverAsk:(id)sender;
+-(IBAction)askOnStartup:(id)sender;
 
 @end

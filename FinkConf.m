@@ -22,6 +22,8 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 NSString *FinkAutoUpdateTable = @"FinkAutoUpdateTable";
 NSString *FinkAskForPasswordOnStartup = @"FinkAskForPasswordOnStartup";
 NSString *FinkNeverAskForPassword = @"FinkNeverAskForPassword";
+NSString *FinkAlwaysScrollToBottom = @"FinkAlwaysScrollToBottom";
+NSString *FinkWarnBeforeRunning = @"FinkWarnBeforeRunning";
 
 //Global variables identifying inter-object notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

@@ -2,7 +2,10 @@
     IBClasses = (
         {
             ACTIONS = {
+                askOnStartup = id; 
                 cancel = id; 
+                neverAsk = id; 
+                setAndClose = id; 
                 setFinkConfChanged = id; 
                 setFinkTreesChanged = id; 
                 setPathChoice = id; 
@@ -21,11 +24,13 @@
                 neverAskButton = NSButton; 
                 passiveFTPButton = NSButton; 
                 pathChoiceMatrix = NSMatrix; 
+                scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 updateWithFinkButton = NSButton; 
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
                 verboseOutputButton = NSButton; 
+                warnBeforeRunningButton = NSButton; 
             }; 
             SUPERCLASS = NSWindowController; 
         }, 

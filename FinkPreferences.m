@@ -50,6 +50,8 @@ File: FinkPreferences.m
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 	[askOnStartupButton setState: [defaults boolForKey: FinkAskForPasswordOnStartup]];
 	[neverAskButton setState: [defaults boolForKey: FinkNeverAskForPassword]];
+	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
+	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
 		
 	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
@@ -123,6 +125,8 @@ File: FinkPreferences.m
 	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelection];
 	[defaults setBool: [askOnStartupButton state] forKey: FinkAskForPasswordOnStartup];
 	[defaults setBool: [neverAskButton state] forKey: FinkNeverAskForPassword];
+	[defaults setBool: [scrollToBottomButton state] forKey: FinkAlwaysScrollToBottom];
+	[defaults setBool: [warnBeforeRunningButton state] forKey: FinkWarnBeforeRunning];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];
@@ -140,10 +144,13 @@ File: FinkPreferences.m
 
 		[conf writeToFile];
 	}
-	
-	[self close];
 }
 
+-(IBAction)setAndClose:(id)sender
+{
+	[self setPreferences: nil];
+	[self close];
+}
 
 -(IBAction)cancel:(id)sender
 {
@@ -157,18 +164,31 @@ File: FinkPreferences.m
 	pathChoiceChanged = YES;
 }
 
-
 -(IBAction)setFinkConfChanged:(id)sender
 {
 	finkConfChanged = YES;
 }
-
 
 -(IBAction)setFinkTreesChanged:(id)sender
 {
 	finkConfChanged = YES;
 	[conf setFinkTreesChanged: YES];
 	
+}
+
+
+-(IBAction)neverAsk:(id)sender
+{
+	if ([neverAskButton state]){
+		[askOnStartupButton setState: NO];
+	}
+}
+
+-(IBAction)askOnStartup:(id)sender
+{
+	if ([askOnStartupButton state]){
+		[neverAskButton setState: NO];
+	}
 }
 
 //---------------------------------------------------------------------->Delegate Methods
@@ -182,7 +202,7 @@ File: FinkPreferences.m
 	switch(textFieldID){
 		case 0:
 			if ([tfString length] > 0){
-				[pathChoiceMatrix selectCellWithTag: 1];
+				[pathChoiceMatrix selectCellWithTag: 1]; //default fink path
 			}else{
 				[pathChoiceMatrix selectCellWithTag: 0];
 			}

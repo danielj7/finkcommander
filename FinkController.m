@@ -12,10 +12,13 @@ NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
 NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
 NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
 NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
+NSString *FinkDescribeItem = @"FinkDescribeItem";
+NSString *FinkSelfUpdateItem = @"FinkSelfUpdateItem";
+NSString *FinkSelfUpdateCVSItem = @"FinkSelfUpdateCVSItem";
+NSString *FinkUpdateBinaryItem = @"FinkUpdateBinaryItem";
 NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
 NSString *FinkFilterItem = @"FinkFilterItem";
 NSString *FinkInteractItem = @"FinkInteractItem";
-NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 
 @implementation FinkController
@@ -41,6 +44,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAutoUpdateTable];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysScrollToBottom];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkWarnBeforeRunning];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 }
@@ -292,7 +297,7 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		[params componentsJoinedByString: @" "]]];
 }
 
-//set up the argument list for either command method
+//set up the argument list and flags for either command method
 -(NSMutableArray *)setupCommandFrom:(id)sender
 {
 	NSString *cmd; 
@@ -465,8 +470,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 {
 	NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier: itemIdentifier];
 	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
-		[item setLabel: @"Install Source"];
-		[item setPaletteLabel: [item label]];
+		[item setLabel: @"Install"];
+		[item setPaletteLabel: @"Install Source"];
 		[item setToolTip: @"Install package(s) from source"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"addsrc"]];
@@ -481,8 +486,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
-		[item setLabel: @"Remove Source"];
-		[item setPaletteLabel: [item label]];
+		[item setLabel: @"Remove"];
+		[item setPaletteLabel: @"Remove Source"];
 		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"delsrc"]];
@@ -504,6 +509,30 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		[item setImage: [NSImage imageNamed: @"describe"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateItem]){
+		[item setLabel: @"Selfupdate"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Update package descriptions and package manager"];
+		[item setTag: 0]; 		//source command
+		[item setImage: [NSImage imageNamed: @"update"]];
+		[item setTarget: self];
+		[item setAction: @selector(runUpdater:)];
+	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateCVSItem]){
+		[item setLabel: @"Selfupdate-cvs"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Update package descriptions and package manager from fink cvs repository"];
+		[item setTag: 0]; 		//source command
+		[item setImage: [NSImage imageNamed: @"cvs"]];
+		[item setTarget: self];
+		[item setAction: @selector(runUpdater:)];
+	}else if ([itemIdentifier isEqualToString: FinkUpdateBinaryItem]){
+		[item setLabel: @"Update"];
+		[item setPaletteLabel: @"Apt-Get Update"];
+		[item setToolTip: @"Update binary package descriptions"];
+		[item setTag: 1]; 		//binary command
+		[item setImage: [NSImage imageNamed: @"updatebin"]];
+		[item setTarget: self];
+		[item setAction: @selector(runUpdater:)];
 #ifdef UNDEF
 	}else if ([itemIdentifier isEqualToString: FinkTerminateCommandItem]){
 		[item setLabel: @"Terminate"];
@@ -543,6 +572,9 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
 		FinkRemoveBinaryItem,
+		FinkSelfUpdateItem,
+		FinkSelfUpdateCVSItem,
+		FinkUpdateBinaryItem,
 		FinkDescribeItem,
 		FinkInteractItem,
 //		FinkTerminateCommandItem,
@@ -556,9 +588,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
-		FinkDescribeItem,
+		FinkSelfUpdateItem,
 		FinkInteractItem,
-//		FinkTerminateCommandItem,	
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
 		nil];
@@ -566,23 +597,20 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(BOOL)validateToolbarItem:(NSToolbarItem *)theItem
 {
-	if ([tableView selectedRow] == -1 &&
-	    [theItem action] == @selector(runCommand:)){
-		return NO;
-	}
 	if ([self commandIsRunning] &&
 		([theItem action] == @selector(runCommand:) ||
 		 [theItem action] == @selector(runUpdater:))){
 		return  NO;
 	}
 	if (! [self commandIsRunning] &&
-		[[theItem label] contains: @"Terminate"]){
+		([[theItem label] contains: @"Terminate"] ||
+		[theItem action] == @selector(raiseInteractionWindow:))){
 		return NO;
 	}
-	if (! [self commandIsRunning] &&
-		[theItem action] == @selector(raiseInteractionWindow:)){
+	if ([tableView selectedRow] == -1 &&
+	    [theItem action] == @selector(runCommand:)){
 		return NO;
-	}
+	}	
 	return YES;
 }
 
@@ -827,11 +855,22 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 		[self displayNumberOfPackages];
 		return;
 	}
+
+	if ([defaults boolForKey: FinkWarnBeforeRunning]){
+		int answer = NSRunAlertPanel(@"Just Checking", 
+			@"Are you sure you want to run this command:\n%@?",
+			@"Yes", @"No", nil, 
+			[params componentsJoinedByString: @" "]);
+
+		if (answer == NSAlertAlternateReturn){
+			[self setCommandIsRunning: NO];
+			[self displayNumberOfPackages];
+			return;
+		}
+	}
 	[self setPendingCommand: NO];
 
-	if (finkTask){
-		[finkTask release];
-	}
+	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
 
 	// start the process asynchronously
@@ -879,7 +918,8 @@ NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 -(void)scrollToVisible:(NSNumber *)n
 {
-	if ([n floatValue] <= 3.0){
+	if ([n floatValue] <= 3.0 || 
+		[defaults boolForKey: FinkAlwaysScrollToBottom]){
 		[textView scrollRangeToVisible:	
 			NSMakeRange([[textView string] length], 0)];
 	}

@@ -52,6 +52,8 @@ extern NSString *FinkLookedForProxy;
 extern NSString *FinkAutoUpdateTable;
 extern NSString *FinkAskForPasswordOnStartup;
 extern NSString *FinkNeverAskForPassword;
+extern NSString *FinkAlwaysScrollToBottom;
+extern NSString *FinkWarnBeforeRunning;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

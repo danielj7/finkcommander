@@ -9,26 +9,47 @@
 
 <h2>Configuring FinkCommander and Fink in Preferences</h2>
 
-<p>The FinkCommander Preferences Panel is divided into two tab views.</p>
+<p>The FinkCommander Preferences Panel is divided into two tab views: General and Fink.
+The General Preferences tab allows you to configure FinkCommander's
+behavior.  The Fink Preferences tab allows you to change the fink configuration
+settings stored in the <dfn>fink-basepath</dfn>/etc/fink.conf file.</p>
+
+<p>This help file describes the purpose of the preference items that may not
+be self-evident.</p>
 
 <h3>The General Preferences Tab</h3>
 
-<p>The General Preferences tab allows you to configure FinkCommander's
-behavior.</p>
-
 <dl>
+	<dt>Never ask for password</dt>
+	<dd><p>Select this option if you have configured sudo not to ask for your password.  
+	The instructions for doing so are described in a <a href="details/fc_sudoconfig.html">Fink FAQ</a></p></dd>
 
-
+	<dt>Always update table with Fink</dt>
+	<dd><p>This option causes FinkCommander to perform a full update of the table after
+	running any command that could affect the state of your packages.  
+	<a href="details/fc_tableupdate.html">More detail</a>.</p></dd>
+	
+	<dt>Path to Fink files</dt>
+	<dd><p>Only change the settings here if FinkCommander was unable to locate the
+	path to your Fink installation on startup.</p></dd>
 </dl>
 
 <h3>The Fink Preferences Tab</h3>
 
-The Fink Preferences tab allows you to change the fink configuration
-settings stored in the <dfn>fink-basepath</dfn>/etc/fink.conf file.  
-
 <dl>
-
-
+	<dt>Use unstable packages/cryptography packages</dt>
+	<dd><p>You can use these items to switch easily and quickly between using
+	unstable packages and not using them.</p>
+	
+	<p>For example, if you ordinarily want to stick with stable packages, but 
+	would like to try a particular package from
+	unstable, select the use unstable option and click OK.  The table will update
+	itself to show the unstable packages.  Install the one you want and then de-select 
+	the use unstable item to go back to your previous configuration.</p></dd>
+	
+	<dt>Use passive mode FTP/HTTP proxy/FTP proxy</dt>
+	<dd><p>Set these items to the appropriate values if you are running Fink from behind
+	a firewall.  What are the appropriate values?  Heck if I know.</p></dd>
 </dl>
 
 </body>
