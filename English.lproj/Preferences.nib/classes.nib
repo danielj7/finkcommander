@@ -1,7 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {cancel = id; setPreferences = id; }; 
+            ACTIONS = {cancel = id; setPathChoice = id; setPreferences = id; }; 
             CLASS = FinkPreferences; 
             LANGUAGE = ObjC; 
             OUTLETS = {

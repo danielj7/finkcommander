@@ -45,6 +45,7 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelectedRow]];
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+	pathChoiceChanged = NO;
 }
 
 -(void)windowDidLoad
@@ -73,6 +74,10 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelectedRow];
 	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
+	//give manually set path a chance to work on startup
+	if (pathChoiceChanged){
+		[defaults setBool: YES forKey: FinkBasePathFound];
+	}
 	
 	[self close];
 }
@@ -82,5 +87,18 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 	[self resetPreferences];
 	[self close];
 }
+
+-(IBAction)setPathChoice:(id)sender
+{
+	pathChoiceChanged = YES;
+}
+
+//---------------------------------------------------------------------->Delegate Methods
+
+-(void)controlTextDidChange:(NSNotification *)aNotification
+{
+	[pathChoiceMatrix selectCellWithTag: 1];
+}
+
 
 @end

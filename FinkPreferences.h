@@ -52,9 +52,11 @@ extern NSString *FinkAlwaysChooseDefaults;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
 	
 	NSUserDefaults *defaults;
+	BOOL pathChoiceChanged;
 }
 
 -(IBAction)setPreferences:(id)sender;
 -(IBAction)cancel:(id)sender;
+-(IBAction)setPathChoice:(id)sender;
 
 @end

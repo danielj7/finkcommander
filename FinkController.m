@@ -137,7 +137,7 @@ See the header file, FinkController.h, for interface and license information.
 		[[packages array] count]]];
 }
 
-//helper used in refreshTable and mouse down in table header column delegate
+//helper used in refreshTable and in table column clicked delegate
 -(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
 	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
@@ -238,7 +238,7 @@ See the header file, FinkController.h, for interface and license information.
 //		APPLICATION AND WINDOW DELEGATES
 //--------------------------------------------------------------------------------
 
-//single window app; so quit when red button clicked
+//warn before quitting if a command is running
 -(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
 	int answer;
@@ -253,6 +253,21 @@ See the header file, FinkController.h, for interface and license information.
 	return YES;
 }
 
+//since this is a single window app, quit when window closes
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+{
+	return YES;
+}
+
+//but don't close window if command is running
+-(BOOL)windowShouldClose:(id)sender
+{
+	if ([self commandIsRunning]){
+		NSBeep();
+		return NO;
+	}
+	return YES;
+}
 
 //--------------------------------------------------------------------------------
 //		MENU COMMANDS AND HELPERS
@@ -380,7 +395,9 @@ See the header file, FinkController.h, for interface and license information.
 
 
 //----------------------------------------------->Delegate Method
-//sort table columns
+//sorts table when column header clicked
+//note:  response is faster when mouseDownInTableColumnHeader method is used;
+//but then table re-sorts any time a column is resized, which is annoying
 -(void)tableView:(NSTableView *)aTableView
 	didClickTableColumn:(NSTableColumn *)aTableColumn
 {
@@ -528,13 +545,15 @@ See the header file, FinkController.h, for interface and license information.
 	NSCharacterSet *openingSet = [NSCharacterSet characterSetWithCharactersInString: @"?:"];
 	NSCharacterSet *numberSet = [NSCharacterSet decimalDigitCharacterSet];
 	NSScanner *numberPromptScanner = [NSScanner scannerWithString: s];
+	NSString *theNumber;
 
 	if ([numberPromptScanner scanUpToCharactersFromSet: openingSet intoString: nil] &&
 		[numberPromptScanner scanCharactersFromSet: openingSet intoString: nil]     &&
 		[numberPromptScanner scanString: @"[" intoString: nil]						&&
 		[numberPromptScanner scanCharactersFromSet: numberSet intoString: nil]		&&
-		[numberPromptScanner scanString: @"]" intoString: nil]){
+		[numberPromptScanner scanString: @"]" intoString: &theNumber]){
 		return YES;
+		NSLog(@"Found prompt with number: %@", theNumber);
 	}
 	return NO;
 }

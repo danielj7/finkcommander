@@ -58,8 +58,8 @@ See the header file, FinkDataController.h, for interface and license information
 //  in an NSTask to obtain a list of all package names and their installation 
 //  states and stores the information in FinkPackage instances in finkArray.
 //
-//	getBinaryList: and getStableList: are helper methods used to fill to determine
-//  whether packages in the array are available in binary form or are unstable.
+//	getBinaryList: is a helper method used to fill to determine
+//  whether packages in the array are available in binary form.
 
 
 // Run  apt-cache to get list of packages available for binary install
