@@ -63,6 +63,7 @@ extern NSString *FinkLookedForProxy;
 extern NSString *FinkConfChangeIsPending;
 extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
+extern NSString *FinkCollapseOutputView;
 
 @interface FinkConf : NSObject 
 {

@@ -66,11 +66,13 @@ File: FinkPreferences.h
 	IBOutlet NSTextField *fetchAltDirTextField;
 	IBOutlet NSMatrix *downloadMethodMatrix;
 	IBOutlet NSMatrix *rootMethodMatrix;
+	IBOutlet NSImageView *titleBarImageView;
 	
 	NSUserDefaults *defaults;
 	FinkConf *conf;
 	
 	BOOL pathChoiceChanged;
+	BOOL autoExpandChanged;
 	BOOL finkConfChanged;
 }
 
@@ -84,11 +86,15 @@ File: FinkPreferences.h
 
 //record whether certain preference items have changed
 -(IBAction)setPathChoice:(id)sender;
+-(IBAction)setAutoExpandChanged:(id)sender;
 -(IBAction)setFinkConfChanged:(id)sender;
 -(IBAction)setFinkTreesChanged:(id)sender;
 
 //keep password options consistent
 -(IBAction)neverAsk:(id)sender;
 -(IBAction)askOnStartup:(id)sender;
+
+//set title bar image to reflect user's choice
+-(IBAction)setTitleBarImage:(id)sender;
 
 @end

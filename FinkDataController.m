@@ -30,6 +30,7 @@ See the header file, FinkDataController.h, for interface and license information
 -(void)dealloc
 {
 	[finkArray release];
+	[binaryPackages release];
 	[start release];
 	[super dealloc];
 }
@@ -38,6 +39,13 @@ See the header file, FinkDataController.h, for interface and license information
 -(NSMutableArray *)array
 {
 	return finkArray;
+}
+
+-(void)setBinaryPackages:(NSString *)s
+{
+	[s retain];
+	[binaryPackages release];
+	binaryPackages = s;
 }
 
 //---------------------------------------------------------->Fink Tools
@@ -64,7 +72,7 @@ See the header file, FinkDataController.h, for interface and license information
 	NSArray *lines;
 	NSEnumerator *e;
 	NSString *line;
-	NSMutableArray *pkgLines = [NSMutableArray arrayWithCapacity: 400];
+	NSMutableArray *pkgLines = [NSMutableArray arrayWithCapacity: 600];
 
 	[listCmd setLaunchPath: [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 		stringByAppendingPathComponent: @"/bin/apt-cache"]];
@@ -158,8 +166,7 @@ See the header file, FinkDataController.h, for interface and license information
 		[finkArray addObject: p];
 		[p release];
 	}
-	
-	[binaryPackages release]; 	
+
 #ifdef DEBUG
 	NSLog(@"Fink package array completed after %f seconds",
 		-[start timeIntervalSinceNow]);

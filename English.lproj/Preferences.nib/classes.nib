@@ -7,10 +7,12 @@
                 neverAsk = id; 
                 selectDirectory = id; 
                 setAndClose = id; 
+                setAutoExpandChanged = id; 
                 setFinkConfChanged = id; 
                 setFinkTreesChanged = id; 
                 setPathChoice = id; 
                 setPreferences = id; 
+                setTitleBarImage = id; 
             }; 
             CLASS = FinkPreferences; 
             LANGUAGE = ObjC; 
@@ -35,6 +37,7 @@
                 scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 showPackagesInTitleButton = NSButton; 
+                titleBarImageView = NSImageView; 
                 updateWithFinkButton = NSButton; 
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 

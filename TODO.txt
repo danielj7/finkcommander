@@ -6,18 +6,20 @@ Add show info panel for fink installation; include:
 	package version
 	OSX version
 	Developer Tools installed
-Add preferences:
-	Select columns to be viewed (see O'Reilly Cocoa tutorial on preferences)
-Make application scriptable; possible useful scripts:
+View menu:
+	select rows to display; see O'Reilly cocoa tutorial
+Create scripting dictionary; possible useful scripts:
 	start-up routine: e.g. selfupdate-cvs, update-all
 	e-mail output from failed install to package maintainer
 	e-mail success to unstable package maintainer
 Redo authorization and command launch methods to use "correct" approach (see AuthSample)
+Find panel for output view
+Save output to log files
 
 
 EASE OF USE
 
-Put choices in the form of buttons in the interaction panel
+Put text of prompts and choices in the form of buttons in the interaction panel
 Determinate progress bar for fink command phases
 Localization strings
 Additional toolbar commands and icons

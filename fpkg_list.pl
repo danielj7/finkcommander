@@ -38,6 +38,8 @@ foreach $pname (sort @pkglist) {
         $iflag = "current";
       } elsif ($package->is_any_installed()) {
         $iflag = "outdated";
+	  } elsif ($vo->is_present()) {
+		$iflag = "archive";
       } else {
         $iflag = "  ";
       }

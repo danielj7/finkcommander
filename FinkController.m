@@ -37,16 +37,16 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: @"" forKey: FinkHTTPProxyVariable];
 	
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkPackagesInTitleBar];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkUpdateWithFink];
-	
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysScrollToBottom];
+
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkPackagesInTitleBar];	
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysChooseDefaults];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAskForPasswordOnStartup];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkNeverAskForPassword];
-	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAlwaysScrollToBottom];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkWarnBeforeRunning];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkAutoExpandOutput];
 
@@ -62,6 +62,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 		NSEnumerator *e;
 		NSString *attribute;
+		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	
 		defaults = [NSUserDefaults standardUserDefaults];
 			
@@ -106,22 +107,30 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		
 		//Register for notifications that run commands
 		//  selector runs command if one is pending and password was entered 
-		[[NSNotificationCenter defaultCenter] addObserver: self
-					selector: @selector(runCommandWithPassword:)
-					name: @"passwordWasEntered"
-					object: nil];
+		[center addObserver: self
+				selector: @selector(runCommandWithPassword:)
+				name: @"passwordWasEntered"
+				object: nil];
 		//  selector runs commands that change the fink.conf file
-		[[NSNotificationCenter defaultCenter] addObserver: self
-					selector: @selector(runFinkConfCommand:)
-					name: FinkConfChangeIsPending
-					object: nil];
+		[center addObserver: self
+				selector: @selector(runFinkConfCommand:)
+				name: FinkConfChangeIsPending
+				object: nil];
 					
 		//Register for notification that causes table to update 
 		//and resume normal state
-		[[NSNotificationCenter defaultCenter] addObserver: self
-					selector: @selector(refreshTable:)
-					name: FinkPackageArrayIsFinished
-					object: nil];
+		[center addObserver: self
+				selector: @selector(refreshTable:)
+				name: FinkPackageArrayIsFinished
+				object: nil];
+					
+		//Register for notification that causes output to collapse when
+		//user selects the auto expand option
+		[center addObserver: self
+				selector: @selector(collapseOutput:)
+				name: FinkCollapseOutputView
+				object: nil];
+		
 					
 		return self;
 	}
@@ -589,6 +598,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
     [toolbar setDelegate: self];
     [toolbar setAllowsUserCustomization: YES];
     [toolbar setAutosavesConfiguration: YES];
+	[toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
     [[self window] setToolbar: toolbar]; 
 }
 
@@ -650,9 +660,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkDescribeItem]){
-		[item setLabel: @"Info"];
-		[item setPaletteLabel: @"Package Info Panel"];
-		[item setToolTip: @"Raise package info panel"];
+		[item setLabel: @"Inspector"];
+		[item setPaletteLabel: @"Package Inspector"];
+		[item setToolTip: @"Show package inspector panel"];
 		[item setImage: [NSImage imageNamed: @"describe"]];
 		[item setTarget: self];
 		[item setAction: @selector(showPackageInfoPanel:)];
@@ -688,12 +698,11 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setTarget: self];
 		[item setAction: @selector(terminateCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
-		NSRect fRect = [searchView frame];
 		[item setLabel:@"Filter Table Data"];
 		[item setPaletteLabel:[item label]];
 		[item setView: searchView];
-		[item setMinSize: fRect.size];
-		[item setMaxSize: fRect.size];
+		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
+		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
 	}else if ([itemIdentifier isEqualToString: FinkInteractItem]){
 		[item setLabel: @"Interact"];
 		[item setPaletteLabel: [item label]];
@@ -732,6 +741,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
+		FinkSelfUpdateCVSItem,
 		NSToolbarSeparatorItemIdentifier,
 		FinkDescribeItem,
 		FinkTerminateCommandItem,
@@ -758,7 +768,10 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		FinkPackage *pkg;
 
 		//deselect rows so automatic scrolling doesn't interfere with filter
-		[tableView deselectAll: self];
+		if ([defaults boolForKey: FinkScrollToSelection]){
+			[tableView deselectAll: self];
+		}
+		
 		if ([filterText length] == 0){
 			[self setDisplayedPackages: [packages array]];
 		}else{
@@ -793,9 +806,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 	[defaults setFloat: (oFrame.size.height / sFrame.size.height)
 					  forKey: FinkOutputViewRatio];
-//	if (![defaults boolForKey: FinkAlwaysScrollToBottom]){
-//		[self scrollToVisible: [NSNumber numberWithFloat: 0.0]];
-//	}
 }
 
 //--------------------------------------------------------------------------------
@@ -832,7 +842,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	if ([self selectedObjectInfo]){
 		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
 		int selection = [[self displayedPackages] indexOfObject: selectedObject];
-
+#ifdef DEBUG
+		NSLog(@"package[s] selected");
+#endif //DEBUG
 		if (selection != NSNotFound){
 			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
 			NSPoint offsetRowOrigin = [tableView rectOfRow: selection - offset].origin;
@@ -879,8 +891,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
-	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
 	[self controlTextDidChange: nil]; //reapplies filter	
+	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
 }
 
 //----------------------------------------------->Data Source Methods
@@ -1096,10 +1108,10 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	NSString *cmd = [args objectAtIndex: 0];
 
 	if ([self commandIsRunning]){
-		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, //title, buttons
-			[self window], self, NULL,	NULL, nil,	 //window, delegate, selectors, context info
-			@"You will have to wait until the current command is complete before changing the fink.conf settings.",
-			nil);									 //msg string params
+		NSRunAlertPanel(@"Sorry",
+			@"You will have to wait until the current command is complete before changing the fink.conf settings.",			 
+			@"OK", nil, nil);									 
+			[preferences setFinkConfChanged: nil]; //sets to YES
 		return;
 	}
 

@@ -37,7 +37,7 @@ File: FinkPreferences.m
 	NSString *ftpProxy;
 	NSString *fetchAltDir;
 	
-	//General preferences
+	//FinkCommander Preferences
 	basePath = [defaults objectForKey: FinkBasePath];
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
@@ -47,6 +47,7 @@ File: FinkPreferences.m
 		[basePathTextField setStringValue: basePath];
 	}
 	pathChoiceChanged = NO;
+	autoExpandChanged = NO;
 	finkConfChanged = NO;
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 	[askOnStartupButton setState: [defaults boolForKey: FinkAskForPasswordOnStartup]];
@@ -54,9 +55,8 @@ File: FinkPreferences.m
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
 	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
 	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
+	[self setTitleBarImage: nil];
 	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
-		
-	//Table Preferences
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	
@@ -180,6 +180,11 @@ File: FinkPreferences.m
 		[defaults setBool: YES forKey: FinkBasePathFound];
 	}
 
+	if (autoExpandChanged && [autoExpandOutputButton state]){
+		[[NSNotificationCenter defaultCenter] postNotificationName: FinkCollapseOutputView
+			object: nil];
+	}
+
 	if (finkConfChanged){
 		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
@@ -216,6 +221,11 @@ File: FinkPreferences.m
 	pathChoiceChanged = YES;
 }
 
+-(IBAction)setAutoExpandChanged:(id)sender
+{
+	autoExpandChanged = YES;
+}
+
 -(IBAction)setFinkConfChanged:(id)sender
 {
 	finkConfChanged = YES;
@@ -241,6 +251,16 @@ File: FinkPreferences.m
 		[neverAskButton setState: NO];
 	}
 }
+
+-(IBAction)setTitleBarImage:(id)sender
+{
+	if ([showPackagesInTitleButton state]){
+		[titleBarImageView setImage: [NSImage imageNamed: @"number"]];
+	}else{
+		[titleBarImageView setImage: [NSImage imageNamed: @"title"]];
+	}
+}
+
 
 //didEndSelector for following method
 -(void)openPanelDidEnd:(NSOpenPanel *)openPanel

@@ -27,15 +27,12 @@ NSString *FinkPackagesInTitleBar = @"FinkPackagesInTitleBar";
 NSString *FinkOutputViewRatio = @"FinkOutputViewRatio";
 NSString *FinkAutoExpandOutput = @"FinkAutoExpandOutput";
 
-//Global variables identifying inter-object notifications
+//Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";
 NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
+NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";
 
-//Globals for this file
-NSString *PROXY_HTTP = @"ProxyHTTP";
-NSString *PROXY_FTP = @"ProxyFTP";
-NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 @implementation FinkConf
 
@@ -105,7 +102,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 {
 	if (shouldUseUnstable){
 		if ([[finkConfDict objectForKey: @"Trees"]
-			indexOfObject: @"unstable/main"] == NSNotFound){
+				indexOfObject: @"unstable/main"] == NSNotFound){
 			[[finkConfDict objectForKey: @"Trees"] addObject: @"unstable/main"];
 		}
 	}else{
@@ -218,37 +215,37 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 -(NSString *)useHTTPProxy
 {
-	return [finkConfDict objectForKey: PROXY_HTTP];
+	return [finkConfDict objectForKey: @"ProxyHTTP"];
 }
 
 -(void)setUseHTTPProxy:(NSString *)s
 {
 	if (s != nil){
-		[finkConfDict setObject: s forKey: PROXY_HTTP];
+		[finkConfDict setObject: s forKey: @"ProxyHTTP"];
 	}else{
-		[finkConfDict removeObjectForKey: PROXY_HTTP];
+		[finkConfDict removeObjectForKey: @"ProxyHTTP"];
 	}
 }
 
 
 -(NSString *)useFTPProxy
 {
-	return [finkConfDict objectForKey: PROXY_FTP];
+	return [finkConfDict objectForKey: @"ProxyFTP"];
 }
 
 -(void)setUseFTPProxy:(NSString *)s
 {
 	if (s != nil){
-		[finkConfDict setObject:s forKey: PROXY_FTP];
+		[finkConfDict setObject:s forKey: @"ProxyFTP"];
 	}else{
-		[finkConfDict removeObjectForKey: PROXY_FTP];
+		[finkConfDict removeObjectForKey: @"ProxyFTP"];
 	}
 }
 
 
 -(NSString *)downloadMethod
 {
-	NSString *method = [finkConfDict objectForKey: DOWNLOAD_METHOD];
+	NSString *method = [finkConfDict objectForKey: @"DownloadMethod"];
 	if (method != nil){
 		return method;
 	}
@@ -257,7 +254,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 -(void)setDownloadMethod:(NSString *)s
 {
-	[finkConfDict setObject:s forKey: DOWNLOAD_METHOD];
+	[finkConfDict setObject:s forKey: @"DownloadMethod"];
 }
 
 
@@ -369,7 +366,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 #ifdef DEBUG
 		NSLog(@"%@", fconfString);
 #endif
-		
+
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&
 			[fconfString writeToFile: @"/private/tmp/fink.conf.tmp" atomically: YES]){
@@ -381,7 +378,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 						   @"FinkCommander was unable to write changes to fink.conf.",
 						   @"OK", nil, nil);
 		}
-	//if fink.conf file changed by mv command, call index to make table data reflect
+	//if fink.conf file trees parameter was changed, call index to make table data reflect
 	//new fink.conf settings
 	}else if (finkTreesChanged && [[n object] contains: @"mv"]){
 		NSMutableArray *indexCommandArray = [NSMutableArray arrayWithObjects:

@@ -117,7 +117,7 @@
 					value: [NSURL URLWithString: url]
 					range: r];
 		}
-}
+	}
 	
 	//look for e-mail url and if found turn it into an active link
 	r = [[desc string] rangeOfString: @"Maintainer: "];
@@ -155,20 +155,21 @@
 {
 	NSEnumerator *e = [packages objectEnumerator];
 	FinkPackage *pkg;
+	NSString *nameVersion;
 
 	[textView setString: @""];
 
 	while (pkg = [e nextObject]){
+		nameVersion = ([[pkg version] length] > 1) ? 
+			[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]] : [pkg name];
 		[[textView textStorage] appendAttributedString:
 			[[[NSAttributedString alloc] 
-					initWithString:
-						[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]]
+					initWithString: nameVersion
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
 						[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
 						[NSColor colorWithDeviceCyan:1.0 magenta:1.0 yellow:0.0 black:0.3 alpha:1.0],				//dark blue
 								NSForegroundColorAttributeName,  
-						nil]] autorelease]];	
-		
+						nil]] autorelease]];
 		[[textView textStorage] appendAttributedString:
 			[self formatDescriptionString: [pkg fulldesc]]];
 		[[textView textStorage] appendAttributedString:

@@ -167,7 +167,7 @@ See the header file, FinkPackage.h, for interface and license information.
 {
 	NSComparisonResult result = [[self installed] caseInsensitiveCompare:
 		[pkg installed]];
-	if (result == 0) return [self normalCompareByName: pkg];
+	if (result == 0) return (0 -[self normalCompareByName: pkg]);
 	return (result);
 }
 
@@ -183,7 +183,7 @@ See the header file, FinkPackage.h, for interface and license information.
 {
 	NSComparisonResult result = [[self category] caseInsensitiveCompare:
 		[pkg category]];
-	if (result == 0) return [self normalCompareByName: pkg];
+	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (0 - result);
 }
 
@@ -209,7 +209,7 @@ See the header file, FinkPackage.h, for interface and license information.
 {
 	NSComparisonResult result = [[self binary] caseInsensitiveCompare:
 		[pkg binary]];
-	if (result == 0) return [self normalCompareByName: pkg];
+	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (result);
 
 }
@@ -226,7 +226,7 @@ See the header file, FinkPackage.h, for interface and license information.
 {
 	NSComparisonResult result = [[self unstable] caseInsensitiveCompare:
 		[pkg unstable]];
-	if (result == 0) return [self normalCompareByName: pkg];
+	if (result == 0) return (0 - [self normalCompareByName: pkg]);
 	return (result);
 
 }
