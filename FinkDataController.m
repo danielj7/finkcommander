@@ -19,7 +19,7 @@ int NAMESTART = 12;
 
 @implementation FinkDataController
 
-//---------------------------------------------------------->The Ususal
+//---------------------------------------------------------->The Usual
 
 -(id)init
 {
@@ -98,7 +98,10 @@ int NAMESTART = 12;
     NSEnumerator *e, *f;
     NSString *pkginfo, *line;
 	NSString *pname, *pversion;
-
+	
+#ifdef DEBUGGING
+	char buffer[BUFFERLEN];
+#endif
 
     [listCmd setLaunchPath: 
 		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
@@ -110,16 +113,19 @@ int NAMESTART = 12;
 
 #ifdef DEBUGGING
 	if (d) {
-		char buffer[BUFFERLEN];
 		[d getBytes:buffer length:BUFFERLEN-1];
-		NSLog(@"Binary pkg data in buffer from notification:\n%s", buffer);
+		NSLog(@"Binary pkg data in buffer:\n%s", buffer);
 	}else{
-		NSLog(@"Notification data buffer was empty");
+		NSLog(@"Data buffer was empty");
 	}
 #endif
 
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
 	
+#ifdef DEBUGGING
+	NSLog(@"Output string from data:\n%@", [output substringWithRange: NSMakeRange(0, BUFFERLEN-1)]);
+#endif
+
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
 	while (pkginfo = [e nextObject]){
 		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
@@ -222,6 +228,22 @@ int NAMESTART = 12;
     return [NSArray arrayWithObjects: web, maint, email, nil];
 }
 
+#ifdef UNDEF
+
+-(NSString *)pathToStablePackage:(FinkPackage *)pkg
+{
+	NSString *basePath = [[NSUserDefaults standardUserDefaults] 
+							objectForKey:FinkBasePath];
+	
+	//Add check for distnumber for next fink pm
+	
+	if ([[pkg category] isEqualToString:@"crypto"]){
+		;
+	}
+}
+
+#endif
+
 -(void)completeUpdate:(NSNotification *)n
 {
     NSDictionary *info = [n userInfo];
@@ -233,6 +255,8 @@ int NAMESTART = 12;
     NSArray *components;
     NSEnumerator *e;
     FinkPackage *p;
+	NSFileManager *manager = [NSFileManager defaultManager];
+//	NSString *stable = [self pathToStable];
 	NSString *bversion;
 	
 	d = [info objectForKey: NSFileHandleNotificationDataItem];
@@ -242,20 +266,6 @@ int NAMESTART = 12;
 #ifdef DEBUGGING
 	NSLog(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
-	if (d) {
-		char buffer[BUFFERLEN];
-		[d getBytes:buffer length:BUFFERLEN-1];
-		NSLog(@"Source pkg data in buffer from notification:\n%s", buffer);
-	}else{
-		NSLog(@"Notification data buffer was empty");
-	}
-	if (output) {
-		int olen = [output length];
-		int rlen = olen > 240 ? 240 : olen;
-		NSLog(@"Output string from data buffer:\n%@", [output substringWithRange:NSMakeRange(0, rlen)]);
-	}else{
-		NSLog(@"Output string from data buffer was empty");
-	}
 #endif //DEBUGGING
 
     temp = [NSMutableArray arrayWithArray:
@@ -267,7 +277,7 @@ int NAMESTART = 12;
     while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
 		p = [[FinkPackage alloc] init];
 		[p setName: [listRecord objectAtIndex: 0]];
-		[p setStatus: [listRecord objectAtIndex: 1]];
+		[p setStatus: NSLocalizedString([listRecord objectAtIndex: 1], nil)];
 		[p setVersion: [listRecord objectAtIndex: 2]];
 		[p setInstalled: [listRecord objectAtIndex: 3]];
 		[p setStable: [listRecord objectAtIndex: 4]];
@@ -275,6 +285,13 @@ int NAMESTART = 12;
 		[p setCategory: [listRecord objectAtIndex: 6]];
 		[p setSummary: [listRecord objectAtIndex: 7]];
 		[p setFulldesc: [listRecord objectAtIndex: 8]];
+		
+		
+#ifdef UNDEF
+		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
+			;
+		}
+#endif
 		
 		components = [self descriptionComponentsFromString: [p fulldesc]];
 		[p setWeburl: [components objectAtIndex: 0]];

@@ -1,48 +1,40 @@
 
-RELEASE 0.3.3 (MacWorld CD Version)
+RELEASE 0.4.0
 
-Target date: 08/03/2002
+Target date: 09/07/2002
 
-x Optional limit on output buffer--bug fix
+X Additional information for table:
+	Installed version
+	Binary version
+	Stable version
+	Unstable version
+	
+Same information in package inspector
 
-x Allow user to set environment variables
+French, German and Spanish localizations
 
-x Fix Jaguar compatibility issue
-
-x Automize check for new FinkCommander release (S)
-
-x Add support for multiple verbosity settings
-
-TESTING: Check compatibility with existing installation, brand new
-installation, various localizations
-
-
-RELEASE 0.3.4
-
-Target date: 08/31/2002
-
-French and Spanish localizations
-
-New commands: 
+New command: 
 	update fink from cvs
-	force removal: dpkg --remove --force-depends <pkg>
-	raise warning alerts for both
+	raise warning alert
 	
-New tool:  move unstable package to stable
+Run command in terminal option (with Jaguar's new AppleScript class); may need 
+to disable on systems running 10.1
+
+Allow user to specify administrator name in password entry sheet (if
+possible)
 	
+Collapse and expand output with double click (like Mail.app)
+
 Jaguar bug fixes
 
 
-RELEASE 0.4.0
+RELEASE 0.4.1
 
 Target date: 10/15/2002
 
 (P) = Parsing group: requires finer parsing of command output
 (S) = Scheduling group: requires system for tracking dates of installs
     and updates
-
-Run command in terminal option (with Jaguar's new AppleScript class); may need 
-to disable on systems running 10.1
 
 Command inspector: 
 show currently running command, list of all
@@ -54,22 +46,11 @@ refresh button (P)
 Determinate progress bar and more detailed message text for fink
 command phases (P)
 
-Add FinkPackage instance variables; allow display in table; display in
-Package Inspector (P): 
-	installed version 
-	date first installed
-	date last updated 
-
-Collapse and expand output with double click (like Mail.app) (P)
-
 Additional fink installation info (P), (S):
 	   last selfupdate-cvs 
 	   last apt-get update
 
 Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences (S)
-
-Allow user to specify administrator name in password entry sheet (if
-possible)
 
 Show info panel for fink installation; mirror information in email sig
 

@@ -21,6 +21,7 @@
 	defaults = [NSUserDefaults standardUserDefaults];
 
 	[self setWindowFrameAutosaveName: @"PackageInfo"];
+	[[self window] setTitle:NSLocalizedString(@"Package Inspector", nil)];
 
 	return self;
 }

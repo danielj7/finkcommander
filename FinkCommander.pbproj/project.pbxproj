@@ -257,6 +257,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
+				USE_GCC3 = YES;
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1022,6 +1023,7 @@
 			refType = 4;
 		};
 		F568C4A302FC9D6101A80164 = {
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = English;
 			path = English.lproj/Localizable.strings;
@@ -1220,18 +1222,21 @@
 			refType = 4;
 		};
 		F5CC37180304F2BD01A80164 = {
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5CC37190304F2C601A80164 = {
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = French;
 			path = French.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5CC371A0304F2CD01A80164 = {
+			fileEncoding = 10;
 			isa = PBXFileReference;
 			name = Spanish;
 			path = Spanish.lproj/Localizable.strings;
