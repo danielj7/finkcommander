@@ -68,6 +68,7 @@
 	
 	r = [self rangeOfCompiledExpression:&expr
 			inRange:range];
+	regfree(&expr);
 	return r;
 }
 
@@ -102,10 +103,8 @@
 			regerror(result, re, errmsg, MAXBUF);
 			NSLog(@"Error executing regular expression:\n%s", errmsg);
 		}
-		regfree(re);
 		return r;
 	}
-	regfree(re);
 	//Add location of substring searhced to determine location within string
 	r.location = matches[0].rm_so + range.location;
 	r.length = matches[0].rm_eo - matches[0].rm_so;

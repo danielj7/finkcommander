@@ -30,32 +30,23 @@ File: FinkOutputParser.m
 	(([(x) containsPattern:@"mkdir -p */src/*"] 	&& 						\
 		![(x) contains:@"root"])					||					 	\
 	  [(x) containsExpression:@"/bin/(tar|bzip2) -.*"])
-
-#define CONFIGURETRIGGER(x)	\
-	[(x) containsExpression:@"^(\./configure|checking for|patching file) "]
 	
 #define COMPILETRIGGER(x)													\
 	(([(x) hasPrefix: @"make"]						&& 						\
 		![(x) contains:@"makefile"])				|| 						\
 	 [(x) containsExpression:@"^(g?[c+7]{2} (-[^E]| ))|Compiling |pbxbuild "])
-
-#define ISPROMPT(x) 														\
-	([(x) containsPattern: @"*proceed? \[*"]		|| 						\
-	 [(x) contains: @"Make your choice:"]			|| 						\
-	 [(x) contains: @"Pick one:"]					|| 						\
-	 [(x) containsCI: @"[y/n]"] 					|| 						\
-	 [(x) contains: @"[anonymous]"] 				||					 	\
-	 [(x) contains: @"[root]"]						||						\
-	 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
+	 
+#define CONFIG_PAT															\
+	@"^(\\./configure|checking for|patching file) "
+	 
+#define PROMPT_PAT															\
+	[NSString stringWithFormat:												\
+		@"proceed\\? \\[.*\\]|your choice:|Pick one|\\[[YyNn/]+\\]|[anonymous]|[root]|[%@]", \
+		NSUserName()]
 
 //fink's --yes option does not work for these prompts:
-#define ISMANDATORY_PROMPT(x)												\
-	([(x) contains:@"cvs.sourceforge.net's password:"]  || 					\
-	 [(x) contains:@"CVS password:"]					||					\
-	 [(x) contains:@"[default=N]?"] 					||					\
-	 [(x) contains:@"either license?"]					||					\
-	 [(x) containsExpression:@"(key|return) to continue\.?$"]) 				
-
+#define MANPROMPT_PAT											\
+	@"(CVS|cvs).*password|\\[default=N\\]|either license\\?|(key|return) to continue"
 
 @implementation FinkOutputParser
 
@@ -80,12 +71,22 @@ File: FinkOutputParser.m
 		executable:(NSString *)exe;
 {
     if (self = [super init]){
+		int aPrompt, mPrompt, config;  //test regex compilation success
+		
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
 		readingPackageList = NO;
-		self_repair = NO;		
+		selfRepair = NO;		
 		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
 		pgid = 0;
+		
+		/* Precompile regular expressions used to parse each line of output */
+		config = compiledExpressionFromString(CONFIG_PAT, &configure);
+		aPrompt = compiledExpressionFromString(PROMPT_PAT, &prompt);		
+		mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &manPrompt);
+		if (mPrompt != 0 || aPrompt != 0){
+			NSLog(@"Compiling regex failed.");
+		}
 		
 		if (installing){
 			packageList = [[NSMutableArray alloc] init];
@@ -104,6 +105,10 @@ File: FinkOutputParser.m
 	[increments release];
 	[command release];
 	[currentPackage release];
+	
+	regfree(&configure);
+	regfree(&prompt);
+	regfree(&manPrompt);
 	
 	[super dealloc];
 }
@@ -294,7 +299,7 @@ File: FinkOutputParser.m
 		//turn off installation state signals
 		installing = [self setupInstall];
 		//look for prompt or installation event immediately after pkg list
-		if (ISPROMPT(line)){
+		if ([line containsCompiledExpression:&prompt]){
 			if (installing){
 				return PROMPT_AND_START;
 			}
@@ -348,7 +353,8 @@ File: FinkOutputParser.m
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (installing	&& (currentPhase == UNPACK) && CONFIGURETRIGGER(sline)){
+    if (installing	&& (currentPhase == UNPACK) && 
+			[sline containsCompiledExpression:&configure]){
 		Dprintf(@"Configure phase triggered by:\n%@", line);
 		[self setIncrementForLastPhase];
 		currentPhase = CONFIGURE;
@@ -382,28 +388,29 @@ File: FinkOutputParser.m
 		return PASSWORD_PROMPT;
     }
 	//Look for prompts
-	if (ISMANDATORY_PROMPT(line)){
+	if ([line containsCompiledExpression:&manPrompt]){
 		return MANDATORY_PROMPT;
     }
-	if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+	if ([line containsCompiledExpression:&prompt] && 
+		! [defaults boolForKey:FinkAlwaysChooseDefaults]){
 		Dprintf(@"Found prompt: %@", line);
 		return PROMPT;
     }
 	//Look for self-repair of tool 
 	if ([line contains:@"Running self-repair"]){
-		self_repair = YES;
+		selfRepair = YES;
 		return RUNNING_SELF_REPAIR;
 	}
-	if (self_repair && [line contains:@"Self-repair succeeded"]){
-		self_repair = NO;
+	if (selfRepair && [line contains:@"Self-repair succeeded"]){
+		selfRepair = NO;
 		return SELF_REPAIR_COMPLETE;
 	} 
-	if (self_repair && [line contains:@"Unable to modify Resource directory\n"]){
-		self_repair = NO;
+	if (selfRepair && [line contains:@"Unable to modify Resource directory\n"]){
+		selfRepair = NO;
 		return RESOURCE_DIR;
 	}
 	if ([line contains:@"Self-repair failed\n"]){
-		self_repair = NO;
+		selfRepair = NO;
 		return SELF_REPAIR_FAILED;
 	}
 	return NONE;

@@ -80,12 +80,16 @@ enum {
 	NSString *command;
     NSString *currentPackage;
 
+	regex_t configure;
+	regex_t prompt;
+	regex_t manPrompt;
+
     float increment;
     int currentPhase;
 	int pgid;
 	BOOL installing;
     BOOL readingPackageList;
-	BOOL self_repair;
+	BOOL selfRepair;
 }
 
 -(id)initForCommand:(NSString *)cmd
