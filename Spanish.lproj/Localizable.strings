@@ -68,3 +68,15 @@
 "Medium" = "Medium";
 "Choose" = "Choose";
 
+//Added 8/10/02:
+
+"name" = "Name";
+"version" = "Current";
+"status" = "Status";
+"installed" = "Installed";
+"binary" = "Binary";
+"stable" = "Stable";
+"unstable" = "Unstable";
+"category" = "Category";
+"summary" = "Description";
+"maintainer" = "Maintainer";
