@@ -15,8 +15,6 @@ See the header file, FinkData.h, for interface and license information.
 #define PACKAGESTART 9
 #define VERSIONSTART 9
 
-#define USE_NEW_PARSING_METHOD
-
 @implementation FinkData
 
 //---------------------------------------------------------->The Usual

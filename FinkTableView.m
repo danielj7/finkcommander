@@ -465,10 +465,18 @@ enum {
 //Basic sorting method
 -(void)sortTableAtColumn:(NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
-	NSArray *newArray = 
-		[[self displayedPackages] sortedArrayUsingSelector:
-			NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
-			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
+	NSString *columnName = [aTableColumn identifier];
+	NSArray *newArray;
+	
+	if (!columnName){
+		NSLog(@"Unable to sort; no identifier for table column: %@", aTableColumn);
+		[self reloadData];
+		return;
+	}
+	
+	newArray = [[self displayedPackages] sortedArrayUsingSelector:
+					NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
+			[columnName capitalizedString]])]; // e.g. reverseCompareByName:
 	[self setDisplayedPackages:newArray];
 	[self reloadData];
 }
