@@ -2,6 +2,58 @@
 
 #import "SBFileItemTree.h"
 
+NSString *SBAscendingOrder = @"SBAscendingOrder";
+NSString *SBDescendingOrder = @"SBDescendingOrder";
+
+//----------------------------------------------------------
+#pragma mark SORTING FUNCTIONS
+//----------------------------------------------------------
+
+int sortByFilename(id firstItem, id secondItem, void *direction)
+{
+	NSString *firstName = [firstItem filename];
+	NSString *secondName = [secondItem filename];
+    int result = [firstName compare:secondName];
+    NSString *order = (NSString *)direction;
+
+    if ([order isEqualToString:SBAscendingOrder]) return result;
+    return (0 - result);
+}
+
+int sortByMdate(id firstItem, id secondItem, void *direction)
+{
+	NSDate *itemOne = [firstItem mdate];
+	NSDate *itemTwo = [secondItem mdate];
+    int result = [itemOne compare:itemTwo];
+    NSString *order = (NSString *)direction;
+
+    if (result == NSOrderedSame){
+		NSString *firstName = [firstItem filename];
+		NSString *secondName = [secondItem filename];
+		result = [firstName compare:secondName];
+    }
+    if ([order isEqualToString:SBAscendingOrder]) return result;
+    return (0 - result);
+}
+
+int sortBySize(id firstItem, id secondItem, void *direction)
+{
+	float firstSize = [firstItem size];
+	float secondSize = [secondItem size];
+	int result = firstSize - secondSize;
+	NSString *order = (NSString *)direction;
+	
+    if (result == 0){
+		NSString *firstName = [firstItem filename];
+		NSString *secondName = [secondItem filename];
+		result = [firstName compare:secondName];		
+    }
+    result = result < 0 ? -1 : 1;
+    if ([order isEqualToString:SBAscendingOrder]) return result;
+    return (0 - result);
+}
+
+
 @implementation SBFileItemTree
 
 //----------------------------------------------------------
@@ -151,6 +203,10 @@
     return;
 }
 
+//----------------------------------------------------------
+#pragma mark ITEM ACCESS METHODS
+//----------------------------------------------------------
+
 -(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray
 {
     SBFileItem *anItem = [self rootItem];
@@ -175,6 +231,53 @@
     return [self itemInTreeWithPathArray:pathArray];
 }
 
+//----------------------------------------------------------
+#pragma mark SORTING METHODS
+//----------------------------------------------------------
+
+-(void)sortChildrenOfItem:(SBFileItem *)pitem
+				byElement:(NSString *)element
+			  inOrder:(NSString *)order
+{
+    NSArray *newArray;
+    NSData *sortHint = [[pitem children] sortedArrayHint];
+    SBFileItem *citem;
+    NSEnumerator *e;
+    int (*sorter)(id, id, void *); //pointer to sorting function
+
+	if ([element isEqualToString:@"filename"]){
+		sorter = sortByFilename; //func name is pointer to func
+	}else if ([element isEqualToString:@"mdate"]){
+		sorter = sortByMdate;
+	}else{
+		sorter = sortBySize;
+	}
+
+    //Sort children
+    newArray = [[pitem children]
+				sortedArrayUsingFunction:sorter
+				context:order
+				hint:sortHint];
+    [pitem setChildren:newArray];
+
+    //Sort descendants of children
+    e = [[pitem children] objectEnumerator];
+    while (nil != (citem = [e nextObject])){
+		if (nil != [citem children]){
+			[self sortChildrenOfItem:citem
+				   byElement:element
+				   inOrder:order];
+		}
+    }
+}
+
+
+-(void)sortTreeByElement:(NSString *)element
+    inOrder:(NSString *)order
+{
+    [self sortChildrenOfItem:[self rootItem]
+					 byElement:element
+					inOrder:order];
+}
+
 @end
-
-

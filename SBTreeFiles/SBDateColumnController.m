@@ -145,7 +145,6 @@
 {
     float width = [[self column] width];
 	
-	Dprintf(@"Adjusting column %@ width %f", [[self column] identifier], width);
     NSCell *dateCell = [[NSCell alloc] initTextCell:@""];
     NSString *format = [self formatForWidth:width];
     NSDateFormatter *dateFormat= [[NSDateFormatter alloc]

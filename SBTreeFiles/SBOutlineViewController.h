@@ -12,11 +12,16 @@ extern NSString *sbDescending;
     NSOutlineView *outlineView;
     SBFileItemTree *tree;
     NSMutableDictionary *columnStateDictionary;
-    NSTableColumn *previousColumn;
+    NSString *previousColumnIdentifier;
 }
 
 -(id)initWithTree:(SBFileItemTree *)aTree
 			 view:(NSOutlineView *)oView;
+
+-(NSString *)previousColumnIdentifier;
+
+-(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier;
+	
 
 /* 
 	Outline view data source methods

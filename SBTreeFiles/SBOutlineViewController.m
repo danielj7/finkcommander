@@ -1,9 +1,6 @@
 
 #import "SBOutlineViewController.h"
 
-NSString *sbAscending = @"sbAscending";
-NSString *sbDescending = @"sbDescending";
-
 @implementation SBOutlineViewController
 
 //----------------------------------------------------------
@@ -18,12 +15,10 @@ NSString *sbDescending = @"sbDescending";
 		NSTableColumn *aColumn;
 		NSEnumerator *e = [[outlineView tableColumns] objectEnumerator];
 
-
 		outlineView = oView; //Retained when nib opens
 		tree = [aTree retain];
-
-		Dprintf(@"In SBOVC rootItem = %@", [tree rootItem]);
-
+		[self setPreviousColumnIdentifier:@"filename"];
+		
 		[outlineView setDelegate:self];
 		[outlineView setDataSource:self];
 		[outlineView setTarget:self];
@@ -35,10 +30,10 @@ NSString *sbDescending = @"sbDescending";
 			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
 		}
 
-		columnStateDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-			sbAscending, @"filename",
-			sbAscending, @"size",
-			sbAscending, @"mdate", nil];
+		columnStateDictionary = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+			SBAscendingOrder, @"filename",
+			SBAscendingOrder, @"size",
+			SBAscendingOrder, @"mdate", nil] retain];
 	}
 	return self;
 }
@@ -46,9 +41,18 @@ NSString *sbDescending = @"sbDescending";
 -(void)dealloc
 {
     [tree release];
+	[previousColumnIdentifier release];
     [columnStateDictionary release];
 
     [super dealloc];
+}
+
+-(NSString *)previousColumnIdentifier { return previousColumnIdentifier; }
+
+-(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier{
+	[newPreviousColumnIdentifier retain];
+	[previousColumnIdentifier release];
+	previousColumnIdentifier = newPreviousColumnIdentifier;
 }
 
 //----------------------------------------------------------
@@ -93,45 +97,43 @@ NSString *sbDescending = @"sbDescending";
 		(id)[item valueForKey:identifier];
 }
 
-#ifdef UNDEF
 //----------------------------------------------------------
-#pragma mark SORTING METHODS
+#pragma mark SORTING METHOD
 //----------------------------------------------------------
 
--(IBAction)sortByColumn:(id)sender
+- (BOOL)outlineView:(NSOutlineView *)theOutlineView
+	shouldSelectTableColumn:(NSTableColumn *)tableColumn
 {
-    //Convoluted way to determine column whose header was clicked, but it's all I could
-    //come up with
-    NSTableColumn *clickedColumn = [[sender controlView] 
-									columnAtPoint:NSMakePoint(1.0, 1.0)];
-    NSString *identifier = [clickedColumn identifier]; 
+    NSString *identifier = [tableColumn identifier]; 
     NSString *order;
     NSImage *triangle;
-
-    [outlineView setIndicatorImage:nil inTableColumn:previousColumn];
+	
+    [outlineView setIndicatorImage:nil 
+			inTableColumn:[outlineView tableColumnWithIdentifier:[self previousColumnIdentifier]]];
 
     //If user clicks same column header twice in a row, change sort order
-    if ([clickedColumn isEqualTo: previousColumn]){
-		order = [[columnStateDictionary objectForKey:identifier] isEqualToString:sbAscending]
-		? sbDescending : sbAscending;
+    if ([identifier isEqualToString:[self previousColumnIdentifier]]){
+		order = [[columnStateDictionary objectForKey:identifier] isEqualToString:SBAscendingOrder]
+			? SBDescendingOrder : SBAscendingOrder;
 		//Record new state for next click on this column
 		[columnStateDictionary setObject:order forKey:identifier];
 		//Otherwise, return sort order to previous state for selected column
     }else{
 		order = [columnStateDictionary objectForKey:identifier];
     }
-    previousColumn = clickedColumn;
+    [self setPreviousColumnIdentifier:identifier];
 
     //Set appropriate indicator image in clicked column
-    triangle = [order isEqualToString:sbAscending]   ?
-		[NSImage imageNamed:@"NSAscendingSortIndicator"]   :
+    triangle = [order isEqualToString:SBAscendingOrder]   		?
+		[NSImage imageNamed:@"NSAscendingSortIndicator"]   		:
 		[NSImage imageNamed:@"NSDescendingSortIndicator"];
-    [outlineView setIndicatorImage:triangle inTableColumn:clickedColumn];
+    [outlineView setIndicatorImage:triangle inTableColumn:tableColumn];
 
-    //CALL METHOD TO SORT SBFILEITEMTREE
+    [tree sortTreeByElement:identifier inOrder:order];
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
+	return NO;
 }
-#endif //UNDEF
+
 //----------------------------------------------------------
 #pragma mark ACTION(S)
 //----------------------------------------------------------
@@ -187,3 +189,5 @@ NSString *sbDescending = @"sbDescending";
 }
 
 @end
+
+
