@@ -138,7 +138,7 @@ int NAMESTART = 12;
 
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
-			@"Library/Application Support/FinkCommander.pl"], nil];
+			@"Library/Application Support/FinkCommander/FinkCommander.pl"], nil];
 	[listCmd setLaunchPath: @"/usr/bin/perl"];
 
     [listCmd setArguments: args];
