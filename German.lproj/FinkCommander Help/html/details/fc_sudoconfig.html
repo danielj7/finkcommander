@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+<title>FinkCommander Guide--Konfiguration von sudo</title>
+</head>
+
+<body>
+
+<h3>sudo konfigurieren, damit ich nicht nach meinem Passwort gefragt werde</h3>
+
+
+
+<table width="100%" border="0" cellspacing="10">
+<tr><td>
+<p>Aus dem fink <a href="http://fink.sourceforge.net/faq/index.php">FAQ</a> (Hinweis: dies ist eine
+&Uuml;bersetzung im Rahmen der FinkCommander Hilfe; falls Sie den Original-Text in Englisch lesen
+wollen, folgen Sie bitte dem Link):</p>
+
+<p>Q3.9: Ich habe es satt, immer wieder mein Passwort in sudo einzutippen. Gibt es eine
+M&ouml;glichkeit, dies zu umgehen?</p>
+</td></tr>
+
+<tr bgcolor="#ffffcc"><td>
+<p>A: Wenn Sie nicht paranoid sind k&ouml;nnen Sie sudo so konfigurieren, dass Sie nie nach Ihrem
+Passwort gefragt werden. Editieren Sie dazu <kbd>/etc/sudoers</kbd> w&auml;hrend Sie als root
+eingeloggt sind und f&uuml;gen Sie eine Zeile hinzu, die etwa so aussieht:</p>
+
+<p><code>username  ALL = NOPASSWD: ALL</code></p>
+
+<p>Nat&uuml;rlich m&uuml;ssen Sie username durch Ihren aktuellen Benutzernamen ersetzen. Diese
+Zeile erlaubt Ihnen, jegliches Kommando via sudo auszuf&uuml;hren, ohne dass Sie Ihr Passwort
+eingeben m&uuml;ssen.</p>
+</td></tr>
+
+</table>
+
+</body>
+</html>

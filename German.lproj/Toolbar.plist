@@ -74,7 +74,7 @@
 		<key>PaletteLabel</key>
 		<string>Interaktion</string>
 		<key>ToolTip</key>
-		<string>Kommunikationsfenster anzeigen (falls Kommando angehalten hat)</string>
+		<string>Fenster zum Senden einer Eingabe an Fink anzeigen (falls Kommando angehalten hat)</string>
 	</dict>
 	<key>FinkRemoveBinaryItem</key>
 	<dict>

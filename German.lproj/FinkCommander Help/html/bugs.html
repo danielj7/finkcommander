@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+	<title>FinkCommander Hilfe--Fehler</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h2>Bekannte Fehler und Einschr&auml;nkungen</h2>
+
+<dl>
+
+    <dt>Ausf&uuml;hren von FinkCommander von einem Benutzerkonto aus, das keine Administrator Privilegien hat</dt>
+    <dd><p>Leider ist dies zurzeit nicht m&ouml;glich. FinkCommander verwendet das 
+    sudo Kommando um Aktionen, die Administrator Privilegien ben&ouml;tigen,
+    auszuf&uuml;hren, und ich habe noch keinen Weg gefunden neben dem Paswort auch den Namen 
+    eines Administrators an sudo weiterzureichen.<p></dd>
+	
+    <dt>Fehler bei Aufforderung zur Benutzereingabe</dt>
+    <dd><p>In einigen F&auml;llen kann es vorkommen, dass die Aufforderung zur Benutzereingabe nicht angezeigt wird 
+    wenn Fink auf eine Antwort wartet. Der Grund hierf&uuml;r ist, dass Fink manchmal nicht automatisch auf eine Eingabe
+    reagiert, obwohl die Option <kbd>Einstellungen:Commander:Bei Fragen immer Vorschlag von Fink als Antwort verwenden</kbd> angew&auml;hlt 
+    ist. <a href="details/fc_defaults.html">Mehr details</a>. Falls dieses Problem auftritt, w&auml;hlen 
+    Sie <kbd>Werkzeuge:Eingabe an Fink senden</kbd> um eine Antwort einzugeben.  Optional ist hierf&uuml;r auch ein Symbol f&uuml;r 
+    die Symbolleiste vorhanden.</p></dd>
+	
+	<dt>Fehler bei Aktualisierung mit apt-get</dt>
+	<dd><p>Falls Sie eine Fehlermeldung erhalten, nachdem Sie apt-get update ausgef&uuml;hrt haben, 
+        versuchen Sie erst <kbd>Source:Scanpackages</kbd> auszuf&uuml;hren und dann erneut apt-get update.
+	</p></dd>
+    
+    <dt>Falsche Tabelleneintr&auml;ge</dt>
+    <dd><p>Falls Sie die Option <dfn>Tabelle immer mit Fink aktualisieren</dfn>
+        abgew&auml;hlt haben, versucht FinkCommander selbst die Daten der Tabelle
+        zu aktualisieren, aber das Resultat wird h&ouml;chstens eine ungenaue
+        Ann&auml;herung des wahren Zustandes sein. Um eine komplette 
+        Aktualisierung zu erhalten, m&uuml;ssen Sie entweder die Option wieder 
+        einschalten oder <kbd>Ablage:Daten aktualisieren</kbd> ausf&uuml;hren.
+        <a href="details/fc_tableupdate.html">Mehr Details</a>.
+    </p></dd> 
+    
+    <dt>Tcsh Paket Problem</dt>
+    <dd><p>Die Auswahl von tcsh ist inaktiv, da FinkCommander abst&uuml;rzt
+    wenn versucht wird, dieses Paket zu installieren. Die Installation
+    von der Kommandozeile funktioniert hingegen problemlos. Falls Sie
+    dieses Problem auch mit anderen Paketen haben, senden Sie bitte einen
+     <a href="http://sourceforge.net/tracker/?group_id=48896&amp;atid=454467"
+        target="top">Fehlerreport.</a>
+    </p></dd>  
+
+</dl>
+
+</body>
+</html>

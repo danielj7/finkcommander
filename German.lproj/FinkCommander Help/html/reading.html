@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+	<title>FinkCommander Hilfe--Die Paketliste verstehen</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h2>Verstehen der Paketliste</h2>
+
+<h3>Die Spalten Installiert, Bin&auml;r, Unstable und Stable</h3>
+
+<p>Diese Spalten zeigen die Versionsnummern der Pakete an. Durch Vergleichen der Nummer in 
+der Spalte Bin&auml;r mit den Nummern desselben Paketes in den anderen Spalten kann festgestellt 
+werden, ob mit dem Kommando <kbd>Bin&auml;r:Install</kbd> die neueste Version oder zumindest 
+die neueste Version aus Stable des Paketes in bin&auml;rer Form installiert werden kann. Eine 
+ausf&uuml;hrlichere Beschreibung der Unterschiede zwischen den Kommandos im Bin&auml;r und Source Men&uuml; finden Sie 
+in der Hilfedatei <a href="running.html#binary">Kommandos ausf&uuml;hren:Source vs. Bin&auml;r</a>.</p>
+
+<h3>Version</h3>
+
+<p>Diese Spalte ist im wesentlichen ein kompaktere Darstellung der oben genannten Spalten. Sie zeigt 
+Ihnen immer die neueste erh&auml;ltliche Version, sei dies in bin&auml;rer Form oder als Source-Datei, 
+eines Paketes.<p>
+
+<h3>Zustand</h3>
+
+<p>&quot;Aktuell&quot; bedeutet, dass Sie die neueste Version des Paketes installiert haben.
+&quot;Veraltet&quot; heisst, dass das Paket installiert, aber eine neuere Version erh&auml;ltlich ist.
+&quot;Archiviert&quot; bedeutet, dass Sie dieses Paket zuvor installiert hatten und es nun als .deb 
+Datei auf Ihrem System archiviert ist, oder dass Sie ein Paket erstellt, aber nocht nicht 
+installiert haben.</p>
+
+
+<h3>Pakete finden</h3>
+
+<p>FinkCommander stellt Ihnen zwei n&uuml;tzliche Werkzeuge zur Suche nach Paketen, die Sie 
+vielleicht installieren oder entfernen wollen, zur Verf&uuml;gung:</p>
+
+<ol>
+<li><p>Sie k&ouml;nnen durch Anklicken der Spaltenk&ouml;pfe die Paketliste nach den jeweiligen
+Kriterien sortieren, so wie Sie das von anderen Programmen gewohnt sind. Erneutes Klicken desselben 
+Spaltenkopfes kehrt die Reihenfolge um.</p></li>
+
+<li><p>In der Grundkonfiguration enth&auml;lt der Toolbar einen Filter, welchen Sie auf die 
+meisten Felder der Liste anwenden k&ouml;nnen (Filterung nach Versionsnummer habe ich als 
+&uuml;berfl&uuml;ssig empfunden.) Der Filter arbeitet stufenweise, das heisst mit jedem Buchstaben, den 
+Sie eintippen oder l&ouml;schen wird die Liste so angepasst, dass nur Pakete angezeigt werden, 
+welche Ihr Suchkriterium enthalten. Die Anzeige der Paketanzahl im Fenstertitel &auml;ndert sich 
+ebenfalls und widerspiegelt die Anzahl der gefundenen Pakete.</p></li>
+</ol>
+
+<p>Durch Kombination von Sortierung und Filterung k&ouml;nnen Sie also effektiv die 
+Tabelle nach zwei Kriterien durchsuchen.</p>
+
+<p>&Uuml;brigens: Sie k&ouml;nnen die Breite der Spalten stufenlos verstellen und sogar deren Reihenfolge 
+vertauschen. &Auml;nderungen werden beim Beenden des Programms nat&uuml;rlich gespeichert.</p>
+
+</body>
+</html>

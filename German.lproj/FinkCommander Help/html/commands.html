@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+
+<head>
+	<title>FinkCommander Hilfe--Die Fink und Apt-Get Kommandos</title>
+	<meta name="generator" content="BBEdit 6.1.2+">
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h2>Die Fink und Apt-Get Kommandos</h2>
+
+<h3>Fink (Source Men&uuml;)</h3>
+
+<em>Die folgenden Erkl&auml;rungen sind haupts&auml;chlich der Fink Hilfeseite entnommen. 
+&Ouml;ffnen Sie ein Terminal und geben Sie &quot;fink man&quot; ein, um die komplette Version zu sehen. Falls Sie Fink nicht im Standardverzeichnis (/sw) installiert haben, sind alle Verweise auf /sw in diesem Text durch den Pfad Ihrer Fink Installation zu ersetzen.
+</em>
+
+<dl>
+    <dt>Install</dt>   
+    <dd><p>Dieses Kommando wird zur Installation von Paketen verwendet. Es l&auml;dt die Quelldateien herunter und konfiguriert, 
+    erstellt und installiert das ausgew&auml;hlte Paket. Alle Pakete der sich ergebenden Abh&auml;ngigkeiten werden ebenfalls installiert, 
+    nachdem Sie von Fink um Zustimmung gefragt wurden.</p></dd>
+
+    <dt>Reinstall</dt>   
+    <dd><p>Dasselbe wie 'Install'. Jedoch installiert es das Paket via dpkg(8) auch
+    wenn es bereits installiert sein sollte. Sie k&ouml;nnen diese Option verwenden, falls Sie 
+    irrt&uuml;mlich Dateien des Paketes gel&ouml;scht haben oder wenn Sie die urspr&uuml;ngliche 
+    Konfiguration des Paketes wiederherstellen wollen.</p></dd>
+    
+    <dt>Build</dt>   
+    <dd><p>Erstellt ein Paket ohne es zu installieren. Wie immer werden die Quelldateien heruntergeladen
+    falls sie nicht bereits auf Ihrem System vorhanden sind. Als Resultat dieses Kommandos erhalten Sie
+    eine zur Installation bereite .deb Datei. Falls diese Datei bereits vorhanden ist wird nichts ausgef&uuml;hrt. 
+    Es gilt zu bemerken, dass alle Pakete der sich ergebenden Abh&auml;ngigkeiten nicht nur erstellt, sondern auch
+    installiert werden.</p></dd>
+    
+    <dt>Rebuild</dt>   
+    <dd><p>Erstellt ein Paket (wie das Kommando 'Build'), aber ignoriert und &uuml;berschreibt die 
+    m&ouml;glicherweise bereits vorhandene .deb Datei des Paketes. Falls das Paket zurzeit installiert ist, bewirkt dieses Kommando
+    zus&auml;tzlich eine Neuinstallation via dpkg(8).  Hilfreich f&uuml;r die Entwicklung von Paketen. </p></dd>
+    
+    <dt>Fetch</dt>   
+    <dd><p>L&auml;dt die Quelldatei des ausgew&auml;hlten Paketes herunter, installiert dieses aber nicht. Dieses 
+    Kommando bewirkt immer das Herunterladen der Quelldatei, selbst wenn diese bereits auf Ihrem System vorhanden ist.</p></dd>
+    
+    <dt>Remove</dt>   
+    <dd><p>Entfernt Pakete durch den Aufruf des Kommandos
+           <kbd>dpkg --remove</kbd>.</p>
+
+           <p>Das Kommando 'Remove' l&ouml;scht die Dateien des Paketes, bel&auml;sst aber die 
+           komprimierte .deb Datei auf Ihrem System. Somit k&ouml;nnen Sie zu einem sp&auml;teren Zeitpunkt das Paket
+           wiederinstallieren ohne es erneut kompilieren zu m&uuml;ssen.
+           Falls sie Platz auf Ihrer Festplatte brauchen k&ouml;nnen Sie die .deb Datei aus dem Verzeichnis /sw/fink/dists, 
+           sowie die entsprechenden Verweise im Verzeichnis /w/fink/debs l&ouml;schen.</p></dd>    
+        
+    <dt>Selfupdate, Selfupdate-cvs</dt>   
+    <dd><p>Dieses Kommando automatisiert den Aktualisierungsprozess auf eine neue Version von Fink. Es 
+    &uuml;berpr&uuml;ft die Website von Fink auf neue Versionen, l&auml;dt falls n&ouml;tig die Quelldataien herunter und
+    aktualisiert die Kernpakete, inklusive Fink selbst. Ohne die CVS Option wird nur auf offizielle neue 
+    Versionen von Fink aktualisiert, mit der CVS Option werden zus&auml;tzlich die Informationen 
+    &uuml;ber alle Pakete auf dem neusten Stand gehalten.</p>
+           
+           <p><em>Bemerkung: Selfupdate-cvs verwendet automatisch CVS um die Informationen zu den 
+           neuesten Paketversionen zu erhalten. </em></p></dd>
+    
+    <dt>Update-all</dt>   
+    <dd><p>Dieses Kommando aktualisiert alle installierten Pakete auf die neueste Version.</p></dd>
+	
+	<dt>Force remove</dt>
+	<dd><p>'Force remove' l&ouml;scht ein Paket selbst wenn andere Pakete davon abh&auml;ngig sind. 
+        Dieses Kommando sollte nur in letzter Instanz zur L&ouml;sung eines anderweitig nicht korrigierbaren 
+        Abh&auml;ngigkeitsproblems verwendet werden.</p></dd>  
+			
+	<dt>Untermen&uuml; Andere</dt>
+	
+	<dl>
+	
+		<dt>Cleanup</dt>
+                <dd><p>Entfernt veraltete .deb Dateien, Quellcode-Archive und verwaiste Verweise. Dieses Kommando 
+                befindet sich noch in Entwicklung und is daher mit Vorsicht zu gebrauchen. Es k&ouml;nnen unter 
+                bestimmten Umst&auml;nden Dateien entfernt werden, welche nicht veraltet sind oder auch veraltete 
+                Dateien auf Ihrem System belassen. Falls Ersteres passiert kann es sein, dass Sie gezwungen sind
+                ein Paket erneut herunterzuladen oder zu kompilieren, welches Sie andernfalls vom .deb Archiv aus 
+                erneut h&auml;tten installieren k&ouml;nnen.</p></dd>
+
+		
+		<dt>Index</dt>   
+		<dd><p>Erstellt den Paket Zwischenspeicher neu. Gew&ouml;hnlicherweise sollte es nicht notwendig sein 
+                dieses Kommando manuell auszuf&uuml;hren, da Fink automatisch feststellt wenn eine Aktualisierung 
+                n&ouml;tig ist.</p></dd>
+			
+		<dt>Scanpackages</dt>
+		<dd><p>Erstellt die Dateien (Packages.gz im Verzeichnis 'binary-darwin-powerpc' jedes Ablegers)
+			welche 'apt-get update' zum Funktionieren braucht.
+			</p></dd>
+	
+		<dt>Describe</dt>   
+		<dd><p>Dieses Kommando zeigt die Beschreibung des Paketes an, welches Sie auf der Kommandozeile 
+                eingeben. Anstatt das 'fink describe' Kommando zu aufzurufen, gibt es dieselbe Information durch 
+                Verwendung des von FinkCommander angelegten Zwischenspeichers aus.</p>
+			
+			<p><em>Bemerkung: Das Kommando <kbd>Werkzeuge:Paket-Inspektor</kbd> und das Symbol 'Paket-Inspektor' in der Werkzeugliste
+                        zeigen dieselbe Information wie das Kommando 'Describe' in einem separaten
+                        Fenster mit aktiven Hyperlinks zur Pakethomepage und  E-Mail Adresse des Maintainers.</em></p></dd>
+	</dl>
+
+</dl>
+
+<h3>Apt-Get (Bin&auml;r Men&uuml;)</h3>
+
+<em>Auschnitte des apt-get Manuals</em>
+
+<dl>
+
+    <dt>Install</dt>   
+    <dd><p>'Install' l&auml;dt das ausgew&auml;hlte Paket selbst sowie alle Pakete der sich ergebenden 
+    Abh&auml;ngigkeiten herunter und installiert sie auf Ihrem System.</p></dd>
+
+    <dt>Update descriptions</dt>   
+    <dd><p>'Update descriptions' synchronisiert die Index Dateien der Pakete auf Ihrem System 
+    mit den Daten der erh&auml;ltlichen Pakete. Vor 'update descriptions' sollte immer erst
+    'upgrade packages' durchgef&uuml;hrt werden.</p></dd>
+    
+    <dt>Upgrade packages</dt>   
+    <dd><p>'Upgrade packages' installiert die neuesten Versionen aller zurzeit auf
+    Ihrem System installierten Pakete.</p></dd>
+
+</dl>
+</body>
+
+</html>

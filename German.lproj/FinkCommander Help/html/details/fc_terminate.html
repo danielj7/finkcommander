@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+<title>FinkCommander Guide--Beenden von fink Prozessen</title>
+</head>
+
+<body>
+
+<h3>Beenden von fink Prozessen</h3>
+
+<table width="100%" border="0" cellspacing="10">
+<tr><td>
+<p>Das "Beenden" Kommando von FinkCommander f&uuml;hrt f&uuml;r jeden Unterprozess
+von FinkCommander den Befehl <kbd>sudo -S kill -KILL</kbd> aus. Das -KILL Signal
+zwingt einen Prozess dazu, sich zu beenden, ohne dass noch allf&auml;llige
+Cleanup-Routinen wie bei normaler Signalbehandlung ausgef&uuml;hrt werden
+k&ouml;nnten. Das -KILL Signal war das einzige Signal, das ich finden konnte, mit
+dem sich fink Prozesse aus FinkCommander mit einiger Verl&auml;sslichkeit beenden
+lassen.</p>
+
+<p>Manchmal reicht aber auch diese drakonischen Massnahme nicht aus.</p>
+</td></tr>
+
+<tr bgcolor="#ffffcc"><td>
+Falls das "Beenden" Kommando keine Wirkung zeigt, gehen Sie folgende Schritte durch, um den
+aktuellen fink Prozess zu stoppen:  
+<ol><li>Beenden Sie FinkCommander. Das Dialog-Fenster, das nach einem fehlgeschlagenen
+        "Beenden" Kommando erscheint, gibt Ihnen die Gelegenheit, dies sofort zu tun.</li> 
+	<li>&Ouml;ffnen Sie Terminal.</li>
+	<li>Geben Sie das Kommando <kbd>ps -acjx</kbd> ein und durchsuchen Sie die resultierende
+	    Liste gegen Ende nach Prozessen, die root gehören und die mit dem Prozess zu tun
+	    haben k&ouml;nnten, den Sie beenden wollen. Beispiele daf&uuml;r sind <kbd>make</kbd>,
+	    <kbd>perl</kbd> oder <kbd>cc</kbd>. Der Prozess-Besitzer steht in der ersten Spalte der
+	    Liste.</li>
+	<li>F&uuml;hren Sie <kbd>sudo kill [prozess nummer]</kbd> f&uuml;r den ersten der gefundenen
+	    Prozesse aus, wobei [prozess nummer] der Nummer in der zweiten Spalte der Liste
+	    entspricht.</li>
+	<li>Wiederholen Sie die Schritte 3 und 4 bis alle Prozesse beendet sind, die zu fink
+	    geh&ouml;ren</li>
+</ol>
+</td></tr>
+
+</table>
+
+</body>
+</html>

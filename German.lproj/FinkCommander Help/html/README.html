@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+	<title>README</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<h2>Readme</h2>
+
+<ul>
+	<li><a href="#description">&Uuml;bersicht</a></li>
+	<li><a href="#license">Lizenz</a></li>
+	<li><a href="#security">Bemerkung zur Sicherheit</a></li>
+</ul>
+
+<h3>
+<a name="description">&Uuml;bersicht</a>
+</h3>
+
+<p>
+<a href="http://finkcommander.sourceforge.net"
+target="top">FinkCommander</a> ist ein graphisches Interface zum <a
+href="http://fink.sourceforge.net" target="top">Fink</a> Paket-Manager.  Um FinkCommander zu verwenden m&uuml;ssen Sie zuerst <a href="http://fink.sourceforge.net/download/"
+target="top">Fink installieren</a></p>
+
+<p>
+FinkCommander soll eine intuitive Bedienung erlauben. Dennoch enth&auml;lt FinkCommander eine umfangreiche Dokumantation.
+</p>
+
+<p>
+Falls Sie Fehler im Programm finden, w&auml;re es hilfreich, wenn Sie diese durch den <a href="http://sourceforge.net/tracker/?group_id=48896&amp;atid=454467"
+target="top">Bug Tracker</a> bei SourceForge melden.
+</p>
+
+<p>
+Leider bin ich nicht im Stand, direkten Support f&uuml;r FinkCommander anzubieten, da Software Entwicklung lediglich ein Hobby darstellt und ich daneben einen Beruf aus&uuml;be, der mich auch zeitlich fordert und es mir verunm&ouml;glicht, auf jede Anfrage sofort zu antworten. Ich versuche jedoch alle Anregungen zu ber&uuml;cksichtigen und sie in zuk&uuml;nftige Versionen von FinkCommander einfliessen zu lassen. Senden Sie Ihre Kommentare (keine Fehlermeldungen bitte) an mein <a href="mailto:sburrious@users.sourceforge.net">SourceForge E-Mail Konto</a>.
+</p>
+
+
+<h3><a name="license">Lizenz</a></h3>
+
+<p>
+Dieses Programm ist freie Software; Sie k&ouml;nnen es weiterverteilen und/oder ab&auml;ndern gem&auml;ss den Bedingungen der GNU General Public License (herausgegeben von der Free Software Foundation), entweder der Version 2 oder, nach Ihrer Wahl, einer sp&auml;teren Version der Lizenz.</p>
+
+<p>
+Dieses Programm wird ver&ouml;ffentlicht mit der Hoffnung, dass es n&uuml;tzlich sein wird, jedoch OHNE IRGENDEINE GARANTIE. Siehe die GNU General Public License f&uuml;r mehr Details.
+</p>
+
+<p>
+Eine Kopie der GPL ist in der Datei "LICENSE.html" im gleichen Verzeichnis wie diese Datei, das README, enthalten. Beides ist auch &uuml;ber die Hilfe zug&auml;nglich.
+</p>
+
+<p>
+Falls Sie die bin&auml;re Version dieser Software heruntergeladen haben, aber die Quelldateien auch m&ouml;chten, sind diese unter der <a href="http://sourceforge.net/project/showfiles.php?group_id=48896"
+target="top">FinkCommander Website</a> erh&auml;ltlich.
+</p>
+
+
+<h3><a name="security">Bemerkung zur Sicherheit</a></h3>
+
+<p>
+FinkCommander verwendet nicht Apple's Sicherheits Framework zur Authentifizierung von Kommandos, welche die Rechte eines Systemadministrators verlangen. Stattdessen werden Sie aufgefordert Ihr Passwort in ein Textfeld einzugeben, von wo es direkt an das sudo Kommando weitergeleitet wird.</p>
+
+<p>
+FinkCommander selbst l&auml;uft nicht als root sondern verwendet das sudo Kommando, wie dies auch fink selbst macht. Ich denke die gr&ouml;ssten Bedenken bei diesem Ansatz sind, dass <strong>Sie Ihr Passwort an FinkCommander weitergeben</strong>.  
+Wenn FinkCommander b&ouml;se Software w&auml;re, k&ouml;nnte das Programm Ihr Passwort sch&auml;digend f&uuml;r Ihr Computersystem einsetzen.
+</p>
+
+<p>
+Andererseits ist FinkCommander freie Software, so dass Transparenz gew&auml;hrleistet ist, was das Programm mit Ihrem Passwort macht. Falls Sie dennoch Zweifel haben ermutige ich Sie, den Quellcode zu studieren.
+</p>
+
+<p>
+Ich habe das Sicherheits Framework und Apple's Vorschlag zur Authentifizierung von Kommandos, die Privilegien eines Systemadministrators fordern, anhand des Beispieles <a href="http://developer.apple.com/samplecode/Sample_Code/Security/AuthSample.htm">AuthSample</a> angeschaut. Es scheint mir, dass die Anwendung dieser Methode auf die komplexe inter-prozess Kommunikation, die FinkCommander verwendet, extrem schwierig zu implementieren ist - jedenfalls f&uuml;r einen Amateurprogrammierer wie mich. Es ist daher wahrscheinlich, dass FinkCommander auch in Zukunft in dieser Form weiterbesteht.
+</p>
+
+</body>
+</html>

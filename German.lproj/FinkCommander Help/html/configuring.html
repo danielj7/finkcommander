@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+	<title>FinkCommander Hilfe--Einstellungen</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h2>Konfiguration von FinkCommander und Fink</h2>
+
+<p>Das Hauptfenster f&uuml;r die Einstellungen von FinkCommander ist in sechs 
+Kategorien unterteilt: Commander, Fink, Download, Verzeichnisse, Anzeige und Umgebung.  
+Mit den Optionen in den Kategorien Fink und Download k&ouml;nnen Sie direkt die 
+Konfigurationsdatei <dfn>Fink-Verzeichnis</dfn>/etc/fink.conf ver&auml;ndern.</p>
+
+<p>Diese Hilfeseite beschreibt die Funktionen der verschiedenen Einstellungm&ouml;glichkeiten, wo 
+diese nicht selbsterkl&auml;rend sind.</p>
+
+<h3>Commander</h3>
+
+<dl>
+	<dt>Nie nach meinem Kennwort fragen</dt>
+	<dd><p>W&auml;hlen Sie diese Option falls Sie sudo so konfiguriert haben, dass Sie nie nach Ihrem 
+        Passwort gefragt werden. Die Anleitung, um dies zu tun, finden Sie in einem
+	<a href="details/fc_sudoconfig.html">Eintrag des Fink FAQ.</a></p></dd>
+	
+</dl>
+
+<h3>Fink</h3>
+
+<dl>
+	<dt><a name="unstable">Pakete aus Unstable verwenden/Crypto-Pakete aus Unstable verwenden</a></dt>
+	<dd><p>Mit diesen zwei Optionen k&ouml;nnen Sie schnell zwischen Auslassen und Miteinbeziehen 
+        der Pakete aus Unstable wechseln. Die Pakettabelle wird, falls die Einstellungen ge&auml;ndert wurden, 
+        nach einem Klick auf OK oder Anwenden automatisch aktualisiert.</p>
+
+	<dt>Das Build-Verzeichnis nach der Installation behalten </dt>
+	<dd><p>Aus der Fink man page:  Die Grundeinstellung ist nein. Gew&ouml;hnlich entfernt Fink nach dem 
+        erfolgreichen Erstellen eines Paketes das Verzeichnis mit dem kompilierten Sourcecode. Falls sie diesen 
+        Ordner behalten m&ouml;chten setzen Sie diese Option. Gew&ouml;hnlicherweise haben nur Entwickler von Paketen 
+        Verwendung f&uuml;r diese Option.</p></dd>
+	
+	<dt>Das Root-Verzeichnis nach der Installation behalten</dt>
+	<dd><p>Aus der Fink man page: &Auml;hnlich der Option &quot;Build-Verzeichnis behalten&quot;. Diese Option bel&auml;sst 
+        das Verzeichis, aus welchem die .deb Datei erstellt wird, auf Ihrem System. F&uuml;r Paket Entwickler 
+        gedacht.</p></dd>
+</dl>
+
+<h3>Download</h3>
+
+<dl>
+	<dt>HTTP Proxy/FTP Proxy verwenden, FTP im Passiv-Modus benutzen</dt>
+	<dd><p>Sezten Sie diese Felder auf die entsprechenden Werte, falls sich Ihr System hinter einer 
+        Firewall befindet.</p></dd>
+	
+	<dt>Download Methode</dt>
+	<dd><p>MacOS X wird mit curl ausgeliefert, daher ist dies die Grundeinstellung. Befor Sie zu 
+        wget oder axel wechseln m&uuml;ssen Sie die entsprechende Software installieren - nat&uuml;rlich 
+        kein Problem mit fink.</p>
+</dl>
+
+<h3>Verzeichnisse</h3>
+<dl>
+	<dt>Verzeichnis f&uuml;r Fink</dt>
+	<dd><p>&Auml;ndern Sie diese Einstellung nur, falls  FinkCommander den Pfad zu Ihrer Fink 
+        Installation bei Programmstart nicht finden konnte.</p></dd>
+</dl>
+
+<h3>Anzeige</h3>
+<dl>
+	<dt>Puffergr&ouml;sse auf ____ Zeilen begrenzen.</dt>
+	<dd><p>Verwenden Sie diese Einstellungsm&ouml;glichkeit um bei der Installation grosser Pakete nicht 
+        unn&ouml;tig viel Speicher zu reservieren. Grundeinstellung in Terminal.app ist 10000.</p></dd>
+
+	<dt>Ans Ende springen wenn neue Ausgabe empfangen wird</dt>
+	<dd><p>Ist diese Option angew&auml;hlt, so zeigt die Pakettabelle nach einer Sortierung automatisch 
+        wieder auf das zuvor ausgew&auml;hlte Paket. Analog zu Mail.app.</p></dd>
+
+	<dt>Immer fink verwenden, um die Daten zu aktualisieren </dt>
+	<dd><p>Bewirkt, dass FinkCommander nach jedem Kommando, welches eine Ver&auml;nderung des Zustandes 
+        Ihrer Pakete bewirken kann, die Pakettabelle vollst&auml;ndig neu einliest. 
+	<a href="details/fc_tableupdate.html">Mehr Details</a>.</p></dd>
+</dl>
+
+<h3>Umgebung</h3>
+
+<p>Hier k&ouml;nnen Sie zus&auml;tzliche Umgebungsvariablen  festlegen, die von fink und apt-get verwendet werden. Die 
+n&ouml;tigen Grundeinstellungen werden bereits f&uuml;r Sie vorgenommen. Falls Sie nach Ab&auml;nderung der Tabelle an Funktionalit&auml;t einb&uuml;ssen, kann mit der Option <kbd>Wiederherstellen</kbd> der Grundzustand neu aufgesetzt werden.</p>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="de">
+<head>
+	<title>FinkCommander Hilfe--Kommandos ausf&uuml;hren</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<h2>Verwenden von Fink and Apt-Get Kommandos</h2>
+
+<h3>Grundlagen</h3>
+
+<p>Kommandos ausf&uuml;hren ist selbsterkl&auml;rend. Wenn sich ein Kommando auf ein Paket bezieht 
+(z.B. "Paket installieren"), dann markieren Sie ein oder mehrere Paket(e) in der Tabelle und
+w&auml;hlen aus dem Source oder Bin&auml;r Men&uuml; das Kommando, welches Sie ausf&uuml;hren m&ouml;chten. 
+Verwenden Sie Umstelltaste- oder Optionstaste-Klick um mehr als ein Paket zu markieren</p>
+
+<p>Um ein Kommando auszuf&uuml;hren, welches nicht paketabh&auml;ngig ist (z.B. "Aktualisieren der Paketliste")
+w&auml;hlen Sie einfach das Kommando von Men&uuml; oder Werkzeugleiste.</p>
+
+<p>Die <strong>Werkzeugleiste</strong> stellt eine Anzahl Symbole zur Ausf&uuml;hrung von Kommandos zur Verf&uuml;gung, welche in der 
+Grundkonfiguration nicht enthalten sind. Um die Werkzeugleiste Ihren Bed&uuml;rfnissen anzupassen, &ouml;ffnen Sie 
+<kbd>Window:Customize Toolbar</kbd>. Generell sind Symbole f&uuml;r Operationen mit bin&auml;ren Paketen blau, solche f&uuml;r 
+Operationen mit Paketen, welche direkt von Quelldateien erstellt werden, gr&uuml;n.</p>
+
+<p>Wenn <strong>ein Befehl ausgef&uuml;hrt wird</strong>, erscheint der Name des Kommandos und, falls dies der Platz 
+erlaubt, eine Liste der Pakete auf welche der Befehl angewendet wird, linksunten im Fenster. Sobald das Kommando beendet ist
+erscheint entweder die Meldung "Fertig" oder "Paketdaten werden jetzt aktualisiert".
+ <a href="details/fc_tableupdate.html">Mehr Details</a>.</p>
+
+<p>Solange sich Kommandos in Ausf&uuml;hrung befinden, werden die entsprechenden Men&uuml;eintr&auml;ge und Werkzeugleisten-Symbole
+ausgeblendet.</p>
+
+<h3><a name="terminate">Kommandos zum Beenden von Prozessen</a></h3>
+
+<p>Sie k&ouml;nnen einen Prozess gew&ouml;hnlich beenden durch (1) Dr&uuml;cken des Stop-Symbols in der Werkzeugleiste, 
+(2) Dr&uuml;cken von <kbd>Option-.</kbd> auf der Tastatur oder (3) Auswahl des Men&uuml;eintrags 
+<kbd>Werkzeuge:Befehl beenden</kbd>.  Beim Beenden von laufenden Fink-Prozessen 
+von FinkCommander aus sollten Sie Vorsicht walten lassen. <a href="details/fc_terminate.html">Mehr Details</a>. 
+Falls das "Beenden" Kommando nicht funktioniert m&uuml;ssen Sie die Unterprozesse von FinkCommander manuell beenden.
+<a href="details/fc_terminate.html">Mehr Details</a>.
+
+<h3><a name="binary">Source vs. Bin&auml;r</a></h3>
+
+<p>Die Kommandos im Men&uuml; <kbd>Source</kbd> werden durch den Fink Paket Manager
+ausgef&uuml;hrt, Kommandos im Men&uuml; <kbd>Bin&auml;r</kbd> durch Apt-Get.  Generell &uuml;bernimmt Fink 
+Pakete, welche als Quellcode heruntergeladen werden, Apt-Get Pakete, die in bin&auml;rer Form 
+verf&uuml;gbar sind. Daher auch die Men&uuml;namen.</p>
+
+<p>Zu jeder Regel gibt es nat&uuml;rlich auch Ausnahmen: Falls Sie zum Beispiel ein nur als Sourcecode 
+erh&auml;ltliches Paket installieren, es danach wieder entfernen und es erneut installieren bevor eine neuere
+Version erh&auml;ltlich wird, so verwendet der Fink Paket Manager das Kommando dpkg, da das Paket nun ja in bin&auml;rer 
+Form, als .deb Datei, auf Ihrem System vorliegt.</p>
+
+</body>
+</html>
