@@ -46,6 +46,8 @@ extern NSString *FinkRemoveSourceItem;
 extern NSString *FinkRemoveBinaryItem;
 extern NSString *FinkTerminateCommandItem;
 extern NSString *FinkFilterItem;
+extern NSString *FinkInteractItem;
+extern NSString *FinkDescribeItem;
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
@@ -135,7 +137,7 @@ extern NSString *FinkFilterItem;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)goToFinkCommanderWebSite:(id)sender;
 -(IBAction)goToFinkWebSite:(id)sender;
-
+-(IBAction)goToBugReportPage:(id)sender;
 
 -(IBAction)showPreferencePanel:(id)sender;
 

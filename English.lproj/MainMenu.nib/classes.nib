@@ -4,6 +4,7 @@
             ACTIONS = {
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
+                goToBugReportPage = id; 
                 goToFinkCommanderWebSite = id; 
                 goToFinkWebSite = id; 
                 raiseInteractionWindow = id; 

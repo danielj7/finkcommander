@@ -125,7 +125,7 @@ NSString *FinkLookedForProxy = @"FinkLookedForProxy";
 
 -(void)writeToFile
 {
-	NSLog(@"Writing to file: %@", finkConfDict);
+	NSLog(@"Stub for writing to file: %@", finkConfDict);
 }
 
 @end

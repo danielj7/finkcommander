@@ -14,6 +14,8 @@ NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
 NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
 NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
 NSString *FinkFilterItem = @"FinkFilterItem";
+NSString *FinkInteractItem = @"FinkInteractItem";
+NSString *FinkDescribeItem = @"FinkDescribeItem";
 
 
 @implementation FinkController
@@ -37,9 +39,6 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkLookedForProxy];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
-#ifdef DEBUG
-	NSLog(@"Registered defaults: %@", defaultValues);
-#endif //DEBUG
 }
 
 //----------------------------------------------->Init
@@ -84,7 +83,6 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		lastParams = [[NSMutableArray alloc] init];
 		[self setPendingCommand: NO];
 			
-		//register for notification that password was entered
 		[[NSNotificationCenter defaultCenter] addObserver: self
 					selector: @selector(runCommandWithPassword:)
 					name: @"passwordWasEntered"
@@ -430,6 +428,12 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		[NSURL URLWithString: @"http://fink.sourceforge.net/doc/index.php"]];
 }
 
+-(IBAction)goToBugReportPage:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:
+		[NSURL URLWithString: @"http://sourceforge.net/tracker/?group_id=48896&atid=454467"]];
+}
+
 
 //----------------------------------------------->Menu Item Delegate
 
@@ -449,7 +453,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		return  NO;
 	}
 	if (! [self commandIsRunning] && 
-		[[menuItem title] rangeOfString: @"Interact"].length > 0){
+		[menuItem action] == @selector(raiseInteractionWindow:)){
 		return NO;
 	}
 	return YES;
@@ -485,7 +489,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
 		[item setLabel: @"Install Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Install a package from source"];
+		[item setToolTip: @"Install package(s) from source"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"addsrc"]];
 		[item setTarget: self];
@@ -493,7 +497,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	}else if ([itemIdentifier isEqualToString: FinkInstallBinaryItem]){
 		[item setLabel: @"Install Binary"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Install a binary package"];
+		[item setToolTip: @"Install binary package(s)"];
 		[item setTag: 1]; 		//binary command
 		[item setImage: [NSImage imageNamed:@"addbin"]];
 		[item setTarget: self];
@@ -501,7 +505,7 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
 		[item setLabel: @"Remove Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reinstallation"];
+		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"delsrc"]];
 		[item setTarget: self];
@@ -509,9 +513,17 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	}else if ([itemIdentifier isEqualToString: FinkRemoveBinaryItem]){
 		[item setLabel: @"Remove Binary"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reinstallation"];
+		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
 		[item setTag: 1]; 		//binary command
 		[item setImage: [NSImage imageNamed:@"delbin"]];
+		[item setTarget: self];
+		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkDescribeItem]){
+		[item setLabel: @"Describe"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Print full description of package(s) in output window"];
+		[item setTag: 0]; 		//source command
+		[item setImage: [NSImage imageNamed: @"describe"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 #ifdef UNDEF
@@ -530,6 +542,13 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		[item setView: searchView];
 		[item setMinSize: fRect.size];
 		[item setMaxSize: fRect.size];
+	}else if ([itemIdentifier isEqualToString: FinkInteractItem]){
+		[item setLabel: @"Interact"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Raise interaction sheet (use if command has stalled)"];
+		[item setImage: [NSImage imageNamed: @"interact"]];
+		[item setTarget: self];
+		[item setAction: @selector(raiseInteractionWindow:)];
 	}
     return [item autorelease];
 }
@@ -546,6 +565,8 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
 		FinkRemoveBinaryItem,
+		FinkDescribeItem,
+		FinkInteractItem,
 //		FinkTerminateCommandItem,
 		FinkFilterItem,
 		nil];
@@ -556,7 +577,9 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	return [NSArray arrayWithObjects:
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
-		FinkRemoveSourceItem, 
+		FinkRemoveSourceItem,
+		FinkDescribeItem,
+		FinkInteractItem,
 //		FinkTerminateCommandItem,	
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
@@ -578,7 +601,10 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 		[[theItem label] rangeOfString: @"Terminate"].length > 0){
 		return NO;
 	}
-	
+	if (! [self commandIsRunning] &&
+		[theItem action] == @selector(raiseInteractionWindow:)){
+		return NO;
+	}
 	return YES;
 }
 

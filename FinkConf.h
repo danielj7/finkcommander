@@ -35,7 +35,7 @@ File: FinkConf.h
 
 //---------------------------------------------->Global Variables
 // eliminate for release version:
-//#define DEBUG
+#define DEBUG
 
 //User Default Items
 extern NSString *FinkBasePath;
