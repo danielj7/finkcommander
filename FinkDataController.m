@@ -13,21 +13,30 @@ See the header file, FinkDataController.h, for interface and license information
 
 -(id)init
 {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (self = [super init])
 	{
 		//should contain user's fink path; possibly by means of 
 		//a configuration script on installation
-		basePath = [[NSString alloc] initWithString: @"/sw"];
 		finkArray = [[NSMutableArray alloc] initWithCapacity: 1000];
+		basePath = [defaults objectForKey: FinkBasePath];
 	}
+
+	[[NSNotificationCenter defaultCenter] addObserver: self
+									   selector: @selector(completeUpdate:)
+									   name: NSFileHandleReadToEndOfFileCompletionNotification
+									   object: nil];
 	return self;
 }
 
 -(void)dealloc
 {
 	[basePath release];
-	[stablePath release];
+//	[stablePath release];
 	[finkArray release];
+	[binaryPackages release];
+	[stablePackages release];
+	[start release];
 	[super dealloc];
 }
 
@@ -47,32 +56,13 @@ See the header file, FinkDataController.h, for interface and license information
 //
 //  Tools for getting and storing information about fink packages in the array.
 //
-//  update is the "public" method.  It calls getFinkList, which uses a custom
-//  perl script to obtain a list of all package names and their installation states
-//  and stores the information in FinkPackage instances in finkArray.
+//  update: is the "public" method.  It runs a custom perl script 
+//  in an NSTask to obtain a list of all package names and their installation 
+//  states and stores the information in FinkPackage instances in finkArray.
+//
+//	getBinaryList: and getStableList: are helper methods used to fill to determine
+//  whether packages in the array are available in binary form or are unstable.
 
-
-// Run custom perl script to get list of packages with all information needed for
-// FinkPackage object, except whether package is available in binary form.
--(NSString *)getSourceList
-{
-	NSTask *listCmd = [[NSTask alloc] init];
-	NSPipe *pipeIn  = [NSPipe pipe];
-	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
-	NSString *output;
-	NSArray *args = [NSArray arrayWithObjects:
-		[[NSBundle mainBundle] pathForResource: @"fpkg_list" ofType: @"pl"],
-		nil];
-
-	[listCmd setLaunchPath: @"/usr/bin/perl"];
-	[listCmd setArguments: args];
-	[listCmd setStandardOutput: pipeIn];
-
-	[listCmd launch];
-	output = [NSString stringWithCString: [[cmdStdout readDataToEndOfFile] bytes]];
-	[listCmd release];
-    return output;
-}
 
 // Run  apt-cache to get list of packages available for binary install
 -(NSString *)getBinaryList
@@ -107,13 +97,13 @@ See the header file, FinkDataController.h, for interface and license information
 	return [pkgLines componentsJoinedByString: @"\n"];
 }
 
+
 -(NSString *)getStableList
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSMutableString *infoFiles = [NSMutableString stringWithString: @" "];
 	NSString *stableRoot = [basePath stringByAppendingPathComponent: @"fink/dists/stable"];
-	NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager]
-        enumeratorAtPath: stableRoot];
+	NSDirectoryEnumerator *direnum = [manager enumeratorAtPath: stableRoot];
 	NSString *fname;
 	NSString *pname;
 	NSString *dirContents;
@@ -133,29 +123,53 @@ See the header file, FinkDataController.h, for interface and license information
 }
 
 
-// Update finkArray to reflect latest package information.
 -(void)update
 {
-	NSMutableArray *temp = [NSMutableArray arrayWithArray:
-		[[self getSourceList] componentsSeparatedByString: @"\n----\n"]];
+	NSTask *listCmd = [[[NSTask alloc] init] autorelease];
+	NSPipe *pipeIn  = [NSPipe pipe];
+	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
+	NSArray *args = [NSArray arrayWithObjects:
+		[[NSBundle mainBundle] pathForResource: @"fpkg_list" ofType: @"pl"],
+		[NSString stringWithFormat: @"-path=%@", [self basePath]], nil];
+
+	[listCmd setLaunchPath: @"/usr/bin/perl"];
+	[listCmd setArguments: args];
+	[listCmd setStandardOutput: pipeIn];
+	
+	start = [[NSDate date] retain];
+	[listCmd launch];
+
+	//run task asynchronously; notification will trigger completeUpdate: method
+	[cmdStdout readToEndOfFileInBackgroundAndNotify];
+	
+	binaryPackages = [[self getBinaryList] retain];
+	stablePackages = [[self getStableList] retain];
+	NSLog(@"Completed binary and stable lists after %f seconds",
+	   -[start timeIntervalSinceNow]);
+}
+
+
+-(void)completeUpdate:(NSNotification *)n
+{
+	NSData *d;
+	NSString *output; 
+	NSMutableArray *temp;
 	NSArray *listRecord;
-	NSString *pkgList;
 	NSEnumerator *e;
 	FinkPackage *p;
-	NSString *binList = [[self getBinaryList] retain];
-	NSString *stableList = [[self getStableList] retain];
 	
-//	NSLog(@"%@", stableList);
-	
-	//remove existing data
+	NSLog(@"Read to end of file notification sent after %f seconds",
+	       -[start timeIntervalSinceNow]);
+
+	d = [[n userInfo] objectForKey: NSFileHandleNotificationDataItem];
+	output = [[[NSString alloc] initWithData: d
+								encoding: NSUTF8StringEncoding] autorelease];
+	temp = [NSMutableArray arrayWithArray:
+		    [output componentsSeparatedByString: @"\n----\n"]];
 	[finkArray removeAllObjects];
-
-	//run command to get fink package list; put each line into temp array
-	pkgList = [[self getSourceList] retain];
-	[temp removeObjectAtIndex: 0];  // "Reading package info . . . etc.
-
-	//parse array elements and store in FinkPackage instances
+	[temp removeObjectAtIndex: 0];  // "Reading package info . . . "
 	e = [temp objectEnumerator];
+
 	while (listRecord = [[e nextObject] componentsSeparatedByString: @"\n"]){
 		p = [[FinkPackage alloc] init];
 		[p setName: [listRecord objectAtIndex: 0]];
@@ -165,14 +179,14 @@ See the header file, FinkDataController.h, for interface and license information
 		[p setDescription: [listRecord objectAtIndex: 4]];
 		[finkArray addObject: p];
 		//make sure FULL name matches package on binary list
-		if ([binList rangeOfString:
+		if ([binaryPackages rangeOfString:
 			[NSString stringWithFormat: @" %@#", [p name]]].length > 0){
 			[p setBinary: @"*"];
 		}else{
 			[p setBinary: @" "];
 		}
-		if ([stableList rangeOfString: [NSString stringWithFormat:
-			@"%@-%@.info", [p name], [p version]]].length > 0 || 
+		if ([stablePackages rangeOfString: [NSString stringWithFormat:
+			@"%@-%@.info", [p name], [p version]]].length > 0 ||
 			[[p category] isEqualToString:@"unknown"]){
 			[p setUnstable: @" "];
 		}else{
@@ -180,10 +194,12 @@ See the header file, FinkDataController.h, for interface and license information
 		}
 		[p release];
 	}
-
-	[binList release];
-	[stableList release];
-	[pkgList release];
+	NSLog(@"Fink package array completed after %f seconds",
+		-[start timeIntervalSinceNow]);
+	//notify FinkController that table needs to be updated
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"packageArrayIsFinished"
+		object: nil];
+	
 }
 
 @end

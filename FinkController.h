@@ -35,6 +35,8 @@ Contact the author at sburr@mac.com.
 #import <Cocoa/Cocoa.h>
 #import "FinkDataController.h"
 #import "FinkPackage.h"
+#import "FinkPreferences.h"
+#import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
 #include <unistd.h>
 
@@ -51,6 +53,8 @@ Contact the author at sburr@mac.com.
 	IBOutlet NSSecureTextField *pwdField;
 
 	FinkDataController *packages;
+	FinkPreferences *preferences;
+	FinkBasePathUtility *utility;
 	NSString *binPath;
 	NSString *password;
 	NSString *lastCommand;
@@ -89,6 +93,8 @@ Contact the author at sburr@mac.com.
 -(IBAction)runUpdater:(id)sender;
 -(IBAction)updateTable:(id)sender;
 
+-(IBAction)showPreferencePanel:(id)sender;
+
 //Data source methods
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView;
 -(id)tableView:(NSTableView *)aTableView 
@@ -99,7 +105,9 @@ Contact the author at sburr@mac.com.
 -(void)tableView:(NSTableView *)aTableView
         mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn;
 
+//MOVE
 //Process control
 -(void)runCommandWithParams:(NSArray *)params;
+//ENDMOVE
 
 @end

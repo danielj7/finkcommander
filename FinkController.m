@@ -15,33 +15,44 @@ See the header file, FinkController.h, for interface and license information.
 
 //----------------------------------------------->Startup and Dealloc
 
++(void)initialize
+{
+	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
+	
+	[defaultValues setObject: @"" forKey: FinkBasePath];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
+		
+	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
+	NSLog(@"Registered defaults: %@", defaultValues);
+}
+
+
 -(id)init
 {
 	NSEnumerator *e;
 	NSString *attribute;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	if (self = [super init])
 	{
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
+		
+		[defaults removeObjectForKey: FinkBasePath];
+		[defaults removeObjectForKey: FinkBasePathFound];
+		
+		if (![defaults boolForKey: FinkBasePathFound]){
+			NSLog(@"Looking for fink base path");
+			utility = [[[FinkBasePathUtility alloc] init] autorelease];
+			[utility findFinkBasePath];
+			[utility fixScript];
+		}		
 	
 		packages = [[FinkDataController alloc] init];		// table data source
-
-//MOVE		
-		binPath =  [[NSString alloc] initWithString:
-			[[packages basePath] stringByAppendingPathComponent: @"/bin"]];
-		[self setPassword: nil];
-//ENDMOVE
-
 		[self setLastCommand: @""];      					// used to update package data
-		
-//MOVE
-		lastParams = [[NSMutableArray alloc] init];
-		[self setPendingCommand: NO];
-//ENDMOVE
 
 		//variables used to display table
-		[self setLastIdentifier: @"name"];  // TBD: retrieve from user defaults
+		[self setLastIdentifier: @"name"];
 		reverseSortImage = [[NSImage alloc] initWithContentsOfFile:
 			[[NSBundle mainBundle] pathForResource: @"reverse" ofType: @"tiff"]];
 		normalSortImage = [[NSImage alloc] initWithContentsOfFile:
@@ -51,11 +62,16 @@ See the header file, FinkController.h, for interface and license information.
 		//proper sorting behavior; uses definitions from FinkPackages to set attributes
 		columnState = [[NSMutableDictionary alloc] init];
 		e = [[NSArray arrayWithObjects: PACKAGE_ATTRIBUTES, nil] objectEnumerator];
-		while (attribute = [e nextObject]){  // TBD: save state between runs
+		while (attribute = [e nextObject]){
 			[columnState setObject: @"normal" forKey: attribute];
 		}
 
 //MOVE
+		binPath =  [[NSString alloc] initWithString:
+				   [[defaults objectForKey: FinkBasePath] stringByAppendingPathComponent: @"/bin"]];
+		[self setPassword: nil];
+		lastParams = [[NSMutableArray alloc] init];
+		[self setPendingCommand: NO];		
 		environment = [[NSDictionary alloc] initWithObjectsAndKeys:
 			[NSString stringWithFormat: 
 			  @"/%@:/%@/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:",
@@ -69,16 +85,59 @@ See the header file, FinkController.h, for interface and license information.
 					name: @"passwordWasEntered"
 					object: nil];
 //ENDMOVE
+		[[NSNotificationCenter defaultCenter] addObserver: self
+					selector: @selector(refreshTable:)
+					name: @"packageArrayIsFinished"
+					object: nil];
+
 	}
 	return self;
 }
 
+
+-(void)dealloc
+{
+	[packages release];
+	[preferences release];
+	[lastCommand release];
+	[lastIdentifier release];
+	[columnState release];
+	[reverseSortImage release];
+	[normalSortImage release];
+//MOVE
+	[binPath release];
+	[password release];
+	[lastParams release];
+	[environment release];
+//ENDMOVE
+	[super dealloc];
+}
+
+
 -(void)awakeFromNib
 {
-	//have to do this BEFORE applicationDidFinishLaunching, or it doesn't happen
+	;
+}
+
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+		[self lastIdentifier]];
+		
+	if (![[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
+		// TBD:  substitute alert and reference to help
+		NSLog(@"FinkCommander was unable to find the path to your fink installation.");
+		NSLog(@"If you know the path, try setting it in Preferences and then run File: Update Table");
+	}
 	[msgText setStringValue:
 		@"Gathering data for table; this will take a moment . . ."];
+	[packages update];
+	[tableView reloadData];
+	[tableView setHighlightedTableColumn: lastColumn];
+	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
 }
+
 
 //helper used for 1st time in next method
 -(void)displayNumberOfPackages
@@ -87,33 +146,14 @@ See the header file, FinkController.h, for interface and license information.
 		[[packages array] count]]];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+
+-(void)refreshTable:(NSNotification *)ignore
 {
-	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-		[self lastIdentifier]];
-	
-	[packages update];
 	[tableView reloadData];
 	[self displayNumberOfPackages];
-	[tableView setHighlightedTableColumn: lastColumn];
-	[tableView setIndicatorImage: normalSortImage inTableColumn: lastColumn];
 }
 
--(void)dealloc
-{
-	[packages release];
-	[binPath release];
-	[password release];
-	[lastCommand release];
-	[lastParams release];
-	[lastIdentifier release];
-	[columnState release];
-	[environment release];
-	[reverseSortImage release];
-	[normalSortImage release];
-	
-	[super dealloc];
-}
+
 
 //----------------------------------------------->Accessors
 
@@ -146,7 +186,6 @@ See the header file, FinkController.h, for interface and license information.
 	[password release];
 	password = s;
 }
-
 
 -(NSMutableArray *)lastParams {return lastParams;}
 -(void)setLastParams:(NSArray *)a
@@ -223,15 +262,13 @@ See the header file, FinkController.h, for interface and license information.
 -(IBAction)runCommand:(id)sender
 {
 	NSMutableArray *args = [[self setupCommandFrom: sender] retain];
-	NSMutableArray *pkgNames = [NSMutableArray array];
 	NSEnumerator *e = [tableView selectedRowEnumerator];
 	NSNumber *anIndex;
 
 	//put package names selected into a separate array for additional use below
 	while(anIndex = [e nextObject]){
-		[pkgNames addObject: [[[packages array] objectAtIndex: [anIndex intValue]] name]];
+		[args addObject: [[[packages array] objectAtIndex: [anIndex intValue]] name]];
 	}
-	[args addObjectsFromArray: pkgNames];
 
 	[self displayCommand: args];
 		
@@ -253,7 +290,7 @@ See the header file, FinkController.h, for interface and license information.
 	[args release];
 }
 
-
+//MOVE
 -(void)runCommandWithParams:(NSArray *)params
 {
 	NSMutableArray *fullParams = [NSMutableArray arrayWithObjects:
@@ -286,6 +323,7 @@ See the header file, FinkController.h, for interface and license information.
 		[self runCommandWithParams: [self lastParams]];
 	}	
 }
+//ENDMOVE
 
 //allow user to update table using Fink, rather than relying on 
 //FinkCommander's manual update
@@ -296,11 +334,21 @@ See the header file, FinkController.h, for interface and license information.
 	[self displayNumberOfPackages];
 }
 
+-(IBAction)showPreferencePanel:(id)sender
+{
+	if (!preferences){
+		preferences = [[FinkPreferences alloc] init];
+	}
+	[preferences showWindow: self];
+}
+
+
 
 //----------------------------------------------->Table Data Source Methods
 
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
-{		
+{
+//	[self displayNumberOfPackages];
 	return [[packages array] count];
 }
 
@@ -407,7 +455,7 @@ See the header file, FinkController.h, for interface and license information.
 			pkg = [[packages array] objectAtIndex: row];
 			[pkg setInstalled: @" "];
 		}
-	}else if ([cmd isEqualToString: @"selfupdate"]){
+	}else if ([cmd rangeOfString: @"selfupdate"].length > 0){
 		[packages update];
 	}else if ([cmd isEqualToString: @"update-all"]){
 		e = [[packages array] objectEnumerator];
@@ -438,7 +486,7 @@ See the header file, FinkController.h, for interface and license information.
 		lastOutput = [[[NSAttributedString alloc] initWithString:
 			output] autorelease];
 
-//MOVE		
+//MOVE
 		//TBD:  respond as specified by user; right now this just enters a return
 		//[i.e. the default] any time Fink asks for a response 
 		if ([[lastOutput string] rangeOfString: @"]"].length > 0){
@@ -450,9 +498,6 @@ See the header file, FinkController.h, for interface and license information.
 		if([[lastOutput string] rangeOfString:
 			 @"cvs.sourceforge.net's password:"].length > 0){
 			[[finkTask task] terminate];
-			NSRunAlertPanel(@"Selfupdate Error", 
-			@"FinkCommander currently supports only anonymous access to CVS.",
-			@"Darn", nil, nil);
 		}
 		
 		//look for password error message from sudo; if it's received, enter a 

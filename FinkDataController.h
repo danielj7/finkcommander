@@ -30,15 +30,18 @@ Contact the author at sburr@mac.com.
 
 */
 
-#import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 #import "FinkPackage.h"
+#import "FinkPreferences.h"
 
 @interface FinkDataController : NSObject
 {
 	NSMutableArray *finkArray;
 	NSString *basePath;
-	NSString *stablePath;
+//	NSString *stablePath;
+	NSString *binaryPackages;
+	NSString *stablePackages;
+	NSDate *start;
 }
 
 //Accessors
