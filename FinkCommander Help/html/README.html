@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
+        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<html lang="en">
+<head>
+	<title>README</title>
+</head>
+<body>
+
+<h2>Readme</h2>
+
+<ul>
+	<li><a href="#description">Overview</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#security">Note on Security</a></li>
+</ul>
+
+<h3>
+<a name="description">Overview</a>
+</h3>
+
+<p>
+<a href="http://finkcommander.sourceforge.net">FinkCommander</a> provides a GUI
+frontend to the <a href="http://fink.sourceforge.net">Fink</a> package manager.  You
+will need to <a href="http://fink.sourceforge.net/download/">install Fink</a> itself in order for 
+FinkCommander to be of any use.
+</p>
+
+<p>
+On startup, FinkCommander loads fink package data into a table.  To run a
+command, simply select the package(s), if any, to which the command should apply
+and select the appropriate command from the "Source" or "Binary" menu.  For information
+on the Fink commands, try the on-line 
+<a href="http://fink.sourceforge.net/doc/users-guide/index.php">Fink User's Guide</a>
+</p>
+
+<p>
+A limited amount of customization is available via the FinkCommander:Preferences menu.  More 
+is on the way.
+</p>
+
+<p>
+Please note that this software is still in the early stages of development.  It
+could break your system or even <a href="#security"><strong>present a security risk</strong></a>.
+</p>
+
+<p>
+If you're brave enough to try FinkCommander, the 
+<a href="mailto:sburrious@users.sourceforge.net">author</a> would very much
+appreciate your comments.
+</p>
+
+<p>
+If you encounter bugs, it would be very helpful to have them reported at the
+SourceForge <a href="http://sourceforge.net/tracker/?group_id=48896&atid=454467">
+Bug Tracker</a> for FinkCommander.  
+</p>
+
+<p>
+Unfortunately, I will not be able to provide direct support for FinkCommander. 
+Software development is my hobby.  I have a pretty demanding "day job," so
+responding directly to every request for help is just not in the cards. 
+</p>
+
+<p>
+The source distribution of this software comes in the form of a Project Builder
+file.  To run it, you will first need to build it with Project Builder from the
+December 2001 release of Apple's Developer Tools.
+</p>
+
+
+
+<h3><a name="license">License</a></h3>
+
+<p>
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+</p>
+
+<p>
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+</p>
+
+<p>
+A copy of the GPL is included in the file "LICENSE.txt" in the same directory
+(folder) as this README.  It is also available via the help system.
+</p>
+
+<p>
+If you have downloaded the binary version of this software but would like the
+source, it's available at the 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=48896">
+FinkCommander SourceForge site</a>.
+</p>
+
+
+<h3><a name="security">Note on Security</a></h3>
+
+FinkCommander does not yet use Apple's Security Framework to authorize commands
+requiring administrator privileges.  Instead, it asks you to enter your password
+in a text field and then passes it along to the sudo command.  This means that
+<strong>you are giving your password to FinkCommander</strong>.  If I were in
+your shoes, I would think twice about this.  If FinkCommander were evil
+software, it could use the password do real mischief to your system.
+
+<p>
+The one protection you have against misuse is that FinkCommander is open source
+software.  I would encourage you to obtain and look at the source code to see
+what the program is doing with your password.
+</p>
+
+</body>
+</html>

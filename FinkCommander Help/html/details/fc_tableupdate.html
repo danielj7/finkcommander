@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>FinkCommander Guide--Updating Table Data</title>
+</head>
+
+<body>
+
+<h3>Updating Table Data</h3>
+
+<table width="100%" border="0" cellspacing="10">
+<tr><td>
+On startup and sometimes after a command is processed, a progress
+indicator will appear in the lower right hand corner of the
+FinkCommander window, and the message "Updating table data . . ." will
+appear on the left.  This means that FinkCommander is running apt-get
+and fink commands to obtain the information about available packages
+displayed in the table.  The process is similar to the one Fink itself
+engages in when you see the message "Reading package info . . ." in
+the terminal. Completing this process necessarily takes some time,
+although Fink 0.4.0 users should notice a substantial speed increase
+compared to earlier versions.
+</td></tr>
+
+<tr bgcolor="#ffffcc"><td>
+<font="arial">To reduce the time taken to update the table after
+a command, turn off "Always update with fink" in Preferences...:Table.
+FinkCommander will attempt to update the table data itself after a
+command (other than selfupdate or selfupdate-cvs) is performed.  The
+selfupdate commands always result in a complete update of the
+table.</font>
+</td></tr>
+
+<tr><td>
+FinkCommander's update method is faster (pretty much
+instantaneous) but less accurate than Fink's.  For example, if
+installing a package results in the installation of dependencies,
+FinkCommander will only update the status of the selected package.
+</td></tr>
+
+<tr bgcolor="#ffffcc"><td>
+You can force FinkCommander to do a complete update of the table at
+any time by selecting File:Update Table Data.
+</td></tr>
+
+</body>
+</html>
