@@ -103,6 +103,7 @@ File: FinkPreferences.m
 	if ([[downloadMethodMatrix selectedCell] tag] == 0){
 		[conf setDownloadMethod: @"curl"];
 	}else{
+		NSLog(@"Setting download method to wget");
 		[conf setDownloadMethod: @"wget"];
 	}
 }

@@ -255,6 +255,7 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
 
 -(void)setDownloadMethod:(NSString *)s
 {
+	NSLog(@"Received message to set download method to %@", s);
 	[finkConfDict setObject:s forKey: DOWNLOAD_METHOD];
 }
 
@@ -308,6 +309,8 @@ NSString *DOWNLOAD_METHOD = @"DownloadMethod";
     [finkConfDict setObject: [[finkConfDict objectForKey: @"Trees"]
 								componentsSeparatedByString: @" "]
 				  forKey: @"Trees"];
+	
+	NSLog(@"New fink.conf: \n%@", fconfString);
 
     return fconfString;
 }
