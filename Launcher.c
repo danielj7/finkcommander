@@ -1,11 +1,11 @@
 /*
-File: Launcher.c
+  File: Launcher.c
 
- Created by David Love on Thu Jul 18 2002.
- Copyright (c) 2002 Cashmere Software, Inc.
- Released to Steven J. Burr on August 21, 2002, under the Gnu General Public License.
+  Created by David Love on Thu Jul 18 2002.
+  Copyright (c) 2002 Cashmere Software, Inc.
+  Released to Steven J. Burr on August 21, 2002, under the Gnu General Public License.
  
- See the header file, Launcher.h for more information on the license.
+  See the header file, Launcher.h for more information on the license.
 
 */
 
@@ -28,10 +28,10 @@ File: Launcher.c
 static AuthorizationExternalForm extAuth;
 
 enum {
-	cmdAuthorized,
-	cmdNotAuthorized,
-	cmdStatusUndetermined,
-	cmdNotOwnedByRoot
+    cmdAuthorized,
+    cmdNotAuthorized,
+    cmdStatusUndetermined,
+    cmdNotOwnedByRoot
 };
 
 /* 
@@ -71,19 +71,19 @@ bool authorizedToExecute(AuthorizationRef *auth, const char* cmd)
 
 /* 
  * Determine if the command is one we really want to run as root
-*/
+ */
 int isauthorizedcmd(char * const *cmd, int args)
 {
     struct stat st;
 
     /* Test program name */
     if (!strstr(cmd[1], "/bin/fink")		&&
-		!strstr(cmd[1], "/bin/apt-get")		&&
-		!strstr(cmd[1], "/bin/dpkg")){
-		return cmdNotAuthorized;
+	!strstr(cmd[1], "/bin/apt-get")		&&
+	!strstr(cmd[1], "/bin/dpkg")){
+	return cmdNotAuthorized;
     }
-	/* Make sure program is owned by root, so it could not have been installed or
-	   replaced by an ordinary user */
+    /* Make sure program is owned by root, so it could not have been installed or
+       replaced by an ordinary user */
     if (stat(cmd[1], &st) != 0) return cmdStatusUndetermined;
     if (st.st_uid != 0) return cmdNotOwnedByRoot;
     return cmdAuthorized;
@@ -92,41 +92,41 @@ int isauthorizedcmd(char * const *cmd, int args)
 
 /*
  * Perform an authorized command
-*/
+ */
 int perform(const char* cmd, char * const *argv)
 {
-	int status;
-	int result = 1;
-	int pid;
+    int status;
+    int result = 1;
+    int pid;
 
-	pid = fork();
-	if (pid == 0) {
-		/* If this is the child process, then try to exec cmd
-        */
+    pid = fork();
+    if (pid == 0) {
+	/* If this is the child process, then try to exec cmd
+	 */
 
-		setuid(geteuid()); //set ruid = euid to avoid perl's taint mode
+	setuid(geteuid()); //set ruid = euid to avoid perl's taint mode
 
-		if (execvp(cmd, argv) == -1){
-			fprintf(stderr, "Execution failed.  errno=%d (%s)\n", errno, strerror(errno));
-		}
+	if (execvp(cmd, argv) == -1){
+	    fprintf(stderr, "Execution failed.  errno=%d (%s)\n", errno, strerror(errno));
 	}
-	else if (pid == -1)
+    }
+    else if (pid == -1)
+    {
+	fprintf(stderr, "fork() failed.  errno=%d (%s)\n", errno, strerror(errno));
+    }
+    else  {
+	fflush(stderr);
+	waitpid(pid,&status,0);
+	if (WIFEXITED(status))
 	{
-		fprintf(stderr, "fork() failed.  errno=%d (%s)\n", errno, strerror(errno));
+	    result = WEXITSTATUS(status);
 	}
-	else  {
-		fflush(stderr);
-		waitpid(pid,&status,0);
-		if (WIFEXITED(status))
-		{
-			result = WEXITSTATUS(status);
-		}
-		else if (WIFSIGNALED(status))
-		{
-			result = WTERMSIG(status)+32;
-		}
+	else if (WIFSIGNALED(status))
+	{
+	    result = WTERMSIG(status)+32;
 	}
-	return result;
+    }
+    return result;
 }
 
 /* 
@@ -134,47 +134,47 @@ int perform(const char* cmd, char * const *argv)
  */
 int mycopy(const char *fromfile, const char *tofile, bool create)
 {
-	char buffer[BUFSIZE];
-	int in_file, out_file;
-	int rsize, wsize;
-	int wflags = create ? O_WRONLY|O_TRUNC|O_CREAT : O_WRONLY|O_TRUNC;
+    char buffer[BUFSIZE];
+    int in_file, out_file;
+    int rsize, wsize;
+    int wflags = create ? O_WRONLY|O_TRUNC|O_CREAT : O_WRONLY|O_TRUNC;
 	
-	/* 	Open fromfile for reading */
-	in_file = open(fromfile, O_RDONLY);
-	if (in_file == -1) {
-		fprintf(stderr, "Failed to open %s for reading, errno=%d (%s)\n", 
-				fromfile, errno, strerror(errno));
-		return 1;
+    /* 	Open fromfile for reading */
+    in_file = open(fromfile, O_RDONLY);
+    if (in_file == -1) {
+	fprintf(stderr, "Failed to open %s for reading, errno=%d (%s)\n", 
+		fromfile, errno, strerror(errno));
+	return 1;
+    }
+    /*	Open tofile for writing */
+    out_file = open(tofile, wflags, 0644);
+    if (out_file == -1) {
+	fprintf(stderr,"Failed to open %s for writing, errno=%d (%s)\n", 
+		tofile, errno, strerror(errno));
+	return 1;
+    }
+    while (1){
+	/*	Read fromfile */
+	rsize = read(in_file, buffer, sizeof(buffer));
+	if (rsize == 0){	/* EOF */
+	    break;  
 	}
-	/*	Open tofile for writing */
-	out_file = open(tofile, wflags, 0644);
-	if (out_file == -1) {
-		fprintf(stderr,"Failed to open %s for writing, errno=%d (%s)\n", 
-				tofile, errno, strerror(errno));
-		return 1;
+	if (rsize == -1){
+	    fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
+		    fromfile, errno, strerror(errno));
+	    return 1;
 	}
-	while (1){
-		/*	Read fromfile */
-		rsize = read(in_file, buffer, sizeof(buffer));
-		if (rsize == 0){	/* EOF */
-			break;  
-		}
-		if (rsize == -1){
-			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
-					fromfile, errno, strerror(errno));
-			return 1;
-		}
-		/*	Write tofile  */
-		wsize = write(out_file, buffer, (unsigned int)rsize);
-		if (wsize == -1){
-			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
-					tofile, errno, strerror(errno));
-			return 1;
-		}
+	/*	Write tofile  */
+	wsize = write(out_file, buffer, (unsigned int)rsize);
+	if (wsize == -1){
+	    fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
+		    tofile, errno, strerror(errno));
+	    return 1;
 	}
-	close(in_file);
-	close(out_file);
-	return 0;
+    }
+    close(in_file);
+    close(out_file);
+    return 0;
 }
 
 /*
@@ -184,22 +184,22 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
  */
 int write_fconf(char *basepath)
 {
-	char fcpath[256];
-	char bkpath[256];
-	const char *tmpath = "/private/tmp/fink.conf.tmp";
-	int result;
+    char fcpath[256];
+    char bkpath[256];
+    const char *tmpath = "/private/tmp/fink.conf.tmp";
+    int result;
 	
-	strcpy(fcpath, basepath);
-	strcpy(bkpath, basepath);
-	strcat(fcpath, "/etc/fink.conf");
-	strcat(bkpath, "/etc/fink.conf~");
+    strcpy(fcpath, basepath);
+    strcpy(bkpath, basepath);
+    strcat(fcpath, "/etc/fink.conf");
+    strcat(bkpath, "/etc/fink.conf~");
 	
-	/* Back up fink.conf to fink.conf~ */
-	result = mycopy(fcpath, bkpath, 1);
-	if (result > 0) return result;
-	/* Write new fink.conf */
-	result = mycopy(tmpath, fcpath, 0);
-	return result;
+    /* Back up fink.conf to fink.conf~ */
+    result = mycopy(fcpath, bkpath, 1);
+    if (result > 0) return result;
+    /* Write new fink.conf */
+    result = mycopy(tmpath, fcpath, 0);
+    return result;
 }
 
 /*  
@@ -214,37 +214,59 @@ int repair_self()
     struct stat st;
     int fd_tool;
     int result = FALSE;
-
+    int resrep = FALSE;
     char* path_to_self = getPathToMyself();
-    if (path_to_self != NULL)
-    {
+    char path_to_res[BUFSIZE];
+    char* end_of_dir;
+
+    /* Get path to Resource directory */
+    strcpy(path_to_res, path_to_self);
+    end_of_dir = strrchr(path_to_res, '/');
+    if (end_of_dir == NULL) path_to_res[0] = 0;  /* signal failure */
+    else *end_of_dir = 0;  /* terminate string at slash */
+
+    if (path_to_self != NULL){
         /* Recover the passed in AuthorizationRef. */
         if (AuthorizationCopyPrivilegedReference(&auth, kAuthorizationFlagDefaults)
-            == errAuthorizationSuccess)
-        {
+            == errAuthorizationSuccess){
 
             /* Open tool exclusively, so no one can change it while we bless it */
             fd_tool = open(path_to_self, O_NONBLOCK|O_RDONLY|O_EXLOCK, 0);
-
-            if ((fd_tool != -1) && (fstat(fd_tool, &st) == 0))
-            {
+            if ((fd_tool != -1) && (fstat(fd_tool, &st) == 0)){
                 if (st.st_uid != 0)
                     fchown(fd_tool, 0, st.st_gid);
 
                 /* Disable group and world writability and make setuid root. */
                 fchmod(fd_tool, (st.st_mode & (~(S_IWGRP|S_IWOTH))) | S_ISUID);
-
                 close(fd_tool);
-                fprintf(stderr, "Self-repair done.\n"); //signal to FC
                 result = TRUE;
             }
-        }
-        else{
-            fprintf(stderr, "I need administrator permissions to fix the permissions on this application.\n");
-        }
-        free(path_to_self);
+			/* Set ownership of Resource directory to root and disable group and world
+				writability */
+			if (path_to_res[0] != 0){
+				if (stat(path_to_res, &st) == 0){
+					chown(path_to_res, 0, st.st_gid);
+					chmod(path_to_res, st.st_mode & (~(S_IWGRP|S_IWOTH)));
+					resrep = TRUE;
+				}
+			}
+		}else{
+			fprintf(stderr, "Authentication as administrator failed.\n");
+		}
+		free(path_to_self);
+    }else{
+		fprintf(stderr, "Unable to determine path to setuid tool.\n");
     }
-    return result;
+
+    if (result && resrep){
+		fprintf(stderr, "Self-repair succeeded\n");
+    }else if (result){
+		fprintf(stderr, "Unable to modify Resource directory\n");
+    }else{
+		fprintf(stderr, "Self-repair failed\n");
+    }
+
+    return ! result;  //will be used as exit code; so return 0 if successful, 1 otherwise
 }
 
 /*
@@ -261,10 +283,11 @@ int launch_to_repair_self(AuthorizationRef* auth)
     char* path_to_self = getPathToMyself();
     if (path_to_self != NULL)
     {
-         fprintf(stderr, "Running self-repair");   /* signal to FinkOutputParser */
-		/* Set our own stdin and stdout to be the communication channel
+	fprintf(stderr, "Running self-repair");   /* signal to FinkOutputParser */
+	/* Set our own stdin and stdout to be the communication channel
            with ourself. */
-        if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe) == errAuthorizationSuccess)
+        if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults, 
+					       arguments, &commPipe) == errAuthorizationSuccess)
         {
             /* Read from stdin and write to commPipe. */
             fwrite(&extAuth, 1, sizeof(extAuth),commPipe);
@@ -277,7 +300,6 @@ int launch_to_repair_self(AuthorizationRef* auth)
             /* Wait for the child of AuthorizationExecuteWithPrivileges to exit. */
             if (wait(&status) != -1 && WIFEXITED(status))
             {
-               // fprintf(stderr,"The tool exited with status %d, WEXITSTATUS(status) %d\n", status, WEXITSTATUS(status));
                 result = WEXITSTATUS(status);
             }
         }
@@ -285,8 +307,8 @@ int launch_to_repair_self(AuthorizationRef* auth)
     }
 
     /* Exit with the same exit code as the child spawned by
-	 * AuthorizationExecuteWithPrivileges()
-	 */
+     * AuthorizationExecuteWithPrivileges()
+     */
     return result;
 }
 
@@ -298,8 +320,8 @@ main(int argc, char * const *argv)
     int result = 1;
 
     /* The caller *must* pass in a valid AuthorizationExternalForm structure on stdin
-		* before they're allowed to go any further.
-		*/
+     * before they're allowed to go any further.
+     */
     if (! readAuthorization(&auth)){
         fprintf(stderr, "Failed to read authorization from stdin\n");
         exit(1);
@@ -308,41 +330,47 @@ main(int argc, char * const *argv)
     if (argc == 2 && 0 == strcmp(argv[1], "--self-repair")){
         result = repair_self();
     }else if (geteuid() != 0){
-		/* If the effective uid isn't root's (0), then we need to reset
-		* the setuid bit on the executable, if possible.
-		*/
-		result = launch_to_repair_self(&auth);
-	}else{
+	/* If the effective uid isn't root's (0), then we need to reset
+	 * the setuid bit on the executable, if possible.
+	 */
+	result = launch_to_repair_self(&auth);
+    }else{
         if (! authorizedToExecute(&auth, argv[1])){
             /* If the caller isn't authorized to run as root, then reset
-			* the effective uid before spawning command
-			*/
+	     * the effective uid before spawning command
+	     */
             seteuid(getuid());
         }
-		if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
-			/* Kill command being run by Launcher in another process */
-			pid_t pid = (pid_t)strtol(argv[2], nil, 10);
-			fprintf(stdout, "Killing process %s", argv[2]);
-			result = killpg(pid, SIGKILL);
-		}else if (argc == 3 && 0 == strcmp(argv[1], "--write_fconf")){
-			/* Write changes to fink.conf */
-			result = write_fconf(argv[2]);
-		}else{
-			switch (isauthorizedcmd(argv, argc)){
-				case cmdAuthorized:
-					result = perform(argv[1], &argv[1]);
-					break;
-				case cmdNotAuthorized:
-					fprintf(stderr, "WARNING:  An attempt was made to use the Launcher tool in  FinkCommander to run an unauthorized command: %s\n", argv[1]);
-					break;
-				case cmdStatusUndetermined:
-					fprintf(stderr, "Error:  FinkCommander was unable to determine the owner of %s.\nFor security reasons, FinkCommander will not run %s unless it can determine that it is owned by root.\n", argv[1], argv[1]);
-					break;
-				case cmdNotOwnedByRoot:
-					fprintf(stderr, "Error:  %s is not owned by root.\nFor security reasons, FinkCommander will not run %s unless it is owned by root.\n", argv[1], argv[1]);
-					break;
-			}
-		}
+	if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
+	    /* Kill command being run by Launcher in another process */
+	    pid_t pid = (pid_t)strtol(argv[2], nil, 10);
+	    fprintf(stdout, "Killing process %s", argv[2]);
+	    result = killpg(pid, SIGKILL);
+	}else if (argc == 3 && 0 == strcmp(argv[1], "--write_fconf")){
+	    /* Write changes to fink.conf */
+	    result = write_fconf(argv[2]);
+	}else{
+	    switch (isauthorizedcmd(argv, argc)){
+		case cmdAuthorized:
+		    result = perform(argv[1], &argv[1]);
+		    break;
+		case cmdNotAuthorized:
+		    fprintf(stderr, "WARNING:  An attempt was made to use the Launcher "
+			    "tool in  FinkCommander to run an unauthorized command: %s\n", argv[1]);
+		    break;
+		case cmdStatusUndetermined:
+		    fprintf(stderr, "Error:  FinkCommander was unable to determine "
+			    "the owner of %s.\nFor security reasons, FinkCommander will "
+			    "not run %s unless it can determine that it is owned by root.\n", 
+			    argv[1], argv[1]);
+		    break;
+		case cmdNotOwnedByRoot:
+		    fprintf(stderr, "Error:  %s is not owned by root.\nFor security reasons, "
+			    "FinkCommander will not run %s unless it is owned by root.\n", 
+			    argv[1], argv[1]);
+		    break;
+	    }
+	}
     }
     exit(result);
 }

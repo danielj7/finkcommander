@@ -51,14 +51,14 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 		[NSApp setDelegate: self];
 
 		//Check whether this is the initial startup of 0.4.0 or later for this user;
-  //if so, remove existing preferences relating to table columns
+		//if so, remove existing preferences relating to table columns
 		if (![[defaults objectForKey:FinkUsersArray] containsObject:NSUserName()]){
 			NSLog(@"Fixing preferences for first run of version 0.4");
 			fixPreferences();
 		}
 
 		//Set base path default, if necessary; write base path into perl script used
-  //to obtain fink package data
+		//to obtain fink package data
 		findFinkBasePath();
 		fixScript();
 
