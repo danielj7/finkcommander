@@ -181,8 +181,6 @@
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
 				F5C523DC02A33E0A01A80165,
-				F541C3BD02C4156801A80166,
-				F541C3BF02C4157D01A80166,
 				089C165CFE840E0CC02AAC07,
 				F57DA17B02B4680D01A8016B,
 				F538C3C5023496DC01A80164,
@@ -703,26 +701,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F541C3BD02C4156801A80166 = {
-			isa = PBXFileReference;
-			path = FinkCommander.scriptSuite;
-			refType = 4;
-		};
-		F541C3BF02C4157D01A80166 = {
-			children = (
-				F541C3C002C4157D01A80166,
-			);
-			isa = PBXVariantGroup;
-			name = FinkCommander.scriptTerminology;
-			path = "";
-			refType = 4;
-		};
-		F541C3C002C4157D01A80166 = {
-			isa = PBXFileReference;
-			name = English;
-			path = English.lproj/FinkCommander.scriptTerminology;
-			refType = 4;
 		};
 		F542437B028CE53E01A80166 = {
 			isa = PBXFileReference;
