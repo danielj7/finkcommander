@@ -517,13 +517,6 @@
 			settings = {
 			};
 		};
-		F51CCE5D032E202001A80168 = {
-			fileEncoding = 10;
-			isa = PBXFileReference;
-			name = German;
-			path = German.lproj/Localizable.strings;
-			refType = 4;
-		};
 		F527284C0221B4E801A80164 = {
 			isa = PBXFileReference;
 			path = FinkPackage.h;
@@ -1125,7 +1118,7 @@
 				F568C4A302FC9D6101A80164,
 				F5CC37190304F2C601A80164,
 				F5CC371A0304F2CD01A80164,
-				F51CCE5D032E202001A80168,
+				F5D3EE420336DD8B01A80165,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;
@@ -1486,6 +1479,13 @@
 			isa = PBXFileReference;
 			name = Spanish;
 			path = Spanish.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F5D3EE420336DD8B01A80165 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5DABE8B03359EF601FEFA3F = {

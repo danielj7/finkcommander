@@ -28,7 +28,7 @@
 		<key>ToolTip</key>
 		<string>Email an den Maintainer des Pakets senden</string>
 	</dict>
-	<key>FinkFilterItem</key>
+	<key>FinkFilterItem</key> 
 	<dict>
 		<key>Label</key>
 		<string>Paket-Filter</string>
