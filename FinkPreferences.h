@@ -58,6 +58,7 @@ File: FinkPreferences.h
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
 	IBOutlet NSButton *checkForUpdateButton;
+	IBOutlet NSButton *showRedundantPackagesButton;
 	
 	//widgets used for environment settings
 	IBOutlet NSTableView *environmentTableView;

@@ -36,7 +36,7 @@ File: FinkGlobals.h
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
 
-#define DEBUGGING
+//#define DEBUGGING
 
 //User Default Items
 //  Set by user
@@ -62,6 +62,7 @@ extern NSString *FinkEnvironmentSettings;
 extern NSString *FinkInitialEnvironmentHasBeenSet;
 extern NSString *FinkLastCheckedForNewVersion;
 extern NSString *FinkCheckForNewVersionInterval;
+extern NSString *FinkShowRedundantPackages;
 
 //  Set programmatically
 extern NSString *FinkPackageAttributes;

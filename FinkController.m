@@ -195,7 +195,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	while (col = [e nextObject]){
 		int atag = [self tagFromAttributeName:col];
-		NSLog(@"Column for attribute: %@, tag: %d", col, atag);
+		//NSLog(@"Column for attribute: %@, tag: %d", col, atag);
 		[[viewMenu itemWithTag:atag] setState:NSOnState];
 	}
 

@@ -15,10 +15,7 @@ File: FinkTextViewController.m
 	lines = 0;
 	bufferLimit = [[NSUserDefaults standardUserDefaults] integerForKey:FinkBufferLimit];
 	minDelete = bufferLimit * 0.10;
-	if (minDelete < 10) minDelete = 10;
-
-	NSLog(@"Buffer limit = %d; min delete = %d", bufferLimit, minDelete);
-	
+	if (minDelete < 10) minDelete = 10;	
 	[super setString:aString];
 }
 
@@ -37,9 +34,11 @@ File: FinkTextViewController.m
 	int lastReturn = 0;
 	
 	for (i = 0; i < numlines; i++){
-		test = [viewString rangeOfString:@"\n"
-					options:0
-					range:NSMakeRange(lastReturn + 1, [viewString length] - lastReturn - 1)].location;
+		test = 
+			[viewString rangeOfString:@"\n"
+				options:0
+				range:NSMakeRange(lastReturn + 1, 
+									[viewString length] - lastReturn - 1)].location;
 		if (test == NSNotFound) break;
 		lastReturn = test;
 	}
@@ -53,9 +52,6 @@ File: FinkTextViewController.m
 		NSRange r;
 			
 		lines += [self numberOfLinesInString:s];
-		
-		if (lines > bufferLimit) NSLog(@"%d", lines);
-		
 		overflow = lines - bufferLimit;
 		if (overflow > minDelete){
 			r = [self rangeOfLinesAtTopOfView:overflow];

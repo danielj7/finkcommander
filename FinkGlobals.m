@@ -31,6 +31,7 @@ NSString *FinkLastCheckedForNewVersion = @"FinkLastCheckedForNewVersion";
 NSString *FinkCheckForNewVersionInterval = @"FinkCheckForNewVersionInterval";
 NSString *FinkEnvironmentSettings = @"FinkEnvironmentSettings";
 NSString *FinkInitialEnvironmentHasBeenSet = @"FinkInitialEnvironmentHasBeenSet";
+NSString *FinkShowRedundantPackages = @"FinkShowRedundantPackages";
 
 NSString *FinkPackageAttributes = @"FinkPackageAttributes";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";

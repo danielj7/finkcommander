@@ -104,6 +104,7 @@ File: FinkPreferences.m
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
+	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];
 	[checkForUpdateButton setState:  interval > 0];
 	if (interval){
 		[checkForUpdateIntervalTextField setIntValue:interval];
@@ -259,7 +260,6 @@ File: FinkPreferences.m
 	[self setScrollBackLimit];
 	
 	[defaults setObject: [outputPathTextField stringValue] 	forKey: FinkOutputPath];
-	[defaults setObject: environmentSettings				forKey: FinkEnvironmentSettings];
 	
 	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
@@ -272,6 +272,7 @@ File: FinkPreferences.m
 	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
 	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
+	[defaults setBool: [showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
 	
 	if ([checkForUpdateButton state]){
 		[defaults setInteger:[checkForUpdateIntervalTextField intValue] 
@@ -290,8 +291,8 @@ File: FinkPreferences.m
 	}
 
 	if (finkConfChanged){
-		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
+		[conf setUseUnstableMain: [useUnstableMainButton state]];
 		[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
 			
 		[conf setPassiveFTP: [passiveFTPButton state]];
@@ -307,6 +308,7 @@ File: FinkPreferences.m
 
 		[conf writeToFile];
 	}
+	[defaults setObject: environmentSettings forKey: FinkEnvironmentSettings];
 	[environmentTableView reloadData];
 }
 

@@ -62,6 +62,8 @@
 	<false/>
 	<key>FinkSelectedColumnIdentifier</key>
 	<string>name</string>
+	<key>FinkShowRedundantPackages</key>
+	<false/>
 	<key>FinkTableColumnsArray</key>
 	<array>
 		<string>name</string>

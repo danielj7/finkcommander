@@ -70,13 +70,16 @@ File: FinkConf.m
 	}
 	return YES;
 }
-
+//this is called after setUseUnstableCrypto in FinkPreferences
+//so inserting at index 0 will insure unstable/main comes first
 -(void)setUseUnstableMain:(BOOL)shouldUseUnstable
 {
 	if (shouldUseUnstable){
 		if ([[finkConfDict objectForKey: @"Trees"]
 				indexOfObject: @"unstable/main"] == NSNotFound){
-			[[finkConfDict objectForKey: @"Trees"] addObject: @"unstable/main"];
+			[[finkConfDict objectForKey: @"Trees"] 
+				insertObject: @"unstable/main"
+				atIndex:0];
 		}
 	}else{
 		if ([[finkConfDict objectForKey: @"Trees"]
@@ -101,7 +104,9 @@ File: FinkConf.m
 	if (shouldUseUnstable){
 		if ([[finkConfDict objectForKey: @"Trees"]
 			indexOfObject: @"unstable/crypto"] == NSNotFound){
-			[[finkConfDict objectForKey: @"Trees"] addObject: @"unstable/crypto"];
+			[[finkConfDict objectForKey: @"Trees"] 
+				insertObject: @"unstable/crypto"
+				atIndex:0];
 		}
 	}else{
 		if ([[finkConfDict objectForKey: @"Trees"]

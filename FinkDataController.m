@@ -25,11 +25,14 @@ int NAMESTART = 12;
 {
     if (self = [super init])
 	{
+		defaults = [NSUserDefaults standardUserDefaults];
+		pathToDists = [[[defaults objectForKey:FinkBasePath] 
+			stringByAppendingPathComponent: @"/fink/dists"] retain];
 		[[NSNotificationCenter defaultCenter] 
-		addObserver: self
-		   selector: @selector(completeUpdate:)
-			   name: NSFileHandleReadToEndOfFileCompletionNotification
-			 object: nil];
+			addObserver: self
+			selector: @selector(completeUpdate:)
+			name: NSFileHandleReadToEndOfFileCompletionNotification
+			object: nil];
 	}
     return self;
 }
@@ -38,6 +41,7 @@ int NAMESTART = 12;
 {
     [array release];
     [binaryPackages release];
+	[pathToDists release];
     [start release];
     [super dealloc];
 }
@@ -228,21 +232,36 @@ int NAMESTART = 12;
     return [NSArray arrayWithObjects: web, maint, email, nil];
 }
 
-#ifdef UNDEF
-
--(NSString *)pathToStablePackage:(FinkPackage *)pkg
+-(NSString *)pathToPackage:(FinkPackage *)pkg inTree:(NSString *)tree
 {
-	NSString *basePath = [[NSUserDefaults standardUserDefaults] 
-							objectForKey:FinkBasePath];
+	NSString *version = [tree isEqualToString:@"stable"] ? [pkg unstable] : [pkg stable];
+	NSString *name = [pkg name];
+	NSString *splitoff;
+	NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil] 
+								objectEnumerator];
+    NSString *pkgFileName;
+    NSArray *components;
+	NSRange r;
 	
-	//Add check for distnumber for next fink pm
-	
-	if ([[pkg category] isEqualToString:@"crypto"]){
-		;
+	while (splitoff = [e nextObject]){
+		r = [name rangeOfString:splitoff];
+		if (r.length > 0){
+			name = [name substringToIndex:r.location];
+			break;
+		}
 	}
-}
+	pkgFileName = [NSString stringWithFormat:@"%@-%@.info", name, version];
 
-#endif
+    if ([[pkg category] isEqualToString:@"crypto"]){
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto", 
+			@"finkinfo", pkgFileName, nil]; 
+    }else{
+		components = [NSArray arrayWithObjects:pathToDists, tree, @"main", 
+			@"finkinfo", [pkg category], pkgFileName, nil]; 
+    }
+
+	return [NSString pathWithComponents:components];
+}
 
 -(void)completeUpdate:(NSNotification *)n
 {
@@ -256,7 +275,7 @@ int NAMESTART = 12;
     NSEnumerator *e;
     FinkPackage *p;
 	NSFileManager *manager = [NSFileManager defaultManager];
-//	NSString *stable = [self pathToStable];
+	NSString *path;
 	NSString *bversion;
 	
 	d = [info objectForKey: NSFileHandleNotificationDataItem];
@@ -285,14 +304,24 @@ int NAMESTART = 12;
 		[p setCategory: [listRecord objectAtIndex: 6]];
 		[p setSummary: [listRecord objectAtIndex: 7]];
 		[p setFulldesc: [listRecord objectAtIndex: 8]];
-		
-		
-#ifdef UNDEF
+
 		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
-			;
+			path = [self pathToPackage:p inTree:@"stable"];
+			if ([manager fileExistsAtPath:path]){
+				[p setStable:[p unstable]];
+				if (! [defaults boolForKey:FinkShowRedundantPackages]){
+					[p setUnstable:@" "];
+				}
+			}
 		}
-#endif
-		
+		if ([defaults boolForKey:FinkShowRedundantPackages] &&
+			[[p unstable] length] < 2 						&&
+			[[p stable] length] > 1){
+			path = [self pathToPackage:p inTree:@"unstable"];
+			if ([manager fileExistsAtPath:path]){
+				[p setUnstable:[p stable]];
+			}
+		}
 		components = [self descriptionComponentsFromString: [p fulldesc]];
 		[p setWeburl: [components objectAtIndex: 0]];
 		[p setMaintainer: [components objectAtIndex: 1]];

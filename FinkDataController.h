@@ -37,8 +37,10 @@ Contact the author at sburrious@users.sourceforge.net.
 
 @interface FinkDataController : NSObject
 {
+	NSUserDefaults *defaults;
 	NSMutableArray *array;
 	NSDictionary *binaryPackages;
+	NSString *pathToDists;
 	NSDate *start;
 }
 
