@@ -5,7 +5,7 @@
 <head>
 	<title>FinkCommander Help--The Fink and Apt-Get Commands</title>
 	<meta name="generator" content="BBEdit 6.1.2+">
-	 
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -18,6 +18,7 @@ To see the complete version, open Terminal and type &quot;fink man&quot; at the
 prompt.  References to /sw should be read as the directory where your fink 
 installation is located.</em>
 
+<h4>Main Menu</h4>
 <dl>
     <dt>Install</dt>   
     <dd><p>The install command is used to install packages. It downloads, configures,
@@ -58,8 +59,13 @@ installation is located.</em>
            can re-install the package later without going through the compile
            process again. If you need the disk space, you can remove the .deb
            from the /sw/fink/dists tree and the corresponding symlinks from
-		   /sw/fink/debs.</p></dd>    
-        
+		   /sw/fink/debs.</p></dd>   
+		   
+	<dt>Scanpackages</dt>
+	<dd><p>Creates the files (Packages.gz in the binary-darwin-powerpc directory of each tree)
+			necessary to allow apt-get update to work.
+		</p></dd>
+	
     <dt>Selfupdate, Selfupdate-cvs</dt>   
     <dd><p>This command automates the process of upgrading to a new fink
            release. It checks the fink website to see if a new version is
@@ -79,39 +85,31 @@ installation is located.</em>
 	<dd><p>	Force Remove will remove the selected package, even if other packages depend on it.  
 			It should only be used as a last resort to resolve otherwise irreconcilable dependency 
 			problems.</p></dd>  
-			
-	<dt>Utilities Submenu</dt>
-	
-	<dl>
-	
-		<dt>Cleanup</dt>
-		<dd><p>Removes outdated .deb files, source directories, source archives and broken links.  
-				This command is still in development.  It may remove some files that are not truly
-				outdated and may leave some outdated files in place.  If the former occurs, you may
-				have to re-download or re-compile a package that otherwise could have been 
-				installed from the debian archive.
-			</p></dd>
-		
-		<dt>Index</dt>   
-		<dd><p>Rebuilds the package cache. You should not normally need to execute
-			this manually, fink should auto-detect when it needs to be updated.</p></dd>
-			
-		<dt>Scanpackages</dt>
-		<dd><p>Creates the files (Packages.gz in the binary-darwin-powerpc directory of each tree)
-			necessary to allow apt-get update to work.
-			</p></dd>
-	
-		<dt>Describe</dt>   
-		<dd><p>This command displays a description of the package you name on the
-			command line.  Instead of calling the fink describe command, it provides
-			the same information from a cache maintained by FinkCommander.</p>
-			
-			<p><em>Note:  The <kbd>Tools:Show Package Info</kbd> and Toolbar info
-			commands provide the same information as the describe command in a 
-			separate window with active links to the package web site and
-			maintainer e-mail address.</em></p></dd>
-	</dl>
+</dl>
 
+<h4>Utilities Submenu</h4>	
+<dl>
+	<dt>Cleanup</dt>
+	<dd><p>Removes outdated .deb files, source directories, source archives and broken links.  
+			This command is still in development.  It may remove some files that are not truly
+			outdated and may leave some outdated files in place.  If the former occurs, you may
+			have to re-download or re-compile a package that otherwise could have been 
+			installed from the debian archive.
+		</p></dd>
+	
+	<dt>Index</dt>   
+	<dd><p>Rebuilds the package cache. You should not normally need to execute
+		this manually, fink should auto-detect when it needs to be updated.</p></dd>
+		
+	<dt>Describe</dt>   
+	<dd><p>This command displays a description of the package you name on the
+		command line.  Instead of calling the fink describe command, it provides
+		the same information from a cache maintained by FinkCommander.</p>
+		
+		<p><em>Note:  The <kbd>Tools:Show Package Info</kbd> and Toolbar info
+		commands provide the same information as the describe command in a 
+		separate window with active links to the package web site and
+		maintainer e-mail address.</em></p></dd>
 </dl>
 
 <h3>Apt-Get (Binary Menu)</h3>
@@ -124,10 +122,10 @@ installation is located.</em>
     <dd><p>All packages required by  the  package(s) specified for installation will also be             
            retrieved and installed.</p></dd>
 
-    <dt>Update</dt>   
-    <dd><p>Update is used to resynchronize the package index files from
-              their sources.  An  update
-              should  always  be  performed  before  an  upgrade.</p></dd>
+    <dt>Dist-Update</dt>   
+    <dd><p>Dist-Update is used to resynchronize the package index files from
+              their sources.  An  update should  always  be  performed  before  an  
+			  upgrade.</p></dd>
     
     <dt>Upgrade</dt>   
     <dd><p>Upgrade is used to install the newest versions of all  pack-

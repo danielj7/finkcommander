@@ -1,9 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
-        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
 	<title>FinkCommander Help--Running Commands</title>
-	 
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -24,15 +24,18 @@ also drag across rows to select them.</p>
 
 <p>The <strong>toolbar</strong> has a number of available commands that are not included in
 the default configuration.  To customize the toolbar, select
-<kbd>Window:Customize Toolbar</kbd>.  In general, toolbar icons for commands 
-relating to source packages are colored green and those relating to binary packages 
-are blue.</p>
+<kbd>View:Customize Toolbar</kbd>.  In general, toolbar icons for commands 
+relating to source packages have green symbols, and those relating to binary packages 
+have blue symbols.</p>
 
 <p>When <strong>a command is running</strong>, the name of the command and (space
 allowing) a list of the packages it applies to will appear as a text
-message in the lower left-hand corner of the window.  When the command
-is finished, a progress bar and the message "Updating table data" may
-appear.  <a href="details/fc_tableupdate.html" target="_right">More detail</a>.</p>
+message on the left side of the status bar (the area at the bottom of the window).  
+During source installations, this text will be replaced by messages identifying the 
+specific installation phase, along with a determinate progress indicator to the right.  
+When the command is finished, an indeterminate progress bar and the message "Updating table data" 
+may appear in the status bar.  
+<a href="details/fc_tableupdate.html" target="_right">More detail</a>.</p>
 
 <p>While either of these processes is underway, the menu and toolbar items for
 running commands in FinkCommander will be disabled.  You can, however, <a href="#terminal" 

@@ -1,26 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
-        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
+
 <head>
 	<title>FinkCommander Help--Bugs</title>
+	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
 
 <h2>Known Bugs and Limitations</h2>
 
 <dl>
     <dt>Interaction sheet display failure</dt>
-    <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.  
-		This occurs because Fink has not automatically responded to a prompt,
-		even though <kbd>Preferences:Commander:Always choose default response to prompts</kbd> 
-		is selected.  <a href="details/fc_defaults.html" target="_right">More detail</a>.  
+    <dd><p>In some cases the interaction sheet may not display when Fink is waiting for a response.
 		If you experience this problem, select <kbd>Tools:Interact with Fink</kbd> to enter a
-		response.  An optional Interact with Fink item is also available for the Toolbar.
+		response.  An optional Interact with Fink item is also available for the Toolbar.  
+		In addition, please send me an email at sburrious@users.sourceforge.net describing the
+		prompt for which no interaction sheet was displayed.  I will add it to the list of
+		prompts that FinkCommander looks for when running commands.
     </p></dd>
 	
 	<dt>Apt-get update failure</dt>
 	<dd><p>If you receive an error message after running apt-get update, try running
-		<kbd>Source:Scanpackages</kbd> and then trying apt-get update again.
+		<kbd>Source:Scanpackages</kbd> and then run apt-get update again.
 	</p></dd>
 
 	<dt>Atlas install problem</dt>
@@ -30,7 +33,7 @@
 		why this occurs, but using the FinkCommander interaction dialog to respond to all of the
 		questions presented during the atlas install would in any case be tedious.  If you want
 		to install atlas, you will need to do so in Terminal, either directly or by 
-		running <kdb>Source:Run in Terminal:Install</kbd> in FinkCommander.</p>
+		running <kbd>Source:Run in Terminal:Install</kbd> in FinkCommander.</p>
 	
     <dt>Tcsh and term-readkey-pm package problems</dt>
     <dd><p>Selection of tcsh or term-readkey-pm triggers a warning, because FinkCommander

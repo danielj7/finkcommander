@@ -194,11 +194,9 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)runPackageSpecificCommand:(id)sender;
 -(IBAction)runNonSpecificCommand:(id)sender;
 -(IBAction)runForceRemove:(id)sender;
-//-(void)launchCommandWithArguments:(NSMutableArray *)args;
 #ifndef OSXVER101
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender;
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender;
-//-(void)launchCommandInTerminal:(NSString *)cmd;
 #endif
 
 //AuthorizedExecutable delegate methods

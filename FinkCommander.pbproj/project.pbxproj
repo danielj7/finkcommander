@@ -1695,6 +1695,7 @@
 		F5C9446D039C6BE201A80164 = {
 			children = (
 				F5C9446E039C6BE201A80164,
+				FB084B8303DBA6EE00A8016C,
 			);
 			isa = PBXVariantGroup;
 			name = TreeView.nib;
@@ -2076,6 +2077,12 @@
 //FB2
 //FB3
 //FB4
+		FB084B8303DBA6EE00A8016C = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/TreeView.nib;
+			refType = 4;
+		};
 		FB84A70903C93AF400A80164 = {
 			children = (
 				FB84A70A03C93AF400A80164,
