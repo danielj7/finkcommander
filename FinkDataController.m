@@ -35,6 +35,7 @@ See the header file, FinkDataController.h, for interface and license information
 
 -(void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     [array release];
     [binaryPackages release];
     [start release];

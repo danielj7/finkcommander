@@ -1,17 +1,9 @@
 /* 
 File: SBString.h
 
- Category extending NSString class with following method(s):
-
- contains:s -- test whether string contains string s
- containsPattern:p -- test whether string contains shell-style pattern p
-
-   Note:  The same methods are supplied in case insensitive versions,
-   denoted with a "CI" at the end of the method name.  Parameters
-   are all NSStrings.
-
- strip -- strip leading and trailing whitespace from a string
-
+ Category extending NSString class with a number of useful methods.
+ Includes wrappers for fnmatch.h and regex.h functions.
+ 
  Copyright (C) 2002  Steven J. Burr
 
  This program is free software; you may redistribute it and/or modify
@@ -28,16 +20,25 @@ File: SBString.h
 
 #import <Foundation/Foundation.h>
 #include <fnmatch.h>
+#include <regex.h>
+#include <string.h>
 
 @interface NSString ( SBString )
 
-//Run the test indicated by the function name
-//CI stands for case insensitive
+//Does the string contain s? (CI stands for case insensitive)
 -(BOOL)contains:(NSString *)s;
 -(BOOL)containsCI:(NSString *)s;
+
+//Does the string contain the shell pattern p?
 -(BOOL)containsPattern:(NSString *)p;
 
-//Strip leading and trailing whitespace from a string
+//Search for regular expression pat in string
+-(BOOL)containsExpression:(NSString *)pat;
+-(NSRange)rangeOfExpression:(NSString *)pat;
+-(NSRange)rangeOfExpression:(NSString *)pat
+		inRange:(NSRange)range;
+		
+//Strip leading and trailing whitespace from string
 -(NSString *)strip;
 
 @end

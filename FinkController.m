@@ -902,8 +902,8 @@ File: FinkController.m
 			exe = @"dpkg";
 			break;
     }
-    exe = [NSString stringWithFormat:@"%@/bin/%@",
-		[defaults objectForKey:FinkBasePath], exe];
+    exe = [[defaults objectForKey:FinkBasePath] stringByAppendingPathComponent:
+				[NSString stringWithFormat:@"/bin/%@", exe]];
 
 	//Put executable, command name and options in argument array
     if (type == FINK || type == APT_GET){
