@@ -195,7 +195,7 @@
 				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
 				F568C4A202FC9D6101A80164,
-				F57DA17B02B4680D01A8016B,
+				F59FF425032134BD01A80175,
 				F538C3C5023496DC01A80164,
 				F5DE3CD602CAE98601A80164,
 				F531463F022C801601A80164,
@@ -359,7 +359,7 @@
 				F5B9D9EB02B232D501A8016B,
 				F5B9D9F602B3D67A01A8016B,
 				F5B9D9F702B3D67A01A8016B,
-				F57DA17C02B4680D01A8016B,
+				F59FF426032134BD01A80175,
 				F5897AAB02C6E37B01A80166,
 				F5DE3CD702CAE98601A80164,
 				F568C4A402FC9D6101A80164,
@@ -1132,14 +1132,9 @@
 		};
 		F57DA17B02B4680D01A8016B = {
 			isa = PBXFileReference;
-			path = Credits.html;
+			name = Credits.html;
+			path = English.lproj/Credits.html;
 			refType = 4;
-		};
-		F57DA17C02B4680D01A8016B = {
-			fileRef = F57DA17B02B4680D01A8016B;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5897AAA02C6E37B01A80166 = {
 			isa = PBXFileReference;
@@ -1162,6 +1157,41 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		F59FF425032134BD01A80175 = {
+			children = (
+				F57DA17B02B4680D01A8016B,
+				F59FF427032134CF01A80175,
+				F59FF428032134D901A80175,
+				F59FF429032134E401A80175,
+			);
+			isa = PBXVariantGroup;
+			name = Credits.html;
+			refType = 4;
+		};
+		F59FF426032134BD01A80175 = {
+			fileRef = F59FF425032134BD01A80175;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F59FF427032134CF01A80175 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Credits.html;
+			refType = 4;
+		};
+		F59FF428032134D901A80175 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Credits.html;
+			refType = 4;
+		};
+		F59FF429032134E401A80175 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Credits.html;
+			refType = 4;
 		};
 		F5B9D9E402B1D61C01A8016B = {
 			isa = PBXFileReference;
