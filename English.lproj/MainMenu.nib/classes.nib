@@ -62,7 +62,12 @@
             SUPERCLASS = NSSplitView; 
         }, 
         {
-            ACTIONS = {openPackageFiles = id; openSelectedFiles = id; toggleFlags = id; }; 
+            ACTIONS = {
+                openPackageFiles = id; 
+                openSelectedFiles = id; 
+                toggleFlags = id; 
+                treeWindowWillClose = id; 
+            }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSObject; 

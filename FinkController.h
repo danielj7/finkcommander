@@ -173,6 +173,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)openPackageFileViewer:(id)sender;
 -(IBAction)bringBackMainWindow:(id)sender;
 -(IBAction)openHelpInWebBrowser:(id)sender;
+-(void)treeWindowWillClose:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

@@ -65,29 +65,34 @@
 	return columnArray;
 }
 
-+(id)substituteForOutlineView:(NSOutlineView *)oldView
+-(id)initAsSubstituteForOutlineView:(NSOutlineView *)oldView
 {
-	SBOutlineView *newView = [[[SBOutlineView alloc] 
-								initWithFrame:[oldView frame]] autorelease];
-	NSEnumerator *e = [[newView tableColumnsForFrame:[oldView frame]] 
-							objectEnumerator];
-	NSTableColumn *column;
-	
-	while (nil != (column = [e nextObject])){
-		[newView addTableColumn:column];
-	}
-	[newView moveColumn:2 toColumn:1];
+	self = [super initWithFrame:[oldView frame]];
+	if (self != nil){
+		NSEnumerator *e = [[self tableColumnsForFrame:[oldView frame]]
+			objectEnumerator];
+		NSTableColumn *column;
 
-	[newView setAutoresizingMask:[oldView autoresizingMask]];
-	[newView setAutosaveTableColumns:[oldView autosaveTableColumns]];
-	[newView setAllowsMultipleSelection:[oldView allowsMultipleSelection]];
-	[newView setAllowsColumnSelection:[oldView allowsColumnSelection]];
-	[newView setAllowsColumnReordering:[oldView allowsColumnReordering]];
-	[newView setAllowsColumnResizing :[oldView allowsColumnReordering]];
-	[newView setAutoresizesOutlineColumn:NO];
-	[newView setVerticalMotionCanBeginDrag:NO];
-	
-	return newView;
+		while (nil != (column = [e nextObject])){
+			[self addTableColumn:column];
+		}
+		[self moveColumn:2 toColumn:1];
+		[self setAutoresizingMask:[oldView autoresizingMask]];
+		[self setAutosaveTableColumns:[oldView autosaveTableColumns]];
+		[self setAllowsMultipleSelection:[oldView allowsMultipleSelection]];
+		[self setAllowsColumnSelection:[oldView allowsColumnSelection]];
+		[self setAllowsColumnReordering:[oldView allowsColumnReordering]];
+		[self setAllowsColumnResizing :[oldView allowsColumnReordering]];
+		[self setAutoresizesOutlineColumn:NO];
+		[self setVerticalMotionCanBeginDrag:NO];
+	}
+	return self;
+}
+
+-(void)dealloc
+{
+	Dprintf(@"Deallocating outline view");
+	[super dealloc];
 }
 
 //----------------------------------------------------------

@@ -90,7 +90,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 	[_sbrootItem release];
 	[_sbName release];
 	[sbLock release];
-	NSLog(@"Deallocating %@", [self description]);
+	Dprintf(@"Deallocating %@", [self description]);
 	
 	[super dealloc];
 }

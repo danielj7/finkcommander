@@ -41,7 +41,7 @@ File SBFileItem.m
 
 -(void)dealloc
 {
-	//NSLog(@"Deallocating %@", [self description]);
+	//Dprintf(@"Deallocating %@", [self path]);
 	
 	//Recursively release all items below this one in the tree
 	if (nil != _sbchildren) [_sbchildren release];

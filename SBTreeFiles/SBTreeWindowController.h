@@ -25,15 +25,15 @@
 #import "SBBrowserView.h"
 #import "SBUtilities.h"
 
-@interface SBTreeWindowController: NSWindowController
+@interface SBTreeWindowController: NSObject
 {
+	IBOutlet NSWindow *sbTreeWindow;
 	IBOutlet NSTabView *tabView;
 	IBOutlet NSScrollView *outlineScrollView;
     IBOutlet id outlineView;
     IBOutlet NSTextField *msgTextField;
     IBOutlet NSProgressIndicator *loadingIndicator;
 	IBOutlet NSBrowser *oldBrowser;
-	IBOutlet NSBox *divider;
 
 	SBFileItemTree *tree;
     SBOutlineViewController *oController;
@@ -48,15 +48,8 @@
 -(id)initWithFileList:(NSMutableArray *)fList
 		   windowName:(NSString *)wName;
 
--(NSMutableArray *)fileList;
--(void)setFileList:(NSMutableArray *)fList;
-
--(NSString *)activeView;
--(void)setActiveView:(NSString *)newActiveView;
-
 -(IBAction)switchViews:(id)sender;
 
--(void)startedLoading;
--(void)finishedLoading:(NSNotification *)n;
+//-(void)finishedLoading:(NSNotification *)n;
 
 @end

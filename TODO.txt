@@ -1,10 +1,8 @@
 VERSION 0.5; Target release date: 1/31/03:
 
 i Package file browser
-	i Fix instability
 	d Add Browser view
 	d Add buttons to switch from outline to browser (modeled on Finder's)
-	Add button popup to change number of columns in browser
 	Add contextual menu
 	d Add drag and drop of file icons
 	d Open selected files (File menu, double click, drag and drop)
@@ -24,8 +22,7 @@ d Flag column
 
 d Size new columns appropriately
 
-Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after launching
-	command in Terminal
+Warning dialog for first run of command in Terminal
 
 New toolbar items for:
 	d Package browser

@@ -33,6 +33,7 @@
 -(void)setCurrentPackageName:(NSString *)newCurrentPackageName;
 -(NSMutableArray *)windowControllers;
 -(NSMutableArray *)windowTitles;
--(void)openNewOutlineForPackageName:(NSString *)pkgName;
+-(void)openNewWindowForPackageName:(NSString *)pkgName;
+-(void)closingTreeWindowWithController:(id)sender;
 
 @end

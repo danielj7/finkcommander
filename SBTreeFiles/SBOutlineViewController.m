@@ -21,7 +21,7 @@
 		NSTableColumn *aColumn;
 		NSEnumerator *e; 
 
-		outlineView = [oView retain];
+		outlineView = oView;  //retained by superview
 		tree = [aTree retain];
 		e = [[outlineView tableColumns] objectEnumerator];
 		[self setPreviousColumnIdentifier:@"filename"];
@@ -48,8 +48,8 @@
 
 -(void)dealloc
 {
+	Dprintf(@"Releasing outline view controller");
     [tree release];
-	[outlineView release];
 	[previousColumnIdentifier release];
     [columnStateDictionary release];
 

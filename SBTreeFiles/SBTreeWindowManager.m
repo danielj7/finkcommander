@@ -15,11 +15,6 @@
 	if (nil != self){
 		_sbWindowControllers = [[NSMutableArray alloc] init];
 		_sbWindowTitles = [[NSMutableArray alloc] init];
-		[[NSNotificationCenter defaultCenter] 
-				addObserver: self
-				selector: @selector(windowWillClose:)
-				name: NSWindowWillCloseNotification
-				object: nil];
 	}
 	return self;
 }
@@ -29,6 +24,7 @@
     [_sbcurrentPackageName release];
 	[_sbWindowControllers release];
 	[_sbWindowTitles release];
+	
     [super dealloc];
 }
 
@@ -75,7 +71,7 @@
 	return fileList;
 }
 
--(void)openNewOutlineForPackageName:(NSString *)pkgName
+-(void)openNewWindowForPackageName:(NSString *)pkgName
 {
     NSMutableArray *fileList = [self fileListFromCommand:
 			[NSArray arrayWithObjects: @"/sw/bin/dpkg", @"-L", pkgName, nil]];
@@ -92,13 +88,16 @@
 	newController = [[SBTreeWindowController alloc]
 							initWithFileList:fileList
 							windowName:windowTitle];
-    [newController showWindow:self];
+	[[self windowControllers] addObject:newController];
 }
 
-/*-(void)windowWillClose:(NSNotification *)aNotification
+-(void)closingTreeWindowWithController:(id)sender
 {
-	id controller = [[aNotification object] windowController];
-}*/
+	Dprintf(@"Retain count of %@ before removed from array: %d",
+		 sender, [sender retainCount]);
+
+	[[self windowControllers] removeObject:sender];
+}
 
 @end
 

@@ -17,11 +17,66 @@ enum {
 #define KILOBYTE_FORMAT NSLocalizedString(@"%u items, %.1f KB", "Formatter for browser window")
 #define MEGABYTE_FORMAT NSLocalizedString(@"%u items, %.1f MB", "Formatter for browser window")
 
+@implementation SBTreeWindowController
+
 //----------------------------------------------------------
-#pragma mark OBJECT CREATION AND DESTRUCTION
+#pragma mark ACCESSORS
 //----------------------------------------------------------
 
-@implementation SBTreeWindowController
+-(NSString *)activeView { return _sbActiveView; }
+
+-(void)setActiveView:(NSString *)newActiveView
+{
+	[newActiveView retain];
+	[_sbActiveView release];
+	_sbActiveView = newActiveView;
+}
+
+-(NSWindow *)window { return sbTreeWindow; }
+
+//----------------------------------------------------------
+#pragma mark OBJECT CREATION
+//----------------------------------------------------------
+
+/*	Helper for designated initializer.  Replaces NSOutlineView and NSBrowser
+	created in nib file with custom objects.  Sets up SBDateColumnController and
+	SBOutlineViewController objects.  */
+-(void)setupViews
+{
+    NSTableColumn *mdateColumn;
+    NSRect browserFrame = [oldBrowser frame];
+	NSView *browserSuperview = [oldBrowser superview];
+
+	/* Set up the custom outline view */
+	outlineView = [[SBOutlineView alloc] 
+					initAsSubstituteForOutlineView:outlineView];  //RC == 1
+	[outlineScrollView setDocumentView:outlineView];              //RC == 2
+	[outlineView release];   									  //RC == 1
+	[outlineView sizeLastColumnToFit];
+
+	/* Set up the outline view controller */
+    oController = [[SBOutlineViewController alloc] initWithTree:tree
+													view:outlineView];
+
+	/* Set up the controller for the date column */
+	mdateColumn = [outlineView tableColumnWithIdentifier:@"mdate"];
+    mDateColumnController =
+		[[SBDateColumnController alloc]
+		initWithColumn:mdateColumn
+			shortTitle:@"Modified"
+			longTitle:@"Date Modified"];
+    [outlineView setIndicatorImage: [NSImage imageNamed:@"NSAscendingSortIndicator"]
+				inTableColumn:[outlineView tableColumnWithIdentifier:@"filename"]];
+
+	/* Substitute SBBrowserView with drag and drop for nib version */
+    browser = [[SBBrowserView alloc] initWithFrame:browserFrame];
+	[browser setAutoresizingMask:[oldBrowser autoresizingMask]];
+	[browser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
+	[oldBrowser removeFromSuperview];
+	[browserSuperview addSubview:browser];
+    [browser release];
+    [browser setTree:tree];
+}
 
 -(id)initWithFileList:(NSMutableArray *)fList
 {
@@ -29,16 +84,35 @@ enum {
 			windowName:@"File Tree Viewer"];
 }
 
+/*	Designated initializer */
 -(id)initWithFileList:(NSMutableArray *)fList
 		   windowName:(NSString *)wName
 {
-    self = [super initWithWindowNibName:@"TreeView"];
-    if (nil != self){		
+    self = [super init];
+    if (nil != self){
+	
 		tree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
-		[self setFileList:fList];  //Needed in windowDidLoad to build tree
+		/*	Building the file tree can take some time; run in a separate
+			thread to avoid tying up the rest of the app */
+		treeBuildingThreadIsFinished = NO;
+		[NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
+									toTarget:tree
+								  withObject:fList];		
+
+		[NSBundle loadNibNamed:@"TreeView" owner:self];
+
 		[[self window] setTitle:wName];
-		[self setActiveView:@"outline"];
+		/* 	This should be set to yes, but for some reason releasing the window
+			is causing a crash the next time a package browser is opened.  */
+		[[self window] setReleasedWhenClosed:NO];
+		[self setupViews];
+
+		[[self window] orderFront:self];
 		
+		[loadingIndicator setUsesThreadedAnimation:YES];
+		[loadingIndicator startAnimation:self];
+		[self setActiveView:@"outline"];
+
 		[[NSDistributedNotificationCenter defaultCenter]
 			addObserver:self
 			selector:@selector(finishedLoading:)
@@ -49,116 +123,42 @@ enum {
     return self;
 }
 
-/* After the window loads, display it; set the controllers for the outline view and
-browser; tell the tree object to build its data structure.  */
--(void)windowDidLoad
-{
-    NSTableColumn *mdateColumn;
-    NSRect browserFrame = [oldBrowser frame];
-	NSView *browserSuperview = [oldBrowser superview];
-	
-    [self startedLoading];
-    [self showWindow:self];
-		
-	/* Set up the custom outline view */
-	outlineView = [SBOutlineView substituteForOutlineView:outlineView];
-	[outlineScrollView setDocumentView:outlineView];
-	[outlineView sizeLastColumnToFit];
-
-	/* Set up the outline view controller */
-    oController = [[SBOutlineViewController alloc] initWithTree:tree
-										view:outlineView];
-													
-	/* Set up the controller for the date column */
-	mdateColumn = [outlineView tableColumnWithIdentifier:@"mdate"];
-    mDateColumnController =
-		[[SBDateColumnController alloc]
-		initWithColumn:mdateColumn
-		 shortTitle:@"Modified"
-		  longTitle:@"Date Modified"];
-    [outlineView setIndicatorImage:
-		[NSImage imageNamed:@"NSAscendingSortIndicator"]
-						inTableColumn:[outlineView 
-							tableColumnWithIdentifier:@"filename"]];
-
-	/* Substitute SBBrowserView with drag and drop for nib version */
-    browser = [[SBBrowserView alloc] initWithFrame:browserFrame];
-	[browser setAutoresizingMask:[oldBrowser autoresizingMask]];
-	[browser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
-	[oldBrowser removeFromSuperview];
-	[browserSuperview addSubview:browser];
-    [browser release];
-    [browser setTree:tree];
-	
-	/*Building the file tree can take some time; run in a separate
-	thread to avoid tying up the rest of the app*/
-    treeBuildingThreadIsFinished = NO;
-    [NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
-			  toTarget:tree
-			  withObject:[self fileList]];
-}
-
--(void)windowDidResize:(NSNotification *)aNotification
-{
-	double newWidth = [[aNotification object] frame].size.width;
-	if (newWidth >= 800.0){
-		[browser setMaxVisibleColumns:5];
-	}else if (newWidth >= 600.0){
-		[browser setMaxVisibleColumns:4];
-	}else if (newWidth >= 400.0){
-		[browser setMaxVisibleColumns:3];
-	}else{
-		[browser setMaxVisibleColumns:2];
-	}
-}
+//----------------------------------------------------------
+#pragma mark OBJECT DESTRUCTION
+//----------------------------------------------------------
 
 -(BOOL)windowShouldClose:(id)sender
 {
-    /*	The following is needed to release all items in a tree.  NSOutline
-	apparently retains an item when its parent is expanded and doesn't
-	release it until the parent is collapsed.  */
 	if (! treeBuildingThreadIsFinished){
 		NSBeep();
 		return NO;
 	}
+	/*	The following is needed to release all items in a tree.  NSOutline
+		apparently retains an item when its parent is expanded and doesn't
+		release it until the parent is collapsed.  */	
     [oController collapseItemAndChildren:[tree rootItem]];
-	[browser removeFromSuperview];
-	[outlineView removeFromSuperview];
     return YES;
 }
 
 -(void)windowWillClose:(NSNotification *)n
 {
-	[[tree rootItem] setChildren:nil];
-	[fileList release];
+	[NSApp sendAction:@selector(treeWindowWillClose:) to:nil from:self];
+	//[[tree rootItem] setChildren:nil];
 }
 
+/* 	This is not getting called, even when releasedWhenClosed is set to YES */
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	Dprintf(@"Deallocating controller for window %@", [[self window] title]);
+
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
-}
-
-//----------------------------------------------------------
-#pragma mark ACCESSORS
-//----------------------------------------------------------
-
--(NSMutableArray *)fileList { return fileList; }
-
--(void)setFileList:(NSMutableArray *)fList
-{
-    [fList retain];
-    [fileList release];
-    fileList = fList;
-}
-
--(NSString *)activeView { return _sbActiveView; }
-
--(void)setActiveView:(NSString *)newActiveView
-{
-	[newActiveView retain];
-	[_sbActiveView release];
-	_sbActiveView = newActiveView;
+	
+	[self setActiveView:nil];
+	[mDateColumnController release];
+	[oController release];
+	[tree release];
+	
+	[super dealloc];
 }
 
 //----------------------------------------------------------
@@ -187,12 +187,6 @@ browser; tell the tree object to build its data structure.  */
 #pragma mark UI UPDATING
 //----------------------------------------------------------
 
--(void)startedLoading
-{
-    [loadingIndicator setUsesThreadedAnimation:YES];
-    [loadingIndicator startAnimation:self];
-}
-
 -(void)finishedLoading:(NSNotification *)n
 {
 	treeBuildingThreadIsFinished = YES;
@@ -219,8 +213,23 @@ browser; tell the tree object to build its data structure.  */
 }
 
 //----------------------------------------------------------
-#pragma mark DELEGATE METHODS
+#pragma mark NSWINDOW DELEGATE METHODS
 //----------------------------------------------------------
+
+-(void)windowDidResize:(NSNotification *)aNotification
+{
+	double newWidth = [[aNotification object] frame].size.width;
+	if (newWidth >= 800.0){
+		[browser setMaxVisibleColumns:5];
+	}else if (newWidth >= 600.0){
+		[browser setMaxVisibleColumns:4];
+	}else if (newWidth >= 400.0){
+		[browser setMaxVisibleColumns:3];
+	}else{
+		[browser setMaxVisibleColumns:2];
+	}
+}
+
 
 //Resize window vertically but not horizontally when zoom button is clicked.
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender

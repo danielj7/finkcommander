@@ -800,8 +800,14 @@ enum {
 		NSBeep();
 		return;
 	}
-	[treeManager openNewOutlineForPackageName:[pkg name]];
+	[treeManager openNewWindowForPackageName:[pkg name]];
 }
+
+-(void)treeWindowWillClose:(id)sender
+{
+	[treeManager closingTreeWindowWithController:sender];
+}
+
 
 -(IBAction)openDocumentation:(id)sender
 {
@@ -1050,7 +1056,8 @@ enum {
     /* 	Disable package-specific commands if no row selected or if the main window
 		is not key */
     if (([tableView selectedRow] == -1 	|| ! [window isKeyWindow])				&&
-		([theItem action] == @selector(runPackageSpecificCommand:)  			||
+		([theItem action] == @selector(copy:)									||
+		 [theItem action] == @selector(runPackageSpecificCommand:)  			||
 		 [theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
 		 [theItem action] == @selector(runForceRemove:)							||
 		 [theItem action] == @selector(showDescription:)						||

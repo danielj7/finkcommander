@@ -47,8 +47,7 @@
 -(id)initWithColumn:(NSTableColumn *)myColumn
 {
     return [self initWithColumn:myColumn 
-						shortTitle:
-							NSLocalizedStringFromTable(@"Date", @"Date",
+				shortTitle:NSLocalizedStringFromTable(@"Date", @"Date",
 								@"Default column title")];
 }
 
@@ -94,7 +93,6 @@
 -(void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_sbColumn release];
     [_sbShortTitle release];
     [_sbLongTitle release];
 
@@ -109,9 +107,7 @@
 
 -(void)setColumn:(NSTableColumn *)newColumn
 {
-    [newColumn retain];
-    [_sbColumn release];
-    _sbColumn = newColumn;
+    _sbColumn = newColumn; //retained by outline or table view
 }
 
 -(NSString *)shortTitle { return _sbShortTitle; }
