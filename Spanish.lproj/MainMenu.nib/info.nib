@@ -9,7 +9,7 @@
 		<key>29</key>
 		<string>-5 702 534 44 0 0 1024 746 </string>
 		<key>553</key>
-		<string>381 462 224 69 0 0 1024 746 </string>
+		<string>380 462 224 69 0 0 1024 746 </string>
 		<key>577</key>
 		<string>391 466 200 62 0 0 1024 746 </string>
 		<key>663</key>
@@ -32,6 +32,7 @@
 	<string>2</string>
 	<key>IBOpenObjects</key>
 	<array>
+		<integer>553</integer>
 		<integer>29</integer>
 	</array>
 	<key>IBSystem Version</key>

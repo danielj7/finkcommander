@@ -71,6 +71,7 @@
 		<string>installed</string>
 		<string>binary</string>
 		<string>stable</string>
+		<string>unstable</string>
 		<string>category</string>
 		<string>summary</string>
 	</array>

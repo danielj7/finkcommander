@@ -16,7 +16,7 @@
 				F53369F60218261B01A80165,
 				F55FBB1E02F3B8C901A80164,
 				F527284E0221B4E801A80164,
-				F5DE1D8E022845A201A80164,
+				F5F8FA570331966401A80166,
 				F54BD02602D549F101A80165,
 				F5607A9502CE125001A80164,
 				F512CBEE02E6749301BD3D51,
@@ -26,7 +26,6 @@
 				F542CFF702C2F03B01A80166,
 				F5B9D9E402B1D61C01A8016B,
 				F55FF54A02CFC96301A80164,
-				F5C373FD032EE41301A80165,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -151,6 +150,7 @@
 			projectDirPath = "";
 			targets = (
 				29B97326FDCFA39411CA2CEA,
+				F580FC3E0332C30701A80166,
 			);
 		};
 		29B97314FDCFA39411CA2CEA = {
@@ -176,6 +176,9 @@
 				F54147C302C18B7301A80165,
 				F553429102E9F45A015ADE4E,
 				F553429002E9F45A015ADE4E,
+				F5F8FA5D033196BF01A80166,
+				F5F8FA59033196AC01A80166,
+				F5F8FA5B033196B301A80166,
 			);
 			isa = PBXGroup;
 			name = "Other Sources";
@@ -200,6 +203,7 @@
 				F538C3C5023496DC01A80164,
 				F5DE3CD602CAE98601A80164,
 				F531463F022C801601A80164,
+				F580FC3F0332C30701A80166,
 				F56200A902FC768601A80164,
 			);
 			isa = PBXGroup;
@@ -253,6 +257,7 @@
 				29B97328FDCFA39411CA2CEA,
 				29B9732BFDCFA39411CA2CEA,
 				29B9732DFDCFA39411CA2CEA,
+				F580FC780332C42601A80166,
 			);
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -268,6 +273,7 @@
 				WRAPPER_EXTENSION = app;
 			};
 			dependencies = (
+				F580FC440332C36F01A80166,
 			);
 			isa = PBXApplicationTarget;
 			name = FinkCommander;
@@ -318,7 +324,6 @@
 			files = (
 				F53369F70218261B01A80165,
 				F52728500221B4E801A80164,
-				F5DE1D90022845A201A80164,
 				F5375A690246DDDC01A80164,
 				F54436BA027F6AD501A80164,
 				F536C0400280F24501A80164,
@@ -332,7 +337,7 @@
 				F553429302E9F45A015ADE4E,
 				F55FBB1F02F3B8C901A80164,
 				F53B4D44031079C801A80164,
-				F5C37400032EE42701A80165,
+				F5F8FA560331965D01A80166,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,7 +381,6 @@
 			files = (
 				29B9732CFDCFA39411CA2CEA,
 				F52728520221B4E801A80164,
-				F5DE1D91022845A201A80164,
 				F5375A6B0246DDEB01A80164,
 				F54436BB027F6AD501A80164,
 				F536C0410280F24501A80164,
@@ -391,7 +395,7 @@
 				F553429202E9F45A015ADE4E,
 				F55FBB2002F3B8C901A80164,
 				F53B4D43031079C801A80164,
-				F5C373FE032EE41301A80165,
+				F5F8FA580331966401A80166,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -642,7 +646,7 @@
 				F5375A6D0246DE1901A80164,
 				F5CC37150304F29A01A80164,
 				F5CC37160304F2A201A80164,
-				F5CC37170304F2AA01A80164,
+				F5C3E8F303341DFE01A80167,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -941,7 +945,7 @@
 				F53369F50218261B01A80165,
 				F55FBB1D02F3B8C901A80164,
 				F527284C0221B4E801A80164,
-				F5DE1D8F022845A201A80164,
+				F5F8FA550331965D01A80166,
 				F54BD02702D549F101A80165,
 				F5607A9702CE125E01A80164,
 				F512CBEF02E6749301BD3D51,
@@ -951,7 +955,6 @@
 				F5C523D802A326B701A80165,
 				F5B9D9EC02B2B13501A8016B,
 				F55FF54B02CFC96301A80164,
-				F5C373FF032EE42701A80165,
 			);
 			isa = PBXGroup;
 			name = Headers;
@@ -1147,6 +1150,119 @@
 			path = English.lproj/Credits.html;
 			refType = 4;
 		};
+		F580FC3A0332C30701A80166 = {
+			buildActionMask = 2147483647;
+			files = (
+				F580FC430332C34D01A80166,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3B0332C30701A80166 = {
+			buildActionMask = 2147483647;
+			files = (
+				F580FC410332C34C01A80166,
+				F580FC420332C34C01A80166,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3C0332C30701A80166 = {
+			buildActionMask = 2147483647;
+			files = (
+				F580FC760332C3D601A80166,
+				F580FC770332C3D801A80166,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3D0332C30701A80166 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3E0332C30701A80166 = {
+			buildPhases = (
+				F580FC3A0332C30701A80166,
+				F580FC3B0332C30701A80166,
+				F580FC3C0332C30701A80166,
+				F580FC3D0332C30701A80166,
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXToolTarget;
+			name = Launcher;
+			productInstallPath = /usr/local/bin;
+			productName = Launcher;
+			productReference = F580FC3F0332C30701A80166;
+			shouldUseHeadermap = 0;
+		};
+		F580FC3F0332C30701A80166 = {
+			isa = PBXExecutableFileReference;
+			path = Launcher;
+			refType = 3;
+		};
+		F580FC410332C34C01A80166 = {
+			fileRef = F5F8FA5D033196BF01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F580FC420332C34C01A80166 = {
+			fileRef = F5F8FA59033196AC01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F580FC430332C34D01A80166 = {
+			fileRef = F5F8FA5B033196B301A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F580FC440332C36F01A80166 = {
+			isa = PBXTargetDependency;
+			target = F580FC3E0332C30701A80166;
+		};
+		F580FC760332C3D601A80166 = {
+			fileRef = F52F0AF70319CAFC01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F580FC770332C3D801A80166 = {
+			fileRef = 1058C7A1FEA54F0111CA2CBB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F580FC780332C42601A80166 = {
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				F580FC790332C44601A80166,
+			);
+			isa = PBXCopyFilesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC790332C44601A80166 = {
+			fileRef = F580FC3F0332C30701A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5897AAA02C6E37B01A80166 = {
 			isa = PBXFileReference;
 			path = email.tiff;
@@ -1289,27 +1405,11 @@
 			path = "English.lproj/FinkCommander Help";
 			refType = 4;
 		};
-		F5C373FD032EE41301A80165 = {
+		F5C3E8F303341DFE01A80167 = {
 			isa = PBXFileReference;
-			path = FinkProcessTerminator.m;
+			name = Spanish;
+			path = Spanish.lproj/Preferences.nib;
 			refType = 4;
-		};
-		F5C373FE032EE41301A80165 = {
-			fileRef = F5C373FD032EE41301A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5C373FF032EE42701A80165 = {
-			isa = PBXFileReference;
-			path = FinkProcessTerminator.h;
-			refType = 4;
-		};
-		F5C37400032EE42701A80165 = {
-			fileRef = F5C373FF032EE42701A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5C523D802A326B701A80165 = {
 			isa = PBXFileReference;
@@ -1373,12 +1473,6 @@
 			path = German.lproj/Preferences.nib;
 			refType = 4;
 		};
-		F5CC37170304F2AA01A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Preferences.nib;
-			refType = 4;
-		};
 		F5CC37190304F2C601A80164 = {
 			fileEncoding = 10;
 			isa = PBXFileReference;
@@ -1393,28 +1487,6 @@
 			path = Spanish.lproj/Localizable.strings;
 			refType = 4;
 		};
-		F5DE1D8E022845A201A80164 = {
-			isa = PBXFileReference;
-			path = IOTaskWrapper.m;
-			refType = 4;
-		};
-		F5DE1D8F022845A201A80164 = {
-			isa = PBXFileReference;
-			path = IOTaskWrapper.h;
-			refType = 4;
-		};
-		F5DE1D90022845A201A80164 = {
-			fileRef = F5DE1D8F022845A201A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5DE1D91022845A201A80164 = {
-			fileRef = F5DE1D8E022845A201A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F5DE3CD602CAE98601A80164 = {
 			isa = PBXFileReference;
 			path = finkcommander.icns;
@@ -1425,6 +1497,43 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		F5F8FA550331965D01A80166 = {
+			isa = PBXFileReference;
+			path = AuthorizedExecutable.h;
+			refType = 4;
+		};
+		F5F8FA560331965D01A80166 = {
+			fileRef = F5F8FA550331965D01A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5F8FA570331966401A80166 = {
+			isa = PBXFileReference;
+			path = AuthorizedExecutable.m;
+			refType = 4;
+		};
+		F5F8FA580331966401A80166 = {
+			fileRef = F5F8FA570331966401A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5F8FA59033196AC01A80166 = {
+			isa = PBXFileReference;
+			path = Launcher.c;
+			refType = 4;
+		};
+		F5F8FA5B033196B301A80166 = {
+			isa = PBXFileReference;
+			path = Launcher.h;
+			refType = 4;
+		};
+		F5F8FA5D033196BF01A80166 = {
+			isa = PBXFileReference;
+			path = getpath.c;
+			refType = 4;
 		};
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA;

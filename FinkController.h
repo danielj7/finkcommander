@@ -73,13 +73,12 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
-#import "IOTaskWrapper.h"
+#import "AuthorizedExecutable.h"
 #import "FinkTableViewController.h"
 #import "FinkTextViewController.h"
 #import "FinkSplitView.h"
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
-#import "FinkProcessTerminator.h"
 #import "FinkUtilities.h"
 
 #define  CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| \
@@ -89,23 +88,49 @@ Contact the author at sburrious@users.sourceforge.net.
 								 [(x) contains: @"dpkg"]			|| \
 								 [(x) contains: @"update"])
 
+#define TAG_NAME_ARRAY [NSArray arrayWithObjects: 	\
+							@"version",           	\
+							@"binary",           	\
+							@"stable",				\
+							@"unstable",			\
+							@"status",				\
+							@"category",			\
+							@"summary",				\
+							@"maintainer",			\
+							@"installed",			\
+							@"name",				\
+							nil]
+
+#define NAME_TAG__DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 	\
+					[NSNumber numberWithInt: VERSION], @"version",          \
+					[NSNumber numberWithInt: BINARY], @"binary",            \
+					[NSNumber numberWithInt: STABLE], @"stable",            \
+					[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
+					[NSNumber numberWithInt: STATUS], @"status",            \
+					[NSNumber numberWithInt: CATEGORY], @"category",        \
+					[NSNumber numberWithInt: SUMMARY], @"summary",          \
+					[NSNumber numberWithInt: MAINTAINER], @"maintainer",    \
+					[NSNumber numberWithInt: INSTALLED], @"installed",      \
+					[NSNumber numberWithInt: NAME], @"name",                \
+					nil]
+
+enum {
+    VERSION    = 2000, 
+    BINARY     = 2001,
+    STABLE     = 2002,
+    UNSTABLE   = 2003,
+    STATUS     = 2004,
+    CATEGORY   = 2005,
+    SUMMARY    = 2006,
+    MAINTAINER = 2007,
+    INSTALLED  = 2008,
+	NAME	   = 2009
+};
+
 enum {
 	FCWEB = 1000,
 	FCBUG = 1001,
 	FINKDOC = 1002
-};
-
-enum {
-	NAME = 1000,
-	VERSION = 2000,
-	BINARY = 2001,
-	STABLE = 2002,
-	UNSTABLE = 2003,
-	STATUS = 2004,
-	CATEGORY = 2005,
-	SUMMARY = 2006,
-	MAINTAINER = 2007,
-	INSTALLED = 2008
 };
 
 enum {
@@ -123,7 +148,7 @@ enum {
 	USER_CHOICE
 };
 
-@interface FinkController : NSObject <IOTaskWrapperController>
+@interface FinkController : NSObject //<IOTaskWrapperController>
 {
 	//main window outlets
 	IBOutlet NSWindow *window;
@@ -138,10 +163,6 @@ enum {
 	IBOutlet NSProgressIndicator *progressIndicator;
 	IBOutlet NSMenu *viewMenu;
 	IBOutlet NSMenu *tableContextMenu;
-	
-	//password entry window outlets
-	IBOutlet NSWindow *pwdWindow;
-	IBOutlet NSSecureTextField *pwdField;
 	
 	//interaction window outlets
 	IBOutlet NSWindow *interactionWindow;
@@ -166,15 +187,16 @@ enum {
 	NSString *lastCommand;
 	BOOL commandIsRunning;
 	NSToolbar *toolbar;
-	BOOL userChoseToTerminate;
+	BOOL userConfirmedQuit;
 	BOOL commandTerminated;
 
-	NSString *password;
 	BOOL pendingCommand;
-	BOOL passwordError;
 	NSMutableArray *lastParams;
 
-	IOTaskWrapper *finkTask;
+	NSString *launcher;
+	AuthorizedExecutable *finkTask;
+	AuthorizedExecutable *killTask;
+//	IOTaskWrapper *finkTask;
 }
 
 //Accessors
@@ -184,7 +206,6 @@ enum {
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
--(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;
 -(void)setParser:(FinkOutputParser *)p;
@@ -223,12 +244,6 @@ enum {
 -(IBAction)refilter:(id)sender;
 
 //Process Control Methods
-// sheet methods for password window
--(IBAction)raisePwdWindow:(id)sender;
--(IBAction)endPwdWindow:(id)sender;
--(void)sheetDidEnd:(NSWindow *)sheet
-		   returnCode:(int)returnCode
-		  contextInfo:(void *)contextInfo;
 // sheet methods for interaction window
 -(IBAction)raiseInteractionWindow:(id)sender;
 -(IBAction)endInteractionWindow:(id)sender;
@@ -237,5 +252,9 @@ enum {
 			contextInfo:(void *)contextInfo;
 // run the command
 -(void)runCommandWithParameters:(NSMutableArray *)params;
+// AuthorizedExecutable delegate methods
+-(void)processStarted;
+-(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
+-(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;
 
 @end

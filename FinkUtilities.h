@@ -51,5 +51,5 @@ void terminateChildProcesses(NSString *password);
 BOOL addEnvironmentVariable(NSString *key, NSString *value);
 NSDictionary *environmentSettingWithName(NSString *name);
 BOOL removeEnvironmentVariable(NSDictionary *setting);
-
+NSString *processGroupID(NSString *ppid);
 

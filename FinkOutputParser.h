@@ -96,7 +96,6 @@ enum {
 	//used only as signals
     START_INSTALL,
     PASSWORD_PROMPT,
-    PASSWORD_ERROR,
     PROMPT,
 	PROMPT_AND_START,
 	START_AND_FETCH,
@@ -118,7 +117,6 @@ enum {
     float increment;
     int currentPhase;
 	BOOL installing;
-    BOOL passwordErrorHasOccurred;
     BOOL readingPackageList;
 }
 

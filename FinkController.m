@@ -72,14 +72,18 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set instance variables used to store objects and state information  
 		//needed to run fink and apt-get commands
+		launcher = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"Launcher"];
+		Dprintf(@"Path to launcher: %@", launcher);
+		finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
+		killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
+		[finkTask setDelegate:self];
 		commandIsRunning = NO;		
-		[self setPassword: nil];
 		[self setLastParams: nil];
 		pendingCommand = NO;
-				
+		
 		//Flag used to avoid duplicate warnings when user terminates FC 
 		//in middle of command with something other than App:Quit
-		userChoseToTerminate = NO;
+		userConfirmedQuit = NO;
 		
 		//Flag indicating user has chosen to terminate a command;
 		//used to stop appending text to output
@@ -117,63 +121,34 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[parser release];
 	[lastCommand release];
 	[lastParams release];
-	[password release];
 	[finkTask release];
+	[killTask release];
 	[toolbar release];
 	[packageInfo release];
 	[super dealloc];
 }
 
 //----------------------------------------------->Tag/Name Translation
-//Using tags rather than titles to tie the View menu items to 
+//Using tags rather than titles to tie the View menu items and search fields to 
 //particular columns makes it possible to localize the column names
 
 -(NSString *)attributeNameFromTag:(int)atag
 {
-	switch(atag){
-		case NAME:
-			return @"name";
-		case VERSION:
-			return @"version";
-		case INSTALLED:
-			return @"installed";
-		case BINARY:
-			return @"binary";
-		case UNSTABLE:
-			return @"unstable";
-		case STABLE:
-			return @"stable";
-		case STATUS:
-			return @"status";
-		case CATEGORY:
-			return @"category";
-		case SUMMARY:
-			return @"summary";
-		case MAINTAINER:
-			return @"maintainer";
-	}
-	return @"";
+    NSArray *tagNameArray = TAG_NAME_ARRAY;
+
+	atag = atag % 2000;
+    if (atag < 0 || atag > [tagNameArray count] - 1){
+		NSLog(@"Warning: Tag-to-name translation failed; index %d out of bounds", atag);
+		return nil;
+    }
+    return [tagNameArray objectAtIndex:atag];
 }
 
 -(int)tagFromAttributeName:(NSString *)name
 {
-	NSDictionary *nametag = [NSDictionary dictionaryWithObjectsAndKeys:
-		[NSNumber numberWithInt: NAME], @"name",
-		[NSNumber numberWithInt: VERSION], @"version",
-		[NSNumber numberWithInt: INSTALLED], @"installed",
-		[NSNumber numberWithInt: BINARY], @"binary",
-		[NSNumber numberWithInt: UNSTABLE], @"unstable",
-		[NSNumber numberWithInt: STABLE], @"stable",
-		[NSNumber numberWithInt: STATUS], @"status",
-		[NSNumber numberWithInt: CATEGORY], @"category",
-		[NSNumber numberWithInt: SUMMARY], @"summary",
-		[NSNumber numberWithInt: MAINTAINER], @"maintainer",
-		nil];
-
-	return [[nametag objectForKey:name] intValue];
+	return [[NAME_TAG__DICTIONARY objectForKey:name] intValue];
 }
-
-
+	
 //----------------------------------------------->Post-Init Startup
 
 -(void)awakeFromNib
@@ -246,9 +221,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[splitView collapseOutput: nil];
 	}
-	if ([defaults boolForKey:FinkAskForPasswordOnStartup]){
-		[self raisePwdWindow:self];
-	}
 	
 	NSLog(@"Interval for new version check: %d", interval);
 	NSLog(@"Last checked for new version: %@", [lastCheckDate description]);
@@ -299,13 +271,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	lastCommand = s;	
 }
 
--(void)setPassword:(NSString *)s
-{
-	[s retain];
-	[password release];
-	password = s;
-}
-
 -(NSMutableArray *)lastParams {return lastParams;}
 -(void)setLastParams:(NSMutableArray *)a
 {
@@ -331,7 +296,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int answer;
 	
 	if (commandIsRunning && 
-		! userChoseToTerminate){ //see windowShouldClose: method
+		! userConfirmedQuit){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil), 
 			NSLocalizedString(@"QuittingNow", nil),
 			NSLocalizedString(@"Cancel", nil), 
@@ -361,7 +326,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			return NO;
 		}
 	}
-	userChoseToTerminate = YES; //flag to make sure we ask only once
+	userConfirmedQuit = YES; //flag to make sure we ask only once
 	return YES;
 }
 
@@ -628,21 +593,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)terminateCommand:(id)sender
 {
-	int answer1 = NSRunAlertPanel(NSLocalizedString(@"Caution", nil),
-			NSLocalizedString(@"TheTerminateCommand", nil),
-			NSLocalizedString(@"Terminate", nil), 
-			NSLocalizedString(@"Continue", nil), nil);
-	FinkProcessTerminator *arnold = [[[FinkProcessTerminator alloc] init] autorelease];
-
-	if (answer1 == NSAlertAlternateReturn) return;
-	//signal appendOutput to stop
-	commandTerminated = YES;
-	[self startProgressIndicatorAsIndeterminate:YES];
-	[msgText setStringValue:NSLocalizedString(@"Terminating", nil)];
-	
-	[NSThread detachNewThreadSelector:@selector(terminateChildProcesses:)
-				toTarget:arnold
-				withObject:password];
+	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
+	NSString *pgid = processGroupID(ppid);
+	[killTask setArguments:
+		[NSArray arrayWithObjects: @"--kill", pgid, nil]];
+	[killTask authorizeWithQuery];
+	[killTask start];
 }
 
 //----------------------------------------------->Show Windows/Panels
@@ -937,42 +893,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //		AUTHENTICATION AND PROCESS CONTROL
 //--------------------------------------------------------------------------------
 
-//----------------------------------------------->Password Entry Sheet Methods
-
--(IBAction)raisePwdWindow:(id)sender
-{
-	[NSApp beginSheet: pwdWindow
-	   modalForWindow: window
-		modalDelegate: self
-	   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-		  contextInfo: nil];
-}
-
--(IBAction)endPwdWindow:(id)sender
-{
-	[pwdWindow orderOut: sender];
-	[NSApp endSheet:pwdWindow returnCode: 1];
-}
-
--(void)sheetDidEnd:(NSWindow *)sheet
-			  returnCode:(int)returnCode
-			 contextInfo:(void *)contextInfo
-{
-	[self setPassword: [NSString stringWithFormat:
-		@"%@\n", [pwdField stringValue]]];
-
-	if ([self lastParams]){
-		[[NSNotificationCenter defaultCenter]
-			postNotificationName: FinkRunCommandNotification
-						  object: [self lastParams]];
-		[self setLastParams: nil];
-	}
-
-	if (passwordError && [finkTask isRunning]){
-		[finkTask writeToStdin: password];
-	}
-}
-
 //----------------------------------------------->Interaction Sheet Methods
 
 -(IBAction)raiseInteractionWindow:(id)sender
@@ -1018,17 +938,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	NSString *exec = [params objectAtIndex: 0];
 	
-	passwordError = NO;
-
-	if ([password length] < 1 && 
-		! [defaults boolForKey: FinkNeverAskForPassword]){
-		[self setLastParams:params];
-		pendingCommand = YES;
-		commandIsRunning = NO;
-		[self displayNumberOfPackages];
-		[self raisePwdWindow:self];
-		return;
-	}
 	if ([defaults boolForKey: FinkWarnBeforeRunning]){
 		int answer = NSRunAlertPanel(NSLocalizedString(@"JustChecking", nil), 
 			NSLocalizedString(@"AreYouSure", nil),
@@ -1067,8 +976,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self startProgressIndicatorAsIndeterminate:YES];
 	}
 	//set up launch path and arguments array
-	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
-	[params insertObject: @"-S" atIndex: 1];
 	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
 		([exec contains: @"fink"] 			||
 		 [exec contains: @"apt-get"])){
@@ -1081,10 +988,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	pendingCommand = NO;
 	[self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
 												executable:exec]];
-	[finkTask release];
-	finkTask = [[IOTaskWrapper alloc] initWithController: self];
-	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
-	[finkTask startProcessWithArgs: params];
+
+	[finkTask setArguments:params];
+	[finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+	[finkTask authorizeWithQuery];
+	[finkTask start];
+	[self processStarted];
 }
 
 //allow other objects, e.g. FinkConf, to run authorized commands
@@ -1158,7 +1067,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self incrementPIBy:[parser increment]];
 }
 
--(void)appendOutput:(NSString *)output
+-(void)captureOutput:(NSString *)output forExecutable:(id)ignore
 {	
 	//total document length (in pixels) 						- 
 	//length above scroll view (y coord of visible portion) 	- 
@@ -1178,12 +1087,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	{
 		case NONE:
 			break;
-		case PASSWORD_ERROR:
-			passwordError = YES;
-			[self raisePwdWindow: self];
-			break;
 		case PASSWORD_PROMPT:
-			[finkTask writeToStdin: password];
+			Dprintf(@"Received password prompt");
+			output = @"";
+			[finkTask log:
+				NSLocalizedString(@"The authorized executable has been repaired.\nPlease re-execute the command.", nil)];
+			[finkTask writeToStdin:@"\n"];
 			break;
 		case PROMPT:
 			NSBeep();
@@ -1228,8 +1137,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			afterDelay:0.0];
 }
 
--(void)processFinishedWithStatus:(int)status
+//-(void)processFinishedWithStatus:(int)status
+-(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
+	int status = [number intValue];
 	int outputLength = [[textView string] length];
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];

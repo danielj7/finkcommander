@@ -17,7 +17,7 @@ File: FinkOutputParser.m
     if (self = [super init]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
-		passwordErrorHasOccurred = readingPackageList = NO;		
+		readingPackageList = NO;		
 		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
 		
 		if (installing){
@@ -139,7 +139,6 @@ File: FinkOutputParser.m
 
 	}
 }
-
 
 //find longest name in packageList that matches a string in this line
 -(NSString *)packageNameFromLine:(NSString *)line
@@ -321,14 +320,9 @@ File: FinkOutputParser.m
     }	
 	
 	//Look for password events
-	if ([line contains: @"Sorry, try again."]){
-		passwordErrorHasOccurred = YES;
-		return PASSWORD_ERROR;
-    }
-	if ([line contains: @"Password:"] && ! passwordErrorHasOccurred){
+	if ([line contains: @"Password:"]){
 		return PASSWORD_PROMPT;
     }
-	
 	//Look for prompts
     if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
 		Dprintf(@"Found prompt: %@", line);

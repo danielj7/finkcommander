@@ -133,3 +133,51 @@ void setInitialEnvironmentVariables(void)
 	[defaults setObject:settings forKey:FinkEnvironmentSettings];
 }
 
+
+//Termination utilities
+
+NSString *ps()
+{
+	NSTask *ps = [[[NSTask alloc] init] autorelease];
+	NSPipe *pipeIn = [NSPipe pipe];
+	NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
+	NSString *psOutput;
+
+	[ps setLaunchPath: @"/bin/ps"];
+	[ps setArguments: [NSArray arrayWithObjects: @"-acjx", nil]];
+	[ps setStandardOutput: pipeIn];
+	[ps launch];
+	psOutput = [[[NSString alloc] initWithData:[cmdStdout readDataToEndOfFile]
+								encoding:NSMacOSRomanStringEncoding]
+		autorelease];
+	return psOutput;
+}
+
+//Get the group id for the subprocesses (== id for top subprocess)
+NSString *processGroupID(NSString *ppid)
+{
+	NSString *psOutput = ps();
+	NSEnumerator *e = [[psOutput componentsSeparatedByString:@"\n"] objectEnumerator];
+	NSEnumerator *e1;
+	NSString *line;
+	NSString *element;
+	NSString *pgid = nil;
+
+	while (line = [e nextObject]){
+		if ([line contains: ppid] && [[line strip] hasSuffix:@"Launcher"]){
+			e1 = [[[line strip] componentsSeparatedByString:@" "] objectEnumerator];
+			Dprintf(@"Looking for group id in:\n  %@", line);
+			while (element = [e1 nextObject]){
+				if ([element containsPattern:@"*[0-9]*"]){
+					pgid = element;
+					break;
+				}
+			}
+			break;
+		}
+	}
+	Dprintf(@"Found pgid = %@", pgid);
+	return pgid;
+}
+
+
