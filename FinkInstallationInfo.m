@@ -17,20 +17,24 @@ NSString *DEVTOOLS_TEST_PATH =
 
 -(NSString *)finkVersion
 {
+	NSFileManager *manager = [NSFileManager defaultManager];
 	NSTask *versionTask = [[NSTask alloc] init];
 	NSPipe *pipeFromStdout = [NSPipe pipe];
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
-	NSString *result;
+	NSString *pathToFink = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
+			stringByAppendingPathComponent: @"/bin/fink"];
+	NSString *result = @"Unable to determine fink version";
 	
-	[versionTask setLaunchPath: 
-		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
-			stringByAppendingPathComponent: @"/bin/fink"]];
+	if (! [manager fileExistsAtPath:pathToFink]){
+		return result;
+	} 
+	[versionTask setLaunchPath: pathToFink];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask launch];
 
-	result = [[[NSString alloc] initWithData: [taskStdout readDataToEndOfFile]
-								encoding: NSMacOSRomanStringEncoding] autorelease];
+	result = [[[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
+								encoding:NSMacOSRomanStringEncoding] autorelease];
 	[versionTask release];
 	[taskStdout closeFile];
 	return result;
@@ -38,15 +42,19 @@ NSString *DEVTOOLS_TEST_PATH =
 
 -(NSString *)macOSXVersion
 {
+	NSFileManager *manager = [NSFileManager defaultManager];
 	NSTask *versionTask = [[NSTask alloc] init];
 	NSPipe *pipeFromStdout = [NSPipe pipe];
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
 	NSString *output;
 	NSString *line;
-	NSString *result = @"Couldn't find Mac OS X Version";
+	NSString *result = @"Could not find Mac OS X Version";
 	NSEnumerator *e;
 	int loc;
-
+	
+	if (! [manager fileExistsAtPath:@"/usr/bin/sw_vers"]){
+		return result;
+	}
 	[versionTask setLaunchPath: @"/usr/bin/sw_vers"];
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask launch];
@@ -81,7 +89,6 @@ NSString *DEVTOOLS_TEST_PATH =
 		result = @"Developer Tools not installed";
 		return result;
 	}
-
 	[versionTask setLaunchPath: @"/usr/bin/cc"];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"--version", nil]];
 	[versionTask setStandardOutput: pipeFromStdout];
@@ -99,25 +106,30 @@ NSString *DEVTOOLS_TEST_PATH =
 -(NSString *)developerToolsInfo
 {
 	NSFileManager *manager = [NSFileManager defaultManager];
-	NSString *result = @"Unable to determine Developer Tools version";
+	NSString *error = @"Unable to determine Developer Tools version";
 	NSString *develFormat = @"Developer Tools: %@";
-	NSString *version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH]
+	NSString *version;
+	NSComparisonResult comp;
+	
+	if (! [manager fileExistsAtPath: DEVTOOLS_TEST_PATH]) return error;
+	
+	version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH]
 							objectForKey:@"CFBundleShortVersionString"];
+	if (! version  || [version length] < 3) return error;  //should at least be x.x
 	
-	if (! [manager fileExistsAtPath: DEVTOOLS_TEST_PATH]) return result;
-	
-	if ([version isEqualToString: APRIL_TOOLS_VERSION]){
-		result = [NSString stringWithFormat: develFormat, @"April 2002"];
-	}else if ([version compare: MAY_TOOLS_VERSION] == NSOrderedDescending){
-		result = [NSString stringWithFormat: develFormat, @"December 2001"];
-	}else{
-		result = [NSString stringWithFormat: develFormat, @"Pre-December 2001"];
+	comp = [version compare:APRIL_TOOLS_VERSION];
+	if (comp == NSOrderedDescending || comp == NSOrderedSame){ 				// >= April 2002
+		return [NSString stringWithFormat: develFormat, @"April 2002 or later"];
 	}
-	return result;
+	if ([version compare:MAY_TOOLS_VERSION] == NSOrderedDescending){  		// > May 2001
+		return [NSString stringWithFormat: develFormat, @"December 2001"];
+	}
+	return [NSString stringWithFormat: develFormat, @"Pre-December 2001"];
 }
 
 -(NSString *)makeVersion
 {
+	NSFileManager *manager = [NSFileManager defaultManager];
 	NSTask *whichTask = [[NSTask alloc] init];
 	NSTask *versionTask = [[NSTask alloc] init];
 	NSPipe *whichPipe = [NSPipe pipe];
@@ -127,29 +139,45 @@ NSString *DEVTOOLS_TEST_PATH =
 	NSString *pathToMake;
 	NSString *versionString;
 	NSString *versionNumber;
+	NSString *error = @"Unable to locate \"make\"";
 	NSScanner *versionScanner;
 	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
 													@"0123456789."];
 	NSArray *pathComponents;
 
+	if (! [manager fileExistsAtPath:@"/usr/bin/which"]){
+		return error;
+	}
+	
 	//use which to find the path to make
+	[whichTask setCurrentDirectoryPath:@"/" ];
 	[whichTask setLaunchPath: @"/usr/bin/which"];
 	[whichTask setArguments: [NSArray arrayWithObjects: @"make", nil]];
 	[whichTask setStandardOutput: whichPipe];
 	[whichTask launch];
-	pathToMake = [[[NSString alloc] initWithData: [whichStdout readDataToEndOfFile]
-									encoding: NSMacOSRomanStringEncoding] autorelease];
+	pathToMake = [[[NSString alloc] initWithData:[whichStdout readDataToEndOfFile]
+									encoding:NSMacOSRomanStringEncoding] autorelease];
 	[whichTask release];
 	[whichStdout closeFile];
 	
 	if ([pathToMake contains: @"not found"] || [pathToMake contains:@"no make"]){
-		return @"Unable to locate \"make.\"";
+		return error;
+	}
+	//if the wdPath is at the start, remove it - some unicode char is first
+	if ([[pathToMake substringFromIndex:1] hasPrefix:[NSString stringWithFormat:@"]2;/"]]){
+		pathComponents = [pathToMake componentsSeparatedByString: @"]2;/"];
+		//there is another unicode character after the wdPath, so just move the index fwd one more
+		pathToMake = [[pathComponents objectAtIndex:1] substringFromIndex:1];
 	}
 	//make sure we're looking at the last line of the result
 	pathComponents = [pathToMake componentsSeparatedByString:@"\n"];
 	pathToMake = [pathComponents count] > 1 ? 
-					[pathComponents objectAtIndex: [pathComponents count] - 2] :
+					[pathComponents objectAtIndex: [pathComponents count] - 2]:
 					[pathComponents objectAtIndex:0];
+	pathToMake = [pathToMake strip];
+	if (! [manager fileExistsAtPath:pathToMake]){
+		return error;
+	}
 	//get the result of make -v
 	[versionTask setLaunchPath: [pathToMake strip]];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"-v", nil]];
@@ -164,9 +192,8 @@ NSString *DEVTOOLS_TEST_PATH =
 	[versionScanner scanUpToString:@"version " intoString:NULL];
 	[versionScanner scanString:@"version " intoString:NULL];
 	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&versionNumber]){
-		return @"Unable to determine \"make\" version.";
+		return error;
 	}
-	
 	return [NSString stringWithFormat: @"make version: %@", versionNumber];
 }
 

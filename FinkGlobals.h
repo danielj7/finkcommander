@@ -36,7 +36,7 @@ File: FinkGlobals.h
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
 
-//#define DEBUGGING
+#define DEBUGGING
 
 //User Default Items
 //  Set by user

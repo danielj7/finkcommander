@@ -8,7 +8,7 @@ See the header file, FinkDataController.h, for interface and license information
 #import "FinkDataController.h"
 
 #ifdef DEBUGGING
-#define BUFFERLEN 512
+#define BUFFERLEN 32
 #endif //DEBUGGING
 
 //Globals: placed here to make it easier to change values if fink output changes

@@ -650,34 +650,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //remove or add column
 -(IBAction)chooseTableColumn:(id)sender
 {
-	NSString *columnIdentifier = @"";
+	int loc = [[sender title] rangeOfString: @" "].location;
+	NSString *columnIdentifier = [[[sender title] substringWithRange: NSMakeRange(0, loc)] lowercaseString];
 	NSMutableDictionary *selStates = [[[defaults objectForKey: FinkViewMenuSelectionStates] mutableCopy] autorelease];
 	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
-	
-	//cannot use title because of localization
-	switch ([sender tag]){
-		case VERSION:
-			columnIdentifier = @"version";
-			break;
-		case BINARY:
-			columnIdentifier = @"binary";
-			break;
-		case UNSTABLE:
-			columnIdentifier = @"unstable";
-			break;
-		case INSTALLED:
-			columnIdentifier = @"installed";
-			break;
-		case CATEGORY:
-			columnIdentifier = @"category";
-			break;
-		case DESCRIPTION:
-			columnIdentifier = @"description";
-			break;
-		case MAINTAINER:
-			columnIdentifier = @"maintainer";
-			break;
-	}
 
 	if (newState == NSOnState){
 		[tableView addColumnWithName: columnIdentifier];
@@ -686,7 +662,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 
 	[sender setState: newState];
-	[selStates setObject: [NSNumber numberWithInt: newState] forKey: [sender title]];
+	[selStates setObject: [NSNumber numberWithInt: newState] forKey: columnIdentifier];
 	[defaults setObject: selStates forKey: FinkViewMenuSelectionStates];
 }
 
@@ -1075,8 +1051,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[params insertObject: @"/usr/bin/sudo" atIndex: 0];
 	[params insertObject: @"-S" atIndex: 1];
 	if ([defaults boolForKey: FinkAlwaysChooseDefaults] &&
-		([executable isEqualToString: @"fink"] 			||
-		 [executable isEqualToString: @"apt-get"])){
+		([executable contains: @"fink"] 			||
+		 [executable contains: @"apt-get"])){
+		 NSLog(@"Always choose defaults option selected");
 		[params insertObject: @"-y" atIndex: 3];
 	}
 	if ([executable isEqualToString: @"apt-get"]){ //give apt-get a chance to fix broken dependencies

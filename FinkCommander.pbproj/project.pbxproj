@@ -204,7 +204,6 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
-				F53D231402FF94BE01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -614,7 +613,6 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
-				F53D231502FF94E301A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -685,18 +683,6 @@
 			);
 			isa = PBXGroup;
 			name = Categories;
-			refType = 4;
-		};
-		F53D231402FF94BE01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/MainMenu.nib;
-			refType = 4;
-		};
-		F53D231502FF94E301A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Preferences.nib;
 			refType = 4;
 		};
 		F53D231602FF9B1201A80164 = {
