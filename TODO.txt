@@ -8,6 +8,7 @@ FUNCTIONALITY
 Add support for entry of CVS password
 Allow user to send interrupt message to hanging process
 Add preferences panel with tabs:
+	Manually select path to fink directory tree -- done 3/29/02
 	Ask-first option for dependency and virtual dependency installation
 	Select columns to be viewed (see O'Reilly Cocoa tutorial on preferences)
 		Ideally, deselecting the "Binary" and "Unstable" columns should prevent the

@@ -43,7 +43,7 @@ E.g. pick a virtual dependency, agree to download dependencies, choose option wh
 Sequence:
 While running command, FP receives request for user input
 FP sends request to FC
-FC displays panel, probably in sheet form, asking for user response
+FC displays panel, preferably in sheet form, asking for user response
 FC sends user response to FP
 FP sends user response to running command
 

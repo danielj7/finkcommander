@@ -1,12 +1,13 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -s
 
-use lib "/sw/lib/perl5"; 
+use lib "BASEPATH/lib/perl5"; 
 use Fink::Services;
 use Fink::Package;
 my ($configpath, $config, @pkglist, $pname, $lversion, $iflag, $description, $vo);
 
 # read the configuration file
-$configpath = "/sw/etc/fink.conf";
+$configpath = "BASEPATH/etc/fink.conf";
+
 if (-f $configpath) {
   $config = &Fink::Services::read_config($configpath);
 } else {

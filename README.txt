@@ -61,10 +61,9 @@ VERSION HISTORY
 KNOWN BUGS
 
 Install of tcsh hangs when make calls "perl tcsh.man2html"
-Reported password error dialog appearing after cvs checkout executes; application crashes after OK button selected; attempted bug fixes:  substituting "Sorry, try again." as signal for incorrect password; terminating task when request for CVS password appears; see TODO file
 Updating of table fields is incomplete when a command affects packages other than those selected; only way to fix this would be to update the package array after every install or remove command, and that's just too damned slow
 Binary Install command doesn't always work when dependencies need to be installed;
-	as of 3/10/02 haven't encountered this in a while
+	as of 3/20/02 haven't encountered this in a while
 Reported crash when download as part of install command failed; unable to reproduce
 Reported doubling of table contents on sorting; unable to reproduce
 
