@@ -37,6 +37,12 @@
 #include "Debugging.h"
 #endif
 
+//Localizable strings used in multiple files
+
+#define FINK_CANCEL NSLocalizableString(@"Cancel", @"Cancel button title")
+#define FINK_OK NSLocalizableString(@"Cancel", @"OK button title")
+#define FINK_ERROR NSLocalizableString(@"Cancel", @"Error dialog title")
+
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;

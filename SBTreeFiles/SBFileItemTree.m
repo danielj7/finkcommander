@@ -174,29 +174,26 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 -(void)buildTreeFromFileList:(NSMutableArray *)flist
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSEnumerator *e;
+    NSEnumerator *e = [flist objectEnumerator];;
     NSString *apath;
     SBFileItem *item;
-
-    e = [flist objectEnumerator];
-    while (nil != (apath = [e nextObject])){
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-		[sbLock lock];
-
+		
+	[sbLock lock];
+    
+	while (nil != (apath = [e nextObject])){
+		//NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
-		Dprintf(@"In SBFIT, adding:\n%@", item);
+		//Dprintf(@"In SBFIT, adding:\n%@", item);
 		[self addItemToTree:item];  //adds to array, retain count = 2
 		if (nil == [item children]){
 			totalSize += [item size];
 			itemCount++;
 		}
 		[item release]; //retain count = 1
-
-		[sbLock unlock];
-
-		[pool release];
+		//[pool release];
     }
+	
+	[sbLock unlock];
 
     [[NSDistributedNotificationCenter defaultCenter]
 			postNotificationName:@"SBTreeCompleteNotification"
@@ -213,12 +210,12 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 -(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray
 {
     SBFileItem *anItem = [self rootItem];
-    NSString *path = @"";
+    NSString *path = [[self rootItem] path];
     NSString *fname;
     NSEnumerator *e = [parray objectEnumerator];
 
     while (nil != anItem && nil != (fname = [e nextObject])){
-		path = [path stringByAppendingPathComponent:[anItem path]];
+		path = [path stringByAppendingPathComponent:fname];
 		anItem = [anItem childWithPath:path];
     }
     return anItem;

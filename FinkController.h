@@ -120,6 +120,9 @@ Contact the author at sburrious@users.sourceforge.net.
 							[NSNumber numberWithInt: INSTALLED], @"installed",      \
 							[NSNumber numberWithInt: NAME], @"name",                \
 							nil]
+							
+#define FINK_EXPAND NSLocalizedString(@"Expand Output", @"Menu title when output is collapsed")
+#define FINK_COLLAPSE NSLocalizedString(@"Collapse Output", @"Menu title when output is expanded")
 
 enum {
     VERSION    	= 2000, 
@@ -175,7 +178,8 @@ enum {
 	IBOutlet NSView *progressViewHolder;
 	IBOutlet NSView *progressView;
 	IBOutlet NSProgressIndicator *progressIndicator;
-	IBOutlet NSMenu *viewMenu;
+	IBOutlet NSMenu *columnsMenu;
+	IBOutlet NSMenuItem *collapseExpandMenuItem;
 	IBOutlet NSMenu *tableContextMenu;
 	
 	//Interaction window outlets

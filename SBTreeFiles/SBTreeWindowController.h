@@ -4,22 +4,22 @@
 #import "SBFileItemTree.h"
 #import "SBOutlineViewController.h"
 #import "FinkGlobals.h"
-//#import "SBBrowserController.h"
+#import "SBBrowserController.h"
 
 @interface SBTreeWindowController: NSWindowController
 {
-//  IBOutlet NSTabView *tabView;
+	IBOutlet NSTabView *tabView;
     IBOutlet NSOutlineView *outlineView;
-//  IBOutlet NSBrowser *browser;
+	IBOutlet NSBrowser *browser;
     IBOutlet NSTextField *msgTextField;
     IBOutlet NSProgressIndicator *loadingIndicator;
 
     SBFileItemTree *tree;
-
     SBOutlineViewController *oController;
-//	SBBrowserController *bController;
+	SBBrowserController *bController;
     SBDateColumnController *mDateColumnController;
     NSMutableArray *fileList;
+	BOOL treeBuildingThreadIsFinished;
 }
 
 -(id)initWithFileList:(NSMutableArray *)fList;

@@ -18,7 +18,7 @@ File: FinkPreferences.m
 	self = [super initWithWindowNibName:@"Preferences"];
 	if (nil != self){
 		defaults = [NSUserDefaults standardUserDefaults];
-		conf = [[FinkConf alloc] init];
+		conf = [[FinkConf alloc] init];  //Object representing the user's fink.conf settings
 		[self setWindowFrameAutosaveName: @"Preferences"];
 	}
 	return self;
@@ -26,6 +26,7 @@ File: FinkPreferences.m
 
 -(void)awakeFromNib
 {
+	//This is a bit anachronistic
 	if ([conf extendedVerboseOptions]){
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", nil) atIndex:1];
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", nil) atIndex:2];
@@ -47,14 +48,17 @@ File: FinkPreferences.m
 
 -(void)validateEnvironmentButtons
 {
-	BOOL addEnabled = [[nameTextField stringValue] length] > 0 && 
+	//Enable Add button only if both key and value fields have content
+	BOOL addEnabled = [[nameTextField stringValue] length] > 0 &&    
 						 [[valueTextField stringValue] length] > 0;
+	//Enable Delete button whenever a row is selected
 	BOOL deleteEnabled = [environmentTableView numberOfSelectedRows] > 0;
 	
 	[addEnvironmentSettingButton setEnabled:addEnabled];
 	[deleteEnvironmentSettingButton setEnabled:deleteEnabled];
 }
 
+//Get Environment settings from user defaults
 -(void)setEnvironment
 {
     [environmentSettings release];
@@ -294,7 +298,9 @@ File: FinkPreferences.m
 
 	/***  Fink Settings in fink.conf ***/
 	
-	if (finkConfChanged){
+	if (finkConfChanged){ 
+		//Set to yes whenever user selects a button or changes a field in the Fink or
+		//Downloads tabs
 
 		//Fink Tab
 		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
@@ -365,6 +371,8 @@ File: FinkPreferences.m
 
 -(IBAction)setAutoExpandChanged:(id)sender
 {
+	//Determines whether a notification to collapse the output view
+	//is sent to FinkSplitView
 	autoExpandChanged = YES;
 }
 
@@ -411,6 +419,9 @@ File: FinkPreferences.m
 		[textField setStringValue: path];
 		Dprintf(@"Text field value: %@", [textField stringValue]);
 
+		//FinkPreferences is registered for this notification to make
+		//sure buttons associated with text fields accurately reflect the
+		//fields' state
 		[[NSNotificationCenter defaultCenter]
 				postNotificationName: NSControlTextDidChangeNotification
 							  object: textField];
@@ -546,10 +557,13 @@ File: FinkPreferences.m
 {
 	NSString *identifier = [aTableColumn identifier];
 	NSString *name = [environmentKeyList objectAtIndex:rowIndex];
+
 	
 	if ([identifier isEqualToString:@"value"]){
+		//User has edited value field for exsting key
 		[environmentSettings setObject:anObject forKey:name];
 	}else{
+		//User has overwritten existing key
 		NSString *value = [environmentSettings objectForKey:name];
 		[environmentSettings removeObjectForKey:name];
 		[environmentSettings setObject:value forKey:anObject];

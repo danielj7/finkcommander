@@ -24,7 +24,7 @@
 		[[self window] setTitle:wName];
 		[[self window] setReleasedWhenClosed:YES];
 		
-		Dprintf(@"In SBTWC, received file list:\n%@", fList);
+		//Dprintf(@"In SBTWC, received file list:\n%@", fList);
 
 		[[NSNotificationCenter defaultCenter] 
 		addObserver:self 
@@ -53,23 +53,21 @@ browser; tell the tree object to build its data structure.  */
 	
     oController = [[SBOutlineViewController alloc] initWithTree:tree
 										view:outlineView];
-
 	mDateColumnController = 
 			[[SBDateColumnController alloc]
 					initWithColumn:mdateColumn
 					shortTitle:@"Modified"
 					longTitle:@"Date Modified"];
-	
-
-#ifdef UNDEF
+	[outlineView setIndicatorImage:[NSImage imageNamed:@"NSAscendingSortIndicator"] inTableColumn:[outlineView tableColumnWithIdentifier:@"filename"]];
     bController = [[SBBrowserController alloc] initWithTree:tree
 												browser:browser];
-#endif
-
-    //Building the file tree can take some time
+												
+    //Building the file tree can take some time; run in a separate thread to
+	//avoid tying up the rest of the app
+	treeBuildingThreadIsFinished = NO;
     [NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
-								toTarget:tree
-							  withObject:[self fileList]];
+			  toTarget:tree
+			  withObject:[self fileList]];
 }
 
 -(BOOL)windowShouldClose:(id)sender
@@ -77,6 +75,10 @@ browser; tell the tree object to build its data structure.  */
     /*	The following is needed to release all items in a tree.  NSOutline
 	apparently retains an item when its parent is expanded and doesn't
 	release it until the parent is collapsed.  */
+	if (! treeBuildingThreadIsFinished){
+		NSBeep();
+		return NO;
+	}
     [oController collapseItemAndChildren:[tree rootItem]];
     return YES;
 }
@@ -98,7 +100,7 @@ browser; tell the tree object to build its data structure.  */
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
     [oController release];
-//  [bController release];
+	[bController release];
     [fileList release];
     [tree release];
 }
@@ -116,7 +118,6 @@ browser; tell the tree object to build its data structure.  */
     fileList = fList;
 }
 
-#ifdef UNDEF
 //----------------------------------------------------------
 #pragma mark ACTIONS
 //----------------------------------------------------------
@@ -125,7 +126,6 @@ browser; tell the tree object to build its data structure.  */
 {
     [tabView selectTabViewItemAtIndex:[sender tag]];
 }
-#endif
 
 //----------------------------------------------------------
 #pragma mark UI UPDATING
@@ -140,8 +140,8 @@ browser; tell the tree object to build its data structure.  */
 
 -(void)finishedLoading:(NSNotification *)n
 {
-	Dprintf(@"Received SBTreeCompleteNotification");
-
+	//Dprintf(@"Received SBTreeCompleteNotification");
+	treeBuildingThreadIsFinished = YES;
     if (nil == [tree rootItem]){
 		[msgTextField setStringValue:@"Error:  No such package installed"];
     }else{
@@ -150,6 +150,7 @@ browser; tell the tree object to build its data structure.  */
 				[tree totalSize] / 1024 + 1, [tree itemCount]]];
     }
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
+	[browser reloadColumn:0];
 	[loadingIndicator stopAnimation:self];
     [loadingIndicator removeFromSuperview];
 

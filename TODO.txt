@@ -1,39 +1,52 @@
-SHORT TERM
+VERSION 0.5; Target release date: 1/14/03:
 
-Submit fink bug report command
+i Installed package browser
+	Fix instability
+	i Add Browser view
+	Add custom button to switch from outline to browser (modeled on Finder's)
+	Add open and open with commands for file menu
+	Add contextual menu
+	Add drag and drop of file icon onto Finder icon
+	 
+d Go to package documentation in Finder
 
-Add "Any" filter item; make default
+d Submit fink bug report command
+
+d Dock icon customization: show status of command
 
 Flag column
 
-Dock icon customization: show status of command
+Show info panel for fink installation; mirror information in email
+sig; Application->About Your Fink Installation... ?
 
-Show .info, .patch file contents; open in editor; copy contents to 
-clipboard
+New toolbar items for:
+	Package browser
+	Fink bug report
 
-New command: update fink from cvs (warning alert: experimental)
+SHORT TERM:
 
 Search output
 
-Regex support in filter and output search
+i Regex support in filter and output search
+
+Show .info, .patch file contents; open in editor; copy contents to 
+clipboard
 
 Additional fink installation info:
 	   last selfupdate-cvs 
 	   last apt-get update
 
-Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences
+Add "Any" filter item; make default
 
-Show info panel for fink installation; mirror information in email
-sig; Application->About Your Fink Installation... ?
+New command: update fink from cvs (warning alert: experimental)
+
+Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences
 
 Customize sound
 
 Better toolbar icons
 
 New View menu item:  hide/show splitoffs
-
-Installed package browser; dpkg -c <path to .deb file>; include
-	  total size (see finksizer.py)
 
 LONG TERM:
 

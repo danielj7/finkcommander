@@ -267,8 +267,16 @@ File: FinkController.m
 	//Set state of View menu column items
     while (nil != (col = [e nextObject])){
 		int atag = [self tagFromAttributeName:col];
-		[[viewMenu itemWithTag:atag] setState:NSOnState];
+		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
+
+	if ([outputScrollView bounds].size.height > 1.0){
+		[collapseExpandMenuItem setTitle:FINK_EXPAND];
+	}else{
+		[splitView expandOutputToMinimumRatio:0.0];
+		[collapseExpandMenuItem setTitle:FINK_COLLAPSE];
+	}
+	
 
     [self setupToolbar];
 
@@ -515,12 +523,12 @@ File: FinkController.m
 
 -(IBAction)collapseExpandOutput:(id)sender
 {
-	if ([splitView isSubviewCollapsed:outputScrollView]){
+	if ([outputScrollView bounds].size.height > 1.0){
 		[splitView collapseOutput:nil];
-		[sender setTitle:NSLocalizedString(@"Expand Output", nil)];
+		[sender setTitle:FINK_EXPAND];
 	}else{
 		[splitView expandOutputToMinimumRatio:0.0];
-		[sender setTitle:NSLocalizedString(@"Collapse Output", nil)];
+		[sender setTitle:FINK_COLLAPSE];
 	}
 }
 

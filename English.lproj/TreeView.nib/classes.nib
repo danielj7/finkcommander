@@ -16,9 +16,11 @@
             CLASS = SBTreeWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                browser = NSBrowser; 
                 loadingIndicator = NSProgressIndicator; 
                 msgTextField = NSTextField; 
                 outlineView = NSOutlineView; 
+                tabView = NSTabView; 
             }; 
             SUPERCLASS = NSWindowController; 
         }

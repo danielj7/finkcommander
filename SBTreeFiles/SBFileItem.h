@@ -56,6 +56,8 @@ Family Ties
 
 -(SBFileItem *)childWithPath:(NSString *)iPath;
 
+-(SBFileItem *)childWithFileName:(NSString *)fname;
+
 -(NSString *)pathToParent;
 
 @end

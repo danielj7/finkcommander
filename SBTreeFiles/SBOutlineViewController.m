@@ -23,6 +23,7 @@
 		[outlineView setDataSource:self];
 		[outlineView setTarget:self];
 		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
+		[outlineView setIntercellSpacing:NSMakeSize(4.0, 2.0)];
 
 
 		while (nil != (aColumn = [e nextObject])){
@@ -152,12 +153,14 @@
 		item = [outlineView itemAtRow:[rownum intValue]];
 		if (nil != [item children]) continue;  //skip directories
 		stnddpath = [item path];  //now standardized when item created
-		if ([stnddpath hasSuffix:@".html"]){
+		if ([stnddpath hasSuffix:@".html"] || [stnddpath hasSuffix:@".htm"]){
 			NSURL *fileURL = [NSURL fileURLWithPath:stnddpath];
 			successful = [ws openURL:fileURL];
 		}else{
-			//TBD:  Allow user to specify preferred application
-			successful = [ws openFile:stnddpath withApplication:@"TextEdit"];
+			successful = [ws openFile:stnddpath];
+			if (! successful){
+				successful = [ws openFile:stnddpath withApplication:@"TextEdit"];
+			}			
 		}
 		if (! successful){
 			[problemFiles addObject:stnddpath];

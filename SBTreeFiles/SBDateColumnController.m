@@ -162,7 +162,7 @@
     if (nil != [self longTitle]){
 		float width = [[self column] width];
 
-		if (width < [[self longTitle] length] * 6.0){  //approximate pixels per character
+		if (width < [[self longTitle] length] * 7.0){  //approximate pixels per character
 			[[[self column] headerCell] setStringValue:[self shortTitle]];
 		}else{
 			[[[self column] headerCell] setStringValue:[self longTitle]];

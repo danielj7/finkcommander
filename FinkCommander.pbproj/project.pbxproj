@@ -347,6 +347,7 @@
 				F5CC7627039F174E01A80165,
 				F5CC765E039F19D801A80165,
 				F50EC36703A0559001A80165,
+				F5067EF503A1BF3001A80167,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +423,7 @@
 				F5CC7628039F174E01A80165,
 				F5CC765F039F19D801A80165,
 				F50EC36803A0559001A80165,
+				F5067EF603A1BF3101A80167,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,6 +514,18 @@
 			isa = PBXFileReference;
 			path = RELEASE_STEPS.txt;
 			refType = 4;
+		};
+		F5067EF503A1BF3001A80167 = {
+			fileRef = F5CC7615039F174E01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5067EF603A1BF3101A80167 = {
+			fileRef = F5CC7616039F174E01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		F50A22290296AB2801A80166 = {
 			isa = PBXFileReference;
