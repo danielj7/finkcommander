@@ -115,6 +115,37 @@
 			<string>424</string>
 			<string>558</string>
 		</array>
+<<<<<<< info.nib
+		<key>123</key>
+		<array>
+			<string>419</string>
+			<string>421</string>
+			<string>420</string>
+			<string>190</string>
+		</array>
+		<key>124</key>
+		<array>
+			<string>521</string>
+			<string>523</string>
+			<string>524</string>
+			<string>525</string>
+			<string>522</string>
+		</array>
+		<key>125</key>
+		<array>
+			<string>447</string>
+			<string>448</string>
+			<string>446</string>
+			<string>551</string>
+			<string>557</string>
+		</array>
+		<key>126</key>
+		<array>
+			<string>401</string>
+			<string>399</string>
+		</array>
+=======
+>>>>>>> 1.26
 		<key>29</key>
 		<array>
 			<string>120</string>
@@ -219,7 +250,11 @@
 		</array>
 	</dict>
 	<key>IBLastGroupID</key>
+<<<<<<< info.nib
+	<string>127</string>
+=======
 	<string>121</string>
+>>>>>>> 1.26
 	<key>IBOpenObjects</key>
 	<array>
 		<integer>5</integer>
