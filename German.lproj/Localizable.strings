@@ -39,16 +39,16 @@
 "FinkCommander is unable to install %@ from source.  Please install the binary or use the Source:Run in Terminal menu command to install %@." = "FinkCommander kann %@ nicht von Source installieren.  Bitte installieren Sie das Binär-Paket oder führen sie \"fink install %@\" in Terminal aus.";
 
 /* Alert message */
-"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander." = "FinkCommander konnte keine Online Update Informationen finden.\n\nBitte besuchen sie die FinkCommander Web Site\nverfügbar im Menü Hilfe), um nach einer neueren Version zu suchen.";
+"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander." = "FinkCommander konnte keine Online Update Informationen finden.\n\nBitte besuchen sie die FinkCommander Web Site (verfügbar im Menü Hilfe), um nach einer neueren Version zu suchen.";
 
 /* Alert panel message */
-"FinkCommander was unable to write changes to fink.conf." = "FinkCommander konnte keine änderungen in die Konfigurationsdatei fink.conf schreiben.";
+"FinkCommander was unable to write changes to fink.conf." = "FinkCommander konnte keine Änderungen in die Konfigurationsdatei fink.conf schreiben.";
 
 /* Menu title when output is expanded */
-"Hide Command Output" = "Hide Command Output";
+"Hide Command Output" = "Ausgabe-Fenster ausblenden";
 
 /* Menu title */
-"Hide Toolbar" = "Hide Toolbar";
+"Hide Toolbar" = "Werkzeugleiste ausblenden";
 
 /* This warning is issued if the user tries to start this task and the Launcher can't be found or isn't executable */
 "I can't find the tool I use to run an authorized command. You'll need to reinstall this application\n" = "Konnte die Komponente zur Ausführung von Kommandos, welche root Berechtigungen verlangen nicht finden. Bitte installieren Sie dieses Programm neu.\n";
@@ -57,10 +57,10 @@
 "Low" = "Niedrig";
 
 /* Menu title: Put a flag image in the flag column next to the package */
-"Mark As Flagged" = "Mark As Flagged";
+"Mark As Flagged" = "Markierung setzen";
 
 /* Menu title: Remove the flag image from the flag column next to the package */
-"Mark As Unflagged" = "Mark As Unflagged";
+"Mark As Unflagged" = "Markierung entfernen";
 
 /* Verbosity level for Fink */
 "Medium" = "Mittel";
@@ -69,7 +69,7 @@
 "OK" = "OK";
 
 /* Window title */
-"Package Info" = "Package Info";
+"Package Info" = "Paket Informationen";
 
 /* Main window title */
 "Packages: %d Displayed, %d Installed" = "Pakete: %d angezeigt, %d installiert";
@@ -90,13 +90,13 @@
 "Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?" = "Dieser Befehl wird das ausgewählte Pakete entfernen, selbst wenn andere Pakete davon abhängig sind.\n\nSind Sie sicher, dass Sie diesen Befehl ausführen wollen?";
 
 /* Menu title when output is collapsed */
-"Show Command Output" = "Show Command Output";
+"Show Command Output" = "Ausgabe-Fenster einblenden";
 
 /* Menu Item Title */
-"Show Main Window" = "Show Main Window";
+"Show Main Window" = "Hauptfenster einblenden";
 
 /* Menu title */
-"Show Toolbar" = "Show Toolbar";
+"Show Toolbar" = "Werkzeigleiste einblenden";
 
 /* Dialog title */
 "Sorry" = "Entschuldigung";
