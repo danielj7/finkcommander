@@ -16,16 +16,16 @@
 	the longest possible date format that will fit in the current column length. */
 
 #define FULL_MONTH_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"240.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
-#define FULL_MONTH_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%A, %B %e, %Y, %I:%M %p", @"Date",  @"Full month name, day, year, time")
+#define FULL_MONTH_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%A, %B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
 
-#define ABBREVIATED_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"170.0", @"Date",  @"Minimum width for abbreviated day and month names, day, year, time") floatValue]
-#define ABBREVIATED_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%a, %b %e, %Y, %I:%M %p", @"Date", @"Abbreviated day and month names, day, year, time")
+#define ABBREVIATED_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"175.0", @"Date",  @"Minimum width for abbreviated day and month names, day, year, time") floatValue]
+#define ABBREVIATED_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%a, %b %e, %Y  %I:%M %p", @"Date", @"Abbreviated day and month names, day, year, time")
 
 #define NUMERIC_Y4_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"145.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
-#define NUMERIC_Y4_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y, %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
+#define NUMERIC_Y4_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
 
 #define NUMERIC_Y2_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"130.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
-#define NUMERIC_Y2_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y, %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
+#define NUMERIC_Y2_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
 
 #define NUMERIC_Y4_WIDTH [NSLocalizedStringFromTable(@"80.0", @"Date", @"Minimum width for numeric format with four-digit year") floatValue]
 #define NUMERIC_Y4_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y", @"Date", @"Numeric format with four-digit year")

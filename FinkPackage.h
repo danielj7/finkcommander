@@ -155,8 +155,13 @@ enum {
 //Package name without -dev, -shlibs or -bin
 -(NSString *)nameWithoutSplitoff;
 
-//Tree is stable or unstable; ext is info or patch
+//Check to see if path exists for a particular version
 -(NSString *)pathToPackageInTree:(NSString *)tree
-			withExtension:(NSString *)ext;
+				withExtension:(NSString *)ext
+				version:(NSString *)fversion;
+
+//Find path without knowing version number
+-(NSString *)pathToPackageInTree:(NSString *)tree
+				withExtension:(NSString *)ext;
 
 @end

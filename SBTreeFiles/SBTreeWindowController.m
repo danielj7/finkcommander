@@ -226,6 +226,7 @@ enum {
 	}else{
 		[browser setMaxVisibleColumns:2];
 	}
+	[outlineView sizeLastColumnToFit];
 }
 
 #ifdef UNDEF

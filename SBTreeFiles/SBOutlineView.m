@@ -12,6 +12,9 @@
 	@"Size", @"size",											\
 	@"Modified", @"mdate",										\
 	nil]
+	
+#define MAX_DATE_WIDTH 280
+#define MAX_SIZE_WIDTH 80
 
 @implementation SBOutlineView
 
@@ -45,6 +48,7 @@
 		[newColumn setEditable:NO];
 		if ([identifier isEqualToString:@"size"]){
 			[newColumn setWidth:sizeWidth];
+			[newColumn setMaxWidth:MAX_SIZE_WIDTH];
 			[[newColumn headerCell] setAlignment:NSRightTextAlignment];
 			[[newColumn dataCell] setAlignment:NSRightTextAlignment];
 		}else{
@@ -56,6 +60,7 @@
 				[self setOutlineTableColumn:newColumn];
 			}else{
 				[newColumn setWidth:mdateWidth];
+				[newColumn setMaxWidth:MAX_DATE_WIDTH];
 			}
 			[[newColumn headerCell] setAlignment:NSLeftTextAlignment];
 			[[newColumn dataCell] setAlignment:NSLeftTextAlignment];
@@ -84,6 +89,7 @@
 		[self setAllowsColumnReordering:[oldView allowsColumnReordering]];
 		[self setAllowsColumnResizing :[oldView allowsColumnReordering]];
 		[self setAutoresizesOutlineColumn:NO];
+		[self setAutoresizesAllColumnsToFit:NO];
 		[self setVerticalMotionCanBeginDrag:NO];
 	}
 	return self;

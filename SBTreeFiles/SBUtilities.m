@@ -7,6 +7,7 @@ BOOL openFileAtPath(NSString *path)
     NSWorkspace *ws = [NSWorkspace sharedWorkspace];
     BOOL successful, valid, isDir;
 
+	Dprintf(@"Opening:\n %@", path);
     valid = [mgr fileExistsAtPath:path isDirectory:&isDir];
     if (! valid) return NO;
     if ([path contains:@".htm"]){

@@ -126,8 +126,6 @@ void setInitialEnvironmentVariables(void)
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSMutableDictionary *settings;
 	NSString *basePath = [defaults objectForKey:FinkBasePath];
-	NSString *proxy;
-	char *proxyEnv;
 
 	settings = 
 		[NSMutableDictionary 
@@ -148,16 +146,6 @@ void setInitialEnvironmentVariables(void)
 				@"LC_ALL",
 				nil];
 	
-	proxy = [defaults objectForKey:FinkHTTPProxyVariable];
-	if ([proxy length] > 0){
-		[settings setObject:proxy forKey:@"http_proxy"];
-	}else if (! [defaults boolForKey: FinkLookedForProxy]){
-		if (proxyEnv = getenv("http_proxy")){
-			proxy = [NSString stringWithCString:proxyEnv];
-			[settings setObject:proxy forKey:@"http_proxy"];
-		}
-		[defaults setBool:YES forKey:FinkLookedForProxy];
-	}
 	[defaults setObject:settings forKey:FinkEnvironmentSettings];
 }
 

@@ -147,12 +147,10 @@ enum {
 	if (scrollBackLimit){
 		[scrollBackLimitTextField setIntValue: scrollBackLimit];
 	}
-
+	
 	//Environment Tab
 	[self setEnvironment];
-	[self setEnvironmentKeys];
-	[environmentTableView reloadData];
-	
+
 	/***  Fink Settings in fink.conf ***/
 
 	finkConfChanged = NO;
@@ -172,11 +170,31 @@ enum {
 	
 	//Download Tab
 	[passiveFTPButton setState: [conf passiveFTP]];
+
 	httpProxy = [environmentSettings objectForKey:@"http_proxy"];
-	if (! httpProxy) httpProxy = [conf useHTTPProxy];
-	if (! httpProxy) httpProxy = @"";
+	if (! httpProxy){
+		httpProxy = [conf useHTTPProxy];
+		if (httpProxy){
+			[environmentSettings setObject:httpProxy forKey:@"http_proxy"];
+		}else{
+			httpProxy = @"";
+		}
+	}	
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
+	
+	ftpProxy = [environmentSettings objectForKey:@"ftp_proxy"];
+	if (! ftpProxy){
+		ftpProxy = [conf useFTPProxy];
+		if (ftpProxy){
+			[environmentSettings setObject:ftpProxy forKey:@"ftp_proxy"];
+		}else{
+			ftpProxy = @"";
+		}
+	} 
+	[ftpProxyButton setState: ([ftpProxy length] > 0 ? YES : NO)];
+	[ftpProxyTextField setStringValue: ftpProxy];
+
 	downloadMethod = [conf downloadMethod];
 	if ([downloadMethod isEqualToString:@"curl"]){
 		[downloadMethodMatrix selectCellWithTag:0];
@@ -185,9 +203,10 @@ enum {
 	}else{
 		[downloadMethodMatrix selectCellWithTag:2];
 	}
-	ftpProxy = [conf useFTPProxy];
-	[ftpProxyButton setState: (ftpProxy != nil ? YES : NO)];
-	[ftpProxyTextField setStringValue: (ftpProxy != nil ? ftpProxy : @"")];
+
+	/***  Environment Tab Again (make sure consistent with fink.conf) ***/
+	[self setEnvironmentKeys];
+	[environmentTableView reloadData];	
 }
 
 //--------------------------------------------------------------------------------
@@ -262,7 +281,9 @@ enum {
 -(void)setFTPProxyVariable
 {
 	if ([ftpProxyButton state] == NSOnState){
-		[conf setUseFTPProxy: [ftpProxyTextField stringValue]];
+		NSString *proxy = [ftpProxyTextField stringValue];
+		[conf setUseFTPProxy:proxy];
+		[environmentSettings setObject:proxy forKey:@"ftp_proxy"];
 	}else{
 		[conf setUseFTPProxy: nil];
 	}

@@ -1,8 +1,8 @@
 /* Abbreviated day and month names, day, year, time */
-"%a, %b %e, %Y, %I:%M %p" = "%a, %e %b %Y  %H:%M Uhr";
+"%a, %b %e, %Y  %I:%M %p" = "%a, %e %b %Y  %H:%M Uhr";
 
 /* Full month name, day, year, time */
-"%A, %B %e, %Y, %I:%M %p" = "%A, %e %B, %Y  %H:%M Uhr";
+"%A, %B %e, %Y  %I:%M %p" = "%A, %e %B, %Y  %H:%M Uhr";
 
 /* Numeric format with four-digit year */
 "%m/%d/%Y" = "%d.%m.%Y";
@@ -11,10 +11,10 @@
 "%m/%d/%y" = "%d.%m.%y";
 
 /* Numeric format with four-digit year plus time */
-"%m/%d/%Y, %I:%M %p" = "%d.%m.%Y  %H:%M Uhr";
+"%m/%d/%Y  %I:%M %p" = "%d.%m.%Y  %H:%M Uhr";
 
 /* Numeric format with two-digit year plus time */
-"%m/%d/%y, %I:%M %p" = "%d.%m.%y  %H:%M Uhr";
+"%m/%d/%y  %I:%M %p" = "%d.%m.%y  %H:%M Uhr";
 
 /* Minimum width for numeric format with two-digit year plus time */
 "130.0" = "130.0";

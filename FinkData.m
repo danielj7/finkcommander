@@ -281,7 +281,9 @@ See the header file, FinkData.h, for interface and license information.
 			stable and unstable, depending on the user's
 			preferences. */
 		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
-			path = [p pathToPackageInTree:@"stable" withExtension:@"info"];
+			path = [p pathToPackageInTree:@"stable" 
+						withExtension:@"info"
+						version:[p unstable]];
 			if ([manager fileExistsAtPath:path]){
 				[p setStable:[p unstable]];
 				if (! showRedundantPackages){
@@ -292,7 +294,9 @@ See the header file, FinkData.h, for interface and license information.
 		if (showRedundantPackages 		&& 
 			[[p unstable] length] < 2 	&& 
 			[[p stable] length] > 1){
-			path = [p pathToPackageInTree:@"unstable" withExtension:@"info"];
+			path = [p pathToPackageInTree:@"unstable" 
+						withExtension:@"info"
+						version:[p stable]];
 			if ([manager fileExistsAtPath:path]){
 				[p setUnstable:[p stable]];
 			}

@@ -436,18 +436,21 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(NSString *)pathToPackageInTree:(NSString *)tree
 			withExtension:(NSString *)ext
+			version:(NSString *)fversion
 {
-	NSString *fversion = [tree isEqualToString:@"unstable"] ?
-						[self unstable] : [self stable];
 	NSString *fname = [self nameWithoutSplitoff];
 	NSString *pathToDists = [[[[NSUserDefaults standardUserDefaults]
 									objectForKey:@"FinkBasePath"]
 								stringByAppendingPathComponent: @"/fink/dists"] retain];
     NSString *pkgFileName;
     NSArray *components;
+	
+	if (nil == fversion){
+		fversion = [tree isEqualToString:@"unstable"] ?
+					[self unstable] : [self stable];
+	}
 
 	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext];
-
     if ([[self category] isEqualToString:@"crypto"]){
 		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",
 			@"finkinfo", pkgFileName, nil];
@@ -456,6 +459,14 @@ See the header file, FinkPackage.h, for interface and license information.
 			@"finkinfo", [self category], pkgFileName, nil];
     }
 	return [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
+}
+
+-(NSString *)pathToPackageInTree:(NSString *)tree
+			withExtension:(NSString *)ext
+{
+	return [self pathToPackageInTree:tree
+					withExtension:ext
+					version:nil];
 }
 
 @end

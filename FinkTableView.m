@@ -331,7 +331,7 @@ enum {
 		}else if ([identifier isEqualToString:@"category"]){
 			[newColumn setMaxWidth:MAX_CATEGORY_WIDTH];
 		}else if (IS_VERSION_IDENTIFIER(identifier)){
-			[newColumn setMaxWidth:MAX_CATEGORY_WIDTH];
+			[newColumn setMaxWidth:MAX_VERSION_WIDTH];
 		}
 	}
 	//Allow double click to open .info file
