@@ -52,11 +52,14 @@ File: FinkSplitView.m
 {
 	NSRect oFrame = [outputScrollView frame];
 	NSRect sFrame = [self frame];
-
+	
 	if (oFrame.size.height > 0.0){
-		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-											forKey: FinkOutputViewRatio];
-	}
+		[defaults setFloat:(oFrame.size.height / sFrame.size.height)
+				  forKey:FinkOutputViewRatio];
+		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
+	}else{
+		[collapseExpandMenuItem setTitle:LS_EXPAND];
+	}	
 }
 
 -(void)collapseOutput:(NSNotification *)n
@@ -74,7 +77,7 @@ File: FinkSplitView.m
 		[outputScrollView setFrame: oFrame];
 		[tableScrollView setFrame: tFrame];
 
-		[collapseExpandMenuItem setTitle:LS_EXPAND];
+		[self splitViewDidResizeSubviews:nil];
 
 		[self setNeedsDisplay: YES];
 	}
@@ -101,7 +104,7 @@ File: FinkSplitView.m
 	[outputScrollView setFrame: oFrame];
 	[tableScrollView setFrame: tFrame];
 
-	[collapseExpandMenuItem setTitle:LS_COLLAPSE];
+	[self splitViewDidResizeSubviews:nil];
 
 	[self setNeedsDisplay: YES];
 }

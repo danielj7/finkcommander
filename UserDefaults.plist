@@ -26,6 +26,8 @@
 		<string>normal</string>
 		<key>category</key>
 		<string>normal</string>
+		<key>flagged</key>
+		<string>normal</string>
 		<key>installed</key>
 		<string>normal</string>
 		<key>maintainer</key>
@@ -65,7 +67,7 @@
 	<key>FinkOutputPath</key>
 	<string></string>
 	<key>FinkOutputViewRatio</key>
-	<real>3.4609751350643591e-311</real>
+	<real>0.5</real>
 	<key>FinkPackageAttributes</key>
 	<array>
 		<string>name</string>
@@ -90,12 +92,12 @@
 	<false/>
 	<key>FinkTableColumnsArray</key>
 	<array>
+		<string>flagged</string>
 		<string>status</string>
 		<string>name</string>
 		<string>installed</string>
+		<string>version</string>
 		<string>binary</string>
-		<string>stable</string>
-		<string>unstable</string>
 		<string>category</string>
 		<string>summary</string>
 	</array>

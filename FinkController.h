@@ -135,7 +135,6 @@ Contact the author at sburrious@users.sourceforge.net.
 
 	//Flags
 	BOOL commandIsRunning;
-	BOOL userConfirmedQuit;
 	BOOL commandTerminated;
 	BOOL pendingCommand;
 	BOOL toolIsBeingFixed;

@@ -33,8 +33,11 @@
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 
-#define LS_EXPAND NSLocalizedString(@"Show Command Output", @"Menu title when output is collapsed")
-#define LS_COLLAPSE NSLocalizedString(@"Hide Command Output", @"Menu title when output is expanded")
+//Used in FinkController and here
+#define LS_EXPAND 					\
+	NSLocalizedString(@"Show Command Output", @"Menu title when output is collapsed")
+#define LS_COLLAPSE 				\
+	NSLocalizedString(@"Hide Command Output", @"Menu title when output is expanded")
 
 @interface FinkSplitView : NSSplitView 
 {

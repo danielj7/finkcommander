@@ -172,10 +172,6 @@ enum {
 		//Set the instance variable for the package tree manager
 		treeManager = [[SBTreeWindowManager alloc] init];
 
-		//Set flag used to avoid duplicate warnings when user terminates FC
-		//in middle of command with something other than App:Quit
-		userConfirmedQuit = NO;
-
 		//Set flag indicating user has chosen to terminate a command;
 		//used to stop appending text to output
 		commandTerminated = NO;
@@ -383,7 +379,6 @@ enum {
 		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
 	}
 	
-
     [self setupToolbar];
 
     [msgText setStringValue:
@@ -466,7 +461,7 @@ enum {
 {
     int answer;
 
-    if (commandIsRunning && ! userConfirmedQuit){ //see windowShouldClose: method
+    if (commandIsRunning){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(LS_WARNING, NSLocalizedString(@"QuittingNow", nil),
 										LS_QUIT, LS_CANCEL, nil);
 		if (answer == NSAlertAlternateReturn){
@@ -739,12 +734,14 @@ enum {
 
     [packageInfo setEmailSig:sig];
     while (nil != (pkg = [e nextObject])){
-		if (typeOfFeedback == POSITIVE && [[pkg installed] isEqualToString:[pkg stable]]){
+		if (typeOfFeedback == POSITIVE   &&
+			[[pkg installed] length] > 1 &&
+			[[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
 			continue;
 		}
 		if (typeOfFeedback == NEGATIVE							&&
-			[[pkg installed] length] > 1						&&
+			[[pkg stable] length] > 1							&&
 			! [[pkg installed] isEqualToString:[pkg version]]	&&  //version = latest
 			! [[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
@@ -762,13 +759,14 @@ enum {
 					nil);
 	}
 	if (typeOfFeedback == NEGATIVE && [pkgNames count] > 0){
-		NSString *msg = [pkgNames count] > 1 ?
-		NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) :
-		NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
+		NSString *msg = [pkgNames count] > 1 	?
+				NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) 	:
+				NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
 		NSBeginAlertSheet(LS_WARNING,
 					LS_OK, nil, nil,
 					window, self, NULL, NULL, nil,
-					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
+					[NSString stringWithFormat: msg, 
+						[pkgNames componentsJoinedByString:@", "]],
 					nil);
 	}
 }
@@ -864,6 +862,7 @@ enum {
     [toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
 	[toolbar setSearchField:searchTextField];
 	[toolbar setSearchButton:searchPopUpButton];
+	[toolbar setSizeMode:NSToolbarSizeModeSmall];
     [window setToolbar: toolbar];
 }
 
@@ -949,12 +948,14 @@ enum {
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
 	return 	[NSArray arrayWithObjects:
+				@"FinkInstallBinaryItem",
 				@"FinkInstallSourceItem",
 				@"FinkTermInstallItem",
 				@"FinkRemoveSourceItem",
 				@"FinkSelfUpdateCVSItem",
 				NSToolbarSeparatorItemIdentifier,
 				@"FinkTerminateCommandItem",
+				@"FinkDescribeItem",
 				@"FinkPositiveEmailItem",
 				@"FinkEmailItem",
 				NSToolbarFlexibleSpaceItemIdentifier,

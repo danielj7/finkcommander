@@ -12,25 +12,26 @@
 0.5.0 	Pending
 
 <ul>
-	<li>An installed package browser has been added.  Selecting New Package Browser from the File menu
-	or the contextual menu for the package table will open an outline view [or browser] showing the 
-	files installed on the user's system for the selected package.  The browser includes the 
-	following features:
+	<li>The primary new feature is the package browser, which allows you to view the files that Fink
+		has installed on your system for a selected package.   The browser includes most of the 
+		functionality of a Finder window, including drag and drop and double clicking to open.  
+		(Hold down the option key to use drag and drop in the browser view.)  
+		The package browser is accessible from the Tools menu and the contextual menu for the package 
+		table.</li>
+
+	<li>FinkCommander now provides easy access to a package's .info and .patch files, which are used
+		by Fink to install packages from source.  You can open these files with commands in the
+		File menu, by double clicking a package name or by dragging selected packages from the table
+		to an icon.  You can also use drag and drop to make a copy of these files. 
+		</li>
 	
-	<ul>
-		<li>Double-clicking a text file will open it in TextEdit [TBD or an alternative text
-		editor specified by the user].</li>
-		<li>Double clicking an html file will open it in the user's preferred browser.</li>
-		<li>[TBD:  Choosing "Open with . . ." from the File menu or the contextual menu
-		for the browser brings up a dialog allowing the user to specify an application to use
-		to open the file.]</li>
-	</ul></li>
-	
-	<li>A new item in the Tools menu and the contextual menu for the package table opens the 
-	documentation directory for a package in a Finder window.</li>
+	<li>A new item in the Tools menu opens the documentation directory for a package in a Finder 
+		window.  There is also a command to do this in the contextual menu for the table.</li>
 	
 	<li>Another new item in the Tools menu takes the user to the Bug Reporting page for Fink.</li>
 	
+	<li>Closing the main window no longer quits the application.  If you close the main window, a 
+		command in the Window menu allows you to reopen it.</li>
 </ul>
 
 0.4.3 	11/22/2002

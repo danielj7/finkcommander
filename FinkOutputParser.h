@@ -12,6 +12,8 @@ File: FinkOutputParser.h
  or GUI changes are necessary.  In some cases FinkController will send messages back
  asking for additional information, such as the name of the package currently
  being handled by Fink or the amount of increment to add to the progress indicator.
+ FinkOutputParser also reads and stores the process group id for a command for possible
+ later use in terminating the command.
 
  Copyright (C) 2002  Steven J. Burr
 

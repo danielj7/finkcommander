@@ -6,6 +6,7 @@
 */
 
 #import "FinkPackageInfo.h"
+#import "SBMutableAttributedString.h"
 
 //medium gray
 #define SHORTDESCCOLOR 		\
@@ -65,7 +66,7 @@
 						@"mailto:%@?subject=%@-%@&body=\n\n%@", 
 						[pkg email], [pkg name], [pkg version], emailSig]
 				URLByAddingPercentEscapesToString];
- }
+}
 
 //--------------------------------------------------------------->Text Display Methods
 
@@ -98,27 +99,27 @@
 	line = [[e nextObject]  strip];
 	if (! line) return desc;
 	if ([line isEqualToString: @"."]){ 		//change period to 2 newlines
-		[desc appendAttributedString:
-			[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
+		[desc appendString: @"\n\n"];
 	}else{									//add newlines before DescDetail
-		[desc appendAttributedString:
-			[[[NSMutableAttributedString alloc]
-					initWithString: [NSString stringWithFormat: @"\n\n%@ ", line]]
-			autorelease]];
+		[desc appendString:[NSString stringWithFormat: @"\n\n%@ ", line]];
 	}
 
 	while (nil != (line = [e nextObject])){
 		//remove linefeed within paragraphs to allow wrapping in text view
 		line = [line strip];
-		//in fink descriptions, paragraph breaks are signified by a period
-		if ([line isEqualToString: @"."]){
+		/* 	In fink descriptions, paragraph breaks are signified by a period. 
+			At least one package description separates sections by double
+			periods. */
+		if ([line containsExpression: @"^[.]+$"]){
 			if ([[desc string] hasSuffix:@"\n"]){
 				line = @"\n";
 			}else{
 				line = @"\n\n";
 			}
-		//if line begins with punctuation intended as a bullet, put the linefeed back
-		}else if ([line hasPrefix:@"-"] || [line hasPrefix:@"*"] || [line hasPrefix:@"o "]){
+		//If line begins with punctuation intended as a bullet, put the linefeed back
+		}else if ([line hasPrefix:@"-"] 	|| 
+				  [line hasPrefix:@"*"] 	|| 
+				  [line hasPrefix:@"o "]){
 			line = [NSString stringWithFormat: @"%@\n", line];
 			if (! [[desc string] hasSuffix: @"\n"]){
 				line = [NSString stringWithFormat: @"\n%@", line];
@@ -126,8 +127,7 @@
 		}else{
 			line = [NSString stringWithFormat: @"%@ ", line]; 
 		}
-		[desc appendAttributedString:
-			[[[NSMutableAttributedString alloc] initWithString: line] autorelease]];
+		[desc appendString:line];
 	}
 	
 	//apply attributes to field names
@@ -171,14 +171,13 @@
 	NSMutableAttributedString *desc =
 		[[[NSMutableAttributedString alloc]
 				initWithString: @""
-				attributes: [NSDictionary dictionaryWithObjectsAndKeys:
-							   [NSFont systemFontOfSize:0], NSFontAttributeName,
-							   nil]] autorelease];
+				attributes: [NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:0]
+										  forKey:NSFontAttributeName]] 
+								autorelease];
 	
 	while (nil != (vName = [e nextObject])){
 		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
 		if ([vNumber length] < 2) vNumber = @"None";
-		//NB there must be a better way to do this:
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
 		[desc appendAttributedString:
 			[[[NSMutableAttributedString alloc]
@@ -186,14 +185,16 @@
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 									[NSFont systemFontOfSize:0], NSFontAttributeName,
 									HEADINGCOLOR, NSForegroundColorAttributeName,
-									nil]] autorelease]];
+									nil]]
+								autorelease]];
 		[desc appendAttributedString:
 			[[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @"\t%@", vNumber]
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 									[NSFont systemFontOfSize:0], NSFontAttributeName,
 									VERSIONCOLOR, NSForegroundColorAttributeName,
-									nil]] autorelease]];
+									nil]] 
+								autorelease]];
 	}	
 	return desc;
 }
@@ -230,9 +231,10 @@
 			[self formattedVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:
 			[self formattedDescriptionString: [pkg fulldesc] forPackage: pkg]];
-		if (i != count - 1){  			//don't add newlines after last package
-			[[textView textStorage] appendAttributedString:
-				[[[NSMutableAttributedString alloc] initWithString: @"\n\n\n"] autorelease]];
+		if (i != count - 1){  			//just add one newline after last package
+			[[textView textStorage] appendString:@"\n\n\n"];
+		}else{
+			[[textView textStorage] appendString:@"\n"];
 		}
 	}
 	

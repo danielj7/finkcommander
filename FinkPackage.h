@@ -109,7 +109,7 @@ enum {
  * Comparison Methods
  */
 
--(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y;
+//-(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y;
 
 -(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByName:(FinkPackage *)pkg;

@@ -302,11 +302,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.4.3</string>
+	<string>0.5.0</string>
 	<key>CFBundleSignature</key>
 	<string>Fcmd</string>
 	<key>CFBundleVersion</key>
-	<string>0.4.3</string>
+	<string>.cvs</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSHumanReadableCopyright</key>
@@ -350,7 +350,8 @@
 				F5067EF503A1BF3001A80167,
 				F57E59B603A998D701A80165,
 				F5056F1103ABDBBD01A80165,
-				F5CB063A03B03CAE01A80165,
+				FBD2DBD803BAA14500A80165,
+				FBC8655103BABC0400A80165,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,7 +435,8 @@
 				F5067EF603A1BF3101A80167,
 				F57E59B703A998D701A80165,
 				F5056F1203ABDBBD01A80165,
-				F5CB063B03B03CAE01A80165,
+				FBD2DBD903BAA14500A80165,
+				FBC8655203BABC0400A80165,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -925,6 +927,8 @@
 			children = (
 				F536C03E0280F24501A80164,
 				F536C03F0280F24501A80164,
+				FBD2DBD603BAA14500A80165,
+				FBD2DBD703BAA14500A80165,
 			);
 			isa = PBXGroup;
 			name = Categories;
@@ -1744,34 +1748,10 @@
 			settings = {
 			};
 		};
-		F5CB063803B03CAE01A80165 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = SBUtilities.h;
-			refType = 4;
-		};
-		F5CB063903B03CAE01A80165 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = SBUtilities.m;
-			refType = 4;
-		};
-		F5CB063A03B03CAE01A80165 = {
-			fileRef = F5CB063803B03CAE01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5CB063B03B03CAE01A80165 = {
-			fileRef = F5CB063903B03CAE01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F5CB063C03B03E5E01A80165 = {
 			children = (
-				F5CB063803B03CAE01A80165,
-				F5CB063903B03CAE01A80165,
+				FBC8654F03BABC0400A80165,
+				FBC8655003BABC0400A80165,
 			);
 			isa = PBXGroup;
 			name = "Other Sources";
@@ -2118,6 +2098,56 @@
 //FB2
 //FB3
 //FB4
+		FBC8654F03BABC0400A80165 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = SBUtilities.h;
+			path = SBTreeFiles/SBUtilities.h;
+			refType = 4;
+		};
+		FBC8655003BABC0400A80165 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = SBUtilities.m;
+			path = SBTreeFiles/SBUtilities.m;
+			refType = 4;
+		};
+		FBC8655103BABC0400A80165 = {
+			fileRef = FBC8654F03BABC0400A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBC8655203BABC0400A80165 = {
+			fileRef = FBC8655003BABC0400A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBD2DBD603BAA14500A80165 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			path = SBMutableAttributedString.h;
+			refType = 4;
+		};
+		FBD2DBD703BAA14500A80165 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			path = SBMutableAttributedString.m;
+			refType = 4;
+		};
+		FBD2DBD803BAA14500A80165 = {
+			fileRef = FBD2DBD603BAA14500A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBD2DBD903BAA14500A80165 = {
+			fileRef = FBD2DBD703BAA14500A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		FBEE855703B4E18400A80164 = {
 			isa = PBXFileReference;
 			path = flag.tiff;

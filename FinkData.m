@@ -15,6 +15,8 @@ See the header file, FinkData.h, for interface and license information.
 #define PACKAGESTART 9
 #define VERSIONSTART 9
 
+#define USE_NEW_PARSING_METHOD
+
 @implementation FinkData
 
 //---------------------------------------------------------->The Usual
@@ -79,21 +81,23 @@ See the header file, FinkData.h, for interface and license information.
 }
 
 //---------------------------------------------------------->Fink Tools
-//
-//  Tools for getting and storing information about fink packages in the array.
-//
-//  update: is the "public" method.  It runs a custom perl script 
-//  in an NSTask to obtain a list of all package names and their installation 
-//  states and stores the information in FinkPackage instances in array.
-//  completUpdate: is called by notification after the asynchronous task
-//  called by update is competed.
-//
-//	makeBinaryDictionary is a helper method used to determine
-//  the version of packages in the array that are available in binary form.
-//
-//  A series of methods between update: and completeUpdate: parse the output
-//  from the task to derive the package's full description, web url, maintainer name
-//  and maintainer email address.
+/*
+ Tools for getting and storing information about fink packages in the
+ packageArray.
+
+ updateBinaryPackageDictionary: is a helper method used to determine
+ the version of packages in the array that are available in binary form.
+
+ update: is the "public" method.  It runs a custom perl script in an
+ NSTask to obtain a list of all package names and their installation
+ states and stores the information in FinkPackage instances in
+ packageArray.  completUpdate: is called by notification after the
+ asynchronous task called by update is competed.
+
+ A series of methods between update: and completeUpdate: parse the
+ output  from the task to derive the package's full description, web
+ url, maintainer name and maintainer email address.
+ */
 
 -(NSDictionary *)makeBinaryDictionary
 {
@@ -179,20 +183,21 @@ See the header file, FinkData.h, for interface and license information.
     return [s substringWithRange: r];
 }
 
--(NSArray *)parseMaintainerInfoFromString:(NSString *)s
+-(void)getMaintainerName:(NSString **)name
+	emailAddress:(NSString **)address
+	fromDescription:(NSString *)s
 {
-    NSString *name;    
-    NSString *address;
-
-    int emailstart = [s rangeOfString: @"<"].location;   
+    int emailstart = [s rangeOfString: @"<"].location;
     int emailend   = [s rangeOfString: @">"].location;
-
-    if (emailstart == NSNotFound || emailend == NSNotFound){
-		return [NSArray arrayWithObjects: @"", @"", nil];
-    }	
-    name = [s substringWithRange:NSMakeRange(NAMESTART, emailstart - NAMESTART - 1)];
-    address = [s substringWithRange:NSMakeRange(emailstart + 1, emailend - emailstart - 1)];
-    return [NSArray arrayWithObjects: name, address, nil];
+	    if (emailstart == NSNotFound || emailend == NSNotFound){
+			*name = @"";
+			*address = @"";
+			return;
+		}
+		*name = [s substringWithRange:
+					NSMakeRange(NAMESTART, emailstart - NAMESTART - 1)];
+		*address = [s substringWithRange:
+					NSMakeRange(emailstart + 1, emailend - emailstart - 1)];
 }
 
 -(NSArray *)descriptionComponentsFromString:(NSString *)s
@@ -211,9 +216,9 @@ See the header file, FinkData.h, for interface and license information.
 		if ([line contains: WEBKEY]){
 			web = [self parseWeburlFromString: line];
 		}else if ([line contains: MAINTAINERKEY]){
-			NSArray *info = [self parseMaintainerInfoFromString: line];
-			maint = [info objectAtIndex: 0];
-			email = [info objectAtIndex: 1];
+            [self getMaintainerName:&maint
+					emailAddress:&email
+					fromDescription:line];
 		}
     }
     return [NSArray arrayWithObjects: web, maint, email, nil];
@@ -224,16 +229,17 @@ See the header file, FinkData.h, for interface and license information.
     NSDictionary *info = [n userInfo];
     NSData *d;
     NSString *output; 
-    NSMutableArray *temp;
+    NSMutableArray *outputComponents;
     NSMutableArray *collector = [NSMutableArray array];
-    NSArray *listRecord;
-    NSArray *components;
+    NSArray *packageComponents;
+    NSArray *descriptionComponents;
     NSEnumerator *e;
     FinkPackage *p;
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *path;
 	NSString *bversion;
 	NSArray *flagArray = [defaults objectForKey:FinkFlaggedColumns];
+	BOOL showRedundantPackages = [defaults boolForKey:FinkShowRedundantPackages];
 	
 	d = [info objectForKey: NSFileHandleNotificationDataItem];
 	output = [[[NSString alloc] initWithData:d
@@ -242,26 +248,27 @@ See the header file, FinkData.h, for interface and license information.
 	Dprintf(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
 
-    temp = [NSMutableArray arrayWithArray:
-	       [output componentsSeparatedByString: @"\n----\n"]];
-    [temp removeObjectAtIndex: 0];  // "Reading package info . . . "
-    e = [temp objectEnumerator];
 
-    while (nil != (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"])){
+    outputComponents = [NSMutableArray arrayWithArray:
+	       [output componentsSeparatedByString: @"\n----\n"]];
+    [outputComponents removeObjectAtIndex: 0];  // "Reading package info . . . "
+    e = [outputComponents objectEnumerator];
+
+    while (nil != (packageComponents = [[e nextObject] componentsSeparatedByString: @"**\n"])){
 		/* 	Without a separate autorelease pool for this loop,
 			FinkCommander's memory usage increases by several megabytes
 			while the updating process is taking place.  */
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		p = [[FinkPackage alloc] init];
-		[p setName:[listRecord objectAtIndex: 0]];
-		[p setStatus:[listRecord objectAtIndex: 1]];
-		[p setVersion:[listRecord objectAtIndex: 2]];
-		[p setInstalled:[listRecord objectAtIndex: 3]];
-		[p setStable:[listRecord objectAtIndex: 4]];
-		[p setUnstable:[listRecord objectAtIndex: 5]];
-		[p setCategory:[listRecord objectAtIndex: 6]];
-		[p setSummary:[listRecord objectAtIndex: 7]];
-		[p setFulldesc:[listRecord objectAtIndex: 8]];
+		[p setName:[packageComponents objectAtIndex: 0]];
+		[p setStatus:[packageComponents objectAtIndex: 1]];
+		[p setVersion:[packageComponents objectAtIndex: 2]];
+		[p setInstalled:[packageComponents objectAtIndex: 3]];
+		[p setStable:[packageComponents objectAtIndex: 4]];
+		[p setUnstable:[packageComponents objectAtIndex: 5]];
+		[p setCategory:[packageComponents objectAtIndex: 6]];
+		[p setSummary:[packageComponents objectAtIndex: 7]];
+		[p setFulldesc:[packageComponents objectAtIndex: 8]];
 		
 		/* 	Many package have identical versions in the stable and
 			unstable branches. If unstable is listed first in
@@ -275,24 +282,23 @@ See the header file, FinkData.h, for interface and license information.
 			path = [p pathToPackageInTree:@"stable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){
 				[p setStable:[p unstable]];
-				if (! [defaults boolForKey:FinkShowRedundantPackages]){
+				if (! showRedundantPackages){
 					[p setUnstable:@" "];
 				}
 			}
 		}
-
-		if ([defaults boolForKey:FinkShowRedundantPackages] &&
-			[[p unstable] length] < 2 						&&
+		if (showRedundantPackages 		&& 
+			[[p unstable] length] < 2 	&& 
 			[[p stable] length] > 1){
 			path = [p pathToPackageInTree:@"unstable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){
 				[p setUnstable:[p stable]];
 			}
 		}
-		components = [self descriptionComponentsFromString: [p fulldesc]];
-		[p setWeburl: [components objectAtIndex: 0]];
-		[p setMaintainer: [components objectAtIndex: 1]];
-		[p setEmail: [components objectAtIndex: 2]];
+		descriptionComponents = [self descriptionComponentsFromString: [p fulldesc]];
+		[p setWeburl: [descriptionComponents objectAtIndex: 0]];
+		[p setMaintainer: [descriptionComponents objectAtIndex: 1]];
+		[p setEmail: [descriptionComponents objectAtIndex: 2]];
 		
 		bversion = [binaryPackages objectForKey:[p name]];
 		bversion = bversion ? bversion : @" ";

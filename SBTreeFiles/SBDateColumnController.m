@@ -10,28 +10,28 @@ the formats. These macros are used in the formatForWidth: method to determine
 the longest possible date format that will fit in the current column length. */
 
 #define FULL_MONTH_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"240.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
-#define FULL_MONTH_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%A %B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
+#define FULL_MONTH_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%A, %B %e, %Y, %I:%M %p", @"Date",  @"Full month name, day, year, time")
 
-#define FULL_MONTH_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"200.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
-#define FULL_MONTH_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
+//#define FULL_MONTH_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"200.0", @"Date", @"Minimum width for full month name, day, year, time") floatValue]
+//#define FULL_MONTH_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y  %I:%M %p", @"Date",  @"Full month name, day, year, time")
 
-#define ABBREVIATED_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"190.0", @"Date",  @"Minimum width for abbreviated day and month names, day, year, time") floatValue]
-#define ABBREVIATED_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%a %b %e, %Y  %I:%M %p", @"Date", @"Abbreviated day and month names, day, year, time")
+#define ABBREVIATED_WITH_DAY_AND_TIME_WIDTH [NSLocalizedStringFromTable(@"170.0", @"Date",  @"Minimum width for abbreviated day and month names, day, year, time") floatValue]
+#define ABBREVIATED_WITH_DAY_AND_TIME_FORMAT NSLocalizedStringFromTable(@"%a, %b %e, %Y, %I:%M %p", @"Date", @"Abbreviated day and month names, day, year, time")
 
-#define ABBREVIATED_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"165.0", @"Date", @"Minimum width for abbreviated month name, day and year plus time") floatValue]
-#define ABBREVIATED_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y  %I:%M %p", @"Date",  @"Abbreviated month name, day and year plus time")
+//#define ABBREVIATED_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"150.0", @"Date", @"Minimum width for abbreviated month name, day and year plus time") floatValue]
+//#define ABBREVIATED_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y, %I:%M %p", @"Date",  @"Abbreviated month name, day and year plus time")
 
-#define NUMERIC_Y4_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"155.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
-#define NUMERIC_Y4_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
+#define NUMERIC_Y4_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"145.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
+#define NUMERIC_Y4_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y, %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
 
-#define NUMERIC_Y2_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"145.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
-#define NUMERIC_Y2_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y  %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
+#define NUMERIC_Y2_WITH_TIME_WIDTH [NSLocalizedStringFromTable(@"130.0", @"Date", @"Minimum width for numeric format with two-digit year plus time") floatValue]
+#define NUMERIC_Y2_WITH_TIME_FORMAT NSLocalizedStringFromTable(@"%m/%d/%y, %I:%M %p", @"Date", @"Numeric format with two-digit year plus time")
 
-#define FULL_MONTH_WIDTH [NSLocalizedStringFromTable(@"125.0", @"Date", @"Minimum width for full month name, day and year format") floatValue]
-#define FULL_MONTH_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y", @"Date", @"Full month name, day and year")
+//#define FULL_MONTH_WIDTH [NSLocalizedStringFromTable(@"120.0", @"Date", @"Minimum width for full month name, day and year format") floatValue]
+//#define FULL_MONTH_FORMAT NSLocalizedStringFromTable(@"%B %e, %Y", @"Date", @"Full month name, day and year")
 
-#define ABBREVIATED_WIDTH [NSLocalizedStringFromTable(@"95.0", @"Date", @"Minimum width for abbreviated month name, day and year") floatValue]
-#define ABBREVIATED_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y", @"Date", @"Abbreviated month name, day and year")
+//#define ABBREVIATED_WIDTH [NSLocalizedStringFromTable(@"95.0", @"Date", @"Minimum width for abbreviated month name, day and year") floatValue]
+//#define ABBREVIATED_FORMAT NSLocalizedStringFromTable(@"%b %e, %Y", @"Date", @"Abbreviated month name, day and year")
 
 #define NUMERIC_Y4_WIDTH [NSLocalizedStringFromTable(@"80.0", @"Date", @"Minimum width for numeric format with four-digit year") floatValue]
 #define NUMERIC_Y4_FORMAT NSLocalizedStringFromTable(@"%m/%d/%Y", @"Date", @"Numeric format with four-digit year")
@@ -78,10 +78,10 @@ the longest possible date format that will fit in the current column length. */
 
 		if ([[[self column] tableView] isKindOfClass:[NSOutlineView class]]){
 			[[NSNotificationCenter defaultCenter]
-		addObserver:self
-		   selector:@selector(adjustColumnAndHeaderDisplay:)
-			   name:NSOutlineViewColumnDidResizeNotification
-			 object:nil];
+				addObserver:self
+				selector:@selector(adjustColumnAndHeaderDisplay:)
+				name:NSOutlineViewColumnDidResizeNotification
+				object:nil];
 		}else{
 			[[NSNotificationCenter defaultCenter]
 				addObserver:self
@@ -146,20 +146,32 @@ the longest possible date format that will fit in the current column length. */
 {
     if (width >= FULL_MONTH_WITH_DAY_AND_TIME_WIDTH)
 		return FULL_MONTH_WITH_DAY_AND_TIME_FORMAT;
+
+#ifdef UNDEF
     if (width >= FULL_MONTH_WITH_TIME_WIDTH)
 		return FULL_MONTH_WITH_TIME_FORMAT;
+#endif
+
     if (width >= ABBREVIATED_WITH_DAY_AND_TIME_WIDTH)
 		return ABBREVIATED_WITH_DAY_AND_TIME_FORMAT;
+
+#ifdef UNDEF
     if (width >= ABBREVIATED_WITH_TIME_WIDTH)
 		return ABBREVIATED_WITH_TIME_FORMAT;
+#endif
+
     if (width >= NUMERIC_Y4_WITH_TIME_WIDTH)
 		return NUMERIC_Y4_WITH_TIME_FORMAT;
     if (width >= NUMERIC_Y2_WITH_TIME_WIDTH) 
 		return NUMERIC_Y2_WITH_TIME_FORMAT;
+
+#ifdef UNDEF
     if (width >= FULL_MONTH_WIDTH)
 		return FULL_MONTH_FORMAT;
     if (width >= ABBREVIATED_WIDTH)
 		return ABBREVIATED_FORMAT;
+#endif
+
     if (width >= NUMERIC_Y4_WIDTH) 
 		return NUMERIC_Y4_FORMAT;
     return NUMERIC_Y2_FORMAT;
