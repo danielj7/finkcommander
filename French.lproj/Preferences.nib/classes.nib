@@ -25,6 +25,8 @@
                 askOnStartupButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
+                checkForUpdateButton = NSButton; 
+                checkForUpdateIntervalTextField = NSTextField; 
                 deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 
                 environmentTableView = NSTableView; 
@@ -49,13 +51,14 @@
                 scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 showPackagesInTitleButton = NSButton; 
+                showRedundantPackagesButton = NSButton; 
                 tabView = NSTabView; 
                 titleBarImageView = NSImageView; 
                 updateWithFinkButton = NSButton; 
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
                 valueTextField = NSTextField; 
-                verboseOutputButton = NSButton; 
+                verboseOutputPopupButton = NSPopUpButton; 
                 warnBeforeRemovingButton = NSButton; 
                 warnBeforeRunningButton = NSButton; 
             }; 
