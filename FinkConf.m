@@ -62,6 +62,10 @@ File: FinkConf.m
 
 //--------------------------------------------------->Fink.conf Accessors
 
+/*
+ * Unstable
+ */
+
 -(BOOL)useUnstableMain
 {
 	if ([[finkConfDict objectForKey: @"Trees"] 
@@ -70,7 +74,8 @@ File: FinkConf.m
 	}
 	return YES;
 }
-//this is called after setUseUnstableCrypto in FinkPreferences
+
+//This is called after setUseUnstableCrypto in FinkPreferences
 //so inserting at index 0 will insure unstable/main comes first
 -(void)setUseUnstableMain:(BOOL)shouldUseUnstable
 {
@@ -88,7 +93,6 @@ File: FinkConf.m
 		}
 	}
 }
-
 
 -(BOOL)useUnstableCrypto
 {
@@ -116,6 +120,18 @@ File: FinkConf.m
 	}
 }
 
+//Flag whether fink index needs to be run in order to update the table
+-(void)setFinkTreesChanged:(BOOL)b
+{
+	finkTreesChanged = b;
+}
+
+/*
+ * Verbosity
+ */
+
+//does the user have PM v. 0.10 or later and therefore access to the
+//additional verbosity options?
 -(BOOL)extendedVerboseOptions
 {
 	if ([defaults boolForKey:FinkExtendedVerbosity]){
@@ -165,24 +181,9 @@ File: FinkConf.m
 	[finkConfDict setObject:loquacity forKey:@"Verbose"];
 }
 
-
--(BOOL)passiveFTP
-{
-	if ([[finkConfDict objectForKey: @"ProxyPassiveFTP"] isEqualToString: @"true"]){
-		return YES;
-	}
-	return NO;
-}
-
--(void)setPassiveFTP:(BOOL)passiveFTP
-{
-	if (passiveFTP){
-		[finkConfDict setObject: @"true" forKey: @"ProxyPassiveFTP"];
-	}else{
-		[finkConfDict setObject: @"false" forKey: @"ProxyPassiveFTP"];
-	}
-}
-
+/*
+ * Keeping Directories
+ */
 
 -(BOOL)keepBuildDir
 {
@@ -200,7 +201,6 @@ File: FinkConf.m
 		[finkConfDict setObject: @"false" forKey: @"KeepBuildDir"];
 	}
 }
-
 
 -(BOOL)keepRootDir
 {
@@ -221,6 +221,26 @@ File: FinkConf.m
 	
 }
 
+/*
+ * Downloads
+ */
+
+-(BOOL)passiveFTP
+{
+	if ([[finkConfDict objectForKey: @"ProxyPassiveFTP"] isEqualToString: @"true"]){
+		return YES;
+	}
+	return NO;
+}
+
+-(void)setPassiveFTP:(BOOL)passiveFTP
+{
+	if (passiveFTP){
+		[finkConfDict setObject: @"true" forKey: @"ProxyPassiveFTP"];
+	}else{
+		[finkConfDict setObject: @"false" forKey: @"ProxyPassiveFTP"];
+	}
+}
 
 -(NSString *)useHTTPProxy
 {
@@ -236,7 +256,6 @@ File: FinkConf.m
 	}
 }
 
-
 -(NSString *)useFTPProxy
 {
 	return [finkConfDict objectForKey: @"ProxyFTP"];
@@ -250,7 +269,6 @@ File: FinkConf.m
 		[finkConfDict removeObjectForKey: @"ProxyFTP"];
 	}
 }
-
 
 -(NSString *)downloadMethod
 {
@@ -266,6 +284,23 @@ File: FinkConf.m
 	[finkConfDict setObject:s forKey: @"DownloadMethod"];
 }
 
+-(NSString *)fetchAltDir
+{
+	return [finkConfDict objectForKey: @"FetchAltDir"];
+}
+
+-(void)setFetchAltDir:(NSString *)s
+{
+	if (s != nil){
+		[finkConfDict setObject:s forKey: @"FetchAltDir"];
+	}else{
+		[finkConfDict removeObjectForKey: @"FetchAltDir"];
+	}
+}
+
+/*
+ * Root Authorization Method
+ */
 
 -(NSString *)rootMethod
 {
@@ -279,27 +314,6 @@ File: FinkConf.m
 -(void)setRootMethod:(NSString *)s
 {
 	[finkConfDict setObject:s forKey: @"RootMethod"];
-}
-
-
--(NSString *)fetchAltDir
-{
-	return [finkConfDict objectForKey: @"FetchAltDir"];
-}
-
--(void)setFetchAltDir:(NSString *)s
-{
-	if (s != nil){
-		[finkConfDict setObject:s forKey: @"FetchAltDir"];
-	}else{
-		[finkConfDict removeObjectForKey: @"FetchAltDir"];
-	}	
-}
-
-
--(void)setFinkTreesChanged:(BOOL)b
-{
-	finkTreesChanged = b;
 }
 
 

@@ -72,7 +72,7 @@ File: FinkOutputParser.h
 							 [[(x) strip] containsPattern: @"cc -[!E]*"]			|| \
 							 [[(x) strip] containsPattern: @"c++ -[!E]*"])
 
-#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]				|| \
+#define ISPROMPT(x) 		([(x) containsPattern: @"*proceed? \[*"]				|| \
 							 [(x) contains: @"Make your choice:"]					|| \
 							 [(x) contains: @"Pick one:"]							|| \
 							 [(x) containsCI: @"[y/n]"] 							|| \

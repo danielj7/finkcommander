@@ -37,6 +37,6 @@
 
  */
 
-#include <Carbon/Carbon.h>
+ //#include <Carbon/Carbon.h>
 
 extern char* getPathToMyself();

@@ -105,7 +105,7 @@ int perform(const char* cmd, char * const *argv)
 	}
 	else if (pid == -1)
 	{
-		fprintf(stderr, "fork() failed.  errno=%d (%s)", errno, strerror(errno));
+		fprintf(stderr, "fork() failed.  errno=%d (%s)\n", errno, strerror(errno));
 	}
 	else  {
 		fflush(stderr);
@@ -135,13 +135,15 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 	/* 	Open fromfile for reading */
 	in_file = open(fromfile, O_RDONLY);
 	if (in_file == -1) {
-		fprintf(stderr, "Error, %s: opening %s for reading\n", strerror(errno), fromfile);
+		fprintf(stderr, "Failed to open %s for reading, errno=%d (%s)\n", 
+				fromfile, errno, strerror(errno));
 		return 1;
 	}
 	/*	Open tofile for writing */
 	out_file = open(tofile, wflags, 0644);
 	if (out_file == -1) {
-		fprintf(stderr,"%s: opening %s for writing\n", strerror(errno), tofile);
+		fprintf(stderr,"Failed to open %s for writing, errno=%d (%s)\n", 
+				tofile, errno, strerror(errno));
 		return 1;
 	}
 	while (1){
@@ -151,14 +153,16 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 			break;  
 		}
 		if (rsize == -1){
-			fprintf(stderr,"%s: reading %s\n", strerror(errno), fromfile);
-			return 2;
+			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
+					fromfile, errno, strerror(errno));
+			return 1;
 		}
 		/*	Write tofile  */
 		wsize = write(out_file, buffer, (unsigned int)rsize);
 		if (wsize == -1){
-			fprintf(stderr,"%s: writing to %s\n", strerror(errno), tofile);
-			return 3;
+			fprintf(stderr,"Reading %s failed, errno=%d (%s)\n", 
+					tofile, errno, strerror(errno));
+			return 1;
 		}
 	}
 	close(in_file);
@@ -168,7 +172,7 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 
 /*
  *  Back up fink.conf to fink.conf~.
- *  Read in fink.conf.tmp (created by FinkConf object).
+ *  Read in fink.conf.tmp created by FinkConf writeToFile method
  *  Write contents to fink.conf.
  */
 int write_fconf(char *basepath)
@@ -268,7 +272,7 @@ int launch_to_repair_self(AuthorizationRef* auth)
             /* Wait for the child of AuthorizationExecuteWithPrivileges to exit. */
             if (wait(&status) != -1 && WIFEXITED(status))
             {
-                fprintf(stderr,"The tool exited with status %d, WEXITSTATUS(status) %d\n", status, WEXITSTATUS(status));
+               // fprintf(stderr,"The tool exited with status %d, WEXITSTATUS(status) %d\n", status, WEXITSTATUS(status));
                 result = WEXITSTATUS(status);
             }
         }
@@ -293,7 +297,7 @@ main(int argc, char * const *argv)
      * before they're allowed to go any further.
      */
     if (! readAuthorization(&auth)){
-        fprintf(stderr,"Failed to read authorization from stdin\n");
+        fprintf(stderr, "Failed to read authorization from stdin\n");
         exit(1);
     }
     

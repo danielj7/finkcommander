@@ -1,5 +1,5 @@
 /*
-File: FinkGlobals.h
+ File: FinkGlobals.h
 
  FinkCommander
 

@@ -194,7 +194,7 @@
 			children = (
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
-				F5C523DC02A33E0A01A80165,
+				F5C523DD02A33E0A01A80165,
 				F53B4D0503100C3501A80164,
 				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
@@ -362,7 +362,7 @@
 				F542437E028CE54B01A80166,
 				F5424380028CE59801A80166,
 				F50A222A0296AB2901A80166,
-				F5C523DE02A33E0A01A80165,
+				F5B40B2F033A578801FE217B,
 				F5B9D9EB02B232D501A8016B,
 				F5B9D9F602B3D67A01A8016B,
 				F5B9D9F702B3D67A01A8016B,
@@ -1314,6 +1314,12 @@
 			path = Spanish.lproj/Credits.html;
 			refType = 4;
 		};
+		F5B40B2F033A578801FE217B = {
+			fileRef = F5C523DD02A33E0A01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5B9D9E402B1D61C01A8016B = {
 			isa = PBXFileReference;
 			path = MyTextView.m;
@@ -1416,26 +1422,10 @@
 			settings = {
 			};
 		};
-		F5C523DC02A33E0A01A80165 = {
-			children = (
-				F5C523DD02A33E0A01A80165,
-			);
-			isa = PBXVariantGroup;
-			name = PackageInfo.nib;
-			path = "";
-			refType = 4;
-		};
 		F5C523DD02A33E0A01A80165 = {
 			isa = PBXFileReference;
-			name = English;
-			path = English.lproj/PackageInfo.nib;
+			path = PackageInfo.nib;
 			refType = 4;
-		};
-		F5C523DE02A33E0A01A80165 = {
-			fileRef = F5C523DC02A33E0A01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5CC37120304F26F01A80164 = {
 			isa = PBXFileReference;

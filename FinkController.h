@@ -178,26 +178,22 @@ enum {
 	//general instance variables
 
 	FinkDataController *packages;
-	
-	NSUserDefaults *defaults;
-	
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
 	FinkOutputParser *parser;
-	NSArray *selectedPackages;
-	NSString *lastCommand;
-	BOOL commandIsRunning;
-	NSToolbar *toolbar;
-	BOOL userConfirmedQuit;
-	BOOL commandTerminated;
-
-	BOOL pendingCommand;
-	NSMutableArray *lastParams;
-
-	NSString *launcher;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;
-//	IOTaskWrapper *finkTask;
+	NSUserDefaults *defaults;
+	NSToolbar *toolbar;
+	NSArray *selectedPackages;
+	NSMutableArray *lastParams;
+	NSString *lastCommand;
+	NSString *launcher;
+	BOOL commandIsRunning;
+	BOOL userConfirmedQuit;
+	BOOL commandTerminated;
+	BOOL pendingCommand;
+	BOOL toolIsBeingFixed;
 }
 
 //Accessors
@@ -254,7 +250,6 @@ enum {
 // run the command
 -(void)runCommandWithParameters:(NSMutableArray *)params;
 // AuthorizedExecutable delegate methods
--(void)processStarted;
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;
 

@@ -430,7 +430,7 @@
 //
 - (void)stop
 {
-	int status = [task terminationStatus];
+	int status;
 
     if (stdoutHandle)
     {
@@ -448,9 +448,11 @@
     }
     if ([task isRunning])
     {
+		Dprintf(@"Task terminated");
         [task terminate];
-        [self log:@"Command terminated\n"];
+		[task waitUntilExit];
     }
+	status = [task terminationStatus];
     [task release];
     [stdinHandle release];
     [stdoutHandle release];

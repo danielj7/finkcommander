@@ -25,7 +25,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 @implementation FinkController
 
 //--------------------------------------------------------------------------------
-//		STARTUP AND SHUTDOWN
+#pragma mark STARTUP AND SHUTDOWN
 //--------------------------------------------------------------------------------
 
 //----------------------------------------------->Initialize
@@ -250,7 +250,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		ACCESSORS
+#pragma mark ACCESSORS
 //--------------------------------------------------------------------------------
 
 -(FinkDataController *)packages  {return packages;}
@@ -287,7 +287,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		APPLICATION AND WINDOW DELEGATES
+#pragma mark APPLICATION AND WINDOW DELEGATES
 //--------------------------------------------------------------------------------
 
 //warn before quitting if a command is running
@@ -331,7 +331,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//	 	HELPERS
+#pragma mark HELPERS
 //--------------------------------------------------------------------------------
 
 //display running command below table
@@ -382,7 +382,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 
 //--------------------------------------------------------------------------------
-//		MENU COMMANDS
+#pragma mark MENU COMMANDS
 //--------------------------------------------------------------------------------
 
 //----------------------------------------------->Running Commands
@@ -681,8 +681,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Menu Item Delegate
-//helper for menu item and toolbar item validators
 
+//helper for menu item and toolbar item validators
 -(BOOL)validateItem:(id)theItem
 {
 	//disable package-specific commands if no row selected
@@ -725,7 +725,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 
 //--------------------------------------------------------------------------------
-//		TOOLBAR METHODS
+#pragma mark TOOLBAR METHODS
 //--------------------------------------------------------------------------------
 
 -(void)setupToolbar
@@ -879,7 +879,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		TABLEVIEW NOTIFICATION METHOD
+#pragma mark TABLEVIEW NOTIFICATION METHOD
 //--------------------------------------------------------------------------------
 
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
@@ -890,16 +890,17 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //--------------------------------------------------------------------------------
-//		AUTHENTICATION AND PROCESS CONTROL
+#pragma mark PROCESS CONTROL
 //--------------------------------------------------------------------------------
 
 //----------------------------------------------->Interaction Sheet Methods
 
 -(IBAction)raiseInteractionWindow:(id)sender
 {
-	if ([defaults boolForKey: FinkAutoExpandOutput]){
-		[splitView expandOutput];
-	}
+	[splitView expandOutput];
+	[textView scrollRangeToVisible:
+		NSMakeRange([[textView string] length], 0)];
+
 	[NSApp beginSheet: interactionWindow
 	   modalForWindow: window
 		modalDelegate: self
@@ -986,6 +987,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[params insertObject: @"-q0" atIndex: 3];
 	}
 	pendingCommand = NO;
+	toolIsBeingFixed = NO;
 	[self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
 												executable:exec]];
 
@@ -993,7 +995,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
 	[finkTask authorizeWithQuery];
 	[finkTask start];
-	[self processStarted];
+	[textView setString: @""];
 }
 
 //allow other objects, e.g. FinkConf, to run authorized commands
@@ -1003,7 +1005,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSString *cmd = [args objectAtIndex: 0];
 	NSNumber *indicator = [[note userInfo] objectForKey:FinkRunProgressIndicator];
 		
-	if (commandIsRunning){
+	if (commandIsRunning && !toolIsBeingFixed){
 		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
 				  NSLocalizedString(@"YouMustWait", nil),
 				  NSLocalizedString(@"OK", nil), nil, nil);
@@ -1026,22 +1028,16 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		  afterDelay:1.0];
 }
 
-//----------------------------------------------->IOTaskWrapper Protocol Implementation
-
--(void)processStarted
-{
-    [textView setString: @""];
-}
-
+//----------------------------------------------->Helpers for Delegates
 
 -(void)scrollToVisible:(NSNumber *)pixelsBelowView
 {
 	//window or splitview resizing often results in some gap between
 	//the scroll thumb and the bottom, so the test shouldn't be whether
 	//there are 0 pixels below the scroll view
-	if ([pixelsBelowView floatValue] <= 100.0 || 
-		[defaults boolForKey: FinkAlwaysScrollToBottom]){
-		[textView scrollRangeToVisible:	
+	if ([pixelsBelowView floatValue] <= 100.0 ||
+	 [defaults boolForKey: FinkAlwaysScrollToBottom]){
+		[textView scrollRangeToVisible:
 			NSMakeRange([[textView string] length], 0)];
 	}
 }
@@ -1067,6 +1063,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self incrementPIBy:[parser increment]];
 }
 
+//----------------------------------------------->AuthorizedExecutable Delegate Methods
+
+
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore
 {	
 	//total document length (in pixels) 						- 
@@ -1088,8 +1087,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		case NONE:
 			break;
 		case PASSWORD_PROMPT:
-			output = NSLocalizedString(@"Password error.  Please try again.", nil);
-			[finkTask writeToStdin:@"\n"];
+			Dprintf(@"Password prompt received");
+			output = @"";
+			[finkTask stop];
 			break;
 		case PROMPT:
 			NSBeep();
@@ -1127,7 +1127,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[self setGUIForPhase:ACTIVATE];
 			break;
 		case SELF_REPAIR:
-			output = NSLocalizedString(@"Error:\nThe tool used to run fink commands lost its administrative 	privileges and had to repair itself.\nPlease re-try the command.", nil);
+			output = NSLocalizedString(@"Error:\nThe tool used to run fink commands lost its administrative privileges and had to repair itself.\nPlease re-try the command.\n", nil);
 			break;
 	}
 	[textView appendString:output];
@@ -1144,7 +1144,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
 	
-	Dprintf(@"Finishing; lastCommand = %@", lastCommand);
+	Dprintf(@"Finishing command %@ with status %d", lastCommand, status);
 
 	if (! [[self lastCommand] contains: @"cp"] 		&& 
 		! [[self lastCommand] contains: @"chown"] 	&&
