@@ -14,8 +14,7 @@
 		080E96DDFE201D6D7F000001 = {
 			children = (
 				F53369F60218261B01A80165,
-				F527284D0221B4E801A80164,
-				F535A64402F266D501A80164,
+				F55FBB1E02F3B8C901A80164,
 				F527284E0221B4E801A80164,
 				F5DE1D8E022845A201A80164,
 				F54BD02602D549F101A80165,
@@ -240,7 +239,7 @@
 				29B9732DFDCFA39411CA2CEA,
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "/Users/sburr/CamelBones/build /Users/sburr/Library/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = "/Users/sburr/CamelBones/build /Users/sburr/Library/Frameworks /Users/sburr/FinkCommanderDev/FinkCommander";
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";
@@ -314,8 +313,7 @@
 				F54BD02902D549F101A80165,
 				F512CBF102E6749301BD3D51,
 				F553429302E9F45A015ADE4E,
-				F535A66602F308E601A80164,
-				F5DA058C02F35FC501A80164,
+				F55FBB1F02F3B8C901A80164,
 			);
 			isa = PBXHeadersBuildPhase;
 		};
@@ -370,8 +368,7 @@
 				F54BD02802D549F101A80165,
 				F512CBF002E6749301BD3D51,
 				F553429202E9F45A015ADE4E,
-				F535A66702F308E801A80164,
-				F5DA058B02F35FC001A80164,
+				F55FBB2002F3B8C901A80164,
 			);
 			isa = PBXSourcesBuildPhase;
 		};
@@ -387,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F536582402A89F0D01A8016A,
+				F55FBAE802F3B82B01A80164,
 			);
 			isa = PBXFrameworksBuildPhase;
 		};
@@ -495,19 +493,9 @@
 			settings = {
 			};
 		};
-		F527284B0221B4E801A80164 = {
-			isa = PBXFileReference;
-			path = FinkDataController.h;
-			refType = 4;
-		};
 		F527284C0221B4E801A80164 = {
 			isa = PBXFileReference;
 			path = FinkPackage.h;
-			refType = 4;
-		};
-		F527284D0221B4E801A80164 = {
-			isa = PBXFileReference;
-			path = FinkDataController.m;
 			refType = 4;
 		};
 		F527284E0221B4E801A80164 = {
@@ -550,28 +538,6 @@
 		};
 		F53369F70218261B01A80165 = {
 			fileRef = F53369F50218261B01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F535A64402F266D501A80164 = {
-			isa = PBXFileReference;
-			path = FinkData.m;
-			refType = 4;
-		};
-		F535A64602F266E801A80164 = {
-			isa = PBXFileReference;
-			path = FinkData.h;
-			refType = 4;
-		};
-		F535A66602F308E601A80164 = {
-			fileRef = F535A64602F266E801A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F535A66702F308E801A80164 = {
-			fileRef = F535A64402F266D501A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -836,8 +802,7 @@
 		F54A055E029C9F0101A80166 = {
 			children = (
 				F53369F50218261B01A80165,
-				F527284B0221B4E801A80164,
-				F535A64602F266E801A80164,
+				F55FBB1D02F3B8C901A80164,
 				F527284C0221B4E801A80164,
 				F5DE1D8F022845A201A80164,
 				F54BD02702D549F101A80165,
@@ -931,6 +896,34 @@
 		};
 		F559D2C902CC2C6501A80164 = {
 			fileRef = F559D2C802CC2C6501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55FBAE802F3B82B01A80164 = {
+			fileRef = 1058C7A1FEA54F0111CA2CBB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55FBB1D02F3B8C901A80164 = {
+			isa = PBXFileReference;
+			path = FinkDataController.h;
+			refType = 4;
+		};
+		F55FBB1E02F3B8C901A80164 = {
+			isa = PBXFileReference;
+			path = FinkDataController.m;
+			refType = 4;
+		};
+		F55FBB1F02F3B8C901A80164 = {
+			fileRef = F55FBB1D02F3B8C901A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55FBB2002F3B8C901A80164 = {
+			fileRef = F55FBB1E02F3B8C901A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1129,18 +1122,6 @@
 		};
 		F5C523DE02A33E0A01A80165 = {
 			fileRef = F5C523DC02A33E0A01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5DA058B02F35FC001A80164 = {
-			fileRef = F527284D0221B4E801A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F5DA058C02F35FC501A80164 = {
-			fileRef = F527284B0221B4E801A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};
