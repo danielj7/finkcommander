@@ -24,8 +24,8 @@
 
 -(BOOL)containsPattern:(NSString *)pat
 {
-    const char *s = [self cString];
-    const char *p = [pat cString];
+    const char *s = [self UTF8String];
+    const char *p = [pat UTF8String];
     int result;
 
     result = fnmatch(p, s, 0);

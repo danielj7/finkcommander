@@ -51,30 +51,30 @@ File: FinkOutputParser.h
 #define INSTALLTRIGGER(x)	([(x) containsPattern:@"*following *package* will be installed*"] || \
 							 [(x) contains:@"will be rebuilt"])
 
-#define FETCHTRIGGER(x) 	([(x) hasPrefix: @"wget"]  								|| \
-							 [(x) hasPrefix: @"curl"]  								|| \
-							 [(x) hasPrefix: @"axel"])
+#define FETCHTRIGGER(x) 	([[(x) strip] hasPrefix: @"wget"]  				|| \
+							 [[(x) strip] hasPrefix: @"curl"]  				|| \
+							 [[(x) strip] hasPrefix: @"axel"])
 
-#define UNPACKTRIGGER(x) 	([(x) hasPrefix:@"mkdir -p"]    						&& \
+#define UNPACKTRIGGER(x) 	([[(x) strip] containsPattern:@"mkdir -p */src/*"]    	&& \
 							 ![(x) contains:@"root"])
 
-#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 				|| \
-							 [[(x) strip] hasPrefix:@"checking"]					|| \
+#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 		|| \
+							 [[(x) strip] hasPrefix:@"checking for"]		|| \
 							 [[(x) strip] hasPrefix:@"patch"])
 
 #define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]						&& \
-							  ![[(x) strip] contains:@"makefile"])					|| \
+							  ![(x) contains:@"makefile"])							|| \
 							 [[(x) strip] hasPrefix: @"g77 -"]						|| \
 							 [[(x) strip] containsPattern: @"g[c+][c+] -[!E]?*"]	|| \
 							 [[(x) strip] containsPattern: @"cc -[!E]?*"]			|| \
 							 [[(x) strip] containsPattern: @"c++ -[!E]?*"]			|| \
 							 [[(x) strip] hasPrefix: @"building"])
 
-#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]				|| \
-							 [(x) contains: @"Make your choice:"]					|| \
-							 [(x) contains: @"Pick one:"]							|| \
-							 [(x) containsCI: @"[y/n]"] 							|| \
-							 [(x) contains: @"[anonymous]"] 						|| \
+#define ISPROMPT(x) 		([(x) contains: @"you want to proceed?"]		|| \
+							 [(x) contains: @"Make your choice:"]			|| \
+							 [(x) contains: @"Pick one:"]					|| \
+							 [(x) containsCI: @"[y/n]"] 					|| \
+							 [(x) contains: @"[anonymous]"] 				|| \
 							 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 	//fink's --yes option does not work for these prompts:

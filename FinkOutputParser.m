@@ -162,13 +162,11 @@ File: FinkOutputParser.m
 				break;
 			}
 			[fname appendString:chars];
-			[lineScanner scanString:@"-" intoString:&chars];
-			//for almost all packages, the version starts with a number;
-			//so break when we come to a dash followed by a number
-			if ([lineScanner scanCharactersFromSet:nums intoString:nil]){
+			foundDash = [lineScanner scanString:@"-" intoString:nil];
+			if (! foundDash || [lineScanner scanCharactersFromSet:nums intoString:nil]){
 				break;
 			}
-			[fname appendString:chars];
+			[fname appendString:@"-"];
 		}
 		Dprintf(@"file name to compare to pkg names: %@", fname);
 		if ([fname length] > 0){
