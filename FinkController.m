@@ -366,18 +366,23 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 -(IBAction)terminateCommand:(id)sender
 {
 	FinkProcessKiller *terminator = [[[FinkProcessKiller alloc] init] autorelease];
+	int answer1 = NSRunAlertPanel(@"Caution",
+			@"The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\nAre you sure you want to proceed?",
+			@"Terminate", @"Cancel", nil);
 
-	[terminator terminateChildProcesses];
-	
-	sleep(1);
+	if (answer1 == NSAlertDefaultReturn){
+		[terminator terminateChildProcesses];
 
-	if ([[finkTask task] isRunning]){
-		int answer = NSRunAlertPanel(@"Sorry",
-				@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander.\nWhat would you like to do?",
-				@"Quit", @"Continue", nil);
-		if (answer == NSAlertDefaultReturn){
-			userChoseToTerminate = YES;
-			[NSApp terminate: self];
+		sleep(1);
+
+		if ([[finkTask task] isRunning]){
+			int answer2 = NSRunAlertPanel(@"Sorry",
+					@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander.\nWhat would you like to do?",
+					@"Quit", @"Continue", nil);
+			if (answer2 == NSAlertDefaultReturn){
+				userChoseToTerminate = YES;
+				[NSApp terminate: self];
+			}
 		}
 	}
 }

@@ -36,7 +36,9 @@
 	
 	while (line = [e nextObject]){
 		if ([line contains: ppid]){
+#ifdef DEBUG
 			NSLog(@"Found line with pid %@:\n%@", ppid, line);
+#endif //DEBUG
 			pidScanner = [NSScanner scannerWithString: line];
 			//child pid is first set of decimal digits in line
 			[pidScanner scanUpToCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
@@ -63,9 +65,11 @@
 {
 	NSString *ppid = [NSString stringWithFormat: @"%d", getpid()];
 	NSString *cpid = [self childOfProcess: ppid];
-	
+
 	while (cpid){
+#ifdef DEBUG
 		NSLog(@"Calling terminateProcessWithPID: %@", cpid);
+#endif //DEBUG
 		[self terminateProcessWithPID: cpid];
 		ppid = cpid;
 		cpid = [self childOfProcess: ppid];

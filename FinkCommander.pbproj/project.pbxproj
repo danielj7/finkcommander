@@ -13,21 +13,13 @@
 		};
 		080E96DDFE201D6D7F000001 = {
 			children = (
-				F53369F50218261B01A80165,
 				F53369F60218261B01A80165,
-				F527284B0221B4E801A80164,
 				F527284D0221B4E801A80164,
-				F527284C0221B4E801A80164,
 				F527284E0221B4E801A80164,
-				F5375A680246DDDC01A80164,
 				F5375A6A0246DDEB01A80164,
-				F54436B8027F6AD501A80164,
 				F54436B9027F6AD501A80164,
-				F5DE1D8F022845A201A80164,
 				F5DE1D8E022845A201A80164,
-				F569E33702498D1101A80164,
 				F569E33802498D1101A80164,
-				F576358A0298AE4E01A80166,
 				F576358B0298AE4E01A80166,
 			);
 			isa = PBXGroup;
@@ -151,6 +143,7 @@
 		};
 		29B97314FDCFA39411CA2CEA = {
 			children = (
+				F54A055E029C9F0101A80166,
 				080E96DDFE201D6D7F000001,
 				F53B283802879DF201A80164,
 				29B97315FDCFA39411CA2CEA,
@@ -240,7 +233,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -253,7 +246,7 @@
 			);
 			isa = PBXApplicationTarget;
 			name = FinkCommander;
-			productInstallPath = "$(HOME)/Applications";
+			productInstallPath = /Applications;
 			productName = FinkTable;
 			productReference = 17587328FF379C6511CA2CBB;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -276,10 +269,12 @@
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.3</string>
+	<string>0.3.1</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSMainNibFile</key>
@@ -340,7 +335,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29B9732CFDCFA39411CA2CEA,
-				F53369F80218261B01A80165,
 				F52728510221B4E801A80164,
 				F52728520221B4E801A80164,
 				F5DE1D91022845A201A80164,
@@ -349,6 +343,7 @@
 				F54436BB027F6AD501A80164,
 				F536C0410280F24501A80164,
 				F576358D0298AE4E01A80166,
+				F54A055F029CA39401A80166,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -508,12 +503,6 @@
 		};
 		F53369F70218261B01A80165 = {
 			fileRef = F53369F50218261B01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F53369F80218261B01A80165 = {
-			fileRef = F53369F60218261B01A80165;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -706,6 +695,27 @@
 		};
 		F54436BB027F6AD501A80164 = {
 			fileRef = F54436B9027F6AD501A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F54A055E029C9F0101A80166 = {
+			children = (
+				F53369F50218261B01A80165,
+				F527284B0221B4E801A80164,
+				F527284C0221B4E801A80164,
+				F5375A680246DDDC01A80164,
+				F54436B8027F6AD501A80164,
+				F5DE1D8F022845A201A80164,
+				F569E33702498D1101A80164,
+				F576358A0298AE4E01A80166,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+		};
+		F54A055F029CA39401A80166 = {
+			fileRef = F53369F60218261B01A80165;
 			isa = PBXBuildFile;
 			settings = {
 			};
