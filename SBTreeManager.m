@@ -37,7 +37,7 @@
 	NSString *s;
 	NSMutableArray *fileList;
 	SBFileItemTree *tree;
-
+    [task setEnvironment:[[NSUserDefaults standardUserDefaults] objectForKey:FinkEnvironmentSettings]];
     [task setLaunchPath:[args objectAtIndex:0]];
     if ([args count] > 1){
 		[task setArguments:[args subarrayWithRange:
