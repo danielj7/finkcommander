@@ -1,5 +1,6 @@
 
 #import <Cocoa/Cocoa.h>
+#import "SBUtilities.h"
 
 @interface SBOutlineView : NSOutlineView
 

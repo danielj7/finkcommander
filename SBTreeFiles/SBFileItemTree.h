@@ -1,7 +1,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SBFileItem.h"
-#import "FinkGlobals.h"
+#import "SBUtilities.h"
 
 extern NSString *SBAscendingOrder;
 extern NSString *SBDescendingOrder;

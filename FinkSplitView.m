@@ -39,6 +39,11 @@ File: FinkSplitView.m
 	outputScrollView = [[self subviews] objectAtIndex:1];
 }
 
+-(void)setCollapseExpandMenuItem:(NSMenuItem *)item
+{
+	collapseExpandMenuItem = item; //retained by .nib file
+}
+
 //Delegate method:
 //preserve user's adjustment of splitview for future use,
 //such as the expandOutputToMinimumRatio: method, 
@@ -69,6 +74,8 @@ File: FinkSplitView.m
 		[outputScrollView setFrame: oFrame];
 		[tableScrollView setFrame: tFrame];
 
+		[collapseExpandMenuItem setTitle:LS_EXPAND];
+
 		[self setNeedsDisplay: YES];
 	}
 }
@@ -93,6 +100,9 @@ File: FinkSplitView.m
 
 	[outputScrollView setFrame: oFrame];
 	[tableScrollView setFrame: tFrame];
+
+	[collapseExpandMenuItem setTitle:LS_COLLAPSE];
+
 	[self setNeedsDisplay: YES];
 }
 

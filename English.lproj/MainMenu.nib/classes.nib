@@ -9,6 +9,7 @@
                 goToWebsite = id; 
                 openDocumentation = id; 
                 openPackageFileViewer = id; 
+                openPackageFiles = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
                 runForceRemove = id; 
@@ -51,7 +52,18 @@
             }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+        {
+            CLASS = FinkSplitView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {collapseExpandMenuItem = NSMenuItem; }; 
+            SUPERCLASS = NSSplitView; 
+        }, 
+        {
+            ACTIONS = {openPackageFiles = id; }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
     ); 
     IBVersion = 1; 
 }

@@ -1,6 +1,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import "SBUtilities.h"
 
 @interface SBFileItem: NSObject
 {

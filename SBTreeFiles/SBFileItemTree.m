@@ -6,41 +6,6 @@ NSString *SBAscendingOrder = @"SBAscendingOrder";
 NSString *SBDescendingOrder = @"SBDescendingOrder";
 
 //----------------------------------------------------------
-#pragma mark UTILITY FUNCTIONS
-//----------------------------------------------------------
-
-BOOL openFileAtPath(NSString *path)
-{
-    NSFileManager *mgr = [NSFileManager defaultManager];
-    NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-    BOOL successful, valid, isDir;
-
-    valid = [mgr fileExistsAtPath:path isDirectory:&isDir];
-    if (! valid) return NO;
-    if ([path contains:@".htm"]){
-		NSURL *fileURL = [NSURL fileURLWithPath:path];
-		successful = [ws openURL:fileURL];
-    }else{
-		successful = [ws openFile:path];
-		if (! successful){
-			successful = [ws openFile:path withApplication:@"TextEdit"];
-		}
-    }
-    return successful;
-}
-
-void alertProblemPaths(NSArray *pathArray)
-{
-    if ([pathArray count] > 0){
-		NSRunAlertPanel(FINK_ERROR,
-				  NSLocalizedString(@"The following could not be opened:\n\n%@",
-						@"Error message for failure to open file(s)"),
-				  @"OK", nil, nil,
-				  [pathArray componentsJoinedByString:@" "]);
-    }
-}
-
-//----------------------------------------------------------
 #pragma mark SORTING FUNCTIONS
 //----------------------------------------------------------
 
@@ -214,69 +179,40 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     NSEnumerator *e = [flist objectEnumerator];;
     NSString *apath;
     SBFileItem *item;
-		
-	[sbLock lock];
-    
-	while (nil != (apath = [e nextObject])){
-		//NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	while (nil != (apath = [e nextObject]) && [apath length] > 0){
+		[sbLock lock];
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
-		//Dprintf(@"In SBFIT, adding:\n%@", item);
 		[self addItemToTree:item];  //adds to array, retain count = 2
 		if (nil == [item children]){
 			totalSize += [item size];
 			itemCount++;
 		}
 		[item release]; //retain count = 1
-		//[pool release];
+		[sbLock unlock];
     }
-	
-	[sbLock unlock];
-
-    [[NSDistributedNotificationCenter defaultCenter]
+	/*  If the item list is short enough, the DO notification is posted before the 
+		window controller has a chance to register for it!  This seems like kind
+		of an ugly hack to prevent this from happening, but it's all I can come up 
+		with for now.  */
+	if (itemCount < 200){
+		[NSThread sleepUntilDate: [NSDate dateWithTimeIntervalSinceNow:1]];
+	}
+	[[NSDistributedNotificationCenter defaultCenter]
 			postNotificationName:@"SBTreeCompleteNotification"
 			object:[self name]];
-
+	Dprintf(@"Posted SBTreeCompleteNotification for %@", [self name]);
     [pool release];
     return;
 }
-
-#ifdef UNDEF
-//----------------------------------------------------------
-#pragma mark ITEM ACCESS METHODS
-//----------------------------------------------------------
-
--(SBFileItem *)itemInTreeWithPathArray:(NSArray *)parray
-{
-    SBFileItem *anItem = [self rootItem];
-    NSString *path = [[self rootItem] path];
-    NSString *fname;
-    NSEnumerator *e = [parray objectEnumerator];
-
-    while (nil != anItem && nil != (fname = [e nextObject])){
-		path = [path stringByAppendingPathComponent:fname];
-		anItem = [anItem childWithPath:path];
-    }
-    return anItem;
-}
-
--(SBFileItem *)itemInTreeWithPath:(NSString *)path
-{
-    NSArray *pathArray = [path pathComponents];
-
-    if ([[pathArray lastObject] length] < 1){
-		pathArray = [pathArray subarrayWithRange:NSMakeRange(0, [pathArray count]-1)];
-    }
-    return [self itemInTreeWithPathArray:pathArray];
-}
-#endif
 
 //----------------------------------------------------------
 #pragma mark SORTING METHODS
 //----------------------------------------------------------
 
 -(void)sortChildrenOfItem:(SBFileItem *)pitem
-				byElement:(NSString *)element
-			  inOrder:(NSString *)order
+		byElement:(NSString *)element
+		inOrder:(NSString *)order
 {
     NSArray *newArray;
     NSData *sortHint = [[pitem children] sortedArrayHint];
@@ -295,8 +231,8 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     //Sort children
     newArray = [[pitem children]
 				sortedArrayUsingFunction:sorter
-				context:order
-				hint:sortHint];
+								 context:order
+									hint:sortHint];
     [pitem setChildren:newArray];
 
     //Sort descendants of children
@@ -315,8 +251,8 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     inOrder:(NSString *)order
 {
     [self sortChildrenOfItem:[self rootItem]
-					 byElement:element
-					inOrder:order];
+			byElement:element
+			inOrder:order];
 }
 
 @end

@@ -53,8 +53,9 @@ the longest possible date format that will fit in the current column length. */
 -(id)initWithColumn:(NSTableColumn *)myColumn
 {
     return [self initWithColumn:myColumn 
-						shortTitle:NSLocalizedStringFromTable(@"Date", @"Date",
-											@"Default column title")];
+						shortTitle:
+							NSLocalizedStringFromTable(@"Date", @"Date",
+								@"Default column title")];
 }
 
 -(id)initWithColumn:(NSTableColumn *)myColumn
@@ -75,8 +76,6 @@ the longest possible date format that will fit in the current column length. */
 		[self setShortTitle:stitle];
 		[self setLongTitle:ltitle];
 
-		Dprintf(@"SBDCC initialized for column %@", [[self column] identifier]);
-
 		if ([[[self column] tableView] isKindOfClass:[NSOutlineView class]]){
 			[[NSNotificationCenter defaultCenter]
 		addObserver:self
@@ -85,10 +84,10 @@ the longest possible date format that will fit in the current column length. */
 			 object:nil];
 		}else{
 			[[NSNotificationCenter defaultCenter]
-		addObserver:self
-		   selector:@selector(adjustColumnAndHeaderDisplay:)
-			   name:NSTableViewColumnDidResizeNotification
-			 object:nil];
+				addObserver:self
+				selector:@selector(adjustColumnAndHeaderDisplay:)
+				name:NSTableViewColumnDidResizeNotification
+				object:nil];
 		}
 
 		if (nil != [self column]){
@@ -100,6 +99,7 @@ the longest possible date format that will fit in the current column length. */
 
 -(void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [_sbColumn release];
     [_sbShortTitle release];
     [_sbLongTitle release];

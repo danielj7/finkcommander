@@ -31,17 +31,21 @@
 */
 
 #import <Foundation/Foundation.h>
-#import "SBString.h"
+#import "SBUtilities.h"
 
 #ifndef DEBUGGING
 #include "Debugging.h"
 #endif
 
-//Localizable strings used in multiple files
 
-#define FINK_CANCEL NSLocalizedString(@"Cancel", @"Cancel button title")
-#define FINK_OK NSLocalizedString(@"Cancel", @"OK button title")
-#define FINK_ERROR NSLocalizedString(@"Cancel", @"Error dialog title")
+/*
+ * Localized Strings Used In Multiple Files
+*/
+#define LS_CANCEL NSLocalizedString(@"Cancel", @"Cancel button title")
+#define LS_OK NSLocalizedString(@"OK", @"OK button title")
+#define LS_ERROR NSLocalizedString(@"Error", @"Error dialog title")
+#define LS_WARNING NSLocalizedString(@"Warning", @"Warning dialog title")
+
 
 //User Default Items
 //  Set by user
@@ -90,11 +94,4 @@ extern NSString *FinkTerminateNotification;
 
 //UserInfo Key
 extern NSString *FinkRunProgressIndicator;
-
-//Debugging Log
-#ifdef DEBUGGING
-void Dprintf(NSString *fmt,...);
-#else
-inline void Dprintf(NSString *fmt,...);
-#endif
 

@@ -4,10 +4,10 @@
 #import "SBFileItemTree.h"
 #import "SBFileItem.h"
 #import "SBBrowserMatrix.h"
+#import "SBUtilities.h"
 
 @interface SBBrowserView: NSBrowser
 {
-    NSBrowser *browser;
     SBFileItemTree *tree;
 }
 

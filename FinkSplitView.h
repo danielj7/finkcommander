@@ -33,15 +33,19 @@
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 
+#define LS_EXPAND NSLocalizedString(@"Show Command Output", @"Menu title when output is collapsed")
+#define LS_COLLAPSE NSLocalizedString(@"Hide Command Output", @"Menu title when output is expanded")
 
 @interface FinkSplitView : NSSplitView 
 {
 	NSUserDefaults *defaults;
 	NSScrollView *tableScrollView;
 	NSScrollView *outputScrollView;
+	NSMenuItem *collapseExpandMenuItem;
 }
 
 -(void)connectSubviews;
+-(void)setCollapseExpandMenuItem:(NSMenuItem *)item;
 -(void)collapseOutput:(NSNotification *)n;
 -(void)expandOutputToMinimumRatio:(float)r;
 

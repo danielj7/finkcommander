@@ -24,6 +24,13 @@
     return self;
 }
 
+-(void)dealloc
+{
+	[tree release];
+
+	[super dealloc];
+}
+
 //----------------------------------------------------------
 #pragma mark ACCESSORS
 //----------------------------------------------------------
@@ -112,7 +119,6 @@ message. */
 
     while (nil != (bCell = [e nextObject])){
 		ipath = [[bCell representedObject] path];  //SBFileItem represented in cell
-		Dprintf(@"Path to selection = %@", ipath);
 		successful = openFileAtPath(ipath);
 		if (! successful)[inaccessiblePathsArray addObject:ipath];
     }

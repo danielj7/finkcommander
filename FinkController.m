@@ -18,6 +18,9 @@ See the header file, FinkController.h, for interface and license information.
 	[(x) contains: @"dpkg"]					|| 				\
 	[(x) contains: @"update"])
 
+/* Macros defining collections used to translate between tag numbers
+in MainMenu.nib and strings identifying FinkPackage attributes */
+
 #define TAG_NAME_ARRAY 										\
  [NSArray arrayWithObjects: 								\
 	@"version",           									\
@@ -46,13 +49,19 @@ See the header file, FinkController.h, for interface and license information.
 	[NSNumber numberWithInt: NAME], @"name",                \
 	nil]
 
-#define FINK_EXPAND NSLocalizedString(@"Expand Output", @"Menu title when output is collapsed")
-#define FINK_COLLAPSE NSLocalizedString(@"Collapse Output", @"Menu title when output is expanded")
+/*
+ *  Repeated Localized Strings
+ */
+
+#define LS_QUIT NSLocalizedString(@"Quit", "Button title")
+#define LS_DOWNLOAD NSLocalizedString(@"Quit", "Button title")
 
 //================================================================================
 #pragma mark CONSTANTS
 //================================================================================
 
+/* Constants corresponding to the tag for the identified attribute
+in MainMenu.nib menu items  */
 enum {
     VERSION    	= 2000,
     BINARY     	= 2001,
@@ -63,35 +72,40 @@ enum {
     SUMMARY    	= 2006,
     MAINTAINER 	= 2007,
     INSTALLED  	= 2008,
-	NAME	   	= 2009
+    NAME	    = 2009
 };
 
+/* Identify web site to open based on menu item tag */
 enum {
-	FCWEB 		= 1000,
-	FCBUG 		= 1001,
-	FINKDOC 	= 1002,
-	FINKBUG		= 1003
+    FCWEB 	= 1000,
+    FCBUG 	= 1001,
+    FINKDOC = 1002,
+    FINKBUG	= 1003
 };
 
+/* Identify executable based on menu item tag */
 enum{
     FINK,
     APT_GET,
     DPKG
 };
 
+/* Identify text field changed by item tag */
 enum {
-	FILTER,
-	INTERACTION
+    FILTER,
+    INTERACTION
 };
 
+/* Identify matrix selection in interaction sheet by tag */
 enum {
-	DEFAULT,
-	USER_CHOICE
+    DEFAULT,
+    USER_CHOICE
 };
 
+/* Identify type of feedback email */
 enum {
-	POSITIVE,
-	NEGATIVE
+    POSITIVE,
+    NEGATIVE
 };
 
 @implementation FinkController
@@ -140,7 +154,7 @@ enum {
 		}
 
 		//Initialize package data storage object
-		packages = [[FinkData alloc] init];
+		packages = [FinkData sharedData];
 
 		//Set instance variables used to store objects and state information
 		//needed to run fink and apt-get commands
@@ -332,6 +346,7 @@ enum {
     [outputScrollView release];
     [splitView connectSubviews]; //connects instance variables to scroll views
     [splitView adjustSubviews];
+	[splitView setCollapseExpandMenuItem:collapseExpandMenuItem];
 
     //Substitute FinkTableViewController for NSTableView
 	//N.B. It was a mistake to make FinkTableViewController
@@ -344,6 +359,7 @@ enum {
     [tableViewController setDisplayedPackages:[packages array]];
     [tableViewController sizeLastColumnToFit];
     [tableViewController setMenu:tableContextMenu];
+	[tableViewController setDoubleAction:@selector(openPackageFiles:)];
 
     //Instantiate FinkTextViewController
     textViewController = [[FinkTextViewController alloc] 
@@ -356,11 +372,11 @@ enum {
 		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
 
-	if ([outputScrollView bounds].size.height > 1.0){
-		[collapseExpandMenuItem setTitle:FINK_EXPAND];
+	if ([outputScrollView bounds].size.height < 1.0){
+		[collapseExpandMenuItem setTitle:LS_EXPAND];
 	}else{
 		[splitView expandOutputToMinimumRatio:0.0];
-		[collapseExpandMenuItem setTitle:FINK_COLLAPSE];
+		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
 	}
 	
 
@@ -382,7 +398,7 @@ enum {
 
     if ([basePath length] <= 1 ){
 		NSBeginAlertSheet(NSLocalizedString(@"UnableToLocate", nil),
-					NSLocalizedString(@"OK", nil), nil,	nil, //title, buttons
+					LS_OK, nil,	nil, //title, buttons
 					window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
 					NSLocalizedString(@"TrySetting", nil), nil);
     }
@@ -447,11 +463,9 @@ enum {
     int answer;
 
     if (commandIsRunning && ! userConfirmedQuit){ //see windowShouldClose: method
-		answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil),
-								   NSLocalizedString(@"QuittingNow", nil),
-								   NSLocalizedString(@"Cancel", nil),
-								   NSLocalizedString(@"Quit", nil), nil);
-		if (answer == NSAlertDefaultReturn){
+		answer = NSRunCriticalAlertPanel(LS_WARNING, NSLocalizedString(@"QuittingNow", nil),
+										LS_QUIT, LS_CANCEL, nil);
+		if (answer == NSAlertAlternateReturn){
 			return NO;
 		}
     }
@@ -468,11 +482,10 @@ enum {
 -(BOOL)windowShouldClose:(id)sender
 {
     if (commandIsRunning){
-		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil),
+		int answer = NSRunCriticalAlertPanel(LS_WARNING,
 									   NSLocalizedString(@"QuittingNow", nil),
-									   NSLocalizedString(@"Cancel", nil),
-									   NSLocalizedString(@"Quit", nil), nil);
-		if (answer == NSAlertDefaultReturn){
+									   LS_QUIT, LS_CANCEL,  nil);
+		if (answer == NSAlertAlternateReturn){
 			return NO;
 		}
     }
@@ -514,16 +527,15 @@ enum {
     if (latestVersionDict){
 		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
     }else{
-		NSRunAlertPanel(NSLocalizedString(@"Error", nil),
+		NSRunAlertPanel(LS_ERROR,
 				  NSLocalizedString(@"FinkCommanderWasUnable", nil),
-				  NSLocalizedString(@"OK", nil), nil, nil);
+				  LS_OK, nil, nil);
 		return;
     }
     if (! [installedVersion isEqualToString: latestVersion]){
-		int answer = NSRunAlertPanel(NSLocalizedString(@"Download", nil),
+		int answer = NSRunAlertPanel(LS_DOWNLOAD,
 							   NSLocalizedString(@"AMoreCurrentVersion", nil),
-							   NSLocalizedString(@"Download", nil),
-							   NSLocalizedString(@"Cancel", nil), nil, latestVersion);
+							   LS_DOWNLOAD, LS_CANCEL, nil, latestVersion);
 		if (answer == NSAlertDefaultReturn){
 			[[NSWorkspace sharedWorkspace] openURL:
 				[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
@@ -531,7 +543,7 @@ enum {
     }else if (notifyWhenCurrent){
 		NSRunAlertPanel(NSLocalizedString(@"Current", nil),
 				  NSLocalizedString(@"TheLatest", nil),
-				  NSLocalizedString(@"OK", nil), nil, nil);
+				  LS_OK, nil, nil);
     }
     [defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
 }
@@ -583,6 +595,25 @@ enum {
     }
 }
 
+-(IBAction)openPackageFiles:(id)sender
+{
+	NSEnumerator *e = [[tableViewController selectedPackageArray] objectEnumerator];
+	NSMutableArray *problemPaths = [NSMutableArray array];
+	NSFileManager *manager = [NSFileManager defaultManager];
+	FinkPackage *pkg;
+	NSString *extension = ([sender tag] == 0) ? @"info" : @"patch";
+	NSString *path, *tree;
+
+	while (nil != (pkg = [e nextObject])){
+		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
+		path = [pkg pathToPackageInTree:tree withExtension:extension];
+		if (! [manager fileExistsAtPath:path] || ! openFileAtPath(path)){
+			[problemPaths addObject:path];
+		}
+	}
+	alertProblemPaths(problemPaths);
+}
+
 //----------------------------------------------->View Menu
 #pragma mark View Menu
 
@@ -611,10 +642,8 @@ enum {
 {
 	if ([outputScrollView bounds].size.height > 1.0){
 		[splitView collapseOutput:nil];
-		[sender setTitle:FINK_EXPAND];
 	}else{
 		[splitView expandOutputToMinimumRatio:0.0];
-		[sender setTitle:FINK_COLLAPSE];
 	}
 }
 
@@ -730,8 +759,8 @@ enum {
 		NSString *msg = [pkgNames count] > 1 ? 
 						NSLocalizedString(@"UnnecessaryPositiveFeedbackPlural", nil) :
 						NSLocalizedString(@"UnnecessaryPositiveFeedbackSingular", nil);
-		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
-					NSLocalizedString(@"OK", nil), nil, nil,
+		NSBeginAlertSheet(LS_ERROR,
+					LS_OK, nil, nil,
 					window, self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
 					nil);
@@ -740,8 +769,8 @@ enum {
 		NSString *msg = [pkgNames count] > 1 ?
 		NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) :
 		NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
-		NSBeginAlertSheet(NSLocalizedString(@"Warning", nil),
-					NSLocalizedString(@"OK", nil), nil, nil,
+		NSBeginAlertSheet(LS_WARNING,
+					LS_OK, nil, nil,
 					window, self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
 					nil);
@@ -985,7 +1014,9 @@ enum {
 -(BOOL)validateItem:(id)theItem
 {
     //disable package-specific commands if no row selected
-    if ([tableViewController selectedRow] == -1 										&&
+    if (([tableViewController selectedRow] == -1 			||	
+		 ! [window isKeyWindow])									&&
+
 		([theItem action] == @selector(runPackageSpecificCommand:)  		||
 		[theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
 		[theItem action] == @selector(runForceRemove:)						||
@@ -993,9 +1024,16 @@ enum {
 		[theItem action] == @selector(sendNegativeFeedback:)				||
 		[theItem action] == @selector(sendPositiveFeedback:)				||
 		[theItem action] == @selector(openDocumentation:)					||
-		[theItem action] == @selector(openPackageFileViewer:))){
+		[theItem action] == @selector(openPackageFileViewer:)				||
+		[theItem action] == @selector(openPackageFiles:))){
 		return NO;
     }
+	//disable sorting for columns not in table
+	if ([theItem action] == @selector(sortByPackageElement:) &&
+		! [[defaults objectForKey:FinkTableColumnsArray] containsObject:
+			[self attributeNameFromTag:[theItem tag]]]){
+		return NO;
+	}
     //disable Source and Binary menu items and table update if command is running
     if (commandIsRunning &&
 		([theItem action] == @selector(runPackageSpecificCommand:) 	||
@@ -1016,7 +1054,6 @@ enum {
 		[theItem action] == @selector(saveOutput:)){
 		return NO;
     }
-    if ([theItem action] == @selector(copy:)) return NO;
 	if ([theItem action] == @selector(toggleToolbarShown:)){
 		if ([toolbar isVisible]){
 			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", nil)];
@@ -1158,7 +1195,7 @@ enum {
 -(IBAction)runForceRemove:(id)sender
 {
     NSMutableArray *args;
-    int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil),
+    int answer = NSRunCriticalAlertPanel(LS_WARNING,
 										 NSLocalizedString(@"RunningForceRemove", nil),
 										 NSLocalizedString(@"Yes", nil),
 										 NSLocalizedString(@"No", nil), nil);
@@ -1180,7 +1217,7 @@ enum {
     if (commandIsRunning && !toolIsBeingFixed){
 		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
 				  NSLocalizedString(@"YouMustWait", nil),
-				  NSLocalizedString(@"OK", nil), nil, nil);
+				  LS_OK, nil, nil);
 		return;
 	}
 	if ([cmd contains:@"fink"]){
@@ -1447,8 +1484,7 @@ enum {
     }else{
 		if (! commandTerminated){
 			[splitView expandOutputToMinimumRatio:0.0];
-			NSBeginAlertSheet(NSLocalizedString(@"Error", nil),
-					 NSLocalizedString(@"OK", nil), nil, nil,
+			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,
 					 window, self, NULL, NULL, nil,
 					 NSLocalizedString(@"FinkCommanderDetected", nil),
 					 nil);

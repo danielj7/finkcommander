@@ -367,7 +367,7 @@ File: FinkConf.m
 	if (! success){
 		NSRunCriticalAlertPanel(NSLocalizedString(@"Error", nil),
 				NSLocalizedString(@"FinkCommander was unable to write changes to fink.conf.", nil),
-				NSLocalizedString(@"OK", nil), nil, nil);
+				LS_OK, nil, nil);
 	}
 	[center postNotificationName:FinkRunCommandNotification
 			object:writeFinkConfArray 

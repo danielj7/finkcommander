@@ -4,8 +4,8 @@
 #import "SBFileItemTree.h"
 #import "SBOutlineView.h"
 #import "SBOutlineViewController.h"
-#import "FinkGlobals.h"
 #import "SBBrowserView.h"
+#import "SBUtilities.h"
 
 @interface SBTreeWindowController: NSWindowController
 {

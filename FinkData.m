@@ -19,6 +19,15 @@ See the header file, FinkData.h, for interface and license information.
 
 //---------------------------------------------------------->The Usual
 
++(FinkData *)sharedData
+{
+    static FinkData *mySharedData = nil;
+    if (nil == mySharedData){
+        mySharedData = [[FinkData alloc] init];
+    }
+    return mySharedData;
+}
+
 -(id)init
 {
     if (self = [super init])
@@ -238,6 +247,9 @@ See the header file, FinkData.h, for interface and license information.
     e = [temp objectEnumerator];
 
     while (nil != (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"])){
+		/* 	Without a separate autorelease pool for this loop,
+			FinkCommander's memory usage increases by several megabytes
+			while the updating process is taking place.  */
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		p = [[FinkPackage alloc] init];
 		[p setName:[listRecord objectAtIndex: 0]];
@@ -249,7 +261,15 @@ See the header file, FinkData.h, for interface and license information.
 		[p setCategory:[listRecord objectAtIndex: 6]];
 		[p setSummary:[listRecord objectAtIndex: 7]];
 		[p setFulldesc:[listRecord objectAtIndex: 8]];
-
+		
+		/* 	Many package have identical versions in the stable and
+			unstable branches. If unstable is listed first in
+			fink.conf, the package will be identified as unstable by
+			Fink::PkgVersion::get_tree() and therefore by
+			FinkCommander.pl.  This block fixes that problem by finding
+			these packages and identifying them as stable only or as
+			stable and unstable, depending on the user's
+			preferences. */
 		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
 			path = [p pathToPackageInTree:@"stable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){

@@ -4,7 +4,7 @@
 #import "SBFileItemTree.h"
 #import "SBFileItem.h"
 #import "SBDateColumnController.h"
-#import "FinkGlobals.h"
+#import "SBUtilities.h"
 
 extern NSString *sbAscending;
 extern NSString *sbDescending;

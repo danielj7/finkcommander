@@ -1,6 +1,6 @@
 
 #import <Cocoa/Cocoa.h>
-#import "FinkGlobals.h"
+#import "SBUtilities.h"
 
 @interface SBDateColumnController: NSObject
 {

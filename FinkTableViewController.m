@@ -226,7 +226,11 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 
 	[[newColumn headerCell] setStringValue: title];
 	[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
-	[newColumn setEditable:YES];
+	if ([identifier isEqualToString:@"name"]){
+		[newColumn setEditable:NO];
+	}else{
+		[newColumn setEditable:YES];
+	}
 	return newColumn;
 }
 
@@ -419,8 +423,8 @@ and before the table is sorted. */
 	NSString *pname = [[[self displayedPackages] objectAtIndex: rowIndex] name];
 	if ([pname contains:@"tcsh"] 				|| 
 		[pname contains:@"term-readkey-pm"]){
-		NSBeginAlertSheet(NSLocalizedString(@"Warning", nil),
-					NSLocalizedString(@"OK", nil),
+		NSBeginAlertSheet(LS_WARNING,
+					LS_OK,
 					nil, nil,
 					[self window], self, NULL,	NULL, nil,
 					[NSString stringWithFormat:NSLocalizedString(@"UnableToInstall", nil), pname, pname],

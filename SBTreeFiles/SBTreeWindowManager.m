@@ -4,9 +4,19 @@
 
 @implementation SBTreeWindowManager
 
+-(id)init
+{
+	self = [super init];
+	if (nil != self){
+		_sbWindows = [[NSMutableArray alloc] init];
+	}
+	return self;
+}
+
 -(void)dealloc
 {
     [_sbcurrentPackageName release];
+	[_sbWindows release];
     [super dealloc];
 }
 
@@ -18,6 +28,8 @@
     [_sbcurrentPackageName release];
     _sbcurrentPackageName = newCurrentPackageName;
 }
+
+-(NSMutableArray *)windows { return _sbWindows; }
 
 -(NSMutableArray *)fileListFromCommand:(NSArray *)args
 {
@@ -55,15 +67,20 @@
     NSMutableArray *fileList = [self fileListFromCommand:
 			[NSArray arrayWithObjects: @"/sw/bin/dpkg", @"-L", pkgName, nil]];
     SBTreeWindowController *tcontroller;
+	NSString *windowTitle = pkgName;
+	int windowNumber = 1;
+		
+	while ([[self windows] containsObject:pkgName]){
+		windowNumber++;
+		if (windowNumber > 1){
+			windowTitle = [NSString stringWithFormat:@"%@ (%d)", pkgName, windowNumber];
+		}		
+	}
+	[[self windows] addObject:pkgName];
 		
 	tcontroller = [[SBTreeWindowController alloc]
-								initWithFileList:fileList
-								windowName:pkgName];
- 
-	//ADD DOCUMENT MANAGEMENT ARRAY
-    //MAKE SURE EACH DOCUMENT HAS UNIQUE NAME
-    //E.G. "autocutsel 2" IF ALREADY AN AUTOCUTSEL WINDOW OPEN
-
+							initWithFileList:fileList
+							windowName:windowTitle];
     [tcontroller showWindow:self];
 }
 

@@ -44,6 +44,9 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSDate *start;
 }
 
+//Singleton
++(FinkData *)sharedData;
+
 //Accessors
 -(NSArray *)array;
 -(void)setArray:(NSArray *)a;

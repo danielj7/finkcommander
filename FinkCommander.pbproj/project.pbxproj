@@ -136,6 +136,7 @@
 				4A9504CCFFE6A4B311CA0CBA,
 				4A9504CDFFE6A4B311CA0CBA,
 			);
+			hasScannedForEncodings = 1;
 			isa = PBXProject;
 			knownRegions = (
 				English,
@@ -317,7 +318,6 @@
 </dict>
 </plist>
 ";
-			shouldUseHeadermap = 0;
 		};
 		29B97327FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -350,6 +350,7 @@
 				F5067EF503A1BF3001A80167,
 				F57E59B603A998D701A80165,
 				F5056F1103ABDBBD01A80165,
+				F5CB063A03B03CAE01A80165,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +432,7 @@
 				F5067EF603A1BF3101A80167,
 				F57E59B703A998D701A80165,
 				F5056F1203ABDBBD01A80165,
+				F5CB063B03B03CAE01A80165,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,11 +525,13 @@
 			refType = 4;
 		};
 		F5056F0F03ABDBBD01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBOutlineView.h;
 			refType = 4;
 		};
 		F5056F1003ABDBBD01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			path = SBOutlineView.m;
 			refType = 4;
@@ -601,6 +605,7 @@
 			};
 		};
 		F50EC0D303A0463201A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = Date.strings;
 			path = SBTreeFiles/English.lproj/Date.strings;
@@ -622,18 +627,21 @@
 			};
 		};
 		F50EC0D703A0465701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = German;
 			path = SBTreeFiles/German.lproj/Date.strings;
 			refType = 4;
 		};
 		F50EC36503A0559001A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItem.h;
 			path = SBTreeFiles/SBFileItem.h;
 			refType = 4;
 		};
 		F50EC36603A0559001A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItem.m;
 			path = SBTreeFiles/SBFileItem.m;
@@ -1388,12 +1396,14 @@
 			refType = 4;
 		};
 		F57E59B403A998D701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBBrowserMatrix.h;
 			path = SBTreeFiles/SBBrowserMatrix.h;
 			refType = 4;
 		};
 		F57E59B503A998D701A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBBrowserMatrix.m;
 			path = SBTreeFiles/SBBrowserMatrix.m;
@@ -1479,7 +1489,6 @@
 			productInstallPath = /usr/local/bin;
 			productName = Launcher;
 			productReference = F580FC3F0332C30701A80166;
-			shouldUseHeadermap = 0;
 		};
 		F580FC3F0332C30701A80166 = {
 			isa = PBXExecutableFileReference;
@@ -1689,6 +1698,7 @@
 			children = (
 				F5F99D8503AC1F8101A80165,
 				F5F99D8603AC1F8D01A80165,
+				F5CB063C03B03E5E01A80165,
 				F50EC0D503A0464101A80165,
 				F5C9446D039C6BE201A80164,
 				F5F99DB803AD5AC401A80165,
@@ -1730,6 +1740,39 @@
 			settings = {
 			};
 		};
+		F5CB063803B03CAE01A80165 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SBUtilities.h;
+			refType = 4;
+		};
+		F5CB063903B03CAE01A80165 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SBUtilities.m;
+			refType = 4;
+		};
+		F5CB063A03B03CAE01A80165 = {
+			fileRef = F5CB063803B03CAE01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5CB063B03B03CAE01A80165 = {
+			fileRef = F5CB063903B03CAE01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5CB063C03B03E5E01A80165 = {
+			children = (
+				F5CB063803B03CAE01A80165,
+				F5CB063903B03CAE01A80165,
+			);
+			isa = PBXGroup;
+			name = "Other Sources";
+			refType = 4;
+		};
 		F5CC37130304F27C01A80164 = {
 			isa = PBXFileReference;
 			name = German;
@@ -1754,60 +1797,70 @@
 			refType = 4;
 		};
 		F5CC7615039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBBrowserView.h;
 			path = SBTreeFiles/SBBrowserView.h;
 			refType = 4;
 		};
 		F5CC7616039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBBrowserView.m;
 			path = SBTreeFiles/SBBrowserView.m;
 			refType = 4;
 		};
 		F5CC7617039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItemTree.h;
 			path = SBTreeFiles/SBFileItemTree.h;
 			refType = 4;
 		};
 		F5CC7618039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBFileItemTree.m;
 			path = SBTreeFiles/SBFileItemTree.m;
 			refType = 4;
 		};
 		F5CC7619039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBOutlineViewController.h;
 			path = SBTreeFiles/SBOutlineViewController.h;
 			refType = 4;
 		};
 		F5CC761A039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBOutlineViewController.m;
 			path = SBTreeFiles/SBOutlineViewController.m;
 			refType = 4;
 		};
 		F5CC761B039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBTreeWindowController.h;
 			path = SBTreeFiles/SBTreeWindowController.h;
 			refType = 4;
 		};
 		F5CC761C039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBTreeWindowController.m;
 			path = SBTreeFiles/SBTreeWindowController.m;
 			refType = 4;
 		};
 		F5CC761D039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBTreeWindowManager.h;
 			path = SBTreeFiles/SBTreeWindowManager.h;
 			refType = 4;
 		};
 		F5CC761E039F174E01A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBTreeWindowManager.m;
 			path = SBTreeFiles/SBTreeWindowManager.m;
@@ -1862,12 +1915,14 @@
 			};
 		};
 		F5CC765C039F19D801A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBDateColumnController.h;
 			path = SBTreeFiles/SBDateColumnController.h;
 			refType = 4;
 		};
 		F5CC765D039F19D801A80165 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = SBDateColumnController.m;
 			path = SBTreeFiles/SBDateColumnController.m;

@@ -11,10 +11,10 @@
 #define SHORTDESCCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.7 alpha:1.0]
 //medium gray
 #define VERSIONCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.7 alpha:1.0]
-//green
-#define URLCOLOR [NSColor colorWithDeviceCyan:0.80 magenta:0.30 yellow:0.95 black:0.0 alpha:1.0]
+//dark green
+#define URLCOLOR [NSColor colorWithCalibratedHue:0.32 saturation:1.0 brightness:0.67 alpha:1.0]
 //dark blue
-#define HEADINGCOLOR [NSColor colorWithDeviceCyan:0.96 magenta:0.60 yellow:0.1 black:0.0 alpha:1.0]
+#define HEADINGCOLOR [NSColor colorWithCalibratedHue:0.68 saturation:1.0 brightness:0.79 alpha:1.0]
 
 #define MAINHEADINGFONT [NSFont boldSystemFontOfSize:[NSFont systemFontSize]+2.0]
 
@@ -201,8 +201,9 @@
 	NSString *pname;
 	NSString *psummary;
 
-	[textView setString: @""];
+	[[textView textStorage] beginEditing];
 
+	[textView setString: @""];
 	for (i = 0; i < count; i++){
 		pkg = [packages objectAtIndex: i];
 		pname = [NSString stringWithFormat:@"%@\n", [pkg name]];
@@ -230,6 +231,8 @@
 				[[[NSMutableAttributedString alloc] initWithString: @"\n\n\n"] autorelease]];
 		}
 	}
+	
+	[[textView textStorage] endEditing];
 }
 
 

@@ -8,6 +8,10 @@ enum {
 	SB_OUTLINE = 1
 };
 
+#define BYTE_FORMAT NSLocalizedString(@"%u items, %.0f b", "Formatter for browser window")
+#define KILOBYTE_FORMAT NSLocalizedString(@"%u items, %.2f KB", "Formatter for browser window")
+#define MEGABYTE_FORMAT NSLocalizedString(@"%u items, %.2f MB", "Formatter for browser window")
+
 //----------------------------------------------------------
 #pragma mark OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
@@ -25,26 +29,27 @@ enum {
 {
     self = [super initWithWindowNibName:@"TreeView"];
     if (nil != self){
+		
 		tree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
 		[self setFileList:fList];  //Needed in windowDidLoad to build tree
 		[[self window] setTitle:wName];
 		[[self window] setReleasedWhenClosed:YES];
 		[self setActiveView:@"outline"];
 		
-		[[NSNotificationCenter defaultCenter] 
-		addObserver:self 
-		selector:@selector(applicationWillTerminate:)
-			name:NSApplicationWillTerminateNotification
-		  object:nil];
-
-		// Register for notification that the file tree data structure is complete
+		Dprintf(@"Registering for notification %@", [[self window] title]);
 		[[NSDistributedNotificationCenter defaultCenter]
 			addObserver:self
 			selector:@selector(finishedLoading:)
 			name:@"SBTreeCompleteNotification"
-			object:wName
+			object:[[self window] title]
 			suspensionBehavior:NSNotificationSuspensionBehaviorDeliverImmediately];
-    }
+
+		[[NSNotificationCenter defaultCenter] 
+			addObserver:self 
+			selector:@selector(applicationWillTerminate:)
+			name:NSApplicationWillTerminateNotification
+			object:nil];
+	}
     return self;
 }
 
@@ -58,9 +63,7 @@ browser; tell the tree object to build its data structure.  */
 	
     [self startedLoading];
     [self showWindow:self];
-	
-	[tabView setTabViewType:NSNoTabsNoBorder];
-	
+		
 	/* Set up the custom outline view */
 	outlineView = [SBOutlineView substituteForOutlineView:outlineView];
 	[outlineScrollView setDocumentView:outlineView];
@@ -68,11 +71,10 @@ browser; tell the tree object to build its data structure.  */
 
 	/* Set up the outline view controller */
     oController = [[SBOutlineViewController alloc] initWithTree:tree
-													view:outlineView];
+										view:outlineView];
 													
 	/* Set up the controller for the date column */
-	mdateColumn = [outlineView
-					 tableColumnWithIdentifier:@"mdate"];
+	mdateColumn = [outlineView tableColumnWithIdentifier:@"mdate"];
     mDateColumnController =
 		[[SBDateColumnController alloc]
 		initWithColumn:mdateColumn
@@ -80,7 +82,8 @@ browser; tell the tree object to build its data structure.  */
 		  longTitle:@"Date Modified"];
     [outlineView setIndicatorImage:
 		[NSImage imageNamed:@"NSAscendingSortIndicator"]
-						inTableColumn:[outlineView tableColumnWithIdentifier:@"filename"]];
+						inTableColumn:[outlineView 
+							tableColumnWithIdentifier:@"filename"]];
 
 	/* Substitute SBBrowserView with drag and drop for nib version */
     browser = [[SBBrowserView alloc] initWithFrame:browserFrame];
@@ -95,8 +98,8 @@ browser; tell the tree object to build its data structure.  */
 	thread to avoid tying up the rest of the app*/
     treeBuildingThreadIsFinished = NO;
     [NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
-								toTarget:tree
-							  withObject:[self fileList]];
+			  toTarget:tree
+			  withObject:[self fileList]];
 }
 
 -(BOOL)windowShouldClose:(id)sender
@@ -191,14 +194,22 @@ browser; tell the tree object to build its data structure.  */
 
 -(void)finishedLoading:(NSNotification *)n
 {
-	Dprintf(@"Received SBTreeCompleteNotification");
 	treeBuildingThreadIsFinished = YES;
     if (nil == [tree rootItem]){
 		[msgTextField setStringValue:@"Error:  No such package installed"];
     }else{
+		double size = (float)[tree totalSize];
+		NSString *formatString = BYTE_FORMAT;
+		if (size > 1048576.0){
+			size /= 1048576.0;
+			formatString = MEGABYTE_FORMAT;
+		}else if (size > 1024.0){
+			size /= 1024.0;
+			formatString = KILOBYTE_FORMAT;
+		}
 		[msgTextField setStringValue:
-			[NSString stringWithFormat:@"%u items, %u KB",
-				[tree itemCount], [tree totalSize] / 1024 + 1]];
+			[NSString stringWithFormat:formatString,
+				[tree itemCount], size]];
     }
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
 	[browser reloadColumn:0];
@@ -214,32 +225,31 @@ browser; tell the tree object to build its data structure.  */
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 		defaultFrame:(NSRect)defaultFrame
 {
-	NSView *theView;
+	float currentHeight = [sender frame].size.height;
 	float newHeight;     
 	float woffset; 
 	//	NSRect scrollViewFrame;
 	NSRect transformFrame;
 	
-	if ([[self activeView] isEqualToString:@"outline"]){
-		theView = outlineView;
-	}else{
+	if ([[self activeView] isEqualToString:@"browser"]){
 		return defaultFrame;
 	}
-	//	scrollViewFrame = [[[theView superview] superview] frame];
-	woffset = [sender frame].size.height - [[theView superview] frame].size.height;
-	newHeight = [theView frame].size.height;
-	transformFrame = [NSWindow contentRectForFrameRect:[sender frame]
-						styleMask:[sender styleMask]];
 	
-
-	if (newHeight > transformFrame.size.height) { newHeight += woffset; }
-
+	transformFrame = [NSWindow contentRectForFrameRect:[sender frame] styleMask:[sender styleMask]];
+	woffset = currentHeight - [[outlineView superview] frame].size.height;
+	newHeight = [outlineView frame].size.height;
+	
+	if (newHeight >= transformFrame.size.height){
+		newHeight += woffset;
+	}else{
+		newHeight -= woffset;
+	}
+	
 	transformFrame.origin.y += transformFrame.size.height;
 	transformFrame.origin.y -= newHeight;
 	transformFrame.size.height = newHeight;
 	
-	transformFrame = [NSWindow frameRectForContentRect:transformFrame
-						styleMask:[sender styleMask]];
+	transformFrame = [NSWindow frameRectForContentRect:transformFrame styleMask:[sender styleMask]];
 
     if (transformFrame.size.height > defaultFrame.size.height){
 		transformFrame.size.height = defaultFrame.size.height;

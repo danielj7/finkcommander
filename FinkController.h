@@ -88,7 +88,6 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkUtilities.h"
 #import "SBTreeWindowManager.h"
 
-
 @interface FinkController : NSObject
 {
 	//Main window outlets
@@ -153,11 +152,12 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
 -(IBAction)checkForLatestVersionAction:(id)sender;
 -(IBAction)showPreferencePanel:(id)sender;
--(IBAction)saveOutput:(id)sender;
 -(IBAction)updateTable:(id)sender;
+-(IBAction)saveOutput:(id)sender;
 -(void)didEnd:(NSSavePanel *)sheet
 	  returnCode:(int)code
 	 contextInfo:(void *)contextInfo;
+-(IBAction)openPackageFiles:(id)sender;
 -(IBAction)showDescription:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)showPackageInfoPanel:(id)sender;

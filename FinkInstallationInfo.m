@@ -154,6 +154,7 @@ File: FinkInstallationInfo.m
 		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1]
 							objectForKey:@"DevCDVersion"];
 		if (! version  || [version length] < 3) return error;
+		version = [version stringByAppendingString:@" or later"];
 		return version;
 	}
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){

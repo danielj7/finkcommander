@@ -53,12 +53,3 @@ NSString *FinkTerminateNotification = @"FinkTerminateNotification";
 
 NSString *FinkRunProgressIndicator = @"FinkRunProgressIndicator";
 
-#ifdef DEBUGGING
-void Dprintf(NSString *fmt,...) {
-    va_list ap;
-    va_start(ap,fmt);
-    NSLogv(fmt,ap);
-}
-#else
-inline void Dprintf(NSString *fmt,...){}
-#endif

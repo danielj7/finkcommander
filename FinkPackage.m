@@ -439,7 +439,7 @@ See the header file, FinkPackage.h, for interface and license information.
 		components = [NSArray arrayWithObjects:pathToDists, tree, @"main",
 			@"finkinfo", [self category], pkgFileName, nil];
     }
-	return [NSString pathWithComponents:components];
+	return [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
 }
 
 @end

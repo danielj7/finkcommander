@@ -79,6 +79,8 @@ File: FinkTextViewController.m
 
 -(void)appendString:(NSString *)s
 {
+	[[textView textStorage] beginEditing];
+
 	if (bufferLimit > 0){
 		int overflow;
 			
@@ -93,6 +95,8 @@ File: FinkTextViewController.m
 	}
 	[textView replaceCharactersInRange:NSMakeRange([[textView string] length], 0)
 		withString:s];
+		
+	[[textView textStorage] endEditing];
 }
 
 
