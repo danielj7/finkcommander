@@ -76,6 +76,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "IOTaskWrapper.h"
 #import "FinkTableViewController.h"
 #import "FinkTextViewController.h"
+#import "FinkSplitView.h"
 #import "FinkInstallationInfo.h"
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
@@ -122,7 +123,7 @@ enum {
 	IBOutlet id tableView;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
-	IBOutlet NSSplitView *splitView;
+	IBOutlet id splitView;
 	IBOutlet id textView;
 	IBOutlet id msgText;
 	IBOutlet NSView *progressViewHolder;
@@ -183,8 +184,8 @@ enum {
 -(void)scrollToVisible:(NSNumber *)n;
 
 //Split view action methods
--(IBAction)collapseOutput:(id)sender;
--(IBAction)expandOutput:(id)sender;
+//-(IBAction)collapseOutput:(id)sender;
+//-(IBAction)expandOutput:(id)sender;
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;

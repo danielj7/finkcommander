@@ -86,12 +86,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				selector: @selector(runCommandOnNotification:)
 				name: FinkRunCommandNotification
 				object: nil];
-		//Register for notification that causes output to collapse when
-		//user selects the auto expand option
-		[center addObserver: self
-				selector: @selector(collapseOutput:)
-				name: FinkCollapseOutputView
-				object: nil];
 		//Register notification that table selection changed in order
 		//to update Package Inspector
 		[center addObserver: self
@@ -120,6 +114,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 }
 
 //----------------------------------------------->Tag/Name Translation
+//Using tags rather than titles to tie the View menu items to 
+//particular columns makes it possible to localize the column names
 
 -(NSString *)attributeNameFromTag:(int)atag
 {
@@ -173,38 +169,54 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
 	NSString *col;
+	id splitSuperview = [splitView superview];
 	NSSize tableContentSize = [tableScrollView contentSize];
 	NSSize outputContentSize = [outputScrollView contentSize];
 
-	tableView = 
-		[[FinkTableViewController alloc] 
-			initWithFrame:NSMakeRect(0, 0, tableContentSize.width, tableContentSize.height)];
+	//Substitute FinkScrollView for NSScrollView
+	[tableScrollView retain];  		//keep subviews available after the split view is
+	[outputScrollView retain];		// removed from its superview
+	[splitView removeFromSuperview];
+	splitView = [[FinkSplitView alloc] initWithFrame:[splitView frame]];
+//	[splitView setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
+	[splitSuperview addSubview: splitView];
+	[splitView release];  						//retained by superview
+	[splitView addSubview: tableScrollView];  	//placed at top of split view
+	[tableScrollView release];
+	[splitView addSubview: outputScrollView]; 	//placed at bottom
+	[outputScrollView release];
+	[splitView connectSubviews];				//connects instance variables to scroll views
+	[splitView adjustSubviews];
+
+	//Substitute FinkTableViewController for NSTableView
+	tableView = [[FinkTableViewController alloc] initWithFrame:
+		NSMakeRect(0, 0, tableContentSize.width, tableContentSize.height)];
 	[tableScrollView setDocumentView: tableView];
 	[tableView release];
 	[tableView setDisplayedPackages:[packages array]];
 	[tableView sizeLastColumnToFit];
 	[tableView setMenu:tableContextMenu];
-	
-	textView = 
-		[[FinkTextViewController alloc] 
-			initWithFrame:NSMakeRect(0, 0, outputContentSize.width, outputContentSize.height)];
+
+	//Substitute FinkTextViewController for NSTextView
+	textView = [[FinkTextViewController alloc] initWithFrame: 
+		NSMakeRect(0, 0, outputContentSize.width, outputContentSize.height)];
 	[outputScrollView setDocumentView:textView];
 	[textView release];
 
 	while (col = [e nextObject]){
 		int atag = [self tagFromAttributeName:col];
-		//NSLog(@"Column for attribute: %@, tag: %d", col, atag);
 		[[viewMenu itemWithTag:atag] setState:NSOnState];
 	}
 
 	[self setupToolbar];
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
-		[self collapseOutput: nil];
+		[splitView collapseOutput: nil];
 	}else{
 		//restore to pre-terminate state
-		[self expandOutput: nil]; 
+		[splitView expandOutput]; 
 	}
+
 	[msgText setStringValue:
 		NSLocalizedString(@"UpdatingTable", nil)];
 }
@@ -703,44 +715,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[sender setState:newState];
 }
 
--(IBAction)collapseOutput:(id)sender
-{
-	if (! [splitView isSubviewCollapsed: outputScrollView]){
-		NSRect oFrame = [outputScrollView frame];
-		NSRect tFrame = [tableScrollView frame];
-		NSRect sFrame = [splitView frame];
-		float divwidth = [splitView dividerThickness];
-
-		[defaults setFloat: (oFrame.size.height / sFrame.size.height)
-							 forKey: FinkOutputViewRatio];
-		tFrame.size.height = sFrame.size.height - divwidth;
-		oFrame.size.height = 0.0;
-		oFrame.origin.y = sFrame.size.height;
-
-		[outputScrollView setFrame: oFrame];
-		[tableScrollView setFrame: tFrame];
-
-		[splitView setNeedsDisplay: YES];
-	}
-}
-
--(IBAction)expandOutput:(id)sender
-{
-	NSRect oFrame = [outputScrollView frame];
-	NSRect tFrame = [tableScrollView frame];
-	NSRect sFrame = [splitView frame];
-	float divwidth = [splitView dividerThickness];
-
-	oFrame.size.height = ceil(sFrame.size.height * [defaults floatForKey: FinkOutputViewRatio]);
-	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
-	oFrame.origin.y = tFrame.size.height + divwidth;
-
-	[outputScrollView setFrame: oFrame];
-	[tableScrollView setFrame: tFrame];
-
-	[splitView setNeedsDisplay: YES];
-}
-
 //----------------------------------------------->Menu Item Delegate
 //helper for menu item and toolbar item validators
 
@@ -998,7 +972,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)raiseInteractionWindow:(id)sender
 {
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
-		[self expandOutput: nil];
+		[splitView expandOutput];
 	}
 	[NSApp beginSheet: interactionWindow
 	   modalForWindow: window
@@ -1027,7 +1001,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 		[textView appendString:@"\n"];
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
-			[self collapseOutput: nil];
+			[splitView collapseOutput: nil];
 		}
 	}
 }
@@ -1235,7 +1209,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		}
 	}else{
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
-			[self expandOutput: nil];
+			[splitView expandOutput];
 		}
 		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),		//title
 			NSLocalizedString(@"OK", nil), nil,	nil, 			//buttons

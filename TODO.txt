@@ -9,13 +9,12 @@ X Additional information for table:
 	Stable version
 	Unstable version
 	
-Same information in package inspector
+X Same information in package inspector
 
-French, German and Spanish localizations
-
-New command: 
-	update fink from cvs
-	raise warning alert
+Localizations:
+	German
+	French
+	Spanish
 	
 Run command in terminal option (with Jaguar's new AppleScript class); may need 
 to disable on systems running 10.1
@@ -23,7 +22,7 @@ to disable on systems running 10.1
 Allow user to specify administrator name in password entry sheet (if
 possible)
 	
-Collapse and expand output with double click (like Mail.app)
+X Collapse and expand output with double click (like Mail.app)
 
 Jaguar bug fixes
 
@@ -56,6 +55,9 @@ Show info panel for fink installation; mirror information in email sig
 
 Customize sound
 
+New command: 
+	update fink from cvs
+	raise warning alert
 
 LONG TERM:
 
