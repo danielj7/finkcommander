@@ -97,6 +97,60 @@ See the header file, FinkTableViewController.h, for interface and license inform
 	return pkgArray;
 }
 
+//----------------------------------------------->Copy
+
+/*"        Copy the single selected row from the table.  The elements
+are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType).
+"*/
+
+-(void)copySelectedRows
+{
+	NSEnumerator *colEnum = [[self tableColumns] objectEnumerator];
+	NSEnumerator *rowEnum = [self selectedRowEnumerator];
+	NSMutableString	*theData = [NSMutableString string];
+	NSNumber *theRowNum;
+	NSTableColumn *theColumn;
+	NSPasteboard *pb = [NSPasteboard generalPasteboard];
+
+	// Write the header values
+	while (nil != (theColumn = [colEnum nextObject])){
+		[theData appendString:[theColumn identifier]];
+		[theData appendString:@"\t"];
+	}
+	[theData appendString:@"\n"];
+
+	while (nil != (theRowNum = [rowEnum nextObject])){
+		colEnum = [[self tableColumns] objectEnumerator];
+
+		while (nil != (theColumn = [colEnum nextObject])){
+			id columnValue = [self tableView:self objectValueForTableColumn:theColumn
+									row:[theRowNum intValue] ];
+			NSString *columnString = @"";
+			if (columnValue){
+				columnString = [columnValue description];
+			}
+			[theData appendFormat:@"%@\t", columnString];
+		}
+		// delete the last tab.
+		if ([theData length]){
+			[theData deleteCharactersInRange:NSMakeRange([theData length] - 1, 1)];
+		}
+		[theData appendString:@"\n"];
+	}
+
+	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, NSStringPboardType, nil]
+						   owner:nil];
+	[pb setString:[NSString stringWithString:theData]
+			 forType:NSStringPboardType];
+	[pb setString:[NSString stringWithString:theData]
+			 forType:NSTabularTextPboardType];
+}
+
+-(IBAction)copy:(id)sender
+{
+    [self copySelectedRows];
+}
+
 //----------------------------------------------->Column Manipulation
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
@@ -300,5 +354,5 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 	return NO;
 }
 
-
 @end
+ 
