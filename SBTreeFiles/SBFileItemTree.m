@@ -179,7 +179,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 -(void)buildTreeFromFileList:(NSMutableArray *)flist
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSEnumerator *e = [flist objectEnumerator];;
+    NSEnumerator *e = [flist objectEnumerator];
     NSString *apath;
     SBFileItem *item;
 	
