@@ -101,6 +101,7 @@ See the header file, FinkController.h, for interface and license information.
 	[lastParams release];
 	[password release];
 	[finkTask release];
+	[toolbar release];
 	[super dealloc];
 }
 
@@ -178,7 +179,7 @@ See the header file, FinkController.h, for interface and license information.
 	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
 
 	if ([progressView isDescendantOf: progressViewHolder]){
-			[progressIndicator stopAnimation: nil];
+		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
 	}
 	[self displayNumberOfPackages];
@@ -344,7 +345,7 @@ See the header file, FinkController.h, for interface and license information.
 //run package-specific command with arguments derived from table selection
 -(IBAction)runCommand:(id)sender
 {
-	NSMutableArray *args = [[self setupCommandFrom: sender] retain];
+	NSMutableArray *args = [self setupCommandFrom: sender];
 	NSMutableArray *pkgs = [NSMutableArray array];
 	NSNumber *anIndex;
 	NSEnumerator *e1 = [tableView selectedRowEnumerator];
@@ -363,25 +364,24 @@ See the header file, FinkController.h, for interface and license information.
 	
 	[self displayCommand: args];		
 	[self runCommandWithParams: args];
-	[args release];
 }
 
 //run non-package-specific command; ignore table selection
 -(IBAction)runUpdater:(id)sender
 {
-	NSMutableArray *args = [[self setupCommandFrom: sender] retain];
+	NSMutableArray *args = [self setupCommandFrom: sender];
 	
 	[self displayCommand: args];	
 	[self runCommandWithParams: args];
-	[args release];
 }
 
 //allow user to update table using Fink
 -(IBAction)updateTable:(id)sender
 {	
 	[progressViewHolder addSubview: progressView];
+	[progressIndicator setUsesThreadedAnimation: YES];
 	[progressIndicator startAnimation: sender];
-	[msgText setStringValue: @"Updating table dataÉ"]; //time lag here
+	[msgText setStringValue: @"Updating table dataÉ"]; 
 	[self setCommandIsRunning: YES];
 	[packages update]; //calls refreshTable by notification
 }
@@ -422,20 +422,20 @@ See the header file, FinkController.h, for interface and license information.
 
 -(void)setupToolbar
 {
-    NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier: @"mainToolbar"];
+    toolbar = [[NSToolbar alloc] initWithIdentifier: @"mainToolbar"];
     [toolbar setDelegate: self];
     [toolbar setAllowsUserCustomization: YES];
     [toolbar setAutosavesConfiguration: YES];
-    [[self window] setToolbar: [toolbar autorelease]];
+    [[self window] setToolbar: toolbar]; 
 }
 
-//reapply filter if popup selection changes--NOT WORKING
+//reapply filter if popup selection changes
 -(IBAction)refilter:(id)sender
 {
 	[self controlTextDidChange: nil];
 }
 
-//----------------------------------------------->Delegate MethodS
+//----------------------------------------------->Delegate Methods
 
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
 	   itemForItemIdentifier:(NSString *)itemIdentifier
@@ -445,7 +445,7 @@ See the header file, FinkController.h, for interface and license information.
 	if ([itemIdentifier isEqualToString: FinkInstallSourceItem]){
 		[item setLabel: @"Install Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Install package from source"];
+		[item setToolTip: @"Installs a package from source"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"addsrc"]];
 		[item setTarget: self];
@@ -453,17 +453,25 @@ See the header file, FinkController.h, for interface and license information.
 	}else if ([itemIdentifier isEqualToString: FinkInstallBinaryItem]){
 		[item setLabel: @"Install Binary"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Install binary package"];
+		[item setToolTip: @"Installs a binary package"];
 		[item setTag: 1]; 		//binary command
 		[item setImage: [NSImage imageNamed:@"addbin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
-		[item setLabel: @"Remove"];
+		[item setLabel: @"Remove Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Remove package (but keep deb file)"];
+		[item setToolTip: @"Deletes the files for a package, but retains the deb file for possible reintallation"];
 		[item setTag: 0]; 		//source command
-		[item setImage: [NSImage imageNamed:@"delete"]];
+		[item setImage: [NSImage imageNamed:@"delsrc"]];
+		[item setTarget: self];
+		[item setAction: @selector(runCommand:)];
+	}else if ([itemIdentifier isEqualToString: FinkRemoveBinaryItem]){
+		[item setLabel: @"Remove Binary"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Deletes the files for a package, but retains the deb file for possible reinstallation"];
+		[item setTag: 1]; 		//binary command
+		[item setImage: [NSImage imageNamed:@"delbin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
 	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
@@ -488,6 +496,7 @@ See the header file, FinkController.h, for interface and license information.
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
+		FinkRemoveBinaryItem,
 		FinkFilterItem,
 		nil];
 }

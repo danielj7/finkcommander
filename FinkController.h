@@ -74,6 +74,7 @@ Contact the author at sburr@mac.com.
 	NSImage *reverseSortImage;
 	NSImage *normalSortImage;
 	BOOL commandIsRunning;
+	NSToolbar *toolbar;
 
 	//Authentication and Process Control
 	NSString *password;

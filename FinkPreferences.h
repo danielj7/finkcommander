@@ -48,6 +48,7 @@ extern NSString *FinkAlwaysChooseDefaults;
 extern NSString *FinkInstallSourceItem;
 extern NSString *FinkInstallBinaryItem;
 extern NSString *FinkRemoveSourceItem;
+extern NSString *FinkRemoveBinaryItem;
 extern NSString *FinkFilterItem;
 
 

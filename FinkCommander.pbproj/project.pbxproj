@@ -181,6 +181,7 @@
 				F538C3C5023496DC01A80164,
 				F531463F022C801601A80164,
 				F5D3F481025306EB01A80164,
+				F5C1B062026BFA2501A80164,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -258,8 +259,14 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>FinkCommander</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>FinkCommander Guide</string>
+	<key>CFBundleHelpBookName</key>
+	<string>FinkCommander Guide</string>
 	<key>CFBundleIconFile</key>
 	<string>Darwinfinch.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sburrious.finkcommander</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -306,7 +313,9 @@
 				F5D3F482025306EB01A80164,
 				F554F1DB0266AA4B01A80164,
 				F59BDD91026817BF01A80164,
-				F548D592026B6F1F01A80164,
+				F50C7FBC026BD8BD01A80164,
+				F50C7FBE026BD92B01A80164,
+				F5C1B063026BFA2501A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -380,6 +389,28 @@
 //F52
 //F53
 //F54
+		F50C7FBB026BD8BD01A80164 = {
+			isa = PBXFileReference;
+			path = delbin.tiff;
+			refType = 4;
+		};
+		F50C7FBC026BD8BD01A80164 = {
+			fileRef = F50C7FBB026BD8BD01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F50C7FBD026BD92B01A80164 = {
+			isa = PBXFileReference;
+			path = delsrc.tiff;
+			refType = 4;
+		};
+		F50C7FBE026BD92B01A80164 = {
+			fileRef = F50C7FBD026BD92B01A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F527284B0221B4E801A80164 = {
 			isa = PBXFileReference;
 			path = FinkDataController.h;
@@ -535,7 +566,8 @@
 		};
 		F538C3C5023496DC01A80164 = {
 			children = (
-				F548D591026B6F1F01A80164,
+				F50C7FBB026BD8BD01A80164,
+				F50C7FBD026BD92B01A80164,
 				F59BDD90026817BF01A80164,
 				F554F1D80266AA4B01A80164,
 				F538C3C1023495CF01A80164,
@@ -544,17 +576,6 @@
 			isa = PBXGroup;
 			name = Images;
 			refType = 4;
-		};
-		F548D591026B6F1F01A80164 = {
-			isa = PBXFileReference;
-			path = delete.tiff;
-			refType = 4;
-		};
-		F548D592026B6F1F01A80164 = {
-			fileRef = F548D591026B6F1F01A80164;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F55057270231E5F701A80164 = {
 			isa = PBXFileReference;
@@ -640,6 +661,17 @@
 		};
 		F5BBDFB2023AF8A601A80164 = {
 			fileRef = F5BBDFB1023AF8A601A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5C1B062026BFA2501A80164 = {
+			isa = PBXFolderReference;
+			path = "FinkCommander Guide";
+			refType = 4;
+		};
+		F5C1B063026BFA2501A80164 = {
+			fileRef = F5C1B062026BFA2501A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

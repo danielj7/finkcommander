@@ -18,6 +18,7 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
 NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
 NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
+NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
 NSString *FinkFilterItem = @"FinkFilterItem";
 
 @implementation FinkPreferences
