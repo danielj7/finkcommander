@@ -37,10 +37,10 @@
 	NSRange range;
 	NSString *whichPath;
 
-	e = [[NSArray arrayWithObjects: @"/usr/local",
+	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", @"/usr/X11R6",
 		@"/usr", nil] objectEnumerator];
 
-	//try the usual suspects
+	//look in some possible install paths
 	while (path = [e nextObject]){
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){

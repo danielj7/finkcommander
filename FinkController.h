@@ -55,32 +55,42 @@ Contact the author at sburr@mac.com.
 	FinkDataController *packages;
 	FinkPreferences *preferences;
 	FinkBasePathUtility *utility;
+	NSString *lastIdentifier;
+	NSMutableDictionary *columnState;
+	NSImage *reverseSortImage;
+	NSImage *normalSortImage;
+	BOOL updatingTable;
+
+//MOVE	
 	NSString *binPath;
 	NSString *password;
 	NSString *lastCommand;
 	NSMutableArray *lastParams;
 	BOOL pendingCommand;
-	NSString *lastIdentifier;
-	NSMutableDictionary *columnState;
 	NSDictionary *environment;
 	IOTaskWrapper *finkTask;
-	NSImage *reverseSortImage;
-	NSImage *normalSortImage;
+//ENDMOVE
 }
 
 //Accessors
 -(FinkDataController *)packages;
+
+//MOVE
 -(NSString *)binPath;
 -(NSString *)password;
 -(void)setPassword:(NSString *)s;
--(NSString *)lastCommand;
--(void)setLastCommand:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSArray *)a;
 -(BOOL)pendingCommand;
 -(void)setPendingCommand:(BOOL)b;
+//ENDMOVE
+
+-(NSString *)lastCommand;
+-(void)setLastCommand:(NSString *)s;
 -(NSString *)lastIdentifier;
 -(void)setLastIdentifier:(NSString *)s;
+-(BOOL)updatingTable;
+-(void)setUpdatingTable:(BOOL)b;
 
 //Action and sheet methods
 -(IBAction)raisePwdWindow:(id)sender;

@@ -7,18 +7,19 @@
 			29B97326FDCFA39411CA2CEA,
 		);
 		breakpoints = (
+			F5453584024ACAA001A80164,
 		);
 		perUserDictionary = {
 			PBXWorkspaceConfiguration = {
-				ContentSize = "{939, 682}";
+				ContentSize = "{962, 683}";
 				LeftSlideOut = {
 					ActiveTab = 0;
-					Frame = "{{0, 23}, {939, 659}}";
+					Frame = "{{0, 23}, {962, 660}}";
 					Split0 = {
 						ActiveTab = 1;
-						Frame = "{{279, 0}, {660, 659}}";
+						Frame = "{{279, 0}, {683, 660}}";
 						Split0 = {
-							Frame = "{{0, 232}, {660, 427}}";
+							Frame = "{{0, 229}, {683, 431}}";
 						};
 						SplitCount = 1;
 						Tab0 = {
@@ -48,16 +49,16 @@
 							LauncherConfigVersion = 4;
 						};
 						Tab1 = {
-							Frame = "{{0, 0}, {660, 208}}";
+							Frame = "{{0, 0}, {683, 205}}";
 							LauncherConfigVersion = 3;
 							Runner = {
-								Frame = "{{0, 0}, {660, 208}}";
+								Frame = "{{0, 0}, {683, 205}}";
 							};
 						};
 						Tab2 = {
-							BuildMessageFrame = "{{0, 0}, {662, 106}}";
-							BuildTranscriptFrame = "{{0, 115}, {662, 126}}";
-							Frame = "{{0, 0}, {660, 239}}";
+							BuildMessageFrame = "{{0, 0}, {685, 106}}";
+							BuildTranscriptFrame = "{{0, 115}, {685, 126}}";
+							Frame = "{{0, 0}, {683, 239}}";
 						};
 						Tab3 = {
 							Frame = "{{0, 0}, {621, 223}}";
@@ -66,7 +67,7 @@
 					};
 					SplitCount = 1;
 					Tab0 = {
-						Frame = "{{0, 0}, {255, 659}}";
+						Frame = "{{0, 0}, {255, 660}}";
 					};
 					Tab1 = {
 						ClassesFrame = "{{0, 0}, {202, 401}}";
@@ -92,7 +93,7 @@
 					};
 					TabCount = 5;
 				};
-				WindowLocation = "{33, 2}";
+				WindowLocation = "{0, 1}";
 			};
 		};
 		wantsIndex = 1;
@@ -125,5 +126,11 @@
 		);
 		sourceDirectories = (
 		);
+	};
+	F5453584024ACAA001A80164 = {
+		fileReference = F53369F60218261B01A80165;
+		isa = PBXFileBreakpoint;
+		lineNumber = 528;
+		state = 1;
 	};
 }

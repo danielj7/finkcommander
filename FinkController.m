@@ -37,7 +37,12 @@ See the header file, FinkController.h, for interface and license information.
 	{
 		[self setWindowFrameAutosaveName: @"MainWindow"];
 		[NSApp setDelegate: self];
-				
+		
+		//needed for rebuilds; after first build, default value is set
+		//and apparently remains set, but rebuilds put unmodified version of
+		//fpkg_list.pl back in FinkCommander.app/Resources
+		[defaults removeObjectForKey: FinkBasePathFound];
+						
 		if (![defaults boolForKey: FinkBasePathFound]){
 			NSLog(@"Looking for fink base path");
 			utility = [[[FinkBasePathUtility alloc] init] autorelease];
@@ -50,10 +55,8 @@ See the header file, FinkController.h, for interface and license information.
 
 		//variables used to display table
 		[self setLastIdentifier: @"name"];
-		reverseSortImage = [[NSImage alloc] initWithContentsOfFile:
-			[[NSBundle mainBundle] pathForResource: @"reverse" ofType: @"tiff"]];
-		normalSortImage = [[NSImage alloc] initWithContentsOfFile:
-			[[NSBundle mainBundle] pathForResource: @"normal" ofType: @"tiff"]];
+		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
+		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
 			
 		//stores whether table columns are sorted in normal or reverse order to enable
 		//proper sorting behavior; uses definitions from FinkPackages to set attributes
@@ -62,6 +65,8 @@ See the header file, FinkController.h, for interface and license information.
 		while (attribute = [e nextObject]){
 			[columnState setObject: @"normal" forKey: attribute];
 		}
+		
+		[self setUpdatingTable: NO];
 
 //MOVE
 		binPath =  [[NSString alloc] initWithString:
@@ -173,6 +178,12 @@ See the header file, FinkController.h, for interface and license information.
 	[lastIdentifier release];
 	lastIdentifier = s;
 }
+
+-(BOOL)updatingTable {return updatingTable;}
+-(void)setUpdatingTable:(BOOL)b{
+	updatingTable = b;
+}
+
 
 
 //MOVE
@@ -326,9 +337,12 @@ See the header file, FinkController.h, for interface and license information.
 //FinkCommander's manual update
 -(IBAction)updateTable:(id)sender
 {
+	[self setUpdatingTable: YES];
+	[msgText setStringValue: @"Updating table data . . . "];
 	[packages update];
 	[tableView reloadData];
 	[self displayNumberOfPackages];
+	[self setUpdatingTable: NO];
 }
 
 -(IBAction)showPreferencePanel:(id)sender
@@ -421,9 +435,11 @@ See the header file, FinkController.h, for interface and license information.
 		return NO;
 	}
 	//disable Source and Binary menu items if command is running
-	if ([[finkTask task] isRunning] &&
+	if (([[finkTask task] isRunning] || [self updatingTable])
+	      &&
 	     ([[[menuItem menu] title] isEqualToString: @"Source"] ||
-		 [[[menuItem menu] title] isEqualToString: @"Binary"])){
+		  [[[menuItem menu] title] isEqualToString: @"Binary"] ||
+		  [[menuItem title] isEqualToString: @"Update table"])){
 		return NO;
 	}
 	return YES;	
@@ -453,7 +469,10 @@ See the header file, FinkController.h, for interface and license information.
 			[pkg setInstalled: @" "];
 		}
 	}else if ([cmd rangeOfString: @"selfupdate"].length > 0){
+		[self setUpdatingTable: YES];
+		[msgText setStringValue: @"Updating table data . . . "];
 		[packages update];
+		[self setUpdatingTable: NO];
 	}else if ([cmd isEqualToString: @"update-all"]){
 		e = [[packages array] objectEnumerator];
 		while (pkg = [e nextObject]){
