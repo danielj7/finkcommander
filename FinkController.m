@@ -832,7 +832,8 @@ enum {
 	NSFileManager *mgr = [NSFileManager defaultManager];
 	NSString *root = [[defaults objectForKey:FinkBasePath] 
 						stringByAppendingPathComponent:@"share/doc"];
-	NSString *path = [root stringByAppendingPathComponent:[pkg nameWithoutSplitoff]];
+	BOOL dummy = NO;
+	NSString *path = [root stringByAppendingPathComponent:[pkg nameWithoutSplitoff:&dummy]];
 	NSArray *pathContents;
 
 	if (![mgr fileExistsAtPath:path]){

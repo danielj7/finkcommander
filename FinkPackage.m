@@ -42,6 +42,19 @@ See the header file, FinkPackage.h, for interface and license information.
 #pragma mark ACCESSORS
 //================================================================================
 
+//String that may be used repeatedly by all instances
++(NSString *)pathToDists
+{
+	static NSString *_pathToDists = nil;
+	if (nil == _pathToDists){
+		_pathToDists = [[[[NSUserDefaults standardUserDefaults]
+									objectForKey:@"FinkBasePath"]
+								stringByAppendingPathComponent: @"/fink/dists"] retain];
+		NSLog(@"Path to dists = %@", _pathToDists);
+	}
+	return _pathToDists;
+}
+
 //Name
 -(NSString *)name
 {
@@ -413,7 +426,7 @@ See the header file, FinkPackage.h, for interface and license information.
 #pragma mark QUERY PACKAGE
 //================================================================================
 
--(NSString *)nameWithoutSplitoff
+-(NSString *)nameWithoutSplitoff:(BOOL *)changed
 {
 	if ([[self name] rangeOfString:@"-"].length > 0){
 		NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
@@ -426,6 +439,7 @@ See the header file, FinkPackage.h, for interface and license information.
 			r = [pkgname rangeOfString:splitoff];
 			if (r.length > 0){
 				pkgname = [pkgname substringToIndex:r.location];
+				*changed = YES;
 				break;
 			}
 		}
@@ -438,13 +452,13 @@ See the header file, FinkPackage.h, for interface and license information.
 			withExtension:(NSString *)ext
 			version:(NSString *)fversion
 {
-	NSString *fname = [self nameWithoutSplitoff];
-	NSString *pathToDists = [[[[NSUserDefaults standardUserDefaults]
-									objectForKey:@"FinkBasePath"]
-								stringByAppendingPathComponent: @"/fink/dists"] retain];
-    NSString *pkgFileName;
+	NSFileManager *mgr = [NSFileManager defaultManager];
+	BOOL foundSplitoff = NO;
+	NSString *fname = [self nameWithoutSplitoff:&foundSplitoff];
+	NSString *distPath = [FinkPackage pathToDists];
+    NSString *pkgFileName, *thePath;
     NSArray *components;
-	
+		
 	if (nil == fversion){
 		fversion = [tree isEqualToString:@"unstable"] ?
 					[self unstable] : [self stable];
@@ -452,13 +466,31 @@ See the header file, FinkPackage.h, for interface and license information.
 
 	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext];
     if ([[self category] isEqualToString:@"crypto"]){
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",
+		components = [NSArray arrayWithObjects:distPath, tree, @"crypto",
 			@"finkinfo", pkgFileName, nil];
     }else{
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"main",
+		components = [NSArray arrayWithObjects:distPath, tree, @"main",
 			@"finkinfo", [self category], pkgFileName, nil];
     }
-	return [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
+	thePath = [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
+	
+	if (! foundSplitoff && 
+		[fname rangeOfString:@"-"].length > 0 && 
+		! [mgr fileExistsAtPath:thePath]){
+		NSMutableString *mutablePath = [[thePath mutableCopy] autorelease];
+		NSRange rangeToLastDash = 
+			NSMakeRange(0, [fname rangeOfString:@"-" options:NSBackwardsSearch].location);
+		NSRange rangeOfName = [thePath rangeOfString:fname];
+		
+		fname = [fname substringWithRange:rangeToLastDash];
+		[mutablePath replaceCharactersInRange:rangeOfName withString:fname];
+		mutablePath = [mutablePath stringByResolvingSymlinksInPath];
+		if ([mgr fileExistsAtPath:mutablePath]){
+			thePath = mutablePath;
+		}
+	}
+	
+	return thePath;
 }
 
 -(NSString *)pathToPackageInTree:(NSString *)tree

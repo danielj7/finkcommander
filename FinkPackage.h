@@ -153,7 +153,7 @@ enum {
  */
 
 //Package name without -dev, -shlibs or -bin
--(NSString *)nameWithoutSplitoff;
+-(NSString *)nameWithoutSplitoff:(BOOL *)changed;
 
 //Check to see if path exists for a particular version
 -(NSString *)pathToPackageInTree:(NSString *)tree
