@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>FinkCommander Guide--Configuring Sudo</title>
+</head>
+
+<body>
+
+<h3>Configuring Sudo Not to Ask For Password</h3>
+
+
+
+<table width="100%" border="0" cellspacing="10">
+<tr><td>
+<p>From the Fink <a href="http://fink.sourceforge.net/faq/index.php">FAQ</a></p>
+
+<p>Q3.9: I'm tired of typing my password into sudo again and again. Is there a way around this?</p>
+</td></tr>
+
+<tr bgcolor="#ffffcc"><td>
+<p>A:	If you're not paranoid, you can configure sudo to not ask you for a password. 
+To do this, edit <kbd>/etc/sudoers</kbd> as root and add a line like this:</p>
+
+<p><code>username  ALL = NOPASSWD: ALL</code></p>
+
+<p>Replace username with your actual username, of course. This line allows you to run any 
+command via sudo without typing your password.</p>
+</td></tr>
+
+</table>
+
+</body>
+</html>
