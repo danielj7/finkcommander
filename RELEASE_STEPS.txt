@@ -4,9 +4,11 @@ Create final binary:
 	Clean the targets
 	Compile with DEBUGGING undefined and "Deployment" selected
 	
-Download web site and update, including version references in index.php and version.xml
+Download web site and update, including: 
+	version references in index.php and version.xml
+	new file in /history
 
-run ~/FCFiles/mkpkgs.sh
+run ~/bin/mkpkgs.sh
 	
 Upload each file
 	ftp upload.sourceforge.net

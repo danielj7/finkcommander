@@ -311,7 +311,7 @@
 	<key>CFBundleSignature</key>
 	<string>Fcmd</string>
 	<key>CFBundleVersion</key>
-	<string>.cvs</string>
+	<string>.release</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSHumanReadableCopyright</key>

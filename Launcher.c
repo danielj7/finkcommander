@@ -217,7 +217,7 @@ int repair_self()
     int fd_tool;
     int result = FALSE;
     int resrep = TRUE;
-	int chownerr;
+	int chownerr = 0;
 	int chmoderr;
     char* path_to_self = getPathToMyself();
     char path_to_res[BUFSIZE];

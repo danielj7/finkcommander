@@ -92,6 +92,9 @@ enum {
 	[browserSuperview addSubview:sbBrowser];
     [sbBrowser release];
     [sbBrowser setTree:sbTree];
+	
+	[loadingIndicator setStyle:NSProgressIndicatorSpinningStyle];
+	[loadingIndicator setDisplayedWhenStopped:NO];
 }
 
 -(id)initWithFileList:(NSMutableArray *)fList
@@ -218,7 +221,7 @@ enum {
     [outlineView reloadItem:[sbTree rootItem] reloadChildren:YES];
 	[sbBrowser reloadColumn:0];
 	[loadingIndicator stopAnimation:self];
-    [loadingIndicator removeFromSuperview];
+    //[loadingIndicator removeFromSuperview];
 }
 
 //----------------------------------------------------------
