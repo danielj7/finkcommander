@@ -37,16 +37,6 @@
 #include "Debugging.h"
 #endif
 
-
-/*
- * Localized Strings Used In Multiple Files
-*/
-#define LS_CANCEL NSLocalizedString(@"Cancel", @"Cancel button title")
-#define LS_OK NSLocalizedString(@"OK", @"OK button title")
-#define LS_ERROR NSLocalizedString(@"Error", @"Error dialog title")
-#define LS_WARNING NSLocalizedString(@"Warning", @"Warning dialog title")
-
-
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;
@@ -83,6 +73,7 @@ extern NSString *FinkTableColumnsArray;
 extern NSString *FinkExtendedVerbosity;
 extern NSString *FinkUsersArray;
 extern NSString *FinkColumnStateDictionary;
+extern NSString *FinkFlaggedColumns;
 
 //Notification Names
 extern NSString *FinkConfChangeIsPending;

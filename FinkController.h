@@ -24,8 +24,8 @@ communicates with:
 	some signals tell FinkCommander to send a follow-up message for additional 
 	information;
 
-*	FinkTableViewController (VC) and FinkTextViewController (C) -- control
-	the primary user interface elements; FinkTableViewController is a subclass
+*	FinkTableView (VC) and FinkTextViewController (C) -- control
+	the primary user interface elements; FinkTableView is a subclass
 	of NSTableView in order to customize drag and drop behavior;
 	
 *	a FinkPreferences object (C) -- provides an interface for both the FinkCommander user
@@ -79,7 +79,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkPackageInfo.h"
 #import "FinkWarningDialog.h"
 #import "AuthorizedExecutable.h"
-#import "FinkTableViewController.h"
+#import "FinkTableView.h"
 #import "FinkTextViewController.h"
 #import "FinkSplitView.h"
 #import "FinkToolbar.h"
@@ -92,7 +92,7 @@ Contact the author at sburrious@users.sourceforge.net.
 {
 	//Main window outlets
 	IBOutlet NSWindow *window;
-	IBOutlet id tableViewController;
+	IBOutlet id tableView;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet id splitView;
@@ -157,7 +157,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)didEnd:(NSSavePanel *)sheet
 	  returnCode:(int)code
 	 contextInfo:(void *)contextInfo;
--(IBAction)openPackageFiles:(id)sender;
 -(IBAction)showDescription:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)showPackageInfoPanel:(id)sender;
@@ -167,14 +166,15 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)chooseTableColumn:(id)sender;
 -(IBAction)sortByPackageElement:(id)sender;
 -(IBAction)collapseExpandOutput:(id)sender;
+-(IBAction)toggleFlags:(id)sender;
 -(IBAction)openDocumentation:(id)sender;
 -(IBAction)openPackageFileViewer:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
-	   itemForItemIdentifier:(NSString *)itemIdentifier
-   willBeInsertedIntoToolbar:(BOOL)flag;
+	itemForItemIdentifier:(NSString *)itemIdentifier
+	willBeInsertedIntoToolbar:(BOOL)flag;
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
 -(IBAction)refilter:(id)sender;

@@ -1,5 +1,5 @@
 /*
-File: FinkTableViewController.h
+File: FinkTableView.h
 
  FinkCommander
 
@@ -7,7 +7,7 @@ File: FinkTableViewController.h
  that automates the downloading, patching, compilation and installation of
  Unix software on Mac OS X.
 
- FinkTableViewController, a subclass of NSTableView, includes methods
+ FinkTableView, a subclass of NSTableView, includes methods
  for adding and removing columns from FinkCommander's table view, for sorting
  the table view when the user clicks the table header cells and for returning
  an array of the FinkPackage objects selected in the table.
@@ -36,7 +36,7 @@ File: FinkTableViewController.h
 #import "FinkGlobals.h"
 #import "FinkPackage.h"
 
-@interface FinkTableViewController: NSTableView
+@interface FinkTableView: NSTableView
 {
 	NSUserDefaults *defaults;
 
@@ -49,6 +49,7 @@ File: FinkTableViewController.h
 	NSImage *reverseSortImage;
 	NSImage *normalSortImage;	
 }
+
 //----------------------------------------------->Accessors
 -(NSString *)lastIdentifier;
 -(void)setLastIdentifier:(NSString *)s;
@@ -59,10 +60,14 @@ File: FinkTableViewController.h
 -(NSImage *)normalSortImage;
 -(NSImage *)reverseSortImage;
 -(NSArray *)selectedPackageArray;
+
 //----------------------------------------------->Column Manipulation
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier;
 -(void)addColumnWithName:(NSString *)identifier;
 -(void)removeColumnWithName:(NSString *)identifier;
+
+//----------------------------------------------->Actions
+-(IBAction)openPackageFiles:(id)sender;
 
 //----------------------------------------------->Sorting Methods
 -(void)storeSelectedObjectInfo;

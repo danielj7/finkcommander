@@ -233,6 +233,7 @@ See the header file, FinkData.h, for interface and license information.
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *path;
 	NSString *bversion;
+	NSArray *flagArray = [defaults objectForKey:FinkFlaggedColumns];
 	
 	d = [info objectForKey: NSFileHandleNotificationDataItem];
 	output = [[[NSString alloc] initWithData:d
@@ -296,6 +297,12 @@ See the header file, FinkData.h, for interface and license information.
 		bversion = [binaryPackages objectForKey:[p name]];
 		bversion = bversion ? bversion : @" ";
 		[p setBinary:bversion];
+		
+		if ([flagArray containsObject:[p name]]){
+			[p setFlagged:IS_FLAGGED];
+		}else{
+			[p setFlagged:NOT_FLAGGED];
+		}
 
 		[collector addObject: p];
 		[p release];

@@ -43,12 +43,6 @@ extern NSString *sbDescending;
 		objectValueForTableColumn:(NSTableColumn *)tableColumn 
 		byItem:(id)item;
 
-/*
-	Actions
-*/
-
--(IBAction)openSelectedFiles:(id)sender;
-
 //-(IBAction)sortByColumn:(id)sender;
 
 /*

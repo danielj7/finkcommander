@@ -33,6 +33,7 @@ in MainMenu.nib and strings identifying FinkPackage attributes */
 	@"maintainer",											\
 	@"installed",											\
 	@"name",												\
+	@"flagged",												\
 	nil]
 
 #define NAME_TAG_DICTIONARY 								\
@@ -47,14 +48,15 @@ in MainMenu.nib and strings identifying FinkPackage attributes */
 	[NSNumber numberWithInt: MAINTAINER], @"maintainer",	\
 	[NSNumber numberWithInt: INSTALLED], @"installed",      \
 	[NSNumber numberWithInt: NAME], @"name",                \
+	[NSNumber numberWithInt: FLAGGED], @"flagged",			\
 	nil]
 
 /*
  *  Repeated Localized Strings
  */
 
-#define LS_QUIT NSLocalizedString(@"Quit", "Button title")
-#define LS_DOWNLOAD NSLocalizedString(@"Quit", "Button title")
+#define LS_QUIT NSLocalizedString(@"Quit", "Quit button title")
+#define LS_DOWNLOAD NSLocalizedString(@"Download", "Download button title")
 
 //================================================================================
 #pragma mark CONSTANTS
@@ -72,7 +74,8 @@ enum {
     SUMMARY    	= 2006,
     MAINTAINER 	= 2007,
     INSTALLED  	= 2008,
-    NAME	    = 2009
+    NAME	    = 2009,
+	FLAGGED 	= 2010
 };
 
 /* Identify web site to open based on menu item tag */
@@ -259,7 +262,7 @@ enum {
     if ([defaults boolForKey: FinkPackagesInTitleBar]){
 		[window setTitle: [NSString stringWithFormat:
 			NSLocalizedString(@"PackagesDisplayed", nil),
-			[[tableViewController displayedPackages] count],
+			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
 		if (! commandIsRunning){
 			[msgText setStringValue: NSLocalizedString(@"Done", nil)];
@@ -268,7 +271,7 @@ enum {
 		[window setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
 			NSLocalizedString(@"packagesInstalled", nil),
-			[[tableViewController displayedPackages] count],
+			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
     }
 }
@@ -316,7 +319,7 @@ enum {
     [self stopProgressIndicator];
     [self displayNumberOfPackages];
     commandIsRunning = NO;
-    [tableViewController deselectAll: self];
+    [tableView deselectAll: self];
     [self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
     [toolbar validateVisibleItems];
 }
@@ -348,18 +351,15 @@ enum {
     [splitView adjustSubviews];
 	[splitView setCollapseExpandMenuItem:collapseExpandMenuItem];
 
-    //Substitute FinkTableViewController for NSTableView
-	//N.B. It was a mistake to make FinkTableViewController
-	//a subclass of NSTableView
-    tableViewController = [[FinkTableViewController alloc] initWithFrame:
+    //Substitute FinkTableView for NSTableView
+    tableView = [[FinkTableView alloc] initWithFrame:
 		NSMakeRect(0, 0, tableContentSize.width,
 			 tableContentSize.height)];
-    [tableScrollView setDocumentView: tableViewController];
-    [tableViewController release];
-    [tableViewController setDisplayedPackages:[packages array]];
-    [tableViewController sizeLastColumnToFit];
-    [tableViewController setMenu:tableContextMenu];
-	[tableViewController setDoubleAction:@selector(openPackageFiles:)];
+    [tableScrollView setDocumentView:tableView];
+    [tableView release];
+    [tableView setDisplayedPackages:[packages array]];
+    [tableView sizeLastColumnToFit];
+    [tableView setMenu:tableContextMenu];
 
     //Instantiate FinkTextViewController
     textViewController = [[FinkTextViewController alloc] 
@@ -388,10 +388,10 @@ enum {
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSTableColumn *lastColumn = [tableViewController tableColumnWithIdentifier:
-				    [tableViewController lastIdentifier]];
+    NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
+				    [tableView lastIdentifier]];
 	NSString *direction = [[defaults objectForKey:FinkColumnStateDictionary]
-							objectForKey:[tableViewController lastIdentifier]];
+							objectForKey:[tableView lastIdentifier]];
     NSString *basePath = [defaults objectForKey:FinkBasePath];
     int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
     NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
@@ -404,8 +404,8 @@ enum {
     }
     [self updateTable:nil];
 
-    [tableViewController setHighlightedTableColumn:lastColumn];
-    [tableViewController setIndicatorImage: [tableViewController performSelector:
+    [tableView setHighlightedTableColumn:lastColumn];
+    [tableView setIndicatorImage: [tableView performSelector:
 				NSSelectorFromString([NSString stringWithFormat:@"%@SortImage", direction])]
 		inTableColumn:lastColumn];
 
@@ -595,25 +595,6 @@ enum {
     }
 }
 
--(IBAction)openPackageFiles:(id)sender
-{
-	NSEnumerator *e = [[tableViewController selectedPackageArray] objectEnumerator];
-	NSMutableArray *problemPaths = [NSMutableArray array];
-	NSFileManager *manager = [NSFileManager defaultManager];
-	FinkPackage *pkg;
-	NSString *extension = ([sender tag] == 0) ? @"info" : @"patch";
-	NSString *path, *tree;
-
-	while (nil != (pkg = [e nextObject])){
-		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
-		path = [pkg pathToPackageInTree:tree withExtension:extension];
-		if (! [manager fileExistsAtPath:path] || ! openFileAtPath(path)){
-			[problemPaths addObject:path];
-		}
-	}
-	alertProblemPaths(problemPaths);
-}
-
 //----------------------------------------------->View Menu
 #pragma mark View Menu
 
@@ -624,9 +605,9 @@ enum {
     int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
     if (newState == NSOnState){
-		[tableViewController addColumnWithName:columnIdentifier];
+		[tableView addColumnWithName:columnIdentifier];
     }else{
-		[tableViewController removeColumnWithName:columnIdentifier];
+		[tableView removeColumnWithName:columnIdentifier];
     }
     [sender setState:newState];
 }
@@ -634,8 +615,8 @@ enum {
 -(IBAction)sortByPackageElement:(id)sender
 {
 	NSString *identifier = [self attributeNameFromTag:[sender tag]];
-	NSTableColumn *column = [tableViewController tableColumnWithIdentifier:identifier];
-	[tableViewController tableView:tableViewController didClickTableColumn:column];
+	NSTableColumn *column = [tableView tableColumnWithIdentifier:identifier];
+	[tableView tableView:tableView didClickTableColumn:column];
 }
 
 -(IBAction)collapseExpandOutput:(id)sender
@@ -647,6 +628,27 @@ enum {
 	}
 }
 
+-(IBAction)toggleFlags:(id)sender
+{
+	int currentState = [[[tableView selectedPackageArray] lastObject]
+								flagged];
+	int newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+	FinkPackage *package;
+	NSMutableArray *flagArray = [[[defaults objectForKey:FinkFlaggedColumns] mutableCopy] autorelease];
+
+	while (nil != (package = [e nextObject])){
+		[package setFlagged:newState];
+		if (1 == newState){
+			[flagArray addObject:[package name]];
+		}else if ([flagArray containsObject:[package name]]){
+			[flagArray removeObject:[package name]];
+		}
+	}
+	[defaults setObject:[[flagArray copy] autorelease] forKey:FinkFlaggedColumns];
+	[tableView reloadData];
+}
+
 //----------------------------------------------->Source Menu
 #pragma mark Source Menu
 
@@ -654,7 +656,7 @@ enum {
 //formatting, unlike package inspector
 -(IBAction)showDescription:(id)sender
 {
-    NSEnumerator *e = [[tableViewController selectedPackageArray] objectEnumerator];
+    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     int i = 0;
     FinkPackage *pkg;
     NSString *full = nil;
@@ -692,7 +694,6 @@ enum {
     [killTask start];
 }
 
-
 -(IBAction)terminateCommand:(id)sender
 {
     if ([defaults boolForKey: FinkWarnBeforeTerminating]){
@@ -717,21 +718,21 @@ enum {
     [packageInfo setEmailSig: sig];
     [[packageInfo window] zoom: nil];
     [packageInfo showWindow: self];
-    [packageInfo displayDescriptions: [tableViewController selectedPackageArray]];
+    [packageInfo displayDescriptions: [tableView selectedPackageArray]];
 }
 
 //change inspector content when table selection changes
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
     if (packageInfo && [[packageInfo window] isVisible]){
-		[packageInfo displayDescriptions: [tableViewController selectedPackageArray]];
+		[packageInfo displayDescriptions: [tableView selectedPackageArray]];
     }
 }
 
 //Helper for feedback commands
 -(void)sendEmailWithMessage:(int)typeOfFeedback
 {
-    NSEnumerator *e = [[tableViewController selectedPackageArray] objectEnumerator];
+    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
     NSString *sig = [info formattedEmailSig];
     FinkPackage *pkg;
@@ -789,8 +790,8 @@ enum {
 
 -(IBAction)openPackageFileViewer:(id)sender
 {
-	FinkPackage *pkg = [[tableViewController displayedPackages] objectAtIndex:
-		[tableViewController selectedRow]];
+	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
+		[tableView selectedRow]];
 	
 	if (! [[pkg status] contains:@"u"]){
 		NSBeep();//Substitute alert sheet?
@@ -801,8 +802,8 @@ enum {
 
 -(IBAction)openDocumentation:(id)sender
 {
-	FinkPackage *pkg = [[tableViewController displayedPackages] objectAtIndex:
-						[tableViewController selectedRow]];
+	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
+						[tableView selectedRow]];
 	NSFileManager *mgr = [NSFileManager defaultManager];
 	NSString *root = [[defaults objectForKey:FinkBasePath] 
 						stringByAppendingPathComponent:@"share/doc"];
@@ -972,11 +973,11 @@ enum {
 
 		//store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
-			[tableViewController storeSelectedObjectInfo];
+			[tableView storeSelectedObjectInfo];
 		}
 
 		if ([filterText length] == 0){
-			[tableViewController setDisplayedPackages: [packages array]];
+			[tableView setDisplayedPackages: [packages array]];
 		}else{
 			while (nil != (pkg = [e nextObject])){
 				pkgAttribute = 
@@ -986,13 +987,13 @@ enum {
 					[subset addObject: pkg];
 				}
 			}
-			[tableViewController setDisplayedPackages:[[subset copy] autorelease]];
+			[tableView setDisplayedPackages:[[subset copy] autorelease]];
 		}
-		[tableViewController resortTableAfterFilter];
+		[tableView resortTableAfterFilter];
 
 		//restore the selection and scroll back to it after the table is sorted
 		if ([defaults boolForKey: FinkScrollToSelection]){
-			[tableViewController scrollToSelectedObject];
+			[tableView scrollToSelectedObject];
 		}
 		[self displayNumberOfPackages];
 	//in interaction dialogue, automatically select the radio button appropriate
@@ -1014,7 +1015,7 @@ enum {
 -(BOOL)validateItem:(id)theItem
 {
     //disable package-specific commands if no row selected
-    if (([tableViewController selectedRow] == -1 			||	
+    if (([tableView selectedRow] == -1 			||	
 		 ! [window isKeyWindow])									&&
 
 		([theItem action] == @selector(runPackageSpecificCommand:)  		||
@@ -1025,7 +1026,8 @@ enum {
 		[theItem action] == @selector(sendPositiveFeedback:)				||
 		[theItem action] == @selector(openDocumentation:)					||
 		[theItem action] == @selector(openPackageFileViewer:)				||
-		[theItem action] == @selector(openPackageFiles:))){
+		[theItem action] == @selector(openPackageFiles:)					||
+		[theItem action] == @selector(toggleFlags:))){
 		return NO;
     }
 	//disable sorting for columns not in table
@@ -1054,6 +1056,15 @@ enum {
 		[theItem action] == @selector(saveOutput:)){
 		return NO;
     }
+	// toggle menu item titles
+	if ([theItem action] == @selector(toggleFlags:)){
+		if ([[[tableView selectedPackageArray] lastObject] flagged] == 0){
+			[theItem setTitle:NSLocalizedString(@"Mark As Flagged", nil)];
+		}else{
+			[theItem setTitle:NSLocalizedString(@"Mark As Unflagged", nil)];
+		}
+		return YES;
+	}
 	if ([theItem action] == @selector(toggleToolbarShown:)){
 		if ([toolbar isVisible]){
 			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", nil)];
@@ -1128,7 +1139,7 @@ enum {
 
 	//Put package names in argument array, if this is a package-specific command
     if (pkgSpec){
-		e  = [[tableViewController selectedPackageArray] objectEnumerator];
+		e  = [[tableView selectedPackageArray] objectEnumerator];
 		while (nil != (pkg = [e nextObject])){
 			[args addObject: [pkg name]];
 		}
@@ -1474,7 +1485,7 @@ enum {
     // Make sure command was successful before updating table.
     // Checking exit status is not sufficient for some fink commands, so check
     // approximately last two lines for "failed."
-    [tableViewController setDisplayedPackages:[packages array]];
+    [tableView setDisplayedPackages:[packages array]];
     if (status == 0 && ! [last2lines containsCI: @"failed"]){
 		if (CMD_REQUIRES_UPDATE(lastCommand) && ! commandTerminated){
 			[self updateTable: nil];   // resetInterface will be called by notification

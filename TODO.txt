@@ -7,6 +7,12 @@ i Package file browser
 	Add button popup to change number of columns in browser
 	Add contextual menu
 	d Add drag and drop of file icons
+	d Open selected files (File menu, double click, drag and drop)
+	
+d Open .info and .patch files for selected packages in table via
+	File menu
+	Drag and drop
+	Double click (.info only)
 	 
 d Go to package documentation in Finder
 
@@ -14,18 +20,18 @@ d Submit fink bug report command
 
 d Dock icon customization: show status of command
 
-Flag column
+d Flag column
 
 Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after launching
 	command in Terminal
-
-Catch and display cvs errors during selfupdate-cvs
 
 New toolbar items for:
 	Package browser
 	Fink bug report
 
 SHORT TERM:
+
+Catch and display cvs errors during selfupdate-cvs
 
 Show info panel for fink installation; mirror information in email
 sig; Application->About Your Fink Installation... ?

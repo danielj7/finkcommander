@@ -59,7 +59,7 @@
             SUPERCLASS = NSSplitView; 
         }, 
         {
-            ACTIONS = {openPackageFiles = id; }; 
+            ACTIONS = {openPackageFiles = id; openSelectedFiles = id; toggleFlags = id; }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSObject; 

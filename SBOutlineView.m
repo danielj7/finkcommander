@@ -1,6 +1,5 @@
 
 #import "SBOutlineView.h"
-#import "SBFileItem.h"
 
 #define SB_COLUMNS [NSDictionary dictionaryWithObjectsAndKeys:	\
 	@"Name", @"filename",										\
@@ -10,6 +9,11 @@
 
 @implementation SBOutlineView
 
+//----------------------------------------------------------
+#pragma mark CREATION
+//----------------------------------------------------------
+
+//Helper
 -(NSMutableArray *)tableColumnsForFrame:(NSRect)frame
 {
 	NSArray *columnKeys = [SB_COLUMNS allKeys];
@@ -75,7 +79,9 @@
 	return newView;
 }
 
-
+//----------------------------------------------------------
+#pragma mark DRAG AND DROP
+//----------------------------------------------------------
 //Allow dragging items outside outline view
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
 {
@@ -91,6 +97,28 @@
 							iconForFile:[dragItem path]];
 	
 	return dragImage;
+}
+
+//----------------------------------------------------------
+#pragma mark ACTION(S)
+//----------------------------------------------------------
+
+-(IBAction)openSelectedFiles:(id)sender
+{
+    NSEnumerator *e = [self selectedRowEnumerator];
+    NSNumber *rownum;
+    NSString *ipath;
+    BOOL successful;
+    NSMutableArray *inaccessiblePathsArray = [NSMutableArray array];
+
+    while (nil != (rownum = [e nextObject])){
+		ipath = [[self itemAtRow:[rownum intValue]] path];
+		successful = openFileAtPath(ipath);
+		if (! successful){
+			[inaccessiblePathsArray addObject:ipath];
+		}
+    }
+    alertProblemPaths(inaccessiblePathsArray);
 }
 
 @end

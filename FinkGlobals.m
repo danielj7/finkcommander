@@ -42,6 +42,7 @@ NSString *FinkTableColumnsArray = @"FinkTableColumnsArray";
 NSString *FinkExtendedVerbosity = @"FinkExtendedVerbosity";
 NSString *FinkUsersArray = @"FinkUsersArray";
 NSString *FinkColumnStateDictionary = @"FinkColumnStateDictionary";
+NSString *FinkFlaggedColumns = @"FinkFlaggedColumns";
 
 //Global variables identifying notifications
 NSString *FinkConfChangeIsPending = @"FinkConfChangeIsPending";

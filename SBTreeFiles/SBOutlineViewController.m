@@ -22,9 +22,9 @@
 		
 		[outlineView setDelegate:self];
 		[outlineView setDataSource:self];
-		[outlineView setTarget:self];
-		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
 		[outlineView setIntercellSpacing:NSMakeSize(4.0, 2.0)];
+		[outlineView setTarget:outlineView];
+		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
 
 		while (nil != (aColumn = [e nextObject])){
 			[[aColumn headerCell] setTarget:self];
@@ -156,28 +156,6 @@
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
 	[outlineView setHighlightedTableColumn:tableColumn];
 	return NO;
-}
-
-//----------------------------------------------------------
-#pragma mark ACTION(S)
-//----------------------------------------------------------
-
--(IBAction)openSelectedFiles:(id)sender
-{
-    NSEnumerator *e = [outlineView selectedRowEnumerator];
-    NSNumber *rownum;
-    NSString *ipath;
-    BOOL successful;
-    NSMutableArray *inaccessiblePathsArray = [NSMutableArray array];
-
-    while (nil != (rownum = [e nextObject])){
-		ipath = [[outlineView itemAtRow:[rownum intValue]] path];
-		successful = openFileAtPath(ipath);
-		if (! successful){
-			[inaccessiblePathsArray addObject:ipath];
-		}
-    }
-    alertProblemPaths(inaccessiblePathsArray);
 }
 
 //----------------------------------------------------------

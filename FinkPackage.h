@@ -32,8 +32,13 @@ Contact the author at sburrious@users.sourceforge.net.
 
 */
 
+enum {
+	NOT_FLAGGED,
+	IS_FLAGGED
+};
+
 #import <Foundation/Foundation.h>
-#import "FinkGlobals.h"
+#import "SBString.h"
 
 @interface FinkPackage : NSObject 
 {
@@ -51,6 +56,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSString *weburl;
 	NSString *maintainer;
 	NSString *email;
+	int flagged;
 }
 
 /*
@@ -96,6 +102,9 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)email;
 -(void)setEmail:(NSString *)s;
 
+-(int)flagged;
+-(void)setFlagged:(int)f;
+
 /*
  * Comparison Methods
  */
@@ -137,6 +146,9 @@ Contact the author at sburrious@users.sourceforge.net.
 
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByFlagged:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByFlagged:(FinkPackage *)pkg;
 
 /*
  * Querying the Package

@@ -1,12 +1,12 @@
 /*
-File: FinkTableViewController.m
+File: FinkTableView.m
 
-See the header file, FinkTableViewController.h, for interface and license information.
+See the header file, FinkTableView.h, for interface and license information.
 */
 
-#import "FinkTableViewController.h"
+#import "FinkTableView.h"
 
-@implementation FinkTableViewController
+@implementation FinkTableView
 
 //----------------------------------------------------------
 #pragma mark CREATION AND DESTRUCTION
@@ -30,6 +30,8 @@ See the header file, FinkTableViewController.h, for interface and license inform
 		[self setAllowsMultipleSelection: YES];
 		[self setAllowsColumnSelection: NO];
 		[self setVerticalMotionCanBeginDrag:NO];
+		[self setTarget:self];
+		[self setDoubleAction:@selector(openPackageFiles:)];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
@@ -86,7 +88,6 @@ See the header file, FinkTableViewController.h, for interface and license inform
 -(NSImage *)normalSortImage {return normalSortImage;}
 -(NSImage *)reverseSortImage {return reverseSortImage;}
 
-//not really an accessor
 -(NSArray *)selectedPackageArray
 {
 	NSEnumerator *e = [self selectedRowEnumerator];
@@ -104,8 +105,9 @@ See the header file, FinkTableViewController.h, for interface and license inform
 #pragma mark COPY
 //----------------------------------------------------------
 
-/* Copy the single selected row from the table.  The elements
-are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType). */
+/* 	Copy the single selected row from the table.  The elements
+	are separated by tabs, as text, as well as tabular text 
+	(NSTabularTextPboardType). */
 
 -(void)copySelectedRows
 {
@@ -181,12 +183,12 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 			tree = @"stable";
 		}
 		path = [pkg pathToPackageInTree:tree
-							 withExtension:@"patch"];
+					withExtension:@"patch"];
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];
 		}
 		path = [pkg pathToPackageInTree:tree
-							withExtension:@"info"];
+					withExtension:@"info"];
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];
 		}		
@@ -215,17 +217,49 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 }
 
 //----------------------------------------------------------
+#pragma mark ACTION
+//----------------------------------------------------------
+
+
+-(IBAction)openPackageFiles:(id)sender
+{
+	NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
+	NSMutableArray *problemPaths = [NSMutableArray array];
+	NSFileManager *manager = [NSFileManager defaultManager];
+	FinkPackage *pkg;
+	NSString *extension = ([sender tag] == 0) ? @"info" : @"patch";
+	NSString *path, *tree;
+
+	while (nil != (pkg = [e nextObject])){
+		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
+		path = [pkg pathToPackageInTree:tree withExtension:extension];
+		if (! [manager fileExistsAtPath:path] || ! openFileAtPath(path)){
+			[problemPaths addObject:path];
+		}
+	}
+	alertProblemPaths(problemPaths);
+}
+
+//----------------------------------------------------------
 #pragma mark COLUMN MANIPULATION
 //----------------------------------------------------------
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
 {
-	NSTableColumn *newColumn= 
+	NSTableColumn *newColumn = 
 		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
 	NSString *title = NSLocalizedString(identifier, nil);
 
-	[[newColumn headerCell] setStringValue: title];
-	[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
+	if ([identifier isEqualToString:@"flagged"]){
+		NSCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
+		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];
+		[newColumn setDataCell:dataCell];
+		[dataCell release];
+	}else{
+		[[newColumn headerCell] setStringValue: title];
+		[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
+	}
+	
 	if ([identifier isEqualToString:@"name"]){
 		[newColumn setEditable:NO];
 	}else{
@@ -234,7 +268,7 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	return newColumn;
 }
 
-//called by View menu action method
+//Sent by View menu action method
 -(void)addColumnWithName:(NSString *)identifier
 {
 	NSArray *columnNames = [defaults objectForKey: FinkTableColumnsArray];
@@ -270,7 +304,6 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 #pragma mark DATA SOURCE METHODS
 //----------------------------------------------------------
 
-
 -(int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
 	return [[self displayedPackages] count];
@@ -281,11 +314,16 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 	row:(int)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	FinkPackage *package = [[self displayedPackages] objectAtIndex: rowIndex];
+	FinkPackage *package = [[self displayedPackages] objectAtIndex:rowIndex];
 	if ([identifier isEqualToString:@"status"]){
-		return NSLocalizedString([package valueForKey: identifier], nil);
+		return NSLocalizedString([package valueForKey:identifier], nil);
 	}
-	return [package valueForKey: identifier];
+	if ([identifier isEqualToString:@"flagged"]){
+		int flag = [[package valueForKey:identifier] intValue];
+		if (flag == 1) return [NSImage imageNamed:@"flag"];
+		return nil;
+	}
+	return [package valueForKey:identifier];
 }
 
 //----------------------------------------------------------
@@ -322,7 +360,7 @@ and before the table is sorted. */
 	}
 }
 
-//scroll back to selection after sort
+//Scroll back to selection after sort
 -(void)scrollToSelectedObject
 {
 	if ([self selectedObjectInfo]){
@@ -343,7 +381,7 @@ and before the table is sorted. */
 	}
 }
 
-//basic sorting method
+//Basic sorting method
 -(void)sortTableAtColumn:(NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
 	NSArray *newArray = 
@@ -354,7 +392,7 @@ and before the table is sorted. */
 	[self reloadData];
 }
 
-//called by delegate method for filter text view in FinkController
+//Sent by delegate method for filter text view in FinkController
 -(void)resortTableAfterFilter
 {
 	NSTableColumn *lastColumn = [self tableColumnWithIdentifier:
@@ -408,7 +446,7 @@ and before the table is sorted. */
 	}
 	[self setHighlightedTableColumn: aTableColumn];
 
-	//sort the table contents
+	// sort the table contents
 	if ([defaults boolForKey: FinkScrollToSelection]){
 		[self storeSelectedObjectInfo];
 	}
@@ -433,7 +471,6 @@ and before the table is sorted. */
 	return YES;
 }
 
-//allows selection of table cells for copying, unlike setting the column to be non-editable
 -(BOOL)textShouldBeginEditing:(NSText *)textObject
 {
 	return NO;

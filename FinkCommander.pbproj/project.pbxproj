@@ -397,6 +397,8 @@
 				F57E59C203A9ABBA01A80165,
 				F5F99DB703AD4F4D01A80165,
 				F5F99DB903AD5AC401A80165,
+				FBEE855903B4E18400A80164,
+				FBEE855A03B4E18400A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -898,6 +900,8 @@
 				F50C7FBD026BD92B01A80164,
 				F53D651F02802F3101A80164,
 				F5897AAA02C6E37B01A80166,
+				FBEE855703B4E18400A80164,
+				FBEE855803B4E18400A80164,
 				F5B9D9EA02B232D501A8016B,
 				F53D651D0280296801A80164,
 				F53649810388930201A80164,
@@ -1327,7 +1331,7 @@
 		F5607A9502CE125001A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = FinkTableViewController.m;
+			path = FinkTableView.m;
 			refType = 4;
 		};
 		F5607A9602CE125001A80164 = {
@@ -1339,7 +1343,7 @@
 		F5607A9702CE125E01A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = FinkTableViewController.h;
+			path = FinkTableView.h;
 			refType = 4;
 		};
 		F5607A9802CE125E01A80164 = {
@@ -2100,6 +2104,38 @@
 		};
 		F5F99DB903AD5AC401A80165 = {
 			fileRef = F5F99DB803AD5AC401A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//F50
+//F51
+//F52
+//F53
+//F54
+//FB0
+//FB1
+//FB2
+//FB3
+//FB4
+		FBEE855703B4E18400A80164 = {
+			isa = PBXFileReference;
+			path = flag.tiff;
+			refType = 4;
+		};
+		FBEE855803B4E18400A80164 = {
+			isa = PBXFileReference;
+			path = header_flag.tiff;
+			refType = 4;
+		};
+		FBEE855903B4E18400A80164 = {
+			fileRef = FBEE855703B4E18400A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBEE855A03B4E18400A80164 = {
+			fileRef = FBEE855803B4E18400A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

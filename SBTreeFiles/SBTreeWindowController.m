@@ -9,8 +9,8 @@ enum {
 };
 
 #define BYTE_FORMAT NSLocalizedString(@"%u items, %.0f b", "Formatter for browser window")
-#define KILOBYTE_FORMAT NSLocalizedString(@"%u items, %.2f KB", "Formatter for browser window")
-#define MEGABYTE_FORMAT NSLocalizedString(@"%u items, %.2f MB", "Formatter for browser window")
+#define KILOBYTE_FORMAT NSLocalizedString(@"%u items, %.1f KB", "Formatter for browser window")
+#define MEGABYTE_FORMAT NSLocalizedString(@"%u items, %.1f MB", "Formatter for browser window")
 
 //----------------------------------------------------------
 #pragma mark OBJECT CREATION AND DESTRUCTION
