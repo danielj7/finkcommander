@@ -26,8 +26,8 @@ void alertProblemPaths(NSArray *pathArray)
 {
     if ([pathArray count] > 0){
 		NSRunAlertPanel(LS_ERROR,
-				  NSLocalizedString(@"The following could not be opened:\n\n%@",
-						@"Error message for failure to open file(s)"),
+				  NSLocalizedStringFromTable(@"The following could not be opened:\n\n%@",
+						@"SBTree", @"Error message for failure to open file(s)"),
 				  @"OK", nil, nil,
 				  [pathArray componentsJoinedByString:@" "]);
     }

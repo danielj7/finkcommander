@@ -322,9 +322,9 @@ enum {
 
 -(void)incrementProgressIndicator:(float)inc
 {
-    double progress = 100.0 - [progressIndicator doubleValue];
+    double unused = 100.0 - [progressIndicator doubleValue];
     //failsafe to make sure we don't go beyond 100
-    [progressIndicator incrementBy:MIN(inc, progress * 0.85)];
+    [progressIndicator incrementBy:MIN(inc, unused * 0.85)];
 }
 
 /*	Reset the interface--stop and remove progress indicator, revalidate
@@ -400,8 +400,6 @@ enum {
 	}
 	
     [self setupToolbar];
-
-    [msgText setStringValue: LS_UPDATING_TABLE];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -575,7 +573,7 @@ enum {
 -(IBAction)updateTable:(id)sender
 {
     [self startProgressIndicatorAsIndeterminate:YES];
-    [msgText setStringValue:LS_UPDATING_TABLE];
+    [msgText setStringValue:NSLocalizedString(@"Updating table data", "Status bar message")];
     commandIsRunning = YES;
 
     [packages update];

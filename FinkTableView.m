@@ -24,6 +24,7 @@ See the header file, FinkTableView.h, for interface and license information.
 	[(id) isEqualToString:@"binary"]	||					\
 	[(id) isEqualToString:@"installed"]
 
+//Tags for "File:Open .info" and "File:Open .patch" items in MainMenu.nib
 enum {
     FINKINFO =  101,
     FINKPATCH = 102

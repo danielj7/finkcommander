@@ -6,12 +6,12 @@
 /*
  * Localized Strings Used In Multiple Files
  */
-#define LS_CANCEL NSLocalizedString(@"Cancel", @"Cancel button title")
-#define LS_ERROR NSLocalizedString(@"Error", @"Error dialog title")
-#define LS_OK NSLocalizedString(@"OK", @"OK button title")
-#define LS_REMOVE NSLocalizedString(@"Remove", @"Confirm remove button title")
-#define LS_SORRY NSLocalizedString(@"Sorry", @"Dialog title")
-#define LS_WARNING NSLocalizedString(@"Warning", @"Warning dialog title")
+#define LS_CANCEL NSLocalizedStringFromTable(@"Cancel", @"SBTree", @"Cancel button title")
+#define LS_ERROR NSLocalizedStringFromTable(@"Error", @"SBTree", @"Error dialog title")
+#define LS_OK NSLocalizedStringFromTable(@"OK", @"SBTree", @"OK button title")
+#define LS_REMOVE NSLocalizedStringFromTable(@"Remove", @"SBTree", @"Confirm remove button title")
+#define LS_SORRY NSLocalizedStringFromTable(@"Sorry", @"SBTree", @"Dialog title")
+#define LS_WARNING NSLocalizedStringFromTable(@"Warning", @"SBTree", @"Warning dialog title")
 
 /*
  * Utility Functions

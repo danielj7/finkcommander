@@ -21,6 +21,8 @@ Go to project admin and create new releases
 
 Download and test
 
+Tag cvs with release number
+
 Upload web site
 
 Post announcement to FC SourceForge news, finkcommander-users, fink-users

@@ -13,9 +13,12 @@ enum {
 	SB_OUTLINE = 1
 };
 
-#define BYTE_FORMAT NSLocalizedString(@"%u items, %.0f b", "Formatter for browser window")
-#define KILOBYTE_FORMAT NSLocalizedString(@"%u items, %.1f KB", "Formatter for browser window")
-#define MEGABYTE_FORMAT NSLocalizedString(@"%u items, %.1f MB", "Formatter for browser window")
+#define BYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.0f b", @"SBTree", \
+	"Formatter for browser window")
+#define KILOBYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.1f KB", @"SBTree", \
+	"Formatter for browser window")
+#define MEGABYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.1f MB", @"SBTree", \
+	"Formatter for browser window")
 
 @implementation SBTreeWindowController
 
