@@ -35,29 +35,37 @@
 	NSEnumerator *f = [[NSArray arrayWithObjects: @"Summary", @"Description",
 								@"Usage Notes", @"Web site", @"Maintainer", nil] 
 							objectEnumerator];
+	NSDictionary *urlAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+									[NSColor colorWithDeviceCyan:1.0 magenta:0.0 yellow:1.0
+										black:0.4 alpha:1.0], 			//dark green
+										NSForegroundColorAttributeName,
+									[NSNumber numberWithInt: NSSingleUnderlineStyle],
+											NSUnderlineStyleAttributeName,
+									nil];
 	NSString *line;
 	NSString *field;
-	NSRange r;
-	
-	//start attributed string colon and Desc field (which FC calls Summary)
+	NSString *url;
+	NSRange r;	
+	//start attributed string with colon, which will follow name and version,
+	//then newline and formatted Desc field
 	NSMutableAttributedString *desc = [[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @":\n%@", 
 									[e nextObject]] //Desc
 				attributes: [NSDictionary dictionaryWithObjectsAndKeys:
 					[NSFont systemFontOfSize: 0], NSFontAttributeName,
-					[NSColor grayColor], NSForegroundColorAttributeName,
+					[NSColor darkGrayColor], NSForegroundColorAttributeName,
 					nil]] autorelease];
 
-	//test second line for DescDetail; if present, provide field name; if period add newlines
+	//test second line for period or DescDetail
 	line = [[e nextObject]  strip];
-	if (! [line isEqualToString: @"."]){
+	if ([line isEqualToString: @"."]){ 		//change period to 2 newlines
+		[desc appendAttributedString:
+			[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
+	}else{									//add newlines before DescDetail
 		[desc appendAttributedString:
 			[[[NSMutableAttributedString alloc]
 					initWithString: [NSString stringWithFormat: @"\n\n%@ ", line]]
 			autorelease]];
-	}else{
-		[desc appendAttributedString:
-			[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
 	}
 	
 	//remove line endings from within paragraphs; substitute line endings for periods
@@ -75,16 +83,63 @@
 	[desc appendAttributedString:
 		[[[NSMutableAttributedString alloc] initWithString: @"\n\n"] autorelease]];
 
-	//apply bold face to field names
+	//apply attributes face to field names
 	while (field = [f nextObject]){
 		r = [[desc string] rangeOfString: field];
 		if (r.length > 0){
 			[desc addAttribute: NSForegroundColorAttributeName 
-				  value: [NSColor grayColor] 
+				  value: [NSColor darkGrayColor] 
 				  range: r];
 		}
 	}
 	
+	//look for web url and if found turn it into an active link
+	r = [[desc string] rangeOfString: @"Web site: "];
+	if (r.length > 0){
+		int start = r.location + r.length;
+		int len;
+		
+		r = [[desc string] rangeOfString: @"\n" options: 0 
+							range: NSMakeRange(start, [[desc string] length] - start - 1)];
+		len = r.location - start - 1;
+
+		r =  NSMakeRange(start, len);
+		url = [[desc string] substringWithRange: r];
+		if (url){  	//url will be nil if web site URL is malformed
+			[desc addAttributes: urlAttributes range: r];
+			[desc addAttribute: NSLinkAttributeName
+					value: [NSURL URLWithString: url]
+					range: r];
+		}
+}
+	
+	//look for e-mail url and if found turn it into an active link
+	r = [[desc string] rangeOfString: @"Maintainer: "];
+	if (r.length > 0){
+		int fnend = r.location + r.length; 	//end of field name
+		int start;							//start of mail url
+		int len;							//length of mail url
+		
+		r = [[desc string] rangeOfString: @"<" options: 0 
+							range: NSMakeRange(fnend, [[desc string] length] - fnend - 1)];
+		start = r.length > 0 ? r.location + 1 : 0;  	//0 == start of mail address not found
+		
+		r = [[desc string] rangeOfString: @">" options: 0
+							range: NSMakeRange(start, [[desc string] length] - start - 1)];
+		len = r.length > 0 ? r.location - start : 0;  //0 == end of mail address not found
+
+		if (start > 0 && len > 0){
+			r = NSMakeRange(start, len);
+			url = [NSString stringWithFormat: @"mailto:%@",
+						[[desc string] substringWithRange: r]];
+			if (url){
+				[desc addAttributes: urlAttributes range: r];
+				[desc addAttribute: NSLinkAttributeName
+							value: [NSURL URLWithString: url]
+							range: r];
+			}
+		}
+	}
 	return desc;
 }
 
@@ -101,9 +156,9 @@
 					initWithString:
 						[NSString stringWithFormat: @"%@ v. %@", [pkg name], [pkg version]]
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
-						 [NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
-						 [NSNumber numberWithInt: NSSingleUnderlineStyle], NSUnderlineStyleAttributeName, 
-						 [NSColor blueColor], NSForegroundColorAttributeName,
+						[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
+						[NSColor colorWithDeviceCyan:1.0 magenta:1.0 yellow:0.0 black:0.3 alpha:1.0],
+								NSForegroundColorAttributeName,  //dark blue
 						nil]] autorelease]];	
 		
 		[[textView textStorage] appendAttributedString:

@@ -74,6 +74,7 @@
 		};
 		1058C7A2FEA54F0111CA2CBB = {
 			children = (
+				F536582302A89F0D01A8016A,
 				29B97325FDCFA39411CA2CEA,
 				29B97324FDCFA39411CA2CEA,
 			);
@@ -366,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1058C7A3FEA54F0111CA2CBB,
+				F536582402A89F0D01A8016A,
 			);
 			isa = PBXFrameworksBuildPhase;
 			name = "Frameworks & Libraries";
@@ -520,6 +522,18 @@
 		};
 		F53369F70218261B01A80165 = {
 			fileRef = F53369F50218261B01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F536582302A89F0D01A8016A = {
+			isa = PBXFrameworkReference;
+			name = CoreFoundation.framework;
+			path = /System/Library/Frameworks/CoreFoundation.framework;
+			refType = 0;
+		};
+		F536582402A89F0D01A8016A = {
+			fileRef = F536582302A89F0D01A8016A;
 			isa = PBXBuildFile;
 			settings = {
 			};
