@@ -52,7 +52,8 @@
 }
 
 #else
-
+/* 	Alternative version used to try to find a way to do drag and drop
+	without a modifier key while retaining browser functionality */
 -(void)mouseDown:(NSEvent *)theEvent
 {
 	int row;
