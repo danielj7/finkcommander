@@ -34,6 +34,8 @@ File: FinkOutputParser.h
 #import <Foundation/Foundation.h>
 #import "FinkGlobals.h"
 
+#define STARTING_INCREMENT 5.0
+
 #define ISPROMPT(x) ([(x) contains: @"proceed? ["] 	|| \
 					 [(x) contains: @"one: ["] 		|| \
 					 [(x) containsCI: @"[y/n]"] 	|| \
@@ -45,21 +47,46 @@ File: FinkOutputParser.h
 								 [(x) contains: @"CVS password:"])
 
 enum {
-	FC_NO_SIGNAL,
-	FC_PROMPT_SIGNAL,
-	FC_PASSWORD_ERROR_SIGNAL,
-	FC_PASSWORD_PROMPT_SIGNAL
+    //used for signals, to track phases, as indices in increments array
+    NONE = 0,
+    FETCH = 1,
+    UNPACK = 2,
+    CONFIGURE = 3,
+    COMPILE = 4,
+    BUILD = 5,
+    ACTIVATE = 6,
+    //used only as signals
+    START_INSTALL = 7,
+    PASSWORD_PROMPT = 8,
+    PASSWORD_ERROR = 9,
+    PROMPT = 10,
+	PROMPT_AND_START = 11
 };
 
 
 @interface FinkOutputParser: NSObject
 {
     NSUserDefaults *defaults;
-    NSString *command;
+
+	NSMutableDictionary *ptracker;
+    NSMutableArray *packageList;
+	NSString *command;
+    NSString *currentPackage;
+
+    float increments[7];
+    float increment;
+    int currentPhase;
     BOOL passwordErrorHasOccurred;
+    BOOL readingPackageList;
+    BOOL installStarted;
 }
 
 -(id)initForCommand:(NSString *)cmd;
--(int)parseOutput:(NSString *)line;
+
+-(float)increment;
+-(NSString *)currentPackage;
+-(void)setCurrentPackage:(NSString *)p;
+
+-(int)parseOutput:(NSString *)output;
 
 @end

@@ -351,7 +351,7 @@ See the header file, FinkPackage.h, for interface and license information.
 -(NSComparisonResult)normalCompareByCategory:(FinkPackage *)pkg
 {
 	NSComparisonResult result;
-	if ([[self category] length] < 2) return NSOrderedDescending;
+	if ([[self category] length] < 2) return NSOrderedDescending; //put blanks at end
 	result = [[self category] caseInsensitiveCompare: [pkg category]];
 	if (result == 0) return [self normalCompareByName: pkg];
 	return result;

@@ -16,7 +16,7 @@ File: FinkSplitView.m
 		//Register for notification that causes output to collapse when
 		//user selects the auto expand option
 		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
-		[self setIsPaneSplitter:YES];
+		[self setIsPaneSplitter:NO];
 		
 		[[NSNotificationCenter defaultCenter] 
 						addObserver: self

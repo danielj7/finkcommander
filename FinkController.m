@@ -377,6 +377,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(void)startProgressIndicatorAsIndeterminate:(BOOL)b
 {
     [progressIndicator setIndeterminate:b];
+	[progressIndicator setDoubleValue:0.0];
     if (! [progressView isDescendantOf: progressViewHolder]){
 		[progressViewHolder addSubview: progressView];
 		[progressIndicator setUsesThreadedAnimation: YES];
@@ -1081,6 +1082,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 #endif
 
 	// start the process asynchronously
+//	[self startProgressIndicatorAsIndeterminate:YES];
 	[finkTask startProcessWithArgs: params];
 }
 
@@ -1127,26 +1129,78 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	//total document length (in pixels) - length above scroll view (y coord of visible portion) - 
 	//length w/in scroll view = length below scroll view
 	NSNumber *theTest = [NSNumber numberWithFloat: 
-		abs([textView bounds].size.height - [textView visibleRect].origin.y 
-			- [textView visibleRect].size.height)];
+									abs([textView bounds].size.height 
+									- [textView visibleRect].origin.y 
+									- [textView visibleRect].size.height)];
+	NSString *pname;
 	int signal;
 
-	signal = [parser parseOutput: output];
+	signal = [parser parseOutput:output];
 
 	switch(signal)
 	{
-		case FC_PROMPT_SIGNAL:
-			NSBeep();
-			[self raiseInteractionWindow: self];
-			break;
-		case FC_PASSWORD_ERROR_SIGNAL:
+		case PASSWORD_ERROR:
 			passwordError = YES;
 			[self raisePwdWindow: self];
 			break;
-		case FC_PASSWORD_PROMPT_SIGNAL:
+		case PASSWORD_PROMPT:
 			[finkTask writeToStdin: password];
 			break;
+		case PROMPT:
+			NSBeep();
+			[self raiseInteractionWindow: self];
+			break;
+		case PROMPT_AND_START:
+			NSBeep();
+			[self stopProgressIndicator];
+			[self startProgressIndicatorAsIndeterminate:NO];
+			[progressIndicator incrementBy:STARTING_INCREMENT];
+			[self raiseInteractionWindow: self];
+			break;
+		case START_INSTALL:
+			[self stopProgressIndicator];
+			[self startProgressIndicatorAsIndeterminate:NO];
+			[progressIndicator incrementBy:STARTING_INCREMENT];
+			break;
+		case FETCH:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Fetching", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
+		case UNPACK:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Unpacking", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
+		case CONFIGURE:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Configuring", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
+		case COMPILE:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Compiling", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
+		case BUILD:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Building", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
+		case ACTIVATE:
+			pname = [parser currentPackage];
+			[msgText setStringValue:[NSString stringWithFormat: 
+				NSLocalizedString(@"Activating", nil), pname]];
+			[progressIndicator incrementBy:[parser increment]];
+			break;
 	}
+
+	output = [NSString stringWithFormat:@"%@", output];
 
 	[textView appendString:output];
 
