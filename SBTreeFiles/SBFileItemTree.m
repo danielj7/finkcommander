@@ -183,6 +183,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
 		[sbLock lock];
 
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
+		Dprintf(@"In SBFIT, adding:\n%@", item);
 		[self addItemToTree:item];  //adds to array, retain count = 2
 		if (nil == [item children]){
 			totalSize += [item size];

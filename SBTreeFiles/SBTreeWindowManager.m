@@ -40,6 +40,7 @@
 	[task release];
     s = [[[NSString alloc] initWithData:d
 							encoding:NSMacOSRomanStringEncoding] autorelease];
+	Dprintf(@"In SBTWM, return value from dpkg -L:\n%@", s);
     fileList = [[[s componentsSeparatedByString:@"\n"] mutableCopy] autorelease];
     [fileList removeObjectAtIndex:0]; /* "/." */
 

@@ -23,6 +23,8 @@
 		[self setFileList:fList];  //Needed in windowDidLoad to build tree
 		[[self window] setTitle:wName];
 		[[self window] setReleasedWhenClosed:YES];
+		
+		Dprintf(@"In SBTWC, received file list:\n%@", fList);
 
 		[[NSNotificationCenter defaultCenter] 
 		addObserver:self 
@@ -49,8 +51,6 @@ browser; tell the tree object to build its data structure.  */
     [self startedLoading];
 	[self showWindow:self];
 	
-	Dprintf(@"In SBTWC, rootItem = %@", [tree rootItem]);
-
     oController = [[SBOutlineViewController alloc] initWithTree:tree
 										view:outlineView];
 
