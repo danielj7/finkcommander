@@ -175,9 +175,6 @@
 				F54147C302C18B7301A80165,
 				F553429102E9F45A015ADE4E,
 				F553429002E9F45A015ADE4E,
-				F52F0AE90319B0DC01A80164,
-				F52F0AEA0319B0DC01A80164,
-				F52F0AEB0319B0DC01A80164,
 			);
 			isa = PBXGroup;
 			name = "Other Sources";
@@ -534,21 +531,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F52F0AE90319B0DC01A80164 = {
-			isa = PBXFileReference;
-			path = getpath.c;
-			refType = 4;
-		};
-		F52F0AEA0319B0DC01A80164 = {
-			isa = PBXFileReference;
-			path = Launcher.h;
-			refType = 4;
-		};
-		F52F0AEB0319B0DC01A80164 = {
-			isa = PBXFileReference;
-			path = Launcher.c;
-			refType = 4;
 		};
 		F52F0AF70319CAFC01A80164 = {
 			isa = PBXFrameworkReference;

@@ -9,7 +9,9 @@ File: FinkOutputParser.h
 
  The FinkOutputParser class parses the output from a fink or apt-get command
  and returns signals to FinkController indicating whether interaction with the user
- or GUI changes are necessary.
+ or GUI changes are necessary.  In some cases FinkController will send messages back
+ asking for additional information, such as the name of the package currently
+ being handled by Fink or the amount of increment to add to the progress indicator.
 
  Copyright (C) 2002  Steven J. Burr
 
@@ -39,20 +41,19 @@ File: FinkOutputParser.h
 
 //Line parsing macros
 
-#define FETCHSTARTED(x) ([(x) hasPrefix: @"wget"]  		|| \
+#define FETCHTRIGGER(x) ([(x) hasPrefix: @"wget"]  		|| \
 						 [(x) hasPrefix: @"curl"]  		|| \
 						 [(x) hasPrefix: @"axel"])
 
-#define UNPACKSTARTED(x) ([(x) hasPrefix:@"tar"]    	|| \
-						  [(x) hasPrefix:@"bzip"]    	|| \
-						  [(x) contains:@"/tar "]    	|| \
-						  [(x) contains:@"/bzip2 "])
+#define UNPACKTRIGGER(x) ([(x) hasPrefix:@"mkdir -p"]    	&& \
+						  ![(x) contains:@"root"])
 
-#define CONFIGURESTARTED(x)	([[(x) strip] hasPrefix:@"./configure"] 	|| \
+#define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 	|| \
 							 [[(x) strip] hasPrefix:@"patch"])
 
-#define COMPILESTARTED(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
+#define COMPILETRIGGER(x)	([[(x) strip] hasPrefix: @"make"] 				|| \
 							 [[(x) strip] containsPattern: @"gcc -[!E]?*"]	|| \
+							 [[(x) strip] hasPrefix @"g77 -"]				|| \
 							 [[(x) strip] hasPrefix: @"building"])
 
 #define ISPROMPT(x) ([(x) contains: @"you want to proceed?"]	|| \
@@ -69,19 +70,22 @@ File: FinkOutputParser.h
 
 enum {
     //used for signals, to track phases, as indices in increments array
-    NONE = 0,
-    FETCH = 1,
-    UNPACK = 2,
-    CONFIGURE = 3,
-    COMPILE = 4,
-    BUILD = 5,
-    ACTIVATE = 6,
-    //used only as signals
-    START_INSTALL = 7,
-    PASSWORD_PROMPT = 8,
-    PASSWORD_ERROR = 9,
-    PROMPT = 10,
-	PROMPT_AND_START = 11
+    NONE,
+    FETCH,
+    UNPACK,
+    CONFIGURE,
+    COMPILE,
+    BUILD,
+    ACTIVATE,
+	//used only as signals
+    START_INSTALL,
+    PASSWORD_PROMPT,
+    PASSWORD_ERROR,
+    PROMPT,
+	PROMPT_AND_START,
+	START_AND_FETCH,
+	START_AND_UNPACK,
+	START_AND_ACTIVATE
 };
  
 
@@ -106,7 +110,9 @@ enum {
 -(id)initForCommand:(NSString *)cmd;
 
 -(float)increment;
+
 -(NSString *)currentPackage;
+
 -(void)setCurrentPackage:(NSString *)p;
 
 -(int)parseOutput:(NSString *)output;

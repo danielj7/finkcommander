@@ -85,3 +85,10 @@ extern NSString *FinkCollapseOutputView;
 extern NSString *FinkRunProgressIndicator;
 
 extern NSString *FinkCreditString;
+
+//Debugging Log
+#ifdef DEBUGGING
+void Dprintf(NSString *fmt,...);
+#else
+inline void Dprintf(NSString *fmt,...);
+#endif

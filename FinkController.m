@@ -47,6 +47,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		
 		defaults = [NSUserDefaults standardUserDefaults];
 		
+		Dprintf(@"Testing debug printf");
+		
 		[NSApp setDelegate: self];
 
 		//Set base path default, if necessary; write base path into perl script used
@@ -384,6 +386,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[progressIndicator stopAnimation: nil];
 		[progressView removeFromSuperview];
 	}
+}
+
+-(void)incrementPIBy:(float)inc
+{
+	double progress = 100.0 - [progressIndicator doubleValue];
+	//failsafe to make sure we don't go beyond 100
+	[progressIndicator incrementBy:MIN(inc, progress * 0.75)];
 }
 
 //reset the interface--stop and remove progress indicator, revalidate
@@ -1069,6 +1078,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[finkTask startProcessWithArgs: params];
 }
 
+//allow other objects, e.g. FinkConf, to run authorized commands
 -(void)runCommandOnNotification:(NSNotification *)note
 {
 	NSMutableArray *args = [note object];
@@ -1109,6 +1119,28 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 }
 
+-(void)startInstall
+{
+	[self stopProgressIndicator];
+	[self startProgressIndicatorAsIndeterminate:NO];
+	[self incrementPIBy:STARTING_INCREMENT];
+}
+
+-(void)setGUIForPhase:(int)phaseIndex
+{
+	NSArray *phases = [NSArray arrayWithObjects:
+								@"", @"Fetching", @"Unpacking",
+								@"Configuring", @"Compiling",
+								@"Building", @"Activating", nil];
+	NSString *pname, *phaseString;
+
+	pname = [parser currentPackage];
+	phaseString = [phases objectAtIndex:phaseIndex];
+	[msgText setStringValue:[NSString stringWithFormat:
+		NSLocalizedString(phaseString, nil), pname]];
+	[self incrementPIBy:[parser increment]];
+}
+
 -(void)appendOutput:(NSString *)output
 {	
 	//total document length (in pixels) - length above scroll view (y coord of visible portion) - 
@@ -1117,7 +1149,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 									abs([textView bounds].size.height 
 									- [textView visibleRect].origin.y 
 									- [textView visibleRect].size.height)];
-	NSString *pname;
 	int signal;
 
 	signal = [parser parseOutput:output];
@@ -1136,57 +1167,38 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[self raiseInteractionWindow: self];
 			break;
 		case PROMPT_AND_START:
-			NSBeep();
-			[self stopProgressIndicator];
-			[self startProgressIndicatorAsIndeterminate:NO];
-			[progressIndicator incrementBy:STARTING_INCREMENT];
+			[self startInstall];
 			[self raiseInteractionWindow: self];
 			break;
 		case START_INSTALL:
-			[self stopProgressIndicator];
-			[self startProgressIndicatorAsIndeterminate:NO];
-			[progressIndicator incrementBy:STARTING_INCREMENT];
+			[self startInstall];
 			break;
+		case START_AND_FETCH:
+			[self startInstall];			//fall through
 		case FETCH:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Fetching", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:FETCH];
 			break;
+		case START_AND_UNPACK:
+			[self startInstall]; 			//fall through
 		case UNPACK:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Unpacking", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:UNPACK];
 			break;
 		case CONFIGURE:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Configuring", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:CONFIGURE];
 			break;
 		case COMPILE:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Compiling", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:COMPILE];
 			break;
 		case BUILD:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Building", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:BUILD];
 			break;
+		case START_AND_ACTIVATE:
+			[self startInstall];			//fall through
 		case ACTIVATE:
-			pname = [parser currentPackage];
-			[msgText setStringValue:[NSString stringWithFormat: 
-				NSLocalizedString(@"Activating", nil), pname]];
-			[progressIndicator incrementBy:[parser increment]];
+			[self setGUIForPhase:ACTIVATE];
 			break;
 	}
-
 	[textView appendString:output];
-
 	//according to Moriarity example, we have to put off scrolling until next event loop
 	[self performSelector:@selector(scrollToVisible:) withObject:theTest 
 				  afterDelay:0.0];
@@ -1214,10 +1226,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int outputLength = [[textView string] length];
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
-
-#ifdef DEBUGGING		
-	NSLog(@"Finishing; lastCommand = %@", lastCommand);
-#endif
+		
+	Dprintf(@"Finishing; lastCommand = %@", lastCommand);
 
 	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"chown"] &&
 		! [[self lastCommand] contains: @"mv"]){

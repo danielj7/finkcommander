@@ -29,9 +29,9 @@ void findFinkBasePath(void)
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject:path forKey:FinkBasePath];
-#ifdef DEBUGGING
-			NSLog(@"Found basepath %@ using array", path);
-#endif
+
+			Dprintf(@"Found basepath %@ using array", path);
+
 			break;
 		}
 	}
@@ -69,10 +69,9 @@ void fixScript(void)
 		while((rangeOfBASEPATH = [scriptText rangeOfString:@"BASEPATH"]).length > 0){
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
-#ifdef DEBUGGING
-		NSLog(@"Script text:\n%@", scriptText);
-#endif
+
 		NSLog(@"Writing table update script to %@", wpath);
+
 		[scriptText writeToFile:wpath atomically:YES];
 		[defaults setBool:NO forKey:FinkBasePathFound];
 	}
@@ -148,9 +147,7 @@ NSString *ps(void)
 	psOutput = [[[NSString alloc] initWithData: 
 									[cmdStdout readDataToEndOfFile] 
 												encoding:NSMacOSRomanStringEncoding] autorelease];
-#ifdef DEBUGGING
-	NSLog(@"ps command output:\n%@", psOutput);
-#endif
+	Dprintf(@"ps command output:\n%@", psOutput);
 	return psOutput;
 }
 
@@ -164,9 +161,7 @@ NSString *childOfProcess(NSString *ppid)
 
 	while (line = [e nextObject]){
 		if ([line contains: ppid]){
-#ifdef DEBUGGING
-			NSLog(@"Found line with parent pid %@:\n%@", ppid, line);
-#endif
+			Dprintf(@"Found line with parent pid %@:\n%@", ppid, line);
 			pidScanner = [NSScanner scannerWithString:line];
 			//child pid is first set of decimal digits in line
 			[pidScanner scanUpToCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
@@ -174,9 +169,7 @@ NSString *childOfProcess(NSString *ppid)
 			[pidScanner scanCharactersFromSet: [NSCharacterSet decimalDigitCharacterSet]
 											   intoString:&cpid];
 			if ([cpid isEqualToString:ppid]){ 
-#ifdef DEBUGGING
-				NSLog(@"It's the parent; ignoring");
-#endif
+				Dprintf(@"It's the parent; ignoring");
 				cpid = nil;
 				continue;
 			}
@@ -200,9 +193,8 @@ void terminateChildProcesses()
 	//The sins of the father are visited on his children.
 	while (cpid){
 	
-#ifdef DEBUGGING
-		NSLog(@"Calling terminateProcessWithPID: %@", cpid);
-#endif
+		Dprintf(@"Calling terminateProcessWithPID: %@", cpid);
+
 		terminateProcessWithPID(cpid);
 		ppid = cpid;
 		cpid = childOfProcess(ppid);

@@ -376,9 +376,9 @@ File: FinkConf.m
 			@"root",
 			tempFile,
 			nil];
-#ifdef DEBUGGING
-			NSLog(@"Writing following to fink.conf:\n%@", fconfString);
-#endif
+
+			Dprintf(@"Writing following to fink.conf:\n%@", fconfString);
+
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&
 			[fconfString writeToFile: tempFile atomically: YES]){

@@ -70,8 +70,7 @@ File: FinkOutputParser.m
 						 withObject:[pname substringToIndex:index]];
 		}
 	}
-
-	NSLog(@"Package list: %@", packageList);
+	Dprintf(@"Package list: %@", packageList);
 }
 
 //set up array of increments and dictionary of package names matched with
@@ -101,8 +100,7 @@ File: FinkOutputParser.m
 
 		[increments insertObject: [NSNumber numberWithFloat: newincrement]
 								  atIndex:i];
-
-		NSLog(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
+		Dprintf(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
     }
     currentPhase = NONE;
 }
@@ -118,21 +116,17 @@ File: FinkOutputParser.m
 	float pkgTotal;
 	
 	if ([currentPackage isEqualToString:@"package"]){
-		int index = currentPhase > 0 ? currentPhase - 1 : 0;
-		pkgTotal = phaseTotal - [[increments objectAtIndex: index] floatValue];
+		increment = 0;
+		return;
 	}else{
 		pkgTotal = [[ptracker objectForKey:currentPackage] floatValue];
 	}
-	
-	NSLog(@"Current phase = %d", currentPhase);
-	NSLog(@"Current package = %@", currentPackage);
-	NSLog(@"Total increment for current phase: %f", phaseTotal);
-	NSLog(@"Total increment for package so far: %f", pkgTotal);
-
-    increment = phaseTotal - pkgTotal;
-	
-	NSLog(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
-    
+	increment = phaseTotal - pkgTotal;
+	Dprintf(@"Current phase = %d", currentPhase);
+	Dprintf(@"Current package = %@", currentPackage);
+	Dprintf(@"Total increment for current phase: %f", phaseTotal);
+	Dprintf(@"Total increment for package so far: %f", pkgTotal);
+	Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
 	[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
 }
 
@@ -142,25 +136,21 @@ File: FinkOutputParser.m
 {
     NSEnumerator *e = [packageList objectEnumerator];
     NSString *candidate;
-    NSString *longestMatch = @"";
+    NSString *best = @"";
 	
-//	NSLog(@"Searching for package name in line:\n%@", line);
     while (candidate = [e nextObject]){
-//		NSLog(@"Candidate = %@", candidate);
 		if ([line containsCI:candidate]){
-//			NSLog(@"Found %@ in line", candidate);
+			Dprintf(@"Found %@ in line", candidate);
  			if ([candidate length] > [longestMatch length]){
-				longestMatch = candidate;
-//				NSLog(@"Longest match so far: %@", longestMatch);
+				best = candidate;
+				Dprintf(@"Longest match so far: %@", longestMatch);
 			}
 		}
     }
-	if ([longestMatch length] < 1){
-		longestMatch = @"package";
+	if ([best length] < 1){
+		bets = @"package";
 	}
-	
-	NSLog(@"Returning package %@", longestMatch);
-	
+	Dprintf(@"Returning package %@", longestMatch);
     return longestMatch;
 }
 
@@ -171,14 +161,10 @@ File: FinkOutputParser.m
 {
 	//Look for package lists
 	if (determinate && readingPackageList){
-	
-		NSLog(@"Looking for packages in %@", line);
-	
+		Dprintf(@"Looking for packages in %@", line);
 		//lines listing pkgs to be installed start with a space
 		if ([line hasPrefix:@" "]){
-		
-			NSLog(@"Parsing line for package names:\n%@", line);
-		
+			Dprintf(@"Parsing line for package names:\n%@", line);
 			[self addPackagesFromLine:line];
 			return NONE;
 		}
@@ -191,13 +177,35 @@ File: FinkOutputParser.m
 		//not blank, list or intro; done looking for package names
 		readingPackageList = NO;
 		[self setupInstall];
+		//look for prompt or installation event immediately after pkg list
 		if (ISPROMPT(line)){
 			return PROMPT_AND_START;
+		}
+		if (FETCHTRIGGER(line)){
+			Dprintf(@"Fetch phase triggered by:\n%@", line);
+			[self setIncrementForCurrentPhase];
+			[self setCurrentPackage:[self packageNameFromLine:line]];
+			currentPhase = FETCH;
+			return START_AND_FETCH;
+		}
+		if (UNPACKTRIGGER(line)){
+			Dprintf(@"Unpack phase triggered by:\n%@", line);
+			[self setIncrementForCurrentPhase];
+			[self setCurrentPackage:[self packageNameFromLine:line]];
+			currentPhase = UNPACK;
+			return START_AND_UNPACK;
+		}
+		if ([line contains: @"dpkg -i"]){
+			Dprintf(@"Activate phase triggered by:\n%@", line);
+			[self setIncrementForCurrentPhase];
+			[self setCurrentPackage:[self packageNameFromLine:line]];
+			currentPhase = ACTIVATE;
+			return START_AND_ACTIVATE;			
 		}
 		//signal FinkController to start deteriminate PI
 		return START_INSTALL;
     }
-	//start scanning for names of pkgs to be installed when intro found
+	//Look for introduction to package lists
     if (determinate 							&& 
 		([line contains:@"will be installed"]	||
 		 [line contains:@"will be rebuilt"])){
@@ -206,48 +214,49 @@ File: FinkOutputParser.m
     }
 	
 	//Look for installation events
-	if (determinate && FETCHSTARTED(line)){
-		NSLog(@"Fetch phase triggered by:\n%@", line);
+	if (determinate && FETCHTRIGGER(line)){
+		Dprintf(@"Fetch phase triggered by:\n%@", line);
 		NSString *name = [self packageNameFromLine:line];
 		//no action required if retrying failed download
 		if ([name isEqualToString:currentPackage]) return NONE;
-		[self setCurrentPackage:name];
 		[self setIncrementForCurrentPhase];
+		[self setCurrentPackage:name];
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if (determinate && UNPACKSTARTED(line)){
-		NSLog(@"Unpack phase triggered by:\n%@", line);
-		[self setCurrentPackage:[self packageNameFromLine:line]];
+    if (determinate && UNPACKTRIGGER(line)){
+		Dprintf(@"Unpack phase triggered by:\n%@", line);
 		[self setIncrementForCurrentPhase];
+		[self setCurrentPackage:[self packageNameFromLine:line]];		
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (determinate	&& (currentPhase != CONFIGURE) && CONFIGURESTARTED(line)){
-		NSLog(@"Configure phase triggered by:\n%@", line);
+    if (determinate	&& (currentPhase != CONFIGURE) && CONFIGURETRIGGER(line)){
+		Dprintf(@"Configure phase triggered by:\n%@", line);
 		[self setIncrementForCurrentPhase];
 		currentPhase = CONFIGURE;
 		return CONFIGURE;
     }
-    if (determinate	&& (currentPhase != COMPILE) && COMPILESTARTED(line)){
-		NSLog(@"Compile phase triggered by:\n%@", line);
+    if (determinate	&& (currentPhase != COMPILE) && COMPILETRIGGER(line)){
+		Dprintf(@"Compile phase triggered by:\n%@", line);
 		[self setIncrementForCurrentPhase];
 		currentPhase = COMPILE;
 		return COMPILE;
     }
     if (determinate && [line contains: @"dpkg-deb -b"]){
-		NSLog(@"Build phase triggered by:\n%@", line);
-		[self setCurrentPackage:[self packageNameFromLine:line]];
+		Dprintf(@"Build phase triggered by:\n%@", line);		
 		//make sure we catch up if this file is archived
 		if (currentPhase < 1) currentPhase = COMPILE;
 		[self setIncrementForCurrentPhase];
+		[self setCurrentPackage:[self packageNameFromLine:line]];
 		currentPhase = BUILD;
 		return BUILD;
     }
     if (determinate && [line contains: @"dpkg -i"]){
-		NSLog(@"Activate phase triggered by:\n%@", line);
-		[self setCurrentPackage:[self packageNameFromLine:line]];
+		Dprintf(@"Activate phase triggered by:\n%@", line);
+		if (currentPhase < 1) currentPhase = COMPILE;
 		[self setIncrementForCurrentPhase];
+		[self setCurrentPackage:[self packageNameFromLine:line]];
 		currentPhase = ACTIVATE;
 		return ACTIVATE;
     }	
@@ -263,9 +272,7 @@ File: FinkOutputParser.m
 	
 	//Look for prompts
     if ((ISPROMPT(line)) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
-	
-		NSLog(@"Found prompt: %@", line);
-	
+		Dprintf(@"Found prompt: %@", line);
 		return PROMPT;
     } 
 	if ((ISMANDATORY_PROMPT(line))){

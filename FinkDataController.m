@@ -7,9 +7,7 @@ See the header file, FinkDataController.h, for interface and license information
 
 #import "FinkDataController.h"
 
-#ifdef DEBUGGING
 #define BUFFERLEN 128
-#endif //DEBUGGING
 
 //Globals: placed here to make it easier to change values if fink output changes
 NSString *WEBKEY = @"Web site:";
@@ -39,6 +37,7 @@ int NAMESTART = 12;
 
 -(void)dealloc
 {
+	[finkListCommand release];
     [array release];
     [binaryPackages release];
 	[pathToDists release];
@@ -114,6 +113,7 @@ int NAMESTART = 12;
     [listCmd setStandardOutput: pipeIn];
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
+	[listCmd release];
 
 #ifdef DEBUGGING
 	if (d) {
@@ -126,9 +126,7 @@ int NAMESTART = 12;
 
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
 	
-#ifdef DEBUGGING
-	NSLog(@"Output string from data:\n%@", [output substringWithRange: NSMakeRange(0, BUFFERLEN-1)]);
-#endif
+	Dprintf(@"Output string from data:\n%@", [output substringWithRange: NSMakeRange(0, BUFFERLEN-1)]);
 
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
 	while (pkginfo = [e nextObject]){
@@ -148,32 +146,31 @@ int NAMESTART = 12;
 		}
 	}
 	
-#ifdef DEBUGGING
-	NSLog(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
-#endif //DEBUGGING
+	Dprintf(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
 	
 	return pkgs;
 }
 
 -(void)update
 {
-    NSTask *listCmd = [[[NSTask alloc] init] autorelease];
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
     NSArray *args;
 
+	[finkListCommand release];
+	finkListCommand = [[[NSTask alloc] init] autorelease];
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
 			@"Library/Application Support/FinkCommander/FinkCommander.pl"], nil];
-	[listCmd setLaunchPath: @"/usr/bin/perl"];
+	[finkListCommand setLaunchPath: @"/usr/bin/perl"];
 
-    [listCmd setArguments: args];
-    [listCmd setStandardOutput: pipeIn];
+    [finkListCommand setArguments: args];
+    [finkListCommand setStandardOutput: pipeIn];
 
     [self setStart: [NSDate date]];
 
     //run task asynchronously; this can take anywhere from a few seconds to a minute
-    [listCmd launch];
+    [finkListCommand launch];
     //the notification this method refers to will trigger the completeUpdate: method
     [cmdStdout readToEndOfFileInBackgroundAndNotify];
 
@@ -282,10 +279,8 @@ int NAMESTART = 12;
 	output = [[[NSString alloc] initWithData:d
 								encoding:NSMacOSRomanStringEncoding] autorelease];
 
-#ifdef DEBUGGING
-	NSLog(@"Read to end of file notification sent after %f seconds",
+	Dprintf(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
-#endif //DEBUGGING
 
     temp = [NSMutableArray arrayWithArray:
 	       [output componentsSeparatedByString: @"\n----\n"]];
@@ -336,11 +331,9 @@ int NAMESTART = 12;
     }
     [self setArray: collector];
 
-#ifdef DEBUGGING
-	NSLog(@"Fink package array completed after %f seconds",
+	Dprintf(@"Fink package array completed after %f seconds",
 	   -[start timeIntervalSinceNow]);
-#endif
-
+	   
     //notify FinkController that table needs to be updated
     [[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished
 											object: nil];

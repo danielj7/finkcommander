@@ -53,3 +53,12 @@ NSString *FinkRunProgressIndicator = @"FinkRunProgressIndicator";
 
 NSString *FinkCreditString = @"&body=%0A%0A--%0AFeedback%20courtesy%20%20of%20FinkCommander";
 
+#ifdef DEBUGGING
+void Dprintf(NSString *fmt,...) {
+    va_list ap;
+    va_start(ap,fmt);
+    NSLogv(fmt,ap);
+}
+#else
+inline void Dprintf(NSString *fmt,...){}
+#endif
