@@ -539,25 +539,6 @@ See the header file, FinkController.h, for interface and license information.
 
 //----------------------------------------------->IOTaskWrapper Protocol Implementation
 
-//helper:  look for prompt with default number choice in brackets
--(BOOL)scanForNumberPrompt:(NSString *)s
-{
-	NSCharacterSet *openingSet = [NSCharacterSet characterSetWithCharactersInString: @"?:"];
-	NSCharacterSet *numberSet = [NSCharacterSet decimalDigitCharacterSet];
-	NSScanner *numberPromptScanner = [NSScanner scannerWithString: s];
-	NSString *theNumber;
-
-	if ([numberPromptScanner scanUpToCharactersFromSet: openingSet intoString: nil] &&
-		[numberPromptScanner scanCharactersFromSet: openingSet intoString: nil]     &&
-		[numberPromptScanner scanString: @"[" intoString: nil]						&&
-		[numberPromptScanner scanCharactersFromSet: numberSet intoString: nil]		&&
-		[numberPromptScanner scanString: @"]" intoString: &theNumber]){
-		return YES;
-		NSLog(@"Found prompt with number: %@", theNumber);
-	}
-	return NO;
-}
-
 -(void)scrollToVisible:(id)ignore
 {
 	[textView scrollRangeToVisible:
@@ -578,12 +559,13 @@ See the header file, FinkController.h, for interface and license information.
 		[finkTask writeToStdin: [self password]];
 	}
 	if ( ! alwaysChooseDefaultSelected        &&
-		 ([self scanForNumberPrompt: output]  ||
+		 ([output rangeOfString: @"proceed? ["].length > 0  ||
+		  [output rangeOfString: @"one: ["].length > 0 ||
 		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0 ||
 		  [output rangeOfString: [NSString stringWithFormat: @"[%@]", NSUserName()]].length > 0 ||
 		  [output rangeOfString: @"[anonymous]"].length > 0)){
-		[self raiseInteractionWindow: self];
-		NSBeep();
+			NSBeep();
+			[self raiseInteractionWindow: self];
 	}
 	if ([output rangeOfString:           //handle non-anonymous cvs
 			@"cvs.sourceforge.net's password:"].length > 0){ 
