@@ -43,7 +43,6 @@ Contact the author at sburr@mac.com.
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
 	//main window outlets
-	IBOutlet id mainWindow;
 	IBOutlet id tableView;
 	IBOutlet id textView;
 	IBOutlet id msgText;
@@ -55,18 +54,18 @@ Contact the author at sburr@mac.com.
 	FinkDataController *packages;
 	FinkPreferences *preferences;
 	FinkBasePathUtility *utility;
+	NSString *lastCommand;
 	NSString *lastIdentifier;
 	NSMutableDictionary *columnState;
 	NSImage *reverseSortImage;
 	NSImage *normalSortImage;
-	BOOL updatingTable;
+	BOOL commandIsRunning;
 
 //MOVE	
 	NSString *binPath;
 	NSString *password;
-	NSString *lastCommand;
-	NSMutableArray *lastParams;
 	BOOL pendingCommand;
+	NSMutableArray *lastParams;
 	NSDictionary *environment;
 	IOTaskWrapper *finkTask;
 //ENDMOVE
@@ -89,8 +88,8 @@ Contact the author at sburr@mac.com.
 -(void)setLastCommand:(NSString *)s;
 -(NSString *)lastIdentifier;
 -(void)setLastIdentifier:(NSString *)s;
--(BOOL)updatingTable;
--(void)setUpdatingTable:(BOOL)b;
+-(BOOL)commandIsRunning;
+-(void)setCommandIsRunning:(BOOL)b;
 
 //Action and sheet methods
 -(IBAction)raisePwdWindow:(id)sender;

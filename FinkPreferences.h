@@ -8,14 +8,18 @@
 
 #import <AppKit/AppKit.h>
 
+// eliminate for release version:
+#define DEBUG 
+
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
+extern NSString *FinkUpdateWithFink;
 
 @interface FinkPreferences : NSWindowController 
 {
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
-	
+	IBOutlet NSButton *updateWithFinkButton;
 }
 
 -(IBAction)setPreferences:(id)sender;

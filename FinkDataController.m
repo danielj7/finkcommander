@@ -144,8 +144,10 @@ See the header file, FinkDataController.h, for interface and license information
 	
 	binaryPackages = [[self getBinaryList] retain];
 	stablePackages = [[self getStableList] retain];
+#ifdef DEBUG
 	NSLog(@"Completed binary and stable lists after %f seconds",
 	   -[start timeIntervalSinceNow]);
+#endif //DEBUG
 }
 
 
@@ -157,9 +159,11 @@ See the header file, FinkDataController.h, for interface and license information
 	NSArray *listRecord;
 	NSEnumerator *e;
 	FinkPackage *p;
-	
+
+#ifdef DEBUG	
 	NSLog(@"Read to end of file notification sent after %f seconds",
 	       -[start timeIntervalSinceNow]);
+#endif
 
 	d = [[n userInfo] objectForKey: NSFileHandleNotificationDataItem];
 	output = [[[NSString alloc] initWithData: d
@@ -194,8 +198,10 @@ See the header file, FinkDataController.h, for interface and license information
 		}
 		[p release];
 	}
+#ifdef DEBUG
 	NSLog(@"Fink package array completed after %f seconds",
 		-[start timeIntervalSinceNow]);
+#endif //DEBUG
 	//notify FinkController that table needs to be updated
 	[[NSNotificationCenter defaultCenter] postNotificationName: @"packageArrayIsFinished"
 		object: nil];

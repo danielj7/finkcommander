@@ -4,7 +4,11 @@
             ACTIONS = {cancel = id; setPreferences = id; }; 
             CLASS = FinkPreferences; 
             LANGUAGE = ObjC; 
-            OUTLETS = {basePathTextField = NSTextField; pathChoiceMatrix = NSMatrix; }; 
+            OUTLETS = {
+                basePathTextField = NSTextField; 
+                pathChoiceMatrix = NSMatrix; 
+                updateWithFinkButton = NSButton; 
+            }; 
             SUPERCLASS = NSWindowController; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }

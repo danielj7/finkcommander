@@ -30,6 +30,13 @@ in "LICENSE.txt."
 
 VERSION HISTORY
 
+0.1.3	pending:
+	First SourceForge release
+	/sw no longer hard-coded as fink directory path; FC now searches for path, sets user defaults to reflect
+		and writes path into fpkg_list.pl script
+	Added preferences panel:  allows user to set fink directory path manually, if search method doesnt work
+	Window position now saved between sessions (easy)
+
 0.1.2	03/10/2002:
 	Added table column showing whether package is unstable
 	Password entry sheet now appears automatically the first time a command is attempted;

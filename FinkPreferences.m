@@ -10,6 +10,7 @@
 
 NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
+NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 
 @implementation FinkPreferences
 
@@ -25,7 +26,10 @@ NSString *FinkBasePathFound = @"FinkBasePathFound";
 	NSString *basePath;
 	
 	basePath = [defaults objectForKey: FinkBasePath];
+
+#ifdef DEBUG
 	NSLog(@"FinkBasePath = %@", basePath);
+#endif
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
 		[basePathTextField setStringValue: @" "];
@@ -33,6 +37,8 @@ NSString *FinkBasePathFound = @"FinkBasePathFound";
 		[pathChoiceMatrix selectCellWithTag: 1];
 		[basePathTextField setStringValue: basePath];
 	}
+
+	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
 }
 
 -(IBAction)setPreferences:(id)sender
@@ -45,6 +51,8 @@ NSString *FinkBasePathFound = @"FinkBasePathFound";
 	}else{
 		[defaults setObject: [basePathTextField stringValue] forKey: FinkBasePath];
 	}
+	
+	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
 }
 
 -(IBAction)cancel:(id)sender

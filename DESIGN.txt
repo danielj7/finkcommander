@@ -51,7 +51,7 @@ Status in current FinkCommander:
 Not yet implemented, but the plumbing is there.  FinkCommander already reads stdout from the running process, parses it for prompts and writes a "\n" to the process stdin in order to select the default. 
 
 Feasibility of implementing through Obj C-Perl bridge:
-Seems possible, but wouldn't the fink subroutines need to be altered?
+Seems possible, but wouldn't the fink subroutines need to be altered?  They appear to rely directly on stdin and stdout for user interaction.
 
 (4)	 Sending stdout from running command to text view in real time
 
@@ -63,5 +63,7 @@ Status in current FinkCommander:
 Implemented through IOTaskWrapper appendOutput protocol
 
 Feasibility of implementing through Obj C-Perl bridge:
-Seems doubtful.  Fink appears to rely on the Perl system function to execute the scripts and programs that download, patch, configure, build and install the packages.  If I understand system correctly, it does not capture the standard output from the executed script or program.  If FinkCommander made a call to a fink subroutine through the Obj C-Perl bridge, that subroutine would not return the output.  Even if the fink subroutines were modified to use something like popen, they would send back the output in big chunks and leave the user uncertain about the status of the command for long periods, particularly during the build phase.  The user could use top to see what was going on, but that would kind of defeat the point of the GUI.
+Seems doubtful.  Fink appears to rely on the Perl system function to execute the scripts and programs that download, patch, configure, build and install the packages.  System does not capture the standard output from the executed script or program.  If fink itself were modified to use popen to return the output to the caller, this might become possible.
+
+(5)  Sending CVS password to selfupdate-cvs command; needed for fink core developers
 

@@ -47,7 +47,11 @@
 			[defaults setObject: path forKey: FinkBasePath];
 			[defaults setBool: YES forKey: FinkBasePathFound];
 			pathFound = YES;
+			
+#ifdef DEBUG
 			NSLog(@"Found basepath %@ using array", path);
+#endif //DEBUG
+
 			break;
 		}
 	}
@@ -73,7 +77,11 @@
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject: path forKey: FinkBasePath];
 			[defaults setBool: YES forKey: FinkBasePathFound];
+			
+#ifdef DEBUG			
 			NSLog(@"Found basepath %@ using call to which command", path);
+#endif //DEBUG
+			
 		}
 	}
 }
