@@ -554,6 +554,7 @@ See the header file, FinkController.h, for interface and license information.
 	if ( ! alwaysChooseDefaultSelected        &&
 		 ([self scanForNumberPrompt: output]  ||
 		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0)){
+		NSBeep();
 		[self raiseInteractionWindow: self];
 	}
 	if ([output rangeOfString:           //handle non-anonymous cvs
