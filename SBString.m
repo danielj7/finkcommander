@@ -17,7 +17,7 @@
 
 -(BOOL)containsCI:(NSString *)s
 {
-   if ([self rangeOfString: s options: NSCaseInsensitiveSearch].length > 0) 
+   if ([self rangeOfString:s options:NSCaseInsensitiveSearch].length > 0) 
        return YES;
     return NO;
 }
@@ -35,25 +35,24 @@
 
 -(NSString *)strip
 {
+//	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
     NSCharacterSet *nonWhitespaceSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
     int start;
     int length;
-    
-    //find start of nonwhitespace chars in string
+	//find start of nonwhitespace chars in string
     start = [self rangeOfCharacterFromSet:nonWhitespaceSet].location;
-
-    if (start == NSNotFound){
+	if (start == NSNotFound){
 		return self;
-    }
- 
-    //find last nonwhitespace char; use it to calculate length
-    //of substring between beginning and ending whitespace
-    length = [self rangeOfCharacterFromSet: nonWhitespaceSet 
+	}
+	//find last nonwhitespace char; use it to calculate length
+	//of substring between beginning and ending whitespace
+	length = [self rangeOfCharacterFromSet: nonWhitespaceSet
 					options: NSBackwardsSearch].location - start + 1;
-
-    //use start and length to calculate range
-    //return string in that range
-    return [self substringWithRange: NSMakeRange(start, length)];
+	//use start and length to calculate range
+	//return string in that range
+	return [self substringWithRange: NSMakeRange(start, length)];
+	
 }
 
 @end

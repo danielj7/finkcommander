@@ -309,9 +309,7 @@
     NSData *inData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
     if (inData == nil || [inData length] == 0)
     {
-        int status;
         [task waitUntilExit];
-        status = [task terminationStatus];
         [self stop];
     }
     else
@@ -452,6 +450,9 @@
     }
 	status = [task terminationStatus];
     [task release];
+	[stdinHandle closeFile];
+	[stdoutHandle closeFile];
+	[stderrHandle closeFile];
     [stdinHandle release];
     [stdoutHandle release];
     [stderrHandle release];

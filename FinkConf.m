@@ -83,8 +83,7 @@ File: FinkConf.m
 		if ([[finkConfDict objectForKey: @"Trees"]
 				indexOfObject: @"unstable/main"] == NSNotFound){
 			[[finkConfDict objectForKey: @"Trees"] 
-				insertObject: @"unstable/main"
-				atIndex:0];
+				addObject: @"unstable/main"];
 		}
 	}else{
 		if ([[finkConfDict objectForKey: @"Trees"]
@@ -109,8 +108,7 @@ File: FinkConf.m
 		if ([[finkConfDict objectForKey: @"Trees"]
 			indexOfObject: @"unstable/crypto"] == NSNotFound){
 			[[finkConfDict objectForKey: @"Trees"] 
-				insertObject: @"unstable/crypto"
-				atIndex:0];
+				addObject: @"unstable/crypto"];
 		}
 	}else{
 		if ([[finkConfDict objectForKey: @"Trees"]
