@@ -2,6 +2,12 @@
 
 #import "SBTreeWindowController.h"
 
+//Constants matching tags in selection matrix
+enum {
+	SB_BROWSER = 0,
+	SB_OUTLINE = 1
+};
+
 //----------------------------------------------------------
 #pragma mark OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
@@ -23,7 +29,7 @@
 		[self setFileList:fList];  //Needed in windowDidLoad to build tree
 		[[self window] setTitle:wName];
 		[[self window] setReleasedWhenClosed:YES];
-		[self setActiveView:@"browser"];
+		[self setActiveView:@"outline"];
 		
 		[[NSNotificationCenter defaultCenter] 
 		addObserver:self 
@@ -47,12 +53,13 @@ browser; tell the tree object to build its data structure.  */
 -(void)windowDidLoad
 {
     NSTableColumn *mdateColumn;
-    NSSize browserSize = [oldBrowser bounds].size;
-    NSRect browserFrame = NSMakeRect(0, 0, browserSize.width, browserSize.height);
+    NSRect browserFrame = [oldBrowser frame];
 	NSView *browserSuperview = [oldBrowser superview];
 	
     [self startedLoading];
     [self showWindow:self];
+	
+	[tabView setTabViewType:NSNoTabsNoBorder];
 	
 	/* Set up the custom outline view */
 	outlineView = [SBOutlineView substituteForOutlineView:outlineView];
@@ -83,6 +90,7 @@ browser; tell the tree object to build its data structure.  */
 	[browserSuperview addSubview:browser];
     [browser release];
     [browser setTree:tree];
+	
 	/*Building the file tree can take some time; run in a separate
 	thread to avoid tying up the rest of the app*/
     treeBuildingThreadIsFinished = NO;
@@ -148,15 +156,26 @@ browser; tell the tree object to build its data structure.  */
 	_sbActiveView = newActiveView;
 }
 
-
 //----------------------------------------------------------
 #pragma mark ACTIONS
 //----------------------------------------------------------
 
 -(IBAction)switchViews:(id)sender
-{
-    [tabView selectTabViewItemWithIdentifier:[sender title]];
-    [self setActiveView:[sender title]];
+{	
+	int selection = [[sender selectedCell] tag];
+	NSString *identifier;
+	switch (selection){
+		case SB_BROWSER:
+			identifier = @"browser";
+			break;
+		case SB_OUTLINE:
+			identifier = @"outline";
+			break;
+		default:
+			break;
+	}
+	[tabView selectTabViewItemWithIdentifier:identifier];
+    [self setActiveView:identifier];
 }
 
 //----------------------------------------------------------
@@ -178,26 +197,18 @@ browser; tell the tree object to build its data structure.  */
 		[msgTextField setStringValue:@"Error:  No such package installed"];
     }else{
 		[msgTextField setStringValue:
-			[NSString stringWithFormat:@"Total size: %u KB; file count: %u",
-				[tree totalSize] / 1024 + 1, [tree itemCount]]];
+			[NSString stringWithFormat:@"%u items, %u KB",
+				[tree itemCount], [tree totalSize] / 1024 + 1]];
     }
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
 	[browser reloadColumn:0];
 	[loadingIndicator stopAnimation:self];
     [loadingIndicator removeFromSuperview];
-
 }
 
 //----------------------------------------------------------
 #pragma mark DELEGATE METHODS
 //----------------------------------------------------------
-
-- (void)tabView:(NSTabView *)theTabView 
-	didSelectTabViewItem:(NSTabViewItem *)tabViewItem
-{
-    [self setActiveView:[tabViewItem identifier]];
-	Dprintf(@"Selected tab view item %@", [self activeView]);
-}
 
 //Resize window vertically but not horizontally when zoom button is clicked.
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender

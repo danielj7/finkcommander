@@ -13,7 +13,7 @@ communicates with:
 * 	user interface elements created in Interface Builder and located in the 
 	MainMenu.nib file (V).
 
-* 	FinkDataController (MC) -- gathers and updates information on the user's fink
+* 	FinkData (M) -- gathers and updates information on the user's fink
 	installation in the form of an array of FinkPackage objects (M);
 
 *	AuthorizedExecutable (M) -- runs fink commands asynchronously in separate processes using
@@ -26,7 +26,7 @@ communicates with:
 
 *	FinkTableViewController (VC) and FinkTextViewController (C) -- control
 	the primary user interface elements; FinkTableViewController is a subclass
-	of NSTableView, but probably should not be;
+	of NSTableView in order to customize drag and drop behavior;
 	
 *	a FinkPreferences object (C) -- provides an interface for both the FinkCommander user
 	interface system and for changing the fink.conf file (represented by
@@ -37,7 +37,7 @@ communicates with:
 	objects for display in the Package Inspector (V); along with FinkController uses
 	a FinkInstallationInfo object (M) to format emails sent to package maintainers; 
 	instantiates and communicates with user interface elements defined in 
-	PackageInfo.nib (V).
+	PackageInfo.nib (V) and in MyTextView (V).
 
 FinkController also creates the FinkCommander toolbar and registers the "factory defaults" 
 for preferences set by FinkPreferences or programmatically.  The settings for each are 
@@ -73,7 +73,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import <Cocoa/Cocoa.h>
 
 #import "FinkGlobals.h"
-#import "FinkDataController.h"
+#import "FinkData.h"
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
@@ -88,82 +88,6 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkUtilities.h"
 #import "SBTreeWindowManager.h"
 
-#define CMD_REQUIRES_UPDATE(x) ([(x) isEqualToString: @"install"]	|| 				\
-							[(x) isEqualToString: @"remove"]		|| 				\
-							[(x) isEqualToString: @"index"]			|| 				\
-							[(x) contains: @"build"]				|| 				\
-							[(x) contains: @"dpkg"]					|| 				\
-							[(x) contains: @"update"])
-
-#define TAG_NAME_ARRAY [NSArray arrayWithObjects: 									\
-							@"version",           									\
-							@"binary",           									\
-							@"stable",												\
-							@"unstable",											\
-							@"status",												\
-							@"category",											\
-							@"summary",												\
-							@"maintainer",											\
-							@"installed",											\
-							@"name",												\
-							nil]
-
-#define NAME_TAG_DICTIONARY [NSDictionary dictionaryWithObjectsAndKeys: 			\
-							[NSNumber numberWithInt: VERSION], @"version",          \
-							[NSNumber numberWithInt: BINARY], @"binary",            \
-							[NSNumber numberWithInt: STABLE], @"stable",            \
-							[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
-							[NSNumber numberWithInt: STATUS], @"status",            \
-							[NSNumber numberWithInt: CATEGORY], @"category",        \
-							[NSNumber numberWithInt: SUMMARY], @"summary",          \
-							[NSNumber numberWithInt: MAINTAINER], @"maintainer",	\
-							[NSNumber numberWithInt: INSTALLED], @"installed",      \
-							[NSNumber numberWithInt: NAME], @"name",                \
-							nil]
-							
-#define FINK_EXPAND NSLocalizedString(@"Expand Output", @"Menu title when output is collapsed")
-#define FINK_COLLAPSE NSLocalizedString(@"Collapse Output", @"Menu title when output is expanded")
-
-enum {
-    VERSION    	= 2000, 
-    BINARY     	= 2001,
-    STABLE     	= 2002,
-    UNSTABLE   	= 2003,
-    STATUS     	= 2004,
-    CATEGORY   	= 2005,
-    SUMMARY    	= 2006,
-    MAINTAINER 	= 2007,
-    INSTALLED  	= 2008,
-	NAME	   	= 2009
-};
-
-enum {
-	FCWEB 		= 1000,
-	FCBUG 		= 1001,
-	FINKDOC 	= 1002,
-	FINKBUG		= 1003
-};
-
-enum{
-    FINK,
-    APT_GET,
-    DPKG
-};
-
-enum {
-	FILTER,
-	INTERACTION
-};
-
-enum {
-	DEFAULT,
-	USER_CHOICE
-};
-
-enum {
-	POSITIVE,
-	NEGATIVE
-};
 
 @interface FinkController : NSObject
 {
@@ -193,7 +117,7 @@ enum {
 	IBOutlet NSTextField *searchTextField;
 
 	//FinkCommander objects
-	FinkDataController *packages;
+	FinkData *packages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
 	FinkWarningDialog *warningDialog;
@@ -218,7 +142,7 @@ enum {
 }
 
 //Accessors
--(FinkDataController *)packages;
+-(FinkData *)packages;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
 -(void)setParser:(FinkOutputParser *)p;
@@ -273,7 +197,8 @@ enum {
 
 //AuthorizedExecutable delegate methods
 -(void)scrollToVisible:(NSNumber *)n;  //helper method used by captureOutput
--(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
+-(void)captureStdOut:(NSString *)output forExecutable:(id)ignore;
+-(void)captureStdErr:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;
 
 @end

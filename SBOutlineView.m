@@ -17,7 +17,8 @@
 	NSEnumerator *e;
 	NSString *identifier;
 	float nameWidth = frame.size.width / 2.0;
-	float otherWidth = nameWidth / ([[SB_COLUMNS allKeys] count]);
+	float sizeWidth = nameWidth / 4.0;
+	float mdateWidth = frame.size.width - nameWidth - sizeWidth;
 	columnKeys = [columnKeys
             sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	e = [columnKeys objectEnumerator];
@@ -31,23 +32,24 @@
 		[[newColumn headerCell] setStringValue:title];
 		[newColumn setEditable:NO];
 		if ([identifier isEqualToString:@"size"]){
+			[newColumn setWidth:sizeWidth];
 			[[newColumn headerCell] setAlignment:NSRightTextAlignment];
 			[[newColumn dataCell] setAlignment:NSRightTextAlignment];
 		}else{
+			if ([identifier isEqualToString:@"filename"]){
+				[newColumn setWidth:nameWidth];
+				[self setOutlineTableColumn:newColumn];
+			}else{
+				[newColumn setWidth:mdateWidth];
+			}
 			[[newColumn headerCell] setAlignment:NSLeftTextAlignment];
 			[[newColumn dataCell] setAlignment:NSLeftTextAlignment];
-		}
-		if ([identifier isEqualToString:@"filename"]){
-			[newColumn setWidth:nameWidth];
-			[self setOutlineTableColumn:newColumn];
-		}else{
-			[newColumn setWidth:otherWidth];
 		}
 		[columnArray addObject:newColumn];
 	}
 	return columnArray;
 }
-
+	
 +(id)substituteForOutlineView:(NSOutlineView *)oldView
 {
 	SBOutlineView *newView = [[[SBOutlineView alloc] 
@@ -67,10 +69,14 @@
 	[newView setAllowsColumnSelection:[oldView allowsColumnSelection]];
 	[newView setAllowsColumnReordering:[oldView allowsColumnReordering]];
 	[newView setAllowsColumnResizing :[oldView allowsColumnReordering]];
+	[newView setAutoresizesOutlineColumn:NO];
+	[newView setVerticalMotionCanBeginDrag:NO];
 	
 	return newView;
 }
 
+
+//Allow dragging items outside outline view
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
 {
     return NSDragOperationCopy;

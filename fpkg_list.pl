@@ -10,7 +10,7 @@
 #
 #The fpkg_list.pl script uses fink's perl subroutines to gather information on
 #installed packages and print the data in a long list.  This list is then
-#parsed by FinkDataController to create an array of FinkPackage objects. 
+#parsed by FinkData to create an array of FinkPackage objects. 
 #
 #Copyright (C) 2002  Steven J. Burr
 #

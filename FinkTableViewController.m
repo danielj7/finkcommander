@@ -29,6 +29,7 @@ See the header file, FinkTableViewController.h, for interface and license inform
 		[self setAutosaveTableColumns: YES];
 		[self setAllowsMultipleSelection: YES];
 		[self setAllowsColumnSelection: NO];
+		[self setVerticalMotionCanBeginDrag:NO];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
@@ -179,12 +180,12 @@ are separated by tabs, as text, as well as tabular text (NSTabularTextPboardType
 		}else{
 			tree = @"stable";
 		}
-		path = [pkg pathToPackageinTree:tree
+		path = [pkg pathToPackageInTree:tree
 							 withExtension:@"patch"];
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];
 		}
-		path = [pkg pathToPackageinTree:tree
+		path = [pkg pathToPackageInTree:tree
 							withExtension:@"info"];
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];

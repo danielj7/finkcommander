@@ -19,6 +19,7 @@
 		[self setMatrixClass:[SBBrowserMatrix class]];
 		[self setReusesColumns:YES];
 		[self setHasHorizontalScroller:YES];
+		[self setTitled:NO];
     }
     return self;
 }
@@ -53,7 +54,10 @@ message. */
 	NSBrowserCell *parentCell;
     SBFileItem *item;
 	
-    if (0 == column) return [[tree rootItem] numberOfChildren];
+    if (0 == column){
+		//return [[tree rootItem] numberOfChildren];
+		return 1;
+	} 
 
 	parentCell = [self selectedCellInColumn:column-1];
 	item = [parentCell representedObject];
@@ -73,7 +77,8 @@ message. */
 
     if (0 == column){
 		/* Fill the first column (index 0) with the children of the root item. */
-		item = [[tree rootItem] childAtIndex:row];
+		//item = [[tree rootItem] childAtIndex:row];
+		item = [tree rootItem];
     }else{
 		/* The representedObject of the selected item in the parent column
 		is the SBFileItem ancestor of the objects that will be represented
@@ -92,52 +97,6 @@ message. */
     [itemImage setSize:NSMakeSize(16.0, 16.0)];
     [cell setImage:itemImage];
 }
-
-//ALTERNATIVE DELEGATE METHOD TO DISPLAY MORE DETAIL ABOUT AN
-//ITEM IN THE LAST COLUMN
-#ifdef UNDEF
--(void)browser:(NSBrowser *)sender 
-    willDisplayCell:(id)cell
-		 atRow:(int)row
-		column:(int)column
-{
-    NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-    SBFileItem *pitem;
-    SBFileItem *citem = nil;
-    NSImage *itemImage;
-    NSBrowserCell *parentCell;
-
-    if (0 == column){
-		/* Fill the first column (index 0) with the children of the root item. */
-		item = [[tree rootItem] childAtIndex:row];
-    }else{
-		/* The representedObject of the selected item in the parent column
-		is the SBFileItem ancestor of the objects that will be represented
-		in the child column. */
-		parentCell = [self selectedCellInColumn:column-1];
-		pitem = [parentCell representedObject];
-		if (nil != [pitem children]){
-			citem = [pitem childAtIndex:row];
-		}
-    }
-    if (nil == citem){
-		/* The pitem is a leaf on the tree.  Display its attributes in next
-		column over as in the finder column view. */
-		//ADJUST CELL DISPLAY HERE
-		[cell setLeaf:YES];
-		[cell setStringValue:[pitem description]]; //TEMPORARY
-    }else{
-		[cell setLeaf:NO];
-		[cell setStringValue:[citem filename]];
-		[cell setRepresentedObject:citem];
-    }
-
-    //Set the image for the item to an appropriately sized version of the file icon
-    itemImage = [ws iconForFile:[citem path]];
-    [itemImage setSize:NSMakeSize(16.0, 16.0)];
-    [cell setImage:itemImage];
-}
-#endif
 
 //----------------------------------------------------------
 #pragma mark ACTION METHOD(S)

@@ -1,17 +1,104 @@
 /*
 File: FinkController.m
 
- See the header file, FinkController.h, for interface and license information.
+See the header file, FinkController.h, for interface and license information.
 
- */
+*/
 
 #import "FinkController.h"
+//================================================================================
+#pragma mark MACROS
+//================================================================================
+
+#define CMD_REQUIRES_UPDATE(x) 								\
+   ([(x) isEqualToString: @"install"]		|| 				\
+	[(x) isEqualToString: @"remove"]		|| 				\
+	[(x) isEqualToString: @"index"]			|| 				\
+	[(x) contains: @"build"]				|| 				\
+	[(x) contains: @"dpkg"]					|| 				\
+	[(x) contains: @"update"])
+
+#define TAG_NAME_ARRAY 										\
+ [NSArray arrayWithObjects: 								\
+	@"version",           									\
+	@"binary",           									\
+	@"stable",												\
+	@"unstable",											\
+	@"status",												\
+	@"category",											\
+	@"summary",												\
+	@"maintainer",											\
+	@"installed",											\
+	@"name",												\
+	nil]
+
+#define NAME_TAG_DICTIONARY 								\
+	[NSDictionary dictionaryWithObjectsAndKeys: 			\
+	[NSNumber numberWithInt: VERSION], @"version",          \
+	[NSNumber numberWithInt: BINARY], @"binary",            \
+	[NSNumber numberWithInt: STABLE], @"stable",            \
+	[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
+	[NSNumber numberWithInt: STATUS], @"status",            \
+	[NSNumber numberWithInt: CATEGORY], @"category",        \
+	[NSNumber numberWithInt: SUMMARY], @"summary",          \
+	[NSNumber numberWithInt: MAINTAINER], @"maintainer",	\
+	[NSNumber numberWithInt: INSTALLED], @"installed",      \
+	[NSNumber numberWithInt: NAME], @"name",                \
+	nil]
+
+#define FINK_EXPAND NSLocalizedString(@"Expand Output", @"Menu title when output is collapsed")
+#define FINK_COLLAPSE NSLocalizedString(@"Collapse Output", @"Menu title when output is expanded")
+
+//================================================================================
+#pragma mark CONSTANTS
+//================================================================================
+
+enum {
+    VERSION    	= 2000,
+    BINARY     	= 2001,
+    STABLE     	= 2002,
+    UNSTABLE   	= 2003,
+    STATUS     	= 2004,
+    CATEGORY   	= 2005,
+    SUMMARY    	= 2006,
+    MAINTAINER 	= 2007,
+    INSTALLED  	= 2008,
+	NAME	   	= 2009
+};
+
+enum {
+	FCWEB 		= 1000,
+	FCBUG 		= 1001,
+	FINKDOC 	= 1002,
+	FINKBUG		= 1003
+};
+
+enum{
+    FINK,
+    APT_GET,
+    DPKG
+};
+
+enum {
+	FILTER,
+	INTERACTION
+};
+
+enum {
+	DEFAULT,
+	USER_CHOICE
+};
+
+enum {
+	POSITIVE,
+	NEGATIVE
+};
 
 @implementation FinkController
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark INTITIALIZATION
-//--------------------------------------------------------------------------------
+//================================================================================
 
 //----------------------------------------------->Initialize
 +(void)initialize
@@ -53,7 +140,7 @@ File: FinkController.m
 		}
 
 		//Initialize package data storage object
-		packages = [[FinkDataController alloc] init];
+		packages = [[FinkData alloc] init];
 
 		//Set instance variables used to store objects and state information
 		//needed to run fink and apt-get commands
@@ -105,9 +192,9 @@ File: FinkController.m
     return self;
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark DEALLOCATION
-//--------------------------------------------------------------------------------
+//================================================================================
 
 //----------------------------------------------->Dealloc
 -(void)dealloc
@@ -128,9 +215,9 @@ File: FinkController.m
 }
 
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark GENERAL HELPERS
-//--------------------------------------------------------------------------------
+//================================================================================
 
 /** Tag <-> Name Translation **/
 //Using tags rather than titles to tie the View menu items and search fields to
@@ -175,7 +262,8 @@ File: FinkController.m
 //Display running command below the table
 -(void)displayCommand:(NSArray *)params
 {
-    [msgText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"Running", nil),
+    [msgText setStringValue: 
+		[NSString stringWithFormat: NSLocalizedString(@"Running", nil),
 		[params componentsJoinedByString: @" "]]];
 }
 
@@ -219,10 +307,9 @@ File: FinkController.m
     [toolbar validateVisibleItems];
 }
 
-
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark POST-INIT STARTUP
-//--------------------------------------------------------------------------------
+//================================================================================
 
 -(void)awakeFromNib
 {
@@ -319,11 +406,11 @@ File: FinkController.m
     }
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark ACCESSORS
-//--------------------------------------------------------------------------------
+//================================================================================
 
--(FinkDataController *)packages  {return packages;}
+-(FinkData *)packages  {return packages;}
 
 -(NSString *)lastCommand {return lastCommand;}
 -(void)setLastCommand:(NSString *)s
@@ -350,9 +437,9 @@ File: FinkController.m
     return searchPopUpButton;
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark APPLICATION AND WINDOW DELEGATES
-//--------------------------------------------------------------------------------
+//================================================================================
 
 //warn before quitting if a command is running
 -(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
@@ -399,9 +486,9 @@ File: FinkController.m
     [finkTask unAuthorize];
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark MAIN MENU
-//--------------------------------------------------------------------------------
+//================================================================================
 
 //----------------------------------------------->Application Menu
 #pragma mark Application Menu
@@ -729,9 +816,9 @@ File: FinkController.m
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark TOOLBAR
-//--------------------------------------------------------------------------------
+//================================================================================
 
 -(void)setupToolbar
 {
@@ -890,9 +977,9 @@ File: FinkController.m
     }
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark VALIDATION
-//--------------------------------------------------------------------------------
+//================================================================================
 
 //helper for menu item and toolbar item validators
 -(BOOL)validateItem:(id)theItem
@@ -953,9 +1040,9 @@ File: FinkController.m
     return [self validateItem: theItem];
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark RUNNING AUTHORIZED COMMANDS
-//--------------------------------------------------------------------------------
+//================================================================================
 
 /*** Helper for Menu and Toolbar Commands ***/
 
@@ -1132,9 +1219,9 @@ File: FinkController.m
 		withString:@""];
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark INTERACTION SHEET
-//--------------------------------------------------------------------------------
+//================================================================================
 
 -(IBAction)raiseInteractionWindow:(id)sender
 {
@@ -1174,11 +1261,13 @@ File: FinkController.m
     }
 }
 
-//--------------------------------------------------------------------------------
+//================================================================================
 #pragma mark AUTHORIZED EXECUTABLE DELEGATE METHODS
-//--------------------------------------------------------------------------------
+//================================================================================
 
-/*** Helpers ***/
+/*
+ * Helpers 
+ */
 
 -(void)startInstall
 {
@@ -1223,21 +1312,19 @@ File: FinkController.m
     }
 }
 
-/*** Delegate Methods ***/
-
--(void)captureOutput:(NSString *)output forExecutable:(id)ignore
+-(void)processOutput:(NSString *)output
 {
-    //Determine how much output is below the scroll view based on
-    //the following calculation (in vertical pixels):
+    /* Determine how much output is below the scroll view based on
+       the following calculation (in vertical pixels):
 
-    //Total document length									 -
-    //Length above scroll view (y coord of visible portion)  -
-    //Length w/in scroll view 				      			 =
-    //----------------------------------------------------
-    //Length below scroll view
+       Total document length									-
+       Length above scroll view (y coord of visible portion)  	-
+       Length w/in scroll view 				      			  	=
+       ----------------------------------------------------
+       Length below scroll view
 
     //This value is used to determine whether the user has scrolled up.
-    //If so, the output view will not automatically scroll to the bottom.
+    //If so, the output view will not automatically scroll to the bottom. */
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
 				    abs([[textViewController textView] bounds].size.height -
@@ -1320,6 +1407,20 @@ File: FinkController.m
 					 afterDelay:0.0];
 					 
 	[pool release];
+}
+
+/*
+ * Delegate Methods
+ */
+
+-(void)captureStdOut:(NSString *)output forExecutable:(id)ignore
+{
+	[self processOutput:output];
+}
+
+-(void)captureStdErr:(NSString *)output forExecutable:(id)ignore
+{
+	[self processOutput:output];
 }
 
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number

@@ -15,6 +15,7 @@
     IBOutlet NSTextField *msgTextField;
     IBOutlet NSProgressIndicator *loadingIndicator;
 	IBOutlet NSBrowser *oldBrowser;
+	IBOutlet NSBox *divider;
 
 	SBFileItemTree *tree;
     SBOutlineViewController *oController;

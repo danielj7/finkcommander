@@ -1,11 +1,11 @@
 /*  
-File: FinkDataController.m
+File: FinkData.m
 
-See the header file, FinkDataController.h, for interface and license information.
+See the header file, FinkData.h, for interface and license information.
 
 */
 
-#import "FinkDataController.h"
+#import "FinkData.h"
 
 //Constants: placed here to make it easier to change values if fink output changes
 #define WEBKEY @"Web site:"
@@ -15,7 +15,7 @@ See the header file, FinkDataController.h, for interface and license information
 #define PACKAGESTART 9
 #define VERSIONSTART 9
 
-@implementation FinkDataController
+@implementation FinkData
 
 //---------------------------------------------------------->The Usual
 
@@ -251,7 +251,7 @@ See the header file, FinkDataController.h, for interface and license information
 		[p setFulldesc:[listRecord objectAtIndex: 8]];
 
 		if ([[p stable] length] < 2 && [[p unstable] length] > 1){
-			path = [self pathToPackage:p inTree:@"stable" withExtension:@"info"];
+			path = [p pathToPackageInTree:@"stable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){
 				[p setStable:[p unstable]];
 				if (! [defaults boolForKey:FinkShowRedundantPackages]){
@@ -263,7 +263,7 @@ See the header file, FinkDataController.h, for interface and license information
 		if ([defaults boolForKey:FinkShowRedundantPackages] &&
 			[[p unstable] length] < 2 						&&
 			[[p stable] length] > 1){
-			path = [self pathToPackage:p inTree:@"unstable" withExtension:@"info"];
+			path = [p pathToPackageInTree:@"unstable" withExtension:@"info"];
 			if ([manager fileExistsAtPath:path]){
 				[p setUnstable:[p stable]];
 			}
@@ -293,30 +293,6 @@ See the header file, FinkDataController.h, for interface and license information
 }
 
 //---------------------------------------------------------->Utilities
-
--(NSString *)pathToPackage:(FinkPackage *)pkg 
-			   inTree:(NSString *)tree
-			   withExtension:(NSString *)ext
-{
-	NSString *version = [tree isEqualToString:@"stable"] ? [pkg stable] : [pkg unstable];
-	NSString *name = [pkg nameWithoutSplitoff];
-	NSString *pathToDists = [[[defaults objectForKey:FinkBasePath]
-								stringByAppendingPathComponent: @"/fink/dists"] retain];
-    NSString *pkgFileName;
-    NSArray *components;
-
-	pkgFileName = [NSString stringWithFormat:@"%@-%@.%@", name, version, ext];
-
-    if ([[pkg category] isEqualToString:@"crypto"]){
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"crypto",
-			@"finkinfo", pkgFileName, nil];
-    }else{
-		components = [NSArray arrayWithObjects:pathToDists, tree, @"main",
-			@"finkinfo", [pkg category], pkgFileName, nil];
-    }
-
-	return [NSString pathWithComponents:components];
-}
 
 -(int)installedPackagesCount
 {

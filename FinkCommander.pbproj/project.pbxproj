@@ -394,6 +394,8 @@
 				F5C9446F039C6BE201A80164,
 				F50EC0D603A0464101A80165,
 				F57E59C203A9ABBA01A80165,
+				F5F99DB703AD4F4D01A80165,
+				F5F99DB903AD5AC401A80165,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1269,13 +1271,13 @@
 		F55FBB1D02F3B8C901A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = FinkDataController.h;
+			path = FinkData.h;
 			refType = 4;
 		};
 		F55FBB1E02F3B8C901A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = FinkDataController.m;
+			path = FinkData.m;
 			refType = 4;
 		};
 		F55FBB1F02F3B8C901A80164 = {
@@ -1689,6 +1691,8 @@
 				F5F99D8603AC1F8D01A80165,
 				F50EC0D503A0464101A80165,
 				F5C9446D039C6BE201A80164,
+				F5F99DB803AD5AC401A80165,
+				F5F99DB603AD4F4D01A80165,
 			);
 			isa = PBXGroup;
 			name = "SBTree Files";
@@ -2020,6 +2024,30 @@
 			name = Classes;
 			path = "";
 			refType = 4;
+		};
+		F5F99DB603AD4F4D01A80165 = {
+			isa = PBXFileReference;
+			name = outline.tiff;
+			path = SBTreeFiles/outline.tiff;
+			refType = 4;
+		};
+		F5F99DB703AD4F4D01A80165 = {
+			fileRef = F5F99DB603AD4F4D01A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5F99DB803AD5AC401A80165 = {
+			isa = PBXFileReference;
+			name = browser.tiff;
+			path = SBTreeFiles/browser.tiff;
+			refType = 4;
+		};
+		F5F99DB903AD5AC401A80165 = {
+			fileRef = F5F99DB803AD5AC401A80165;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA;

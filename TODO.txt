@@ -3,11 +3,10 @@ VERSION 0.5; Target release date: 1/14/03:
 i Package file browser
 	Fix instability
 	i Add Browser view
-	Add custom button to switch from outline to browser (modeled on Finder's)
-	Add custom button popup to change number of columns in browser
-	Add open and open with commands for file menu to open .deb files directly
+	d Add buttons to switch from outline to browser (modeled on Finder's)
+	Add button popup to change number of columns in browser
 	Add contextual menu
-	Add drag and drop of file icon onto Finder icon
+	d Add drag and drop of file icons
 	 
 d Go to package documentation in Finder
 
@@ -15,12 +14,12 @@ d Submit fink bug report command
 
 d Dock icon customization: show status of command
 
-Catch and display cvs errors during selfupdate-cvs
-
 Flag column
 
-Show info panel for fink installation; mirror information in email
-sig; Application->About Your Fink Installation... ?
+Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after launching
+	command in Terminal
+
+Catch and display cvs errors during selfupdate-cvs
 
 New toolbar items for:
 	Package browser
@@ -28,9 +27,14 @@ New toolbar items for:
 
 SHORT TERM:
 
+Show info panel for fink installation; mirror information in email
+sig; Application->About Your Fink Installation... ?
+
+Add open and open with commands for file menu to open .deb files directly in package browser
+
 Search output
 
-i Regex support in filter and output search
+i Regex support in filter and output search (wrote wrapper as NSString category)
 
 Show .info, .patch file contents; open in editor; copy contents to 
 clipboard

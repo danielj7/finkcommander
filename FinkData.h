@@ -1,5 +1,5 @@
 /*  
- File: FinkDataController.h
+ File: FinkData.h
 
 FinkCommander
 
@@ -7,7 +7,7 @@ Graphical user interface for Fink, a software package management system
 that automates the downloading, patching, compilation and installation of
 Unix software on Mac OS X.
 
-The FinkDataController class obtains information about installed and available fink 
+The FinkData class obtains information about installed and available fink 
 packages and stores the information in an array of FinkPackage instances.
 
 Copyright (C) 2002  Steven J. Burr
@@ -36,7 +36,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkUtilities.h"
 #import "SBString.h"
 
-@interface FinkDataController : NSObject
+@interface FinkData : NSObject
 {
 	NSUserDefaults *defaults;
 	NSArray *array;
@@ -54,9 +54,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)update;
 
 //Utilities
--(NSString *)pathToPackage:(FinkPackage *)pkg
-			 inTree:(NSString *)tree
-			 withExtension:(NSString *)ext;
 -(int)installedPackagesCount;
 
 @end

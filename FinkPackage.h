@@ -53,7 +53,10 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSString *email;
 }
 
-//Instance variable access
+/*
+ * Accessors
+ */
+
 -(NSString *)name;
 -(void)setName:(NSString *)s;
 
@@ -93,8 +96,10 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)email;
 -(void)setEmail:(NSString *)s;
 
+/*
+ * Comparison Methods
+ */
 
-//Comparison methods
 -(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y;
 
 -(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
@@ -133,11 +138,13 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg;
 
-//Querying the Package
+/*
+ * Querying the Package
+ */
 
 -(NSString *)nameWithoutSplitoff;
 
--(NSString *)pathToPackageinTree:(NSString *)tree
+-(NSString *)pathToPackageInTree:(NSString *)tree
 			withExtension:(NSString *)ext;
 
 @end

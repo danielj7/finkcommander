@@ -418,7 +418,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 
--(NSString *)pathToPackageinTree:(NSString *)tree
+-(NSString *)pathToPackageInTree:(NSString *)tree
 			withExtension:(NSString *)ext
 {
 	NSString *fversion = [tree isEqualToString:@"unstable"] ?

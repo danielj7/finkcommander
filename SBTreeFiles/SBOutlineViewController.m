@@ -30,11 +30,12 @@
 			[[aColumn headerCell] setTarget:self];
 			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
 		}
-
 		columnStateDictionary = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 			SBAscendingOrder, @"filename",
 			SBAscendingOrder, @"size",
 			SBAscendingOrder, @"mdate", nil] retain];
+		[outlineView setHighlightedTableColumn:	
+			[outlineView tableColumnWithIdentifier:@"filename"]];
 	}
 	return self;
 }
@@ -84,7 +85,7 @@
 
 -(id)outlineView:(NSOutlineView *)outlineView 
 	objectValueForTableColumn:(NSTableColumn *)tableColumn 
-		  byItem:(id)item 
+	byItem:(id)item 
 {
     NSString *identifier = [tableColumn identifier];
     if ([identifier isEqualToString:@"size"]){
@@ -118,8 +119,6 @@
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	return YES;
 }
-
-
 
 //----------------------------------------------------------
 #pragma mark SORTING METHOD
@@ -155,6 +154,7 @@
 
     [tree sortTreeByElement:identifier inOrder:order];
     [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
+	[outlineView setHighlightedTableColumn:tableColumn];
 	return NO;
 }
 
