@@ -14,12 +14,14 @@
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
+extern NSString *FinkScrollToSelectedRow;
 
 @interface FinkPreferences : NSWindowController 
 {
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *updateWithFinkButton;
+	IBOutlet NSButton *scrollToSelectionButton;
 }
 
 -(IBAction)setPreferences:(id)sender;

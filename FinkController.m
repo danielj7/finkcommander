@@ -2,7 +2,7 @@
  File: FinkController.m
 
 See the header file, FinkController.h, for interface and license information.
-
+ 
 */
 
 #import "FinkController.h"
@@ -18,6 +18,7 @@ See the header file, FinkController.h, for interface and license information.
 	[defaultValues setObject: @"" forKey: FinkBasePath];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
+	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkScrollToSelectedRow];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 #ifdef DEBUG
@@ -113,7 +114,8 @@ See the header file, FinkController.h, for interface and license information.
 
 -(void)awakeFromNib
 {
-	;
+	[msgText setStringValue:
+		@"Gathering data for table; this will take a moment . . ."];
 }
 
 
@@ -127,8 +129,6 @@ See the header file, FinkController.h, for interface and license information.
 		NSLog(@"FinkCommander was unable to find the path to your fink installation.");
 		NSLog(@"If you know the path, try setting it in Preferences and then run File: Update Table");
 	}
-	[msgText setStringValue:
-		@"Gathering data for table; this will take a moment . . ."];
 	[packages update];
 	[tableView reloadData];
 	[tableView setHighlightedTableColumn: lastColumn];
@@ -209,34 +209,6 @@ See the header file, FinkController.h, for interface and license information.
 }
 #endif //REFACTOR
 
-//----------------------------------------------->Sheet Methods
-
-//Administrator Password Entry Sheet
-
--(IBAction)raisePwdWindow:(id)sender
-{
-	[NSApp beginSheet: pwdWindow
-	   modalForWindow: [self window]
-	   modalDelegate: self
-	   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
-	   contextInfo: nil];
-}
-
--(IBAction)endPwdWindow:(id)sender
-{
-	[pwdWindow orderOut: sender];
-	[NSApp endSheet:pwdWindow returnCode: 1];
-}
-
--(void)sheetDidEnd:(NSWindow *)sheet
-		   returnCode:(int)returnCode
-		  contextInfo:(void *)contextInfo
-{
-	[self setPassword: [NSString stringWithFormat:
-		@"%@\n", [pwdField stringValue]]];
-	[[NSNotificationCenter defaultCenter] postNotificationName: @"passwordWasEntered"
-		object: nil];
-}
 
 //----------------------------------------------->Action Methods and Helpers
 
@@ -302,39 +274,6 @@ See the header file, FinkController.h, for interface and license information.
 	[args release];
 }
 
--(void)runCommandWithParams:(NSMutableArray *)params
-{
-	if ([[self password] length] < 1){
-		[self raisePwdWindow: self];
-		[self setLastParams: params];
-		[self setPendingCommand: YES];
-		[self setCommandIsRunning: NO];
-		[self displayNumberOfPackages];
-		return;
-	}
-	[self setPendingCommand: NO];
-
-	if (finkTask){
-		[finkTask release];
-	}
-	finkTask = [[IOTaskWrapper alloc] initWithController: self];
-	
-	[finkTask setPassword: [NSData dataWithData:
-		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
-	// start the process asynchronously	
-	[finkTask startProcessWithArgs: params];
-}
-
-//if last command was not completed because no valid password was entered,
-//run it again after receiving passwordWasEntered notification
--(void)runCommandWithPassword:(NSNotification *)note
-{
-	if ([self pendingCommand]){
-		[self displayCommand: [self lastParams]];
-		[self runCommandWithParams: [self lastParams]];
-	}	
-}
-
 //allow user to update table using Fink, rather than relying on 
 //FinkCommander's manual update
 -(IBAction)updateTable:(id)sender
@@ -351,8 +290,6 @@ See the header file, FinkController.h, for interface and license information.
 	}
 	[preferences showWindow: self];
 }
-
-
 
 //----------------------------------------------->Table Data Source Methods
 
@@ -382,6 +319,15 @@ See the header file, FinkController.h, for interface and license information.
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
 	NSString *direction;
+	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
+		FinkScrollToSelectedRow];
+	FinkPackage *pkg;
+	int row = [aTableView selectedRow];
+	int newrow;
+
+	if (scrollToSelection && row >= 0){
+		pkg = [[packages array] objectAtIndex: row];
+	}
 
 	// remove sort direction indicator from last selected column
 	[tableView setIndicatorImage: nil inTableColumn: lastColumn];
@@ -413,6 +359,13 @@ See the header file, FinkController.h, for interface and license information.
 				 inTableColumn: aTableColumn];
 	}
 	[tableView setHighlightedTableColumn: aTableColumn];
+	
+	if (scrollToSelection && row >= 0){
+		newrow = [[packages array] indexOfObject: pkg];
+		[tableView scrollRowToVisible: newrow];
+		[tableView selectRow: newrow byExtendingSelection: NO];
+	}
+	
 }
 
 //Disable menu item selections
@@ -432,6 +385,75 @@ See the header file, FinkController.h, for interface and license information.
 		return NO;
 	}
 	return YES;	
+}
+
+//--------------------------------------------------------------------------------
+//		AUTHENTICATION AND PROCESS CONTROL
+//--------------------------------------------------------------------------------
+
+//----------------------------------------------->Password Entry Sheet Methods
+
+//Administrator Password Entry Sheet
+
+-(IBAction)raisePwdWindow:(id)sender
+{
+	[NSApp beginSheet: pwdWindow
+	   modalForWindow: [self window]
+		modalDelegate: self
+	   didEndSelector: @selector(sheetDidEnd:returnCode:contextInfo:)
+		  contextInfo: nil];
+}
+
+-(IBAction)endPwdWindow:(id)sender
+{
+	[pwdWindow orderOut: sender];
+	[NSApp endSheet:pwdWindow returnCode: 1];
+}
+
+-(void)sheetDidEnd:(NSWindow *)sheet
+			  returnCode:(int)returnCode
+			 contextInfo:(void *)contextInfo
+{
+	[self setPassword: [NSString stringWithFormat:
+		@"%@\n", [pwdField stringValue]]];
+	[[NSNotificationCenter defaultCenter] postNotificationName: @"passwordWasEntered"
+														   object: nil];
+}
+
+
+//----------------------------------------------->Process Commands
+
+-(void)runCommandWithParams:(NSMutableArray *)params
+{
+	if ([[self password] length] < 1){
+		[self raisePwdWindow: self];
+		[self setLastParams: params];
+		[self setPendingCommand: YES];
+		[self setCommandIsRunning: NO];
+		[self displayNumberOfPackages];
+		return;
+	}
+	[self setPendingCommand: NO];
+
+	if (finkTask){
+		[finkTask release];
+	}
+	finkTask = [[IOTaskWrapper alloc] initWithController: self];
+
+	[finkTask setPassword: [NSData dataWithData:
+		[[self password] dataUsingEncoding: NSUTF8StringEncoding]]];
+	// start the process asynchronously
+	[finkTask startProcessWithArgs: params];
+}
+
+//if last command was not completed because no valid password was entered,
+//run it again after receiving passwordWasEntered notification
+-(void)runCommandWithPassword:(NSNotification *)note
+{
+	if ([self pendingCommand]){
+		[self displayCommand: [self lastParams]];
+		[self runCommandWithParams: [self lastParams]];
+	}
 }
 
 

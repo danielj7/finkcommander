@@ -11,6 +11,7 @@
 NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
+NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 
 @implementation FinkPreferences
 
@@ -39,6 +40,7 @@ NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 	}
 
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
+	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelectedRow]];
 }
 
 -(IBAction)setPreferences:(id)sender
@@ -53,6 +55,7 @@ NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
 	}
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
+	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelectedRow];
 }
 
 -(IBAction)cancel:(id)sender
