@@ -23,6 +23,7 @@
 	float nameWidth = frame.size.width / 2.0;
 	float sizeWidth = nameWidth / 4.0;
 	float mdateWidth = frame.size.width - nameWidth - sizeWidth;
+	
 	columnKeys = [columnKeys
             sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	e = [columnKeys objectEnumerator];
@@ -30,9 +31,9 @@
 		NSTableColumn *newColumn = [[[NSTableColumn alloc]
 										initWithIdentifier:identifier]
 			autorelease];
-		NSString *title = NSLocalizedStringFromTable([SB_COLUMNS
-                                    objectForKey:identifier],
-											   @"Programmatic", nil);
+		NSString *title = 
+			NSLocalizedStringFromTable([SB_COLUMNS objectForKey:identifier],
+										@"Programmatic", nil);
 		[[newColumn headerCell] setStringValue:title];
 		[newColumn setEditable:NO];
 		if ([identifier isEqualToString:@"size"]){
@@ -41,6 +42,9 @@
 			[[newColumn dataCell] setAlignment:NSRightTextAlignment];
 		}else{
 			if ([identifier isEqualToString:@"filename"]){
+				NSBrowserCell *fileNameCell = [[SBBrowserCell alloc] init];
+				[newColumn setDataCell:fileNameCell];
+				[fileNameCell release];
 				[newColumn setWidth:nameWidth];
 				[self setOutlineTableColumn:newColumn];
 			}else{
@@ -53,7 +57,7 @@
 	}
 	return columnArray;
 }
-	
+
 +(id)substituteForOutlineView:(NSOutlineView *)oldView
 {
 	SBOutlineView *newView = [[[SBOutlineView alloc] 

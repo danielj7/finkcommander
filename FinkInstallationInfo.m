@@ -16,6 +16,16 @@ File: FinkInstallationInfo.m
 
 //------------------------------>init
 
++(FinkInstallationInfo *)sharedInfo
+{
+	static FinkInstallationInfo *myInfo = nil;
+	
+	if (nil == myInfo){
+		myInfo = [[FinkInstallationInfo alloc] init];
+	}
+	return myInfo;
+}
+
 -(id)init
 {
 	if (self = [super init]){
@@ -61,6 +71,8 @@ File: FinkInstallationInfo.m
 		[versionTask setArguments: [NSArray arrayWithObjects:arg, nil]];
 	}
 	[versionTask setStandardOutput: pipeFromStdout];
+	[versionTask setEnvironment:[[NSUserDefaults standardUserDefaults]
+		objectForKey:FinkEnvironmentSettings]];
 	[versionTask launch];
 
 	NS_DURING
@@ -195,7 +207,7 @@ File: FinkInstallationInfo.m
 	return result;
 }
 
-//As a signature properly formatted for inclusion in a mailto URL
+//As an email signature
 -(NSString *)formattedEmailSig
 {
 	NSString *emailSig = [self installationInfo];

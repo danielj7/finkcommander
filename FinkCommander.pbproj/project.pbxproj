@@ -203,6 +203,7 @@
 				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
 				F568C4A202FC9D6101A80164,
+				FBB8F6DB03BFE6E500A8016B,
 				F59FF425032134BD01A80175,
 				F538C3C5023496DC01A80164,
 				F5DE3CD602CAE98601A80164,
@@ -352,6 +353,7 @@
 				F5056F1103ABDBBD01A80165,
 				FBD2DBD803BAA14500A80165,
 				FBC8655103BABC0400A80165,
+				FB09B96603C3BD3200A80168,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,6 +402,7 @@
 				F5F99DB903AD5AC401A80165,
 				FBEE855903B4E18400A80164,
 				FBEE855A03B4E18400A80164,
+				FBB8F6DC03BFE6E500A8016B,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +440,7 @@
 				F5056F1203ABDBBD01A80165,
 				FBD2DBD903BAA14500A80165,
 				FBC8655203BABC0400A80165,
+				FB09B96703C3BD3200A80168,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -994,20 +998,6 @@
 			settings = {
 			};
 		};
-		F53D231602FF9B1201A80164 = {
-			includeInIndex = 1;
-			isa = PBXFolderReference;
-			name = French;
-			path = "French.lproj/FinkCommander Help";
-			refType = 4;
-		};
-		F53D235802FF9C3201A80164 = {
-			includeInIndex = 1;
-			isa = PBXFolderReference;
-			name = Spanish;
-			path = "Spanish.lproj/FinkCommander Help";
-			refType = 4;
-		};
 		F53D651D0280296801A80164 = {
 			isa = PBXFileReference;
 			path = interact.tiff;
@@ -1359,8 +1349,6 @@
 		F56200A902FC768601A80164 = {
 			children = (
 				F5C1B062026BFA2501A80164,
-				F53D231602FF9B1201A80164,
-				F53D235802FF9C3201A80164,
 				F5DABE8B03359EF601FEFA3F,
 			);
 			isa = PBXVariantGroup;
@@ -2037,6 +2025,7 @@
 				F5CC7617039F174E01A80165,
 				F5CC7615039F174E01A80165,
 				F57E59B403A998D701A80165,
+				FB09B96403C3BD3200A80168,
 				F5056F0F03ABDBBD01A80165,
 				F5CC7619039F174E01A80165,
 				F5CC765C039F19D801A80165,
@@ -2053,6 +2042,7 @@
 				F5CC7618039F174E01A80165,
 				F5CC7616039F174E01A80165,
 				F57E59B503A998D701A80165,
+				FB09B96503C3BD3200A80168,
 				F5056F1003ABDBBD01A80165,
 				F5CC761A039F174E01A80165,
 				F5CC765D039F19D801A80165,
@@ -2098,6 +2088,59 @@
 //FB2
 //FB3
 //FB4
+		FB09B96403C3BD3200A80168 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			path = SBBrowserCell.h;
+			refType = 4;
+		};
+		FB09B96503C3BD3200A80168 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			path = SBBrowserCell.m;
+			refType = 4;
+		};
+		FB09B96603C3BD3200A80168 = {
+			fileRef = FB09B96403C3BD3200A80168;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FB09B96703C3BD3200A80168 = {
+			fileRef = FB09B96503C3BD3200A80168;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBB8F6D903BFE6D000A8016B = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/Programmatic.strings;
+			refType = 4;
+		};
+		FBB8F6DB03BFE6E500A8016B = {
+			children = (
+				FBB8F6D903BFE6D000A8016B,
+				FBB8F6DD03BFE6FF00A8016B,
+			);
+			isa = PBXVariantGroup;
+			name = Programmatic.strings;
+			refType = 4;
+		};
+		FBB8F6DC03BFE6E500A8016B = {
+			fileRef = FBB8F6DB03BFE6E500A8016B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBB8F6DD03BFE6FF00A8016B = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Programmatic.strings;
+			refType = 4;
+		};
 		FBC8654F03BABC0400A80165 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;

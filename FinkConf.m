@@ -135,8 +135,7 @@ File: FinkConf.m
 	if ([defaults boolForKey:FinkExtendedVerbosity]){
 		return YES;
 	}else{
-		FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-		NSString *fversion = [info finkVersion];
+		NSString *fversion = [[FinkInstallationInfo sharedInfo] finkVersion];
 		NSString *pmversion = [[fversion componentsSeparatedByString:@"\n"] objectAtIndex:0];
 		NSScanner *vscan = [NSScanner scannerWithString:pmversion];
 		int vnum;

@@ -1,0 +1,15 @@
+{
+	"name" = "Name";
+	"version" = "Latest";
+	"status" = "Status";
+	"installed" = "Installed";
+	"binary" = "Binary";
+	"stable" = "Stable";
+	"unstable" = "Unstable";
+	"category" = "Category";
+	"summary" = "Description";
+	"maintainer" = "Maintainer";
+	"current" = "current";
+	"outdated" = "outdated";
+	"archived" = "archived";	
+}

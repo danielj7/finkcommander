@@ -87,6 +87,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 #import "SBTreeWindowManager.h"
+#import "SBMutableAttributedString.h"
 
 @interface FinkController : NSObject
 {
@@ -120,6 +121,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	FinkData *packages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
+	FinkInstallationInfo *installationInfo;
 	FinkWarningDialog *warningDialog;
 	FinkOutputParser *parser;
 	FinkTextViewController *textViewController;
@@ -170,6 +172,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)openDocumentation:(id)sender;
 -(IBAction)openPackageFileViewer:(id)sender;
 -(IBAction)bringBackMainWindow:(id)sender;
+-(IBAction)openHelpInWebBrowser:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

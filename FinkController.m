@@ -59,6 +59,7 @@ See the header file, FinkController.h, for interface and license information.
 
 #define LS_QUIT NSLocalizedString(@"Quit", "Quit button title")
 #define LS_DOWNLOAD NSLocalizedString(@"Download", "Download button title")
+#define LS_UPDATING_TABLE NSLocalizedString(@"Updating table data", "Status bar message")
 
 //================================================================================
 #pragma mark CONSTANTS
@@ -162,6 +163,9 @@ enum {
 
 		//Initialize package data storage object
 		packages = [FinkData sharedData];
+		
+		//Initialize fink installation information object
+		installationInfo = [FinkInstallationInfo sharedInfo];
 
 		//Set instance variables used to store objects and state information
 		//needed to run fink and apt-get commands
@@ -218,6 +222,7 @@ enum {
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [packages release];
+	[installationInfo release];
     [preferences release];
 	[textViewController release];
     [parser release];
@@ -263,7 +268,7 @@ enum {
 {
     if ([defaults boolForKey: FinkPackagesInTitleBar]){
 		[window setTitle: [NSString stringWithFormat:
-			NSLocalizedString(@"PackagesDisplayed", nil),
+			NSLocalizedString(@"Packages: %d Displayed, %d Installed", nil),
 			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
 		if (! commandIsRunning){
@@ -272,7 +277,7 @@ enum {
     }else if (! commandIsRunning){
 		[window setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
-			NSLocalizedString(@"packagesInstalled", nil),
+			NSLocalizedString(@"%d packages (%d installed)", nil),
 			[[tableView displayedPackages] count],
 			[packages installedPackagesCount]]];
     }
@@ -282,7 +287,7 @@ enum {
 -(void)displayCommand:(NSArray *)params
 {
     [msgText setStringValue: 
-		[NSString stringWithFormat: NSLocalizedString(@"Running", nil),
+		[NSString stringWithFormat: NSLocalizedString(@"Running %@", nil),
 		[params componentsJoinedByString: @" "]]];
 }
 
@@ -312,9 +317,9 @@ enum {
     [progressIndicator incrementBy:MIN(inc, progress * 0.85)];
 }
 
-//Reset the interface--stop and remove progress indicator, revalidate
-//command menu and toolbar items, reapply filter--after the table data
-//is updated or a command is completed
+/*	Reset the interface--stop and remove progress indicator, revalidate
+	command menu and toolbar items, reapply filter--after the table data
+	is updated or a command is completed */
 -(void)resetInterface:(NSNotification *)ignore
 {
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
@@ -332,9 +337,9 @@ enum {
 
 -(void)awakeFromNib
 {
-    NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray]
+    NSEnumerator *columnNameEnumerator = [[defaults objectForKey:FinkTableColumnsArray]
 		objectEnumerator];
-    NSString *col;
+    NSString *columnName;
     id splitSuperview = [splitView superview];
     NSSize tableContentSize = [tableScrollView contentSize];
 
@@ -369,8 +374,8 @@ enum {
 								forScrollView:outputScrollView];
 									
 	//Set state of View menu column items
-    while (nil != (col = [e nextObject])){
-		int atag = [self tagFromAttributeName:col];
+    while (nil != (columnName = [columnNameEnumerator nextObject])){
+		int atag = [self tagFromAttributeName:columnName];
 		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
 
@@ -383,8 +388,7 @@ enum {
 	
     [self setupToolbar];
 
-    [msgText setStringValue:
-		NSLocalizedString(@"UpdatingTable", nil)];
+    [msgText setStringValue: LS_UPDATING_TABLE];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -398,10 +402,10 @@ enum {
     NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
 
     if ([basePath length] <= 1 ){
-		NSBeginAlertSheet(NSLocalizedString(@"UnableToLocate", nil),
+		NSBeginAlertSheet(NSLocalizedString(@"Unable to Locate Fink", @"Alert sheet title"),
 					LS_OK, nil,	nil, //title, buttons
 					window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
-					NSLocalizedString(@"TrySetting", nil), nil);
+					NSLocalizedString(@"Try setting the path to Fink manually in Preferences.", @"Alert sheet message"), nil);
     }
     [self updateTable:nil];
 
@@ -464,8 +468,10 @@ enum {
     int answer;
 
     if (commandIsRunning){ //see windowShouldClose: method
-		answer = NSRunCriticalAlertPanel(LS_WARNING, NSLocalizedString(@"QuittingNow", nil),
-										LS_QUIT, LS_CANCEL, nil);
+		answer = NSRunCriticalAlertPanel(LS_WARNING, 
+						NSLocalizedString(@"Quitting now will interrupt a Fink process.", 
+									@"Alert panel message"),
+						LS_QUIT, LS_CANCEL, nil);
 		if (answer == NSAlertAlternateReturn){
 			return NO;
 		}
@@ -476,9 +482,10 @@ enum {
 -(void)windowWillClose:(NSNotification *)n
 {
 	NSMenuItem *raiseMainWindowItem = 
-		[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show Main Window", @"Menu Item Title")
-							action:@selector(bringBackMainWindow:)
-							keyEquivalent:@""];
+		[[NSMenuItem alloc] 
+			initWithTitle:NSLocalizedString(@"Show Main Window", @"Menu Item Title")
+			action:@selector(bringBackMainWindow:)
+			keyEquivalent:@""];
 
 	[windowMenu insertItem:raiseMainWindowItem atIndex:2];
 	[raiseMainWindowItem release];
@@ -520,13 +527,13 @@ enum {
 		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
     }else{
 		NSRunAlertPanel(LS_ERROR,
-				  NSLocalizedString(@"FinkCommanderWasUnable", nil),
+				  NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
 				  LS_OK, nil, nil);
 		return;
     }
     if (! [installedVersion isEqualToString: latestVersion]){
 		int answer = NSRunAlertPanel(LS_DOWNLOAD,
-							   NSLocalizedString(@"AMoreCurrentVersion", nil),
+							   NSLocalizedString(@"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?", @"Alert dialog query"),
 							   LS_DOWNLOAD, LS_CANCEL, nil, latestVersion);
 		if (answer == NSAlertDefaultReturn){
 			[[NSWorkspace sharedWorkspace] openURL:
@@ -534,7 +541,7 @@ enum {
 		}
     }else if (notifyWhenCurrent){
 		NSRunAlertPanel(NSLocalizedString(@"Current", nil),
-				  NSLocalizedString(@"TheLatest", nil),
+				  NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", nil),
 				  LS_OK, nil, nil);
     }
     [defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
@@ -552,7 +559,7 @@ enum {
 -(IBAction)updateTable:(id)sender
 {
     [self startProgressIndicatorAsIndeterminate:YES];
-    [msgText setStringValue:NSLocalizedString(@"UpdatingTable", nil)];
+    [msgText setStringValue:LS_UPDATING_TABLE];
     commandIsRunning = YES;
 
     [packages update];
@@ -662,11 +669,9 @@ enum {
 			[pkg version],
 			[pkg fulldesc]];
 		if (i > 0){
-			[[[textViewController textView] textStorage] appendAttributedString:
-				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
+			[textViewController appendString:divider];
 		}
-		[[[textViewController textView] textStorage] appendAttributedString:
-			[[[NSAttributedString alloc] initWithString: full] autorelease]];
+		[textViewController appendString:full];
 		i++;
     }
 }
@@ -701,8 +706,7 @@ enum {
 //show package inspector
 -(IBAction)showPackageInfoPanel:(id)sender
 {
-    FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-    NSString *sig = [info formattedEmailSig];
+    NSString *sig = [installationInfo formattedEmailSig];
 
     if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
@@ -725,8 +729,7 @@ enum {
 -(void)sendEmailWithMessage:(int)typeOfFeedback
 {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-    FinkInstallationInfo *info = [[[FinkInstallationInfo alloc] init] autorelease];
-    NSString *sig = [info formattedEmailSig];
+    NSString *sig = [installationInfo formattedEmailSig];
     FinkPackage *pkg;
 	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
@@ -752,8 +755,10 @@ enum {
     }
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 ? 
-						NSLocalizedString(@"UnnecessaryPositiveFeedbackPlural", nil) :
-						NSLocalizedString(@"UnnecessaryPositiveFeedbackSingular", nil);
+						NSLocalizedString(@"Your selection includes the following stable packages:\n\n\t%@\n\nStable packages are known to work properly, so sending positive feedback about them is unnecessary.", 
+								@"Alert message") :
+						NSLocalizedString(@"Your selection includes the following stable package:\n\n\t%@\n\nStable packages are known to work properly, so sending positive feedback about them is unnecessary.", 
+								@"Alert message");
 		NSBeginAlertSheet(LS_ERROR,
 					LS_OK, nil, nil,
 					window, self, NULL, NULL, nil,
@@ -762,11 +767,11 @@ enum {
 	}
 	if (typeOfFeedback == NEGATIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 	?
-				NSLocalizedString(@"OutdatedNegativeFeedbackPlural", nil) 	:
-				NSLocalizedString(@"OutdatedNegativeFeedbackSingular", nil);
-		NSBeginAlertSheet(LS_WARNING,
-					LS_OK, nil, nil,
-					window, self, NULL, NULL, nil,
+				NSLocalizedString(@"You do not have the latest version of the following packages:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest versions, you should install and try them before sending negative feedback.", nil) 	:
+				NSLocalizedString(@"You do not have the latest version of the following package:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest version, you should install and try it before sending negative feedback.", @"Alert message");
+ 		NSBeginAlertSheet(LS_WARNING,
+ 					LS_OK, nil, nil,
+ 					window, self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, 
 						[pkgNames componentsJoinedByString:@", "]],
 					nil);
@@ -806,7 +811,7 @@ enum {
 	NSArray *pathContents;
 
 	if (![mgr fileExistsAtPath:path]){
-		NSBeep();  //Substitute alert sheet?
+		NSBeep();
 		return;
 	}
 	pathContents = [mgr directoryContentsAtPath:path];
@@ -828,6 +833,17 @@ enum {
 
 //----------------------------------------------->Help and Tools Menu
 #pragma mark Help Menu
+
+-(IBAction)openHelpInWebBrowser:(id)sender
+{
+	NSString *pathToHelp = 
+		[[[NSBundle mainBundle] pathForResource:@"FinkCommander Help"
+								ofType:nil]
+						stringByAppendingPathComponent:@"fchelp.html"];
+								
+	NSLog(@"Path to help: %@", pathToHelp);
+	openFileAtPath(pathToHelp);
+}
 
 //Help menu internet access items
 -(IBAction)goToWebsite:(id)sender
@@ -1378,12 +1394,12 @@ enum {
        ----------------------------------------------------
        Length below scroll view
 
-    //This value is used to determine whether the user has scrolled up.
-    //If so, the output view will not automatically scroll to the bottom. */
+    This value is used to determine whether the user has scrolled up.
+    If so, the output view will not automatically scroll to the bottom. */
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
-				    abs([[textViewController textView] bounds].size.height -
-			[[textViewController textView] visibleRect].origin.y -
+		abs([[textViewController textView] bounds].size.height 			-
+			[[textViewController textView] visibleRect].origin.y 		-
 			[[textViewController textView] visibleRect].size.height)];
     int signal;
 	

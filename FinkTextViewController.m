@@ -16,6 +16,7 @@ File: FinkTextViewController.m
 		[self setTextView:aTextView];
 		[self setScrollView:aScrollView];
 		[textView setDelegate:self];
+		[textView setFont:[NSFont userFixedPitchFontOfSize:0.0]];
 	}
 	return self;
 }

@@ -41,6 +41,8 @@ File: FinkInstallationInfo.h
 	NSFileManager *manager;
 }
 
++(FinkInstallationInfo *)sharedInfo;
+
 -(NSString *)finkVersion;
 
 //Returns a string with the versions of fink, Mac OS X, gcc, make, and Dev Tools

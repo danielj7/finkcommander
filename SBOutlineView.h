@@ -2,6 +2,7 @@
 #import <Cocoa/Cocoa.h>
 #import "SBUtilities.h"
 #import "SBFileItem.h"
+#import "SBBrowserCell.h"
 
 @interface SBOutlineView : NSOutlineView
 

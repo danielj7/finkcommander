@@ -1,0 +1,28 @@
+{
+	"archived" = "archiviert";
+
+    "binary" = "Binär";
+
+    "category" = "Kategorie";
+
+    "current" = "aktuell";
+
+    "installed" = "Installiert";
+
+    "maintainer" = "Maintainer";
+
+    "name" = "Name";
+
+    "outdated" = "veraltet";
+
+    "stable" = "Stable";
+
+    "status" = "Zustand";
+
+    "summary" = "Beschreibung";
+
+    "unstable" = "Unstable";
+
+    "version" = "Aktuell";
+	
+}

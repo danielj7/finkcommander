@@ -58,8 +58,8 @@
 	emailSig = s;
 }
 
-//used to set URL attribute for email addresses displayed by Package Inspector and
-//in FinkController's emailMaintainer method
+/* Used to set URL attribute for email addresses displayed by Package Inspector and
+	in FinkController's emailMaintainer method */
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg
 { 
 	return [[NSString stringWithFormat: 
@@ -70,13 +70,14 @@
 
 //--------------------------------------------------------------->Text Display Methods
 
-//Add font attributes to headings and link attributes to urls; remove hard returns
-//within paragraphs to allow soft wrapping; attempt to preserve author's list formatting
--(NSAttributedString *)formattedDescriptionString:(NSString *)s //<--why?
-						forPackage:(FinkPackage *)p
+/*	Add font attributes to headings and link attributes to urls; remove hard 
+	returns within paragraphs to allow soft wrapping; attempt to preserve author's 
+	list formatting */
+-(NSAttributedString *)formattedDescriptionStringforPackage:(FinkPackage *)p
 {
-	NSEnumerator *e = [[s componentsSeparatedByString: @"\n"] objectEnumerator];
-	NSEnumerator *f = [[NSArray arrayWithObjects: @"Summary", @"Description",
+	NSString *s = [p fulldesc];
+	NSEnumerator *lineEnumerator = [[s componentsSeparatedByString: @"\n"] objectEnumerator];
+	NSEnumerator *fieldEnumerator = [[NSArray arrayWithObjects: @"Summary", @"Description",
 								@"Usage Notes", @"Web site", @"Maintainer", nil] 
 							objectEnumerator];
 	NSDictionary *urlAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -84,7 +85,7 @@
 									[NSNumber numberWithInt: NSSingleUnderlineStyle],
 											NSUnderlineStyleAttributeName,
 									nil];
-	NSMutableAttributedString *desc = 	
+	NSMutableAttributedString *description = 	
 			[[[NSMutableAttributedString alloc]
 					initWithString: @""
 						   attributes: [NSDictionary dictionaryWithObjectsAndKeys:
@@ -94,24 +95,24 @@
 	NSString *field;
 	NSRange r;	      //general purpose range variable
 	
-	[e nextObject];   //discard summary; already included
+	[lineEnumerator nextObject];   //discard summary; already included
 	//test second line for period or DescDetail
-	line = [[e nextObject]  strip];
-	if (! line) return desc;
+	line = [[lineEnumerator nextObject]  strip];
+	if (! line) return description;
 	if ([line isEqualToString: @"."]){ 		//change period to 2 newlines
-		[desc appendString: @"\n\n"];
+		[description appendString: @"\n\n"];
 	}else{									//add newlines before DescDetail
-		[desc appendString:[NSString stringWithFormat: @"\n\n%@ ", line]];
+		[description appendString:[NSString stringWithFormat: @"\n\n%@ ", line]];
 	}
 
-	while (nil != (line = [e nextObject])){
+	while (nil != (line = [lineEnumerator nextObject])){
 		//remove linefeed within paragraphs to allow wrapping in text view
 		line = [line strip];
 		/* 	In fink descriptions, paragraph breaks are signified by a period. 
 			At least one package description separates sections by double
 			periods. */
 		if ([line containsExpression: @"^[.]+$"]){
-			if ([[desc string] hasSuffix:@"\n"]){
+			if ([[description string] hasSuffix:@"\n"]){
 				line = @"\n";
 			}else{
 				line = @"\n\n";
@@ -121,20 +122,20 @@
 				  [line hasPrefix:@"*"] 	|| 
 				  [line hasPrefix:@"o "]){
 			line = [NSString stringWithFormat: @"%@\n", line];
-			if (! [[desc string] hasSuffix: @"\n"]){
+			if (! [[description string] hasSuffix: @"\n"]){
 				line = [NSString stringWithFormat: @"\n%@", line];
 			}
 		}else{
 			line = [NSString stringWithFormat: @"%@ ", line]; 
 		}
-		[desc appendString:line];
+		[description appendString:line];
 	}
 	
 	//apply attributes to field names
-	while (field = [f nextObject]){
-		r = [[desc string] rangeOfString: field];
+	while (field = [fieldEnumerator nextObject]){
+		r = [[description string] rangeOfString: field];
 		if (r.length > 0){
-			[desc addAttribute: NSForegroundColorAttributeName 
+			[description addAttribute: NSForegroundColorAttributeName 
 				  value: HEADINGCOLOR 
 				  range: r];
 		}
@@ -142,9 +143,9 @@
 	
 	//look for web url and if found turn it into an active link
 	if ([[p weburl] length] > 0){
-		r = [[desc string] rangeOfString: [p weburl]];
-		[desc addAttributes: urlAttributes range: r];
-		[desc addAttribute: NSLinkAttributeName
+		r = [[description string] rangeOfString: [p weburl]];
+		[description addAttributes: urlAttributes range: r];
+		[description addAttribute: NSLinkAttributeName
 							value: [NSURL URLWithString: [p weburl]]
 							range: r];
 	}
@@ -152,34 +153,35 @@
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
 		NSURL *murl = [self mailURLForPackage:p];
-		r = [[desc string] rangeOfString:[p email]];
-		[desc addAttributes:urlAttributes range:r];
-		[desc addAttribute:NSLinkAttributeName
+		r = [[description string] rangeOfString:[p email]];
+		[description addAttributes:urlAttributes range:r];
+		[description addAttribute:NSLinkAttributeName
 				value:murl
 				range:r];
 	}
-	return desc;
+	return description;
 }
 
 //Add font attributes, spacing and newlines for various versions of package
 -(NSAttributedString *)formattedVersionsForPackage:(FinkPackage *)pkg
 {
-	NSEnumerator *e = [[NSArray arrayWithObjects: @"Installed", @"Unstable", @"Stable",
+	NSEnumerator *versionNameEnumerator = [[NSArray arrayWithObjects: 
+		@"Installed", @"Unstable", @"Stable",
 		@"Binary", nil] objectEnumerator];
 	NSString *vName;
 	NSString *vNumber;
-	NSMutableAttributedString *desc =
+	NSMutableAttributedString *description =
 		[[[NSMutableAttributedString alloc]
 				initWithString: @""
 				attributes: [NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:0]
 										  forKey:NSFontAttributeName]] 
 								autorelease];
 	
-	while (nil != (vName = [e nextObject])){
+	while (nil != (vName = [versionNameEnumerator nextObject])){
 		vNumber = [pkg performSelector:NSSelectorFromString([vName lowercaseString])];
 		if ([vNumber length] < 2) vNumber = @"None";
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
-		[desc appendAttributedString:
+		[description appendAttributedString:
 			[[[NSMutableAttributedString alloc]
 					initWithString: [NSString stringWithFormat: @"\n%@:", vName]
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -187,7 +189,7 @@
 									HEADINGCOLOR, NSForegroundColorAttributeName,
 									nil]]
 								autorelease]];
-		[desc appendAttributedString:
+		[description appendAttributedString:
 			[[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @"\t%@", vNumber]
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -196,7 +198,7 @@
 									nil]] 
 								autorelease]];
 	}	
-	return desc;
+	return description;
 }
 
 -(void)displayDescriptions:(NSArray *)packages
@@ -230,7 +232,7 @@
 		[[textView textStorage] appendAttributedString:
 			[self formattedVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:
-			[self formattedDescriptionString: [pkg fulldesc] forPackage: pkg]];
+			[self formattedDescriptionStringforPackage: pkg]];
 		if (i != count - 1){  			//just add one newline after last package
 			[[textView textStorage] appendString:@"\n\n\n"];
 		}else{

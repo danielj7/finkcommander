@@ -9,6 +9,7 @@
                 endInteractionWindow = id; 
                 goToWebsite = id; 
                 openDocumentation = id; 
+                openHelpInWebBrowser = id; 
                 openPackageFileViewer = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
