@@ -509,6 +509,7 @@ enum {
 //make sure the authorization terminates at the end of each FC session
 -(void)applicationWillTerminate:(NSNotification*)anotification
 {
+	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
     [finkTask unAuthorize];
 }
 
@@ -733,7 +734,6 @@ enum {
 		packageInfo = [[FinkPackageInfo alloc] init];
     }
     [packageInfo setEmailSig: sig];
-    [[packageInfo window] zoom: nil];
     [packageInfo showWindow: self];
     [packageInfo displayDescriptions: [tableView selectedPackageArray]];
 }

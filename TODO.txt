@@ -2,7 +2,7 @@ VERSION 0.5; Target release date: 1/31/03:
 
 Automatically add ftp_proxy to environment variables
 
-No error warning on clicking Cancel in authorization dialog
+d No error warning on clicking Cancel in authorization dialog
 
 d Package file browser
 	d Add Browser view
@@ -27,9 +27,13 @@ d Size new columns appropriately
 
 SHORT TERM:
 
+Custom command dialog
+
 Warning dialog for first run of command in Terminal
 
-Add contextual menu to package file browser
+Command to show man page for packages
+
+Contextual menu to package file browser
 
 Command queue
 

@@ -172,7 +172,6 @@ File: FinkInstallationInfo.m
 	}else{
 		return error;
 	}
-	Dprintf(@"Make is %@", pathToMake);
 	
 	result = [self versionOutputForExecutable:pathToMake];
 	if (nil == result) return error;

@@ -8,6 +8,7 @@
 #import "FinkPackageInfo.h"
 #import "SBMutableAttributedString.h"
 
+// Constants used to format text storage 
 //medium gray
 #define SHORTDESCCOLOR 		\
 	[NSColor colorWithCalibratedHue:0.0 saturation:0.0 brightness:0.50 alpha:1.0]
@@ -23,23 +24,27 @@
 
 #define MAINHEADINGFONT [NSFont boldSystemFontOfSize:[NSFont systemFontSize]+2.0]
 
+//Localized string used twice
+#define LS_PACKAGE_INFO NSLocalizedString(@"Package Info", @"Window title")
+
 @implementation FinkPackageInfo
 
 -(id)init
 {
 	self = [super initWithWindowNibName:@"PackageInfo"];
-	defaults = [NSUserDefaults standardUserDefaults];
-	[self setWindowFrameAutosaveName: @"PackageInfo"];
-	[[self window] setTitle:NSLocalizedString(@"Package Info", @"Window title")];
-	[self setEmailSig:@""];
-
+	if (nil != self){
+		defaults = [NSUserDefaults standardUserDefaults];
+		[[self window] setTitle:LS_PACKAGE_INFO];
+		[self setEmailSig:@""];
+		[self setWindowFrameAutosaveName: @"PackageInfo"];
+	}
 	return self;
 }
 
 -(void)awakeFromNib
 {
 	textView = [MyTextView myTextViewToReplace:textView in:scrollView];
-	[[textView window] setDelegate: self];
+	[[textView window] setDelegate:self];
 }
 
 -(void)dealloc
@@ -282,7 +287,9 @@
 //Prevent last selection from appearing when panel reopens
 -(void)windowWillClose:(NSNotification *)n
 {
-	[textView setString: @""];  
+	if ([[[n object] title] isEqualToString:LS_PACKAGE_INFO]){
+		[textView setString: @""];
+	}
 }
 
 @end

@@ -50,6 +50,7 @@ enum {
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", @"Verbosity level for Fink") atIndex:2];
 	}
 	[environmentTableView setAutosaveName: @"FinkEnvironmentTableView"];
+	[environmentTableView setAutosaveTableColumns: YES];
 }
 
 -(void)dealloc
