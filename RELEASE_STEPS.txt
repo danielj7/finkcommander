@@ -1,0 +1,28 @@
+Create binary .dmg:
+	Make sure new version is set in Target:Application Settings
+	Compile with DEBUGGING undefined and "Deployment" selected
+	Create directory with .app, VERSION_HISTORY.html, README.html, LICENSE.txt
+	Run DMG Tool on directory:  file name = finkcommander-<version>-bin.dmg
+	
+Create source tarball
+	tar -c -z FinkCommander/ -f finkcommander-<version>-src.tgz
+	
+Copy to G3 and test
+
+Upload each file
+	ftp upload.sourceforge.net
+	anonymous
+	sburr@mac.com
+	bin
+	cd incoming
+	put <filename>
+
+Go to project admin and create new releases
+
+Download and test
+
+Change version number in text and links on FinkCommander home page
+
+scp version.xml sburrious.sourceforge.net:/home/groups/f/fi/finkcommander/htdocs/
+
+Post announcement to FC SourceForge news, finkcommander-users, fink-users
