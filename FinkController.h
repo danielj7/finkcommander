@@ -193,11 +193,13 @@ Contact the author at sburrious@users.sourceforge.net.
 //  running the command
 -(IBAction)runPackageSpecificCommand:(id)sender;
 -(IBAction)runNonSpecificCommand:(id)sender;
+-(IBAction)runForceRemove:(id)sender;
+-(void)launchCommandWithArguments:(NSMutableArray *)args;
+#ifndef OSXVER101
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender;
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender;
--(IBAction)runForceRemove:(id)sender;
 -(void)launchCommandInTerminal:(NSString *)cmd;
--(void)launchCommandWithArguments:(NSMutableArray *)args;
+#endif
 
 //AuthorizedExecutable delegate methods
 -(void)scrollToVisible:(NSNumber *)n;  //helper method used by captureOutput

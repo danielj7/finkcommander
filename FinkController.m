@@ -880,7 +880,9 @@ enum {
     [toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
 	[toolbar setSearchField:searchTextField];
 	[toolbar setSearchButton:searchPopUpButton];
+#ifndef OSXVER101
 	[toolbar setSizeMode:NSToolbarSizeModeSmall];
+#endif
     [window setToolbar: toolbar];
 }
 
@@ -1173,6 +1175,8 @@ enum {
 
 /*** Run-in-Terminal Methods ***/
 
+#ifndef OSXVER101
+
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender
 {
 	NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:YES];
@@ -1203,6 +1207,8 @@ enum {
 		NSLog(@"Error dictionary:\n%@", [errord description]);
 	}
 }
+
+#endif /* ! OSXVER101 */
 
 /*** Run-in-FinkCommander Methods ***/
 

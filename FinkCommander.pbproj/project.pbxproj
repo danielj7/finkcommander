@@ -288,6 +288,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict/>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>FinkCommander</string>
 	<key>CFBundleHelpBookFolder</key>
@@ -403,6 +407,9 @@
 				FBEE855903B4E18400A80164,
 				FBEE855A03B4E18400A80164,
 				FBB8F6DC03BFE6E500A8016B,
+				FBCD47CF03C60D9A00A80164,
+				FBCD47D003C60D9A00A80164,
+				FBCD47D203C60DB000A80164,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -877,14 +884,18 @@
 				F538C3C2023495CF01A80164,
 				F59BDD90026817BF01A80164,
 				F554F1D80266AA4B01A80164,
+				FBCD47CD03C60D9A00A80164,
+				FBCD47CE03C60D9A00A80164,
 				F542437B028CE53E01A80166,
 				F50C7FBB026BD8BD01A80164,
 				F50C7FBD026BD92B01A80164,
 				F53D651F02802F3101A80164,
+				FBCD47D103C60DB000A80164,
 				F5897AAA02C6E37B01A80166,
 				FBEE855703B4E18400A80164,
 				FBEE855803B4E18400A80164,
 				F5B9D9EA02B232D501A8016B,
+				F57E59C103A9ABBA01A80165,
 				F53D651D0280296801A80164,
 				F53649810388930201A80164,
 				F5364A1A0388964301A80164,
@@ -897,7 +908,6 @@
 				F50DF7770359464F01A8016C,
 				F542437F028CE59801A80166,
 				F5CA48B00394730301A80164,
-				F57E59C103A9ABBA01A80165,
 			);
 			isa = PBXGroup;
 			name = Images;
@@ -2167,6 +2177,39 @@
 		};
 		FBCD472C03C6070E00A80164 = {
 			fileRef = FBCD472B03C6070E00A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBCD47CD03C60D9A00A80164 = {
+			isa = PBXFileReference;
+			path = bomb.tiff;
+			refType = 4;
+		};
+		FBCD47CE03C60D9A00A80164 = {
+			isa = PBXFileReference;
+			path = browse.tiff;
+			refType = 4;
+		};
+		FBCD47CF03C60D9A00A80164 = {
+			fileRef = FBCD47CD03C60D9A00A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBCD47D003C60D9A00A80164 = {
+			fileRef = FBCD47CE03C60D9A00A80164;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		FBCD47D103C60DB000A80164 = {
+			isa = PBXFileReference;
+			path = doc.tiff;
+			refType = 4;
+		};
+		FBCD47D203C60DB000A80164 = {
+			fileRef = FBCD47D103C60DB000A80164;
 			isa = PBXBuildFile;
 			settings = {
 			};

@@ -29,6 +29,8 @@
 	searchField = newSearchField;
 }
 
+#ifndef OSXVER101
+
 -(void)setSizeMode:(NSToolbarSizeMode)sizeMode
 {
     id searchView = [searchField superview];
@@ -55,5 +57,7 @@
 	[searchView setNeedsDisplay:YES];
     [super setSizeMode:sizeMode];
 }
+
+#endif /* ! OSXVER101 */
 
 @end

@@ -37,6 +37,8 @@
 #include "Debugging.h"
 #endif
 
+//#define OSXVER101
+
 //User Default Items
 //  Set by user
 extern NSString *FinkBasePath;

@@ -341,8 +341,8 @@ File: FinkOutputParser.m
     }
 	//Look for installation events
 	if (installing && FETCHTRIGGER(sline)){
-		Dprintf(@"Fetch phase triggered by:\n%@", line);
 		NSString *name = [self packageNameFromLine:line];
+		Dprintf(@"Fetch phase triggered by:\n%@", line);
 		//no action required if retrying failed download
 		if ([name isEqualToString:currentPackage]) return NONE;
 		[self setIncrementForLastPhase];

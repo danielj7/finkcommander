@@ -34,6 +34,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import "FinkGlobals.h"
 
 @interface FinkToolbar: NSToolbar
 {
