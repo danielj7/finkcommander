@@ -1,4 +1,9 @@
+/*
+ File: FinkWarningDialog.m
 
+ See the header file, FinkWarningDialog.h, for interface and license information.
+
+ */
 
 #import "FinkWarningDialog.h"
 

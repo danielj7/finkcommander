@@ -323,13 +323,13 @@ File: FinkOutputParser.m
 		return PASSWORD_PROMPT;
     }
 	//Look for prompts
-    if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
-		Dprintf(@"Found prompt: %@", line);
-		return PROMPT;
-    } 
 	if (ISMANDATORY_PROMPT(line)){
 		return MANDATORY_PROMPT;
     }
+	if (ISPROMPT(line) && ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+		Dprintf(@"Found prompt: %@", line);
+		return PROMPT;
+    }	
 	//Look for self-repair of tool 
 	if ([line contains:@"Running self-repair"]){
 		self_repair = YES;
@@ -349,7 +349,6 @@ File: FinkOutputParser.m
 	}
 	return NONE;
 }
-
 
 -(int)parseOutput:(NSString *)output
 {

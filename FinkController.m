@@ -800,10 +800,11 @@ willBeInsertedIntoToolbar:(BOOL)flag
 -(BOOL)validateItem:(id)theItem
 {
     //disable package-specific commands if no row selected
-    if ([tableView selectedRow] == -1 								&&
-		([theItem action] == @selector(runPackageSpecificCommand:)  ||
-		[theItem action] == @selector(forceRemove:)					||
-		[theItem action] == @selector(showDescription:)				||
+    if ([tableView selectedRow] == -1 										&&
+		([theItem action] == @selector(runPackageSpecificCommand:)  		||
+		[theItem action] == @selector(runPackageSpecificCommandInTerminal:)	||
+		[theItem action] == @selector(runForceRemove:)						||
+		[theItem action] == @selector(showDescription:)						||
 		[theItem action] == @selector(emailMaintainer:))){
 		return NO;
     }
@@ -902,7 +903,7 @@ willBeInsertedIntoToolbar:(BOOL)flag
     return args;
 }
 
-/*** Run-in-Terminal Commands ***/
+/*** Run-in-Terminal Methods ***/
 
 -(IBAction)runPackageSpecificCommandInTerminal:(id)sender
 {
@@ -1196,9 +1197,10 @@ willBeInsertedIntoToolbar:(BOOL)flag
     }
     [textViewController appendString:output];
     //According to Moriarity example, we have to put off scrolling until next event loop
-    [self performSelector:@selector(scrollToVisible:)
-					 withObject:pixelsBelowView
-					 afterDelay:0.0];
+//    [self performSelector:@selector(scrollToVisible:)
+//					 withObject:pixelsBelowView
+//					 afterDelay:0.0];
+	[self scrollToVisible:pixelsBelowView];
 }
 
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number

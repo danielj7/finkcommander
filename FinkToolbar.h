@@ -3,5 +3,5 @@
 @interface FinkToolbar: NSToolbar
 {
 }
-
+-(id)delegate;
 @end
