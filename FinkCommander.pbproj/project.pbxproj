@@ -204,9 +204,9 @@
 		29B97318FDCFA39411CA2CEA = {
 			children = (
 				29B97319FDCFA39411CA2CEA,
-				F5458DBB030364F501A80164,
-				F5D387C10303960001A80164,
-				F5458DBC0303651C01A80164,
+				F5CC37120304F26F01A80164,
+				F5CC37130304F27C01A80164,
+				F5CC37140304F28601A80164,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -288,11 +288,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.3.3</string>
+	<string>0.3.3a</string>
 	<key>CFBundleSignature</key>
 	<string>Fcmd</string>
 	<key>CFBundleVersion</key>
-	<string>0.3.3</string>
+	<string>0.3.3a</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSHumanReadableCopyright</key>
@@ -605,8 +605,9 @@
 		F5375A6C0246DE1901A80164 = {
 			children = (
 				F5375A6D0246DE1901A80164,
-				F5458DBD0303653001A80164,
-				F5458DBE0303655001A80164,
+				F5CC37150304F29A01A80164,
+				F5CC37160304F2A201A80164,
+				F5CC37170304F2AA01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Preferences.nib;
@@ -715,18 +716,6 @@
 			settings = {
 			};
 		};
-		F53DA0DC02FCEC1D01A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Localizable.strings;
-			refType = 4;
-		};
-		F53DA0DD02FCF29E01A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Localizable.strings;
-			refType = 4;
-		};
 		F54147C202C18B7301A80165 = {
 			isa = PBXFileReference;
 			path = FinkGlobals.h;
@@ -814,30 +803,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F5458DBB030364F501A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/MainMenu.nib;
-			refType = 4;
-		};
-		F5458DBC0303651C01A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/MainMenu.nib;
-			refType = 4;
-		};
-		F5458DBD0303653001A80164 = {
-			isa = PBXFileReference;
-			name = French;
-			path = French.lproj/Preferences.nib;
-			refType = 4;
-		};
-		F5458DBE0303655001A80164 = {
-			isa = PBXFileReference;
-			name = Spanish;
-			path = Spanish.lproj/Preferences.nib;
-			refType = 4;
 		};
 		F5458DBF0303658001A80164 = {
 			isa = PBXFileReference;
@@ -1047,9 +1012,9 @@
 		F568C4A202FC9D6101A80164 = {
 			children = (
 				F568C4A302FC9D6101A80164,
-				F53DA0DC02FCEC1D01A80164,
-				F53DA0DD02FCF29E01A80164,
-				F5D387C20303A2B101A80164,
+				F5CC37180304F2BD01A80164,
+				F5CC37190304F2C601A80164,
+				F5CC371A0304F2CD01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;
@@ -1218,16 +1183,58 @@
 			settings = {
 			};
 		};
-		F5D387C10303960001A80164 = {
+		F5CC37120304F26F01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F5CC37130304F27C01A80164 = {
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/MainMenu.nib;
 			refType = 4;
 		};
-		F5D387C20303A2B101A80164 = {
+		F5CC37140304F28601A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		F5CC37150304F29A01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Preferences.nib;
+			refType = 4;
+		};
+		F5CC37160304F2A201A80164 = {
+			isa = PBXFileReference;
+			name = German;
+			path = German.lproj/Preferences.nib;
+			refType = 4;
+		};
+		F5CC37170304F2AA01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Preferences.nib;
+			refType = 4;
+		};
+		F5CC37180304F2BD01A80164 = {
 			isa = PBXFileReference;
 			name = German;
 			path = German.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F5CC37190304F2C601A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F5CC371A0304F2CD01A80164 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Spanish.lproj/Localizable.strings;
 			refType = 4;
 		};
 		F5DE1D8E022845A201A80164 = {

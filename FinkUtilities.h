@@ -44,6 +44,8 @@ void findFinkBasePath(void);
 void fixScript(void);
 void setInitialEnvironmentVariables(void);
 
+void fixPreferences(void);
+
 void terminateChildProcesses(void);
 
 BOOL addEnvironmentVariable(NSString *key, NSString *value);

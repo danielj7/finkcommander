@@ -34,6 +34,7 @@ File: FinkTextViewController.h
 	NSUserDefaults *defaults;
 	int lines;
 	int bufferLimit;
+	int minDelete;
 }
 
 -(void)setString:(NSString *)aString;

@@ -34,9 +34,9 @@ File: FinkGlobals.h
 #import <Foundation/Foundation.h>
 #import "SBString.h"
 
-#define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable", @"maintainer"
+#define PACKAGE_ATTRIBUTES @"name", @"version", @"status", @"category", @"summary", @"binary", @"unstable", @"maintainer"
 
-//#define DEBUGGING
+#define DEBUGGING
 
 //User Default Items
 //  Set by user
@@ -64,6 +64,7 @@ extern NSString *FinkLastCheckedForNewVersion;
 extern NSString *FinkCheckForNewVersionInterval;
 
 //  Set programmatically
+extern NSString *FinkPackageAttributes;
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;
 extern NSString *FinkOutputViewRatio;

@@ -32,6 +32,7 @@ NSString *FinkCheckForNewVersionInterval = @"FinkCheckForNewVersionInterval";
 NSString *FinkEnvironmentSettings = @"FinkEnvironmentSettings";
 NSString *FinkInitialEnvironmentHasBeenSet = @"FinkInitialEnvironmentHasBeenSet";
 
+NSString *FinkPackageAttributes = @"FinkPackageAttributes";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 NSString *FinkLookedForProxy = @"FinkLookedForProxy";

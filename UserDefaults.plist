@@ -43,6 +43,19 @@
 	<string></string>
 	<key>FinkOutputViewRatio</key>
 	<real>5.000000000000000e-01</real>
+	<key>FinkPackageAttributes</key>
+	<array>
+		<string>name</string>
+		<string>version</string>
+		<string>installed</string>
+		<string>binary</string>
+		<string>stable</string>
+		<string>unstable</string>
+		<string>status</string>
+		<string>category</string>
+		<string>summary</string>
+		<string>maintainer</string>
+	</array>
 	<key>FinkPackagesInTitleBar</key>
 	<true/>
 	<key>FinkScrollToSelection</key>
@@ -52,32 +65,15 @@
 	<key>FinkTableColumnsArray</key>
 	<array>
 		<string>name</string>
-		<string>version</string>
+		<string>status</string>
+		<string>installed</string>
 		<string>binary</string>
 		<string>unstable</string>
-		<string>installed</string>
 		<string>category</string>
-		<string>description</string>
+		<string>summary</string>
 	</array>
 	<key>FinkUpdateWithFink</key>
 	<true/>
-	<key>FinkViewMenuSelectionStates</key>
-	<dict>
-		<key>Binary Column</key>
-		<integer>1</integer>
-		<key>Category Column</key>
-		<integer>1</integer>
-		<key>Description Column</key>
-		<integer>1</integer>
-		<key>Installed Column</key>
-		<integer>1</integer>
-		<key>Maintainer Column</key>
-		<integer>0</integer>
-		<key>Unstable Column</key>
-		<integer>1</integer>
-		<key>Version Column</key>
-		<integer>1</integer>
-	</dict>
 	<key>FinkWarnBeforeRemoving</key>
 	<true/>
 	<key>FinkWarnBeforeRunning</key>

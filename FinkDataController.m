@@ -8,7 +8,7 @@ See the header file, FinkDataController.h, for interface and license information
 #import "FinkDataController.h"
 
 #ifdef DEBUGGING
-#define BUFFERLEN 32
+#define BUFFERLEN 128
 #endif //DEBUGGING
 
 //Globals: placed here to make it easier to change values if fink output changes
@@ -55,11 +55,11 @@ int NAMESTART = 12;
     array = a;
 }
 
--(void)setBinaryPackages:(NSString *)s
+-(void)setBinaryPackages:(NSDictionary *)d
 {
-    [s retain];
+    [d retain];
     [binaryPackages release];
-    binaryPackages = s;
+    binaryPackages = d;
 }
 
 -(void)setStart:(NSDate *)d
@@ -86,26 +86,28 @@ int NAMESTART = 12;
 //  from the task to derive the package's full description, web url, maintainer name
 //  and maintainer email address.
 
--(NSString *)getBinaryList
+-(NSDictionary *)makeBinaryDictionary
 {
     NSTask *listCmd = [[NSTask alloc] init];
-    //create pipe and file handle for reading from the task's standard output
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
 	NSData *d;
     NSString *output;
-    NSEnumerator *e;
-    NSString *line;
-    NSMutableArray *pkgLines = [NSMutableArray array];
+	
+	NSMutableDictionary *pkgs = [NSMutableDictionary dictionary];
+    NSEnumerator *e, *f;
+    NSString *pkginfo, *line;
+	NSString *pname, *pversion;
+
 
     [listCmd setLaunchPath: 
 		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
-		stringByAppendingPathComponent: @"/bin/apt-cache"]];
+			stringByAppendingPathComponent: @"/bin/apt-cache"]];
     [listCmd setArguments: [NSArray arrayWithObjects: @"dumpavail", nil]];
     [listCmd setStandardOutput: pipeIn];
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
-	
+
 #ifdef DEBUGGING
 	if (d) {
 		char buffer[BUFFERLEN];
@@ -115,17 +117,32 @@ int NAMESTART = 12;
 		NSLog(@"Notification data buffer was empty");
 	}
 #endif
-	
+
 	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
-    e = [[output componentsSeparatedByString: @"\n"] reverseObjectEnumerator];
-    while (line = [e nextObject]){
-		if ([line contains:@"Package:"]){
-			line = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
-			[pkgLines addObject: [NSString stringWithFormat: @" %@#", line]];
+	
+    e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
+	while (pkginfo = [e nextObject]){
+		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
+		while (line = [f nextObject]){
+			if ([line contains:@"Package:"]){
+				pname = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
+				continue;
+			}
+			if ([line contains:@"Version:"]){
+				pversion = [line substringWithRange: NSMakeRange(9, [line length] - 9)];
+				break;
+			}
 		}
-    }
-    [listCmd release];
-    return [pkgLines componentsJoinedByString: @"\n"];
+		if (pname && pversion){
+			[pkgs setObject:pversion forKey:pname];
+		}
+	}
+	
+#ifdef DEBUGGING
+	NSLog(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
+#endif //DEBUGGING
+	
+	return pkgs;
 }
 
 -(void)update
@@ -133,7 +150,6 @@ int NAMESTART = 12;
     NSTask *listCmd = [[[NSTask alloc] init] autorelease];
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
-
     NSArray *args;
 
 	args = [NSArray arrayWithObjects:
@@ -153,19 +169,7 @@ int NAMESTART = 12;
 
     //in the meantime, run the task that obtains the binary package names, which takes only
     //a second or two, synchronously
-    [self setBinaryPackages: [self getBinaryList]];
-
-#ifdef DEBUGGING
-	NSLog(@"User's shell: %s", getenv("SHELL"));
-	NSLog(@"Completed binary list after %f seconds", -[start timeIntervalSinceNow]);
-	if (binaryPackages){
-		int slen, rlen;
-		slen = [binaryPackages length];
-		rlen = slen > BUFFERLEN ? BUFFERLEN : slen;
-		NSLog(@"Binary package string:\n%@",
-		[binaryPackages substringWithRange:NSMakeRange(0, BUFFERLEN-1)]);
-	}
-#endif //DEBUGGING
+	[self setBinaryPackages: [self makeBinaryDictionary]];
 }
 
 -(NSString *)parseWeburlFromString:(NSString *)s
@@ -194,7 +198,7 @@ int NAMESTART = 12;
     return [NSArray arrayWithObjects: name, address, nil];
 }
 
--(NSArray *)getDescriptionComponentsFromString:(NSString *)s
+-(NSArray *)descriptionComponentsFromString:(NSString *)s
 {
     NSString *line;
     NSString *web = @"";
@@ -221,7 +225,7 @@ int NAMESTART = 12;
 -(void)completeUpdate:(NSNotification *)n
 {
     NSDictionary *info = [n userInfo];
-    NSData *d = [info objectForKey: NSFileHandleNotificationDataItem];
+    NSData *d;
     NSString *output; 
     NSMutableArray *temp;
     NSMutableArray *collector = [NSMutableArray array];
@@ -229,14 +233,15 @@ int NAMESTART = 12;
     NSArray *components;
     NSEnumerator *e;
     FinkPackage *p;
-
+	NSString *bversion;
+	
+	d = [info objectForKey: NSFileHandleNotificationDataItem];
 	output = [[[NSString alloc] initWithData:d
 								encoding:NSMacOSRomanStringEncoding] autorelease];
 
 #ifdef DEBUGGING
 	NSLog(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
-	NSLog(@"User info keys from notification:\n%@", [info allKeys]);
 	if (d) {
 		char buffer[BUFFERLEN];
 		[d getBytes:buffer length:BUFFERLEN-1];
@@ -262,27 +267,24 @@ int NAMESTART = 12;
     while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
 		p = [[FinkPackage alloc] init];
 		[p setName: [listRecord objectAtIndex: 0]];
-		[p setVersion: [listRecord objectAtIndex: 1]];
-		[p setInstalled: [listRecord objectAtIndex: 2]];
-		[p setCategory: [listRecord objectAtIndex: 3]];
-		[p setDescription: [listRecord objectAtIndex: 4]];
-		if ([[listRecord objectAtIndex: 5] isEqualToString: @"stable"]){
-			[p setUnstable: @" "];
-		}else{
-			[p setUnstable: @"*"];
-		}
-		[p setFulldesc: [listRecord objectAtIndex: 6]];
-		components = [self getDescriptionComponentsFromString: [p fulldesc]];
+		[p setStatus: [listRecord objectAtIndex: 1]];
+		[p setVersion: [listRecord objectAtIndex: 2]];
+		[p setInstalled: [listRecord objectAtIndex: 3]];
+		[p setStable: [listRecord objectAtIndex: 4]];
+		[p setUnstable: [listRecord objectAtIndex: 5]];
+		[p setCategory: [listRecord objectAtIndex: 6]];
+		[p setSummary: [listRecord objectAtIndex: 7]];
+		[p setFulldesc: [listRecord objectAtIndex: 8]];
+		
+		components = [self descriptionComponentsFromString: [p fulldesc]];
 		[p setWeburl: [components objectAtIndex: 0]];
 		[p setMaintainer: [components objectAtIndex: 1]];
 		[p setEmail: [components objectAtIndex: 2]];
-		//make sure FULL name matches package on binary list
-		if ([binaryPackages contains:
-			[NSString stringWithFormat: @" %@#", [p name]]]){
-			[p setBinary: @"*"];
-		}else{
-			[p setBinary: @" "];
-		}
+		
+		bversion = [binaryPackages objectForKey:[p name]];
+		bversion = bversion ? bversion : @" ";
+		[p setBinary:bversion];
+
 		[collector addObject: p];
 		[p release];
     }
@@ -305,17 +307,17 @@ int NAMESTART = 12;
 
     if ([cmd isEqualToString: @"install"]){
 		while (pkg = [e nextObject]){
-			[pkg setInstalled: @"current"];
+			[pkg setStatus: @"current"];
 		}
     }else if ([cmd isEqualToString: @"remove"]){
 		while (pkg = [e nextObject]){
-			[pkg setInstalled: @"archived"];
+			[pkg setStatus: @"archived"];
 		}
     }else if ([cmd isEqualToString: @"update-all"]){
 		e = [[self array] objectEnumerator];
 		while (pkg = [e nextObject]){
-			if ([[pkg installed] isEqualToString: @"outdated"]){
-				[pkg setInstalled: @"current"];
+			if ([[pkg status] isEqualToString: @"outdated"]){
+				[pkg setStatus: @"current"];
 			}
 		}
     }
@@ -328,7 +330,7 @@ int NAMESTART = 12;
     FinkPackage *pkg;
 
     while (pkg = [e nextObject]){
-		if ([[pkg installed] contains: @"t"]){
+		if ([[pkg status] contains: @"t"]){
 			count++;
 		}
     }

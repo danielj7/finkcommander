@@ -1,22 +1,20 @@
 /* FinkController.m */
 
-//meaningless changes
-
 "OK" = "OK";
 "Cancel" = "Cancel";
-"Quit" = "Quit";
-"Yes" = "Yes";
-"No" = "No";
+"Quit" = "Beenden";
+"Yes" = "Ja";
+"No" = "Nein";
 "Continue" = "Continue";
-"Error" = "Error";
-"Caution" = "Caution";
-"Sorry" = "Sorry";
-"Warning" = "Warning!";
-"Done" = "Done";
+"Error" = "Fehler";
+"Caution" = "Vorsicht";
+"Sorry" = "Entschuldigung";
+"Warning" = "Warnung!";
+"Done" = "Fertig";
 
 "UpdatingTable" = "Updating table data";
 
-"UnableToLocate" = "Unable to Locate Fink";
+"UnableToLocate" = "Konnte Fink nicht finden";
 
 "TrySetting" = "Try setting the path to Fink manually in Preferences.";
 
@@ -69,4 +67,17 @@
 "Low" = "Low";
 "Medium" = "Medium";
 "Choose" = "Choose";
+
+//Added 8/10/02:
+
+"name" = "Name";
+"version" = "Version";
+"status" = "Zustand";
+"installed" = "Bestallt";
+"binary" = "Binary";
+"stable" = "Sicher";
+"unstable" = "Unsicher";
+"category" = "Kategorie";
+"summary" = "Beschreibung";
+"maintainer" = "Erhalter";
 

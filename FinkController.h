@@ -80,10 +80,6 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkOutputParser.h"
 #import "FinkUtilities.h"
 
-enum {
-	SOURCE_COMMAND,
-	BINARY_COMMAND
-};
 
 enum {
 	FCWEB = 1000,
@@ -92,13 +88,21 @@ enum {
 };
 
 enum {
+	NAME = 1000,
 	VERSION = 2000,
 	BINARY = 2001,
-	UNSTABLE = 2002,
-	INSTALLED = 2003,
-	CATEGORY = 2004,
-	DESCRIPTION = 2005,
-	MAINTAINER = 2006
+	STABLE = 2002,
+	UNSTABLE = 2003,
+	STATUS = 2004,
+	CATEGORY = 2005,
+	SUMMARY = 2006,
+	MAINTAINER = 2007,
+	INSTALLED = 2008
+};
+
+enum {
+	SOURCE_COMMAND,
+	BINARY_COMMAND
 };
 
 enum {

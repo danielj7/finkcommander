@@ -23,6 +23,6 @@ Download and test
 
 Change version number in text and links on FinkCommander home page
 
-scp version.xml sburrious.sourceforge.net:/home/groups/f/fi/finkcommander/htdocs/
+scp version.xml sburrious@finkcommander.sourceforge.net:/home/groups/f/fi/finkcommander/htdocs/
 
 Post announcement to FC SourceForge news, finkcommander-users, fink-users

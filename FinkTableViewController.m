@@ -1,7 +1,7 @@
 /*
 File: FinkTableViewController.m
 
- See the header file, FinkTableViewController.h, for interface and license information.
+See the header file, FinkTableViewController.h, for interface and license information.
 */
 
 #import "FinkTableViewController.h"
@@ -15,11 +15,11 @@ File: FinkTableViewController.m
 	if (self = [super initWithFrame: rect]){
 		NSString *identifier;
 		NSString *attribute;
-		NSEnumerator *e = [[defaults objectForKey: FinkTableColumnsArray] objectEnumerator];
-		NSEnumerator *f = [[NSArray arrayWithObjects: PACKAGE_ATTRIBUTES, nil] objectEnumerator];
+		NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
+		NSEnumerator *f = [[defaults objectForKey:FinkPackageAttributes] objectEnumerator];
 
 		while (identifier = [e nextObject]){
-			[self addTableColumn: [self makeColumnWithName: identifier]];
+			[self addTableColumn:[self makeColumnWithName:identifier]];
 		}
 		[self setDelegate: self];
 		[self setDataSource: self];
@@ -34,7 +34,7 @@ File: FinkTableViewController.m
 		// dictionary used to record whether table columns are sorted in normal or reverse order
 		columnState = [[NSMutableDictionary alloc] init];
 		while (attribute = [f nextObject]){
-			[columnState setObject: @"normal" forKey: attribute];
+			[columnState setObject:@"normal" forKey:attribute];
 		}
 	}
 	return self;
@@ -103,17 +103,11 @@ File: FinkTableViewController.m
 {
 	NSTableColumn *newColumn= 
 		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
-				
-	[[newColumn headerCell] setStringValue: [identifier capitalizedString]]; //LOC
+	NSString *title = NSLocalizedString(identifier, nil);
+
+	[[newColumn headerCell] setStringValue: title];
 	[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
 	[newColumn setEditable:YES];
-	//center text in unstable and installed columns
-	if ([identifier isEqualToString: @"binary"] || [identifier isEqualToString: @"unstable"]){
-	 		NSTextFieldCell *cell = [[[NSTextFieldCell alloc] initTextCell: @""]
-			autorelease]; //setDataCell: retains
-		[cell setAlignment: NSCenterTextAlignment];
-		[newColumn setDataCell: cell];
-	}
 	return newColumn;
 }
 

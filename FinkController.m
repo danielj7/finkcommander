@@ -62,8 +62,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set instance variables used to store information related to fink package data
 
-		packages = [[FinkDataController alloc] init];		// data used in table
-		[self setSelectedPackages: nil];    				// used to update package data
+		packages = [[FinkDataController alloc] init];	// data used in table
+		[self setSelectedPackages: nil];    			// used to update package data
 		
 		//Set instance variables used to store objects and state information  
 		//needed to run fink and apt-get commands
@@ -125,10 +125,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)awakeFromNib
 {
-	NSDictionary *selStates = [defaults objectForKey:FinkViewMenuSelectionStates];
-	NSEnumerator *e = [selStates keyEnumerator];
-	NSString *key;
-
+	NSEnumerator *e = [[viewMenu itemArray] objectEnumerator];
+	NSEnumerator *f;
+	NSArray *colArray = [defaults objectForKey:FinkTableColumnsArray];
+	NSMenuItem *vmenuItem;
+	NSString *col;
 	NSSize tableContentSize = [tableScrollView contentSize];
 	NSSize outputContentSize = [outputScrollView contentSize];
 
@@ -147,12 +148,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[outputScrollView setDocumentView:textView];
 	[textView release];
 
-	while (key = [e nextObject])
-	{
-		int menuState = [[selStates objectForKey:key] intValue];
-		[[viewMenu itemWithTitle:key] setState:menuState];  //LOC
+	while (vmenuItem = [e nextObject]){
+		f = [colArray objectEnumerator];
+		while (col = [f nextObject]){
+			if ([[vmenuItem title] contains:NSLocalizedString(col, nil)]){
+				[vmenuItem setState:NSOnState];
+				break;
+			}
+		}
 	}
-		
 	[self setupToolbar];
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
@@ -346,6 +350,33 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	commandIsRunning = NO;
 	[tableView deselectAll: self];
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
+}
+
+-(NSString *)attributeNameFromTag:(int)atag
+{
+	switch(atag){
+		case NAME:
+			return @"name";
+		case VERSION:
+			return @"version";
+		case INSTALLED:
+			return @"installed";
+		case BINARY:
+			return @"binary";
+		case UNSTABLE:
+			return @"unstable";
+		case STABLE:
+			return @"stable";
+		case STATUS:
+			return @"status";
+		case CATEGORY:
+			return @"category";
+		case SUMMARY:
+			return @"summary";
+		case MAINTAINER:
+			return @"maintainer";
+	}
+	return @"";
 }
 
 //----------------------------------------------->Running Commands
@@ -647,11 +678,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //remove or add column
 -(IBAction)chooseTableColumn:(id)sender
 {
-	int loc = [[sender title] rangeOfString: @" "].location;								//LOC
-	NSString *columnIdentifier = [[[sender title] substringWithRange: NSMakeRange(0, loc)] 	//LOC
-													lowercaseString];
-	NSMutableDictionary *selStates = 
-		[[[defaults objectForKey:FinkViewMenuSelectionStates] mutableCopy] autorelease];
+	NSString *columnIdentifier = [self attributeNameFromTag:[sender tag]];
 	int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
 	if (newState == NSOnState){
@@ -659,10 +686,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}else{
 		[tableView removeColumnWithName:columnIdentifier];
 	}
-
 	[sender setState:newState];
-	[selStates setObject:[NSNumber numberWithInt:newState] forKey:[sender title]];			//LOC
-	[defaults setObject:selStates forKey:FinkViewMenuSelectionStates];
 }
 
 -(IBAction)collapseOutput:(id)sender
@@ -852,12 +876,13 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	if ([[aNotification object] tag] == FILTER){
-		NSString *field = [[[searchPopUpButton selectedItem] title] lowercaseString];
+		NSString *field = [self attributeNameFromTag:[[searchPopUpButton selectedItem] tag]];
 		NSString *filterText = [[searchTextField stringValue] lowercaseString];
 		NSString *pkgAttribute;
 		NSMutableArray *subset = [NSMutableArray array];
 		NSEnumerator *e = [[packages array] objectEnumerator];
 		FinkPackage *pkg;
+
 
 		//store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){

@@ -78,6 +78,23 @@ void fixScript(void)
 	}
 }
 
+
+//------------------------------------------------------------>Fix Preferences
+
+void fixPreferences(void)
+{
+	NSString *path = [NSHomeDirectory() 
+		stringByAppendingPathComponent:@"Library/Preferences/com.sburrious.finkcommander.plist"];
+	NSMutableDictionary *prefs = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	
+	[prefs removeObjectForKey:FinkViewMenuSelectionStates];
+	[prefs removeObjectForKey:FinkTableColumnsArray];
+	[prefs removeObjectForKey:@"NSTableView Columns FinkTableView"];
+
+	[prefs writeToFile:path atomically:YES];
+}
+
+
 //------------------------------------------------------------>Environment Defaults
 void setInitialEnvironmentVariables(void)
 {
@@ -91,7 +108,7 @@ void setInitialEnvironmentVariables(void)
 		[NSMutableDictionary 
 			dictionaryWithObjectsAndKeys: 
 				[NSString stringWithFormat:
-					@"%@/bin:%@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin", 
+ 				 @"%@/bin:%@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin",
 					basePath, basePath],
 				@"PATH",
 				[NSString stringWithFormat: @"%@/lib/perl5", basePath],

@@ -39,21 +39,26 @@ Contact the author at sburrious@users.sourceforge.net.
 {
 	//Attributes of a fink package
 	NSString *name;
+	NSString *status;
 	NSString *version;
 	NSString *installed;
+	NSString *binary;
+	NSString *stable;
+	NSString *unstable;
 	NSString *category;
-	NSString *description;
+	NSString *summary;
 	NSString *fulldesc;
 	NSString *weburl;
 	NSString *maintainer;
 	NSString *email;
-	NSString *binary;
-	NSString *unstable;
 }
 
 //Instance variable access
 -(NSString *)name;
 -(void)setName:(NSString *)s;
+
+-(NSString *)status;
+-(void)setStatus:(NSString *)s;
 
 -(NSString *)version;
 -(void)setVersion:(NSString *)s;
@@ -61,11 +66,20 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)installed;
 -(void)setInstalled:(NSString *)s;
 
+-(NSString *)binary;
+-(void)setBinary:(NSString *)s;
+
+-(NSString *)stable;
+-(void)setStable:(NSString *)s;
+
+-(NSString *)unstable;
+-(void)setUnstable:(NSString *)s;
+
 -(NSString *)category;
 -(void)setCategory:(NSString *)s;
 
--(NSString *)description;
--(void)setDescription:(NSString *)s;
+-(NSString *)summary;
+-(void)setSummary:(NSString *)s;
 
 -(NSString *)fulldesc;
 -(void)setFulldesc:(NSString *)s;
@@ -79,13 +93,10 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)email;
 -(void)setEmail:(NSString *)s;
 
--(NSString *)binary;
--(void)setBinary:(NSString *)s;
-
--(NSString *)unstable;
--(void)setUnstable:(NSString *)s;
 
 //Comparison methods
+-(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y;
+
 -(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByName:(FinkPackage *)pkg;
 
@@ -95,11 +106,23 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSComparisonResult)normalCompareByInstalled:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByInstalled:(FinkPackage *)pkg;
 
+-(NSComparisonResult)normalCompareByBinary:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByBinary:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByStable:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByStable:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByStatus:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByStatus:(FinkPackage *)pkg;
+
 -(NSComparisonResult)normalCompareByCategory:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByCategory:(FinkPackage *)pkg;
 
--(NSComparisonResult)normalCompareByDescription:(FinkPackage *)pkg;
--(NSComparisonResult)reverseCompareByDescription:(FinkPackage *)pkg;
+-(NSComparisonResult)normalCompareBySummary:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareBySummary:(FinkPackage *)pkg;
 
 -(NSComparisonResult)normalCompareByBinary:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByBinary:(FinkPackage *)pkg;

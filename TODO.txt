@@ -28,6 +28,8 @@ New commands:
 	force removal: dpkg --remove --force-depends <pkg>
 	raise warning alerts for both
 	
+New tool:  move unstable package to stable
+	
 Jaguar bug fixes
 
 

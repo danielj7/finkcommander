@@ -1,5 +1,5 @@
 /*  
- File: FinkPackage.m
+File: FinkPackage.m
 
 See the header file, FinkPackage.h, for interface and license information.
 
@@ -9,26 +9,39 @@ See the header file, FinkPackage.h, for interface and license information.
 
 @implementation FinkPackage
 
+//----------------------------------------------------->Basics
+
 // Dealloc
 
 -(void)dealloc
 {
 	[name release];
+	[status release];
 	[version release];
 	[installed release];
-	[category release];
-	[description release];
-	[fulldesc release];
 	[binary release];
+	[stable release];
 	[unstable release];
+	[category release];
+	[summary release];
+	[fulldesc release];
 	[weburl release];
 	[maintainer release];
 	[email release];
 	[super dealloc];
 }
 
-// Instance variable access methods
 
+// String representation of the object
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"%@-%@", [self name], [self version]];
+}
+
+
+//----------------------------------------------------->Accessors
+
+//Name
 -(NSString *)name
 {
 	return name;
@@ -41,6 +54,20 @@ See the header file, FinkPackage.h, for interface and license information.
 	name = s;
 }
 
+//Status
+-(NSString *)status
+{
+	return status;
+}
+
+-(void)setStatus:(NSString *)s
+{
+	[s retain];
+	[status release];
+	status = s;
+}
+
+//Version
 -(NSString *)version
 {
 	return version;
@@ -53,6 +80,7 @@ See the header file, FinkPackage.h, for interface and license information.
 	version = s;
 }
 
+//Installed
 -(NSString *)installed
 {
 	return installed;
@@ -65,78 +93,7 @@ See the header file, FinkPackage.h, for interface and license information.
 	installed = s;
 }
 
--(NSString *)category
-{
-	return category;
-}
-
--(void)setCategory:(NSString *)s
-{
-	[s retain];
-	[category release];
-	category = s;
-}
-
--(NSString *)description;
-{
-	return description;
-}
-
--(void)setDescription:(NSString *)s;
-{
-	[s retain];
-	[description release];
-	description = s;
-}
-
--(NSString *)fulldesc
-{
-	return fulldesc;
-}
-
--(void)setFulldesc:(NSString *)s
-{
-	[s retain];
-	[fulldesc release];
-	fulldesc = s;
-}
-
--(NSString *)weburl
-{
-	return weburl;
-}
-
--(void)setWeburl:(NSString *)s
-{
-	[s retain];
-	[weburl release];
-	weburl = s;	
-}
-
--(NSString *)maintainer
-{
-	return maintainer;
-}
-
--(void)setMaintainer:(NSString *)s;
-{
-	[s retain];
-	[maintainer release];
-	maintainer = s;	
-}
-
--(NSString *)email
-{
-	return email;
-}
-
--(void)setEmail:(NSString *)s
-{
-	[s retain];
-	[email release];
-	email = s;	
-}
-
+//Binary
 -(NSString *)binary;
 {
 	return binary;
@@ -149,6 +106,20 @@ See the header file, FinkPackage.h, for interface and license information.
 	binary = s;
 }
 
+//Stable
+-(NSString *)stable
+{
+	return stable;
+}
+
+-(void)setStable:(NSString *)s
+{
+	[s retain];
+	[stable release];
+	stable = s;
+}
+
+//Unstable
 -(NSString *)unstable;
 {
 	return unstable;
@@ -161,7 +132,91 @@ See the header file, FinkPackage.h, for interface and license information.
 	unstable = s;
 }
 
-// Comparison methods
+//Category
+-(NSString *)category
+{
+	return category;
+}
+
+-(void)setCategory:(NSString *)s
+{
+	[s retain];
+	[category release];
+	category = s;
+}
+
+
+//Summary
+-(NSString *)summary;
+{
+	return summary;
+}
+
+-(void)setSummary:(NSString *)s;
+{
+	[s retain];
+	[summary release];
+	summary = s;
+}
+
+
+//Fulldesc
+-(NSString *)fulldesc
+{
+	return fulldesc;
+}
+
+-(void)setFulldesc:(NSString *)s
+{
+	[s retain];
+	[fulldesc release];
+	fulldesc = s;
+}
+
+
+//Weburl
+-(NSString *)weburl
+{
+	return weburl;
+}
+
+-(void)setWeburl:(NSString *)s
+{
+	[s retain];
+	[weburl release];
+	weburl = s;	
+}
+
+
+//Maintainer
+-(NSString *)maintainer
+{
+	return maintainer;
+}
+
+-(void)setMaintainer:(NSString *)s;
+{
+	[s retain];
+	[maintainer release];
+	maintainer = s;	
+}
+
+
+//Email
+-(NSString *)email
+{
+	return email;
+}
+
+-(void)setEmail:(NSString *)s
+{
+	[s retain];
+	[email release];
+	email = s;	
+}
+
+
+//----------------------------------------------------->Comparison
 
 -(BOOL)isEqual:(id)anObject
 {
@@ -176,6 +231,24 @@ See the header file, FinkPackage.h, for interface and license information.
 	}
 }
 
+
+//Helper: compare soley for some content in version number;
+//return opposite from usual order so rows with some value appear at top
+-(NSComparisonResult)xExists:(NSString *)x yExists:(NSString *)y
+{
+	BOOL xIs = [x length] > 1;
+	BOOL yIs = [y length] > 1;
+	
+	if (xIs){
+		if (yIs) return NSOrderedSame;
+		else return NSOrderedAscending;
+	}
+	if (yIs) return NSOrderedDescending;  //already know ! xIs
+	return NSOrderedSame; // ! xIs && ! yIs
+}
+
+
+//Name
 -(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
 {
 	return [[self name] caseInsensitiveCompare: [pkg name]];
@@ -186,6 +259,27 @@ See the header file, FinkPackage.h, for interface and license information.
 	return (0 - [self normalCompareByName: pkg]);
 }
 
+
+//Status
+//Reverse alphabetical is default, because it puts outdated at the top.
+-(NSComparisonResult)normalCompareByStatus:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [[self status] caseInsensitiveCompare:
+		[pkg status]];
+	if (result == 0) return [self normalCompareByName: pkg];
+	return (0 - result);
+}
+
+-(NSComparisonResult)reverseCompareByStatus:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [[self status] caseInsensitiveCompare:
+		[pkg status]];
+	if (result == 0) return (0 -[self normalCompareByName: pkg]);
+	return (result);
+}
+
+
+//Version
 -(NSComparisonResult)normalCompareByVersion:(FinkPackage *)pkg
 {
 	return [[self version] caseInsensitiveCompare: [pkg version]];
@@ -196,26 +290,69 @@ See the header file, FinkPackage.h, for interface and license information.
 	return (0 - [self normalCompareByVersion: pkg]);
 }
 
+
+//Installed
 -(NSComparisonResult)normalCompareByInstalled:(FinkPackage *)pkg
 {
-	NSComparisonResult result = [[self installed] caseInsensitiveCompare:
-		[pkg installed]];
+	NSComparisonResult result = [self xExists:[self installed] yExists:[pkg installed]];
 	if (result == 0) return [self normalCompareByName: pkg];
-	return (0 - result);
+	return (result);
 }
 
 -(NSComparisonResult)reverseCompareByInstalled:(FinkPackage *)pkg
 {
-	NSComparisonResult result = [[self installed] caseInsensitiveCompare:
-		[pkg installed]];
-	if (result == 0) return (0 -[self normalCompareByName: pkg]);
+	return (0 - [self normalCompareByInstalled:pkg]);
+}
+
+
+//Binary
+-(NSComparisonResult)normalCompareByBinary:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [self xExists:[self binary] yExists:[pkg binary]];
+	if (result == 0) return [self normalCompareByName: pkg];
 	return (result);
 }
 
+-(NSComparisonResult)reverseCompareByBinary:(FinkPackage *)pkg
+{
+	return (0 - [self normalCompareByBinary:pkg]);
+}
+
+
+//Stable
+-(NSComparisonResult)normalCompareByStable:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [self xExists:[self stable] yExists:[pkg stable]];
+	if (result == 0) return [self normalCompareByName: pkg];
+	return (result);
+}
+
+-(NSComparisonResult)reverseCompareByStable:(FinkPackage *)pkg
+{
+	return (0 - [self normalCompareByStable:pkg]);
+}
+
+
+//Unstable
+-(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [self xExists:[self unstable] yExists:[pkg unstable]];
+	if (result == 0) return [self normalCompareByName: pkg];
+	return (result);
+}
+
+-(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg
+{
+	return (0 - [self normalCompareByUnstable:pkg]);
+}
+
+
+//Category
 -(NSComparisonResult)normalCompareByCategory:(FinkPackage *)pkg
 {
-	NSComparisonResult result = [[self category] caseInsensitiveCompare:
-		[pkg category]];
+	NSComparisonResult result;
+	if ([[self category] length] < 2) return NSOrderedDescending;
+	result = [[self category] caseInsensitiveCompare: [pkg category]];
 	if (result == 0) return [self normalCompareByName: pkg];
 	return result;
 }
@@ -228,49 +365,20 @@ See the header file, FinkPackage.h, for interface and license information.
 	return (0 - result);
 }
 
--(NSComparisonResult)normalCompareByDescription:(FinkPackage *)pkg
+
+//Summary
+-(NSComparisonResult)normalCompareBySummary:(FinkPackage *)pkg
 {
-	return [[self description] caseInsensitiveCompare: [pkg description]];
+	return [[self summary] caseInsensitiveCompare: [pkg summary]];
 }
 
--(NSComparisonResult)reverseCompareByDescription:(FinkPackage *)pkg
+-(NSComparisonResult)reverseCompareBySummary:(FinkPackage *)pkg
 {
-	return (0 - [self normalCompareByDescription: pkg]);
+	return (0 - [self normalCompareBySummary: pkg]);
 }
 
--(NSComparisonResult)normalCompareByBinary:(FinkPackage *)pkg
-{
-	NSComparisonResult result = [[self binary] caseInsensitiveCompare:
-		[pkg binary]];
-	if (result == 0) return [self normalCompareByName: pkg];
-	return (0 - result);
-}
 
--(NSComparisonResult)reverseCompareByBinary:(FinkPackage *)pkg
-{
-	NSComparisonResult result = [[self binary] caseInsensitiveCompare:
-		[pkg binary]];
-	if (result == 0) return (0 - [self normalCompareByName: pkg]);
-	return (result);
-
-}
-
--(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg
-{
-	NSComparisonResult result = [[self unstable] caseInsensitiveCompare:
-		[pkg unstable]];
-	if (result == 0) return [self normalCompareByName: pkg];
-	return (0 - result);
-}
-
--(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg
-{
-	NSComparisonResult result = [[self unstable] caseInsensitiveCompare:
-		[pkg unstable]];
-	if (result == 0) return (0 - [self normalCompareByName: pkg]);
-	return (result);
-}
-
+//Maintainer
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg
 {
 	NSComparisonResult result = [[self maintainer] caseInsensitiveCompare: [pkg maintainer]];
@@ -286,4 +394,4 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 
-@end  
+@end
