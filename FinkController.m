@@ -121,14 +121,59 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[super dealloc];
 }
 
+//----------------------------------------------->Tag/Name Translation
+
+-(NSString *)attributeNameFromTag:(int)atag
+{
+	switch(atag){
+		case NAME:
+			return @"name";
+		case VERSION:
+			return @"version";
+		case INSTALLED:
+			return @"installed";
+		case BINARY:
+			return @"binary";
+		case UNSTABLE:
+			return @"unstable";
+		case STABLE:
+			return @"stable";
+		case STATUS:
+			return @"status";
+		case CATEGORY:
+			return @"category";
+		case SUMMARY:
+			return @"summary";
+		case MAINTAINER:
+			return @"maintainer";
+	}
+	return @"";
+}
+
+-(int)tagFromAttributeName:(NSString *)name
+{
+	NSDictionary *nametag = [NSDictionary dictionaryWithObjectsAndKeys:
+		[NSNumber numberWithInt: NAME], @"name",
+		[NSNumber numberWithInt: VERSION], @"version",
+		[NSNumber numberWithInt: INSTALLED], @"installed",
+		[NSNumber numberWithInt: BINARY], @"binary",
+		[NSNumber numberWithInt: UNSTABLE], @"unstable",
+		[NSNumber numberWithInt: STABLE], @"stable",
+		[NSNumber numberWithInt: STATUS], @"status",
+		[NSNumber numberWithInt: CATEGORY], @"category",
+		[NSNumber numberWithInt: SUMMARY], @"summary",
+		[NSNumber numberWithInt: MAINTAINER], @"maintainer",
+		nil];
+
+	return [[nametag objectForKey:name] intValue];
+}
+
+
 //----------------------------------------------->Post-Init Startup
 
 -(void)awakeFromNib
 {
-	NSEnumerator *e = [[viewMenu itemArray] objectEnumerator];
-	NSEnumerator *f;
-	NSArray *colArray = [defaults objectForKey:FinkTableColumnsArray];
-	NSMenuItem *vmenuItem;
+	NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
 	NSString *col;
 	NSSize tableContentSize = [tableScrollView contentSize];
 	NSSize outputContentSize = [outputScrollView contentSize];
@@ -148,15 +193,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[outputScrollView setDocumentView:textView];
 	[textView release];
 
-	while (vmenuItem = [e nextObject]){
-		f = [colArray objectEnumerator];
-		while (col = [f nextObject]){
-			if ([[vmenuItem title] contains:NSLocalizedString(col, nil)]){
-				[vmenuItem setState:NSOnState];
-				break;
-			}
-		}
+	while (col = [e nextObject]){
+		int atag = [self tagFromAttributeName:col];
+		NSLog(@"Column for attribute: %@, tag: %d", col, atag);
+		[[viewMenu itemWithTag:atag] setState:NSOnState];
 	}
+
 	[self setupToolbar];
 
 	if ([defaults boolForKey: FinkAutoExpandOutput]){
@@ -352,32 +394,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
 }
 
--(NSString *)attributeNameFromTag:(int)atag
-{
-	switch(atag){
-		case NAME:
-			return @"name";
-		case VERSION:
-			return @"version";
-		case INSTALLED:
-			return @"installed";
-		case BINARY:
-			return @"binary";
-		case UNSTABLE:
-			return @"unstable";
-		case STABLE:
-			return @"stable";
-		case STATUS:
-			return @"status";
-		case CATEGORY:
-			return @"category";
-		case SUMMARY:
-			return @"summary";
-		case MAINTAINER:
-			return @"maintainer";
-	}
-	return @"";
-}
 
 //----------------------------------------------->Running Commands
 
