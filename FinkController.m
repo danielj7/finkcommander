@@ -429,7 +429,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		return  NO;
 	}
 	if (! [self commandIsRunning] && 
-		[menuItem action] == @selector(raiseInteractionWindow:)){
+		([menuItem action] == @selector(raiseInteractionWindow:) ||
+		 [menuItem action] == @selector(terminateCommand:))){
 		return NO;
 	}
 	return YES;
@@ -538,7 +539,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setImage: [NSImage imageNamed: @"updatebin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runUpdater:)];
-#ifdef UNDEF
 	}else if ([itemIdentifier isEqualToString: FinkTerminateCommandItem]){
 		[item setLabel: @"Terminate"];
 		[item setPaletteLabel: [item label]];
@@ -546,7 +546,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setImage: [NSImage imageNamed: @"terminate"]];
 		[item setTarget: self];
 		[item setAction: @selector(terminateCommand:)];
-#endif //UNDEF
 	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
 		NSRect fRect = [searchView frame];
 		[item setLabel:@"Filter Table Data"];
@@ -582,7 +581,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		FinkUpdateBinaryItem,
 		FinkDescribeItem,
 		FinkInteractItem,
-//		FinkTerminateCommandItem,
+		FinkTerminateCommandItem,
 		FinkFilterItem,
 		nil];
 }
@@ -593,8 +592,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
-		FinkSelfUpdateItem,
 		FinkInteractItem,
+		FinkTerminateCommandItem,
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
 		nil];
@@ -608,10 +607,10 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		return  NO;
 	}
 	if (! [self commandIsRunning] &&
-		([[theItem label] contains: @"Terminate"] ||
-		[theItem action] == @selector(raiseInteractionWindow:))){
+		([theItem action] == @selector(raiseInteractionWindow:) ||
+		 [theItem action] == @selector(terminateCommand:))){
 		return NO;
-	}
+	}	
 	if ([tableView selectedRow] == -1 &&
 	    [theItem action] == @selector(runCommand:)){
 		return NO;
