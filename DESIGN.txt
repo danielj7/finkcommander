@@ -1,14 +1,14 @@
 OVERVIEW
 
-FinkCommander currently relies on inter-process communication (IPC) to gather information about fink packages and execute fink commands.  There has been discussion on the fink developers' mailing list about the possibility that an Objective C-Perl bridge will eliminate the need for at least some IPC and enhance functionality.  This document sets forth my thoughts on the subject as they evolve.
+FinkCommander currently relies on inter-process communication (IPC) to gather information about fink packages and execute fink commands.  Early on there was a discussion on the fink developers' mailing list about the possibility that an Objective C-Perl bridge might eliminate the need for at least some IPC and enhance functionality.  This document sets forth my thoughts on the subject as they evolve.
 
-Dave Vasilevsky has pointed out that it would therefore make sense to make FinkCommander more modular so that it will be easier to replace the existing IPC code with code relying on the Obj C-Perl bridge.  To accomplish this, I have taken most of the code relating to running fink and apt-get commands out of FinkController and put it into the IOTaskWrapperClass.
+Dave Vasilevsky, one of the fink developers, pointed out that it would make sense to make FinkCommander more modular so that it will be easier to replace the existing IPC code with code relying on the Obj C-Perl bridge.  To accomplish this, I attempted to take the code relating to running fink and apt-get commands out of FinkController and put it into the IOTaskWrapperClass.  However, when I got past a certain point in this process, every additional change I attempted broke FinkCommander's IPC.  For a while I left the job half undone, with some fink-specific in FinkCommander and some in IOTaskWrapper.  Ultimately, I decided that it would be more consistent with OO design and with the direction FinkCommander is going (as described below) to put the fink and apt-get details back in FinkController.  I have done so; IOTaskWrapper is now completely generalized and could be used in other projects as an enhanced version of the TaskWrapper class in Apple's Moriarity code sample.
 
 Comments on the feasibility of implementing particular features with an Obj C-Perl bridge relate to fink only.  Installing binaries with apt-get requires a different approach.
 
 OBJECTIVE C-PERL BRIDGE
 
-A bridge is now available.  I have downloaded the framework and written a prototype application that uses the bridge rather than IPC to gather information for the FC table.  I will eventually incorporate the framework and this code into FC.  At the moment, I'm having a hard time seeing how I could go much farther with this.  See notes below.
+A bridge (Camelbones) is now available.  I have downloaded the framework and written a prototype application that uses the bridge rather than IPC to gather information for the FC table.  I will eventually incorporate the framework and this something like this code into FC.  At the moment, I'm having a hard time seeing how I could go much farther with this.  See notes below.
 
 TYPES OF INTERACTION BETWEEN FC AND FP
 
@@ -23,9 +23,9 @@ Status in current FinkCommander:
 Implemented through NSTask and NSPipe in the FinkDataController class
  
 Feasibility of Implementing through Obj C-Perl bridge:
-Piece of cake.  Even I can see that.  
+Should not be a problem.  It's simply a matter of gaining better mastery of the Camelbones API and adding the Camelbones Framework to FC, so that users don't have to install it separately.
 
-(2)  Executing Fink or Apt-get Command
+(2)  Executing Fink or Apt-get Commands
 
 Sequence:
 FC receives menu command, asks table which rows are selected
@@ -35,29 +35,13 @@ FP runs command with administrator privileges
 Status in current FinkCommander:
 Implemented through creation of IOTaskWrapper object.  IOTaskWrapper is a modified version of the TaskWrapper class in Apple's "Moriarity" example:
 http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
-Authentication is currently handled by having the user enter his password in a secure text field and passing it to the IOTaskWrapper object.  (This is not the correct way of doing it.)
+Authentication is currently handled by having the user enter his password in a secure text field and passing it to the IOTaskWrapper object.  This is not the correct way of doing it, according to Apple, but I am having difficulty seeing how to use Apple's preferred authentication method in FinkCommander.
 
 Feasibility of implementing through Obj C-Perl bridge:
-I am not certain.  Discussions on the Omni-Web and Apple mailing lists for Cocoa developers indicate that a running process cannot change its own authorization.  Instead, it must execute a subprocess with administrator privileges using the Security Framework.  This would seem to suggest that FinkCommander could not use the Obj C-Perl bridge to call a fink subroutine with administrator privileges.  On the other hand, I know so little about this stuff that I could easily be wrong, and hope I am. 
+I am sceptical, to say the lease.  Discussions on the Omni-Web and Apple mailing lists for Cocoa developers indicate that a running process cannot change its own authorization.  Instead, it must execute a subprocess with administrator privileges using the Security Framework.  This would seem to suggest that FinkCommander cannot use the Obj C-Perl bridge to call a fink subroutine with administrator privileges.  
+An alternative that probably would work would be for FinkCommander to use the authorization to give itself root privleges, but this is also frowned upon.
 
-(3)  Responding to Fink Request for Input
-
-E.g. pick a virtual dependency, agree to download dependencies, choose option when download fails
-
-Sequence:
-While running command, FP receives request for user input
-FP sends request to FC
-FC displays panel, preferably in sheet form, asking for user response
-FC sends user response to FP
-FP sends user response to running command
-
-Status in current FinkCommander:
-Not yet implemented, but the plumbing is there.  FinkCommander already reads stdout from the running process, parses it for prompts and writes a "\n" to the process stdin in order to select the default. 
-
-Feasibility of implementing through Obj C-Perl bridge:
-Seems possible, but wouldn't the fink subroutines need to be altered?  They appear to rely directly on stdin and stdout for user interaction.
-
-(4)	 Sending stdout from running command to text view in real time
+(3)	 Sending stdout from running command to text view in real time
 
 Sequence:
 FP receives chunk of output from running command
@@ -67,7 +51,23 @@ Status in current FinkCommander:
 Implemented through IOTaskWrapper appendOutput protocol
 
 Feasibility of implementing through Obj C-Perl bridge:
-Seems doubtful.  Fink appears to rely on the Perl system function to execute the scripts and programs that download, patch, configure, build and install the packages.  System does not capture the standard output from the executed script or program.  If fink itself were modified to use popen to return the output to the caller, this might become possible.
+Security concerns are the same here as for (2).  In addition, I believe using the bridge for this type of interaction would require rewriting fink.  Fink relies the Perl system function to execute the scripts and programs that download, patch, configure, build and install the packages.  Since system does not capture the standard output from the executed script or program, it is not returned by the fink subroutines.
 
-(5)  Sending CVS password to selfupdate-cvs command; needed for fink core developers
+(4)  Responding to Fink Request for Input
+
+E.g. pick a virtual dependency, agree to download dependencies, choose option when download fails
+
+Sequence:
+While running command, FP receives request for user input
+FP sends request to FC
+FC displays panel asking for user response
+FC sends user response to FP
+FP sends user response to running command
+
+Status in current FinkCommander:
+Implemented through IOTaskWrapper's writeToStdin: method. 
+
+Feasibility of implementing through Obj C-Perl bridge:
+The problems here are similar to those identified in (3), except that here the problem is getting input 
+		to rather than taking it from fink.
 

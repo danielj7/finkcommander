@@ -41,44 +41,43 @@
 	emailSig = s;
 }
 
--(NSString *)formattedEmailSig
+//used to set URL attribute for email addresses displayed by Package Inspector and
+//in FinkController's emailMaintainer method
+-(NSURL *)mailURLForPackage:(FinkPackage *)pkg
 {
 	NSMutableArray *m = [NSMutableArray array];
 	NSEnumerator *e;
 	NSString *line;
 	NSString *sig;
 
+	//create body portion of mail URL
+		//set sig format as ordinary string
 	if ([defaults boolForKey: FinkGiveEmailCredit]){
 		sig = [NSString stringWithFormat:
 			@"--\n%@Feedback Courtesy of FinkCommander\n", emailSig];
 	}else{
 		sig = [NSString stringWithFormat: @"--\n%@", emailSig];
 	}
+		//replace linefeeds with %0A and spaces with %20
 	e = [[sig componentsSeparatedByString: @"\n"] objectEnumerator];
 	while (line = [e nextObject]){
 		line = [[line componentsSeparatedByString: @" "] componentsJoinedByString: @"%20"];
 		[m addObject: line];
 	}
 	sig = [m componentsJoinedByString: @"%0A"];
+		//append to mailto URL body message
 	sig = [ @"&body=%0A%0A" stringByAppendingString: sig];
-	return sig;
-}
-
-//probb more consistent with MVC to move this back to FinkController
--(void)sendEmailForPackage:(FinkPackage *)pkg
-{
-	NSMutableString *url = [NSMutableString
-			stringWithFormat: @"mailto:%@?subject=%@%@", [pkg email], [pkg name],
-		[self formattedEmailSig]];
-
-	[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString: url]];
+	//return body message appended to rest of mail URL 
+	return [NSURL URLWithString: 
+					[NSString stringWithFormat: 
+								@"mailto:%@?subject=%@-%@%@", [pkg email], [pkg name], 
+								[pkg version], sig]];
 }
 
 //--------------------------------------------------------------->Text Display Methods
 
-
-//adds font attributes to headings, link attributes to urls and removes hard
-//returns within paragraphs to allow soft wrapping
+//adds font attributes to headings and link attributes to urls; removes hard returns
+//within paragraphs to allow soft wrapping; attempts to preserve author's list formatting
 -(NSAttributedString *)formatDescriptionString:(NSString *)s 
 						forPackage:(FinkPackage *)p
 {
@@ -163,15 +162,11 @@
 		
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
-		NSMutableString *mailurl = [NSMutableString 
-			stringWithFormat: @"mailto:%@?subject=%@%@", [p email], [p name],
-				[self formattedEmailSig]];
-		
-		r = [[desc string] rangeOfString: [p email]];
-		[desc addAttributes: urlAttributes range: r];
-		[desc addAttribute: NSLinkAttributeName
-							value: [NSURL URLWithString: mailurl]
-							range: r];
+		r = [[desc string] rangeOfString:[p email]];
+		[desc addAttributes:urlAttributes range:r];
+		[desc addAttribute:NSLinkAttributeName
+				value:[self mailURLForPackage:p]
+				range:r];
 	}
 	return desc;
 }
@@ -192,9 +187,9 @@
 			[[[NSAttributedString alloc] 
 					initWithString: nameVersion
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
-						[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
-						HEADINGCOLOR, NSForegroundColorAttributeName,
-						nil]] autorelease]];
+										[NSFont boldSystemFontOfSize: 0], NSFontAttributeName,
+										HEADINGCOLOR, NSForegroundColorAttributeName,
+										nil]] autorelease]];
 		[[textView textStorage] appendAttributedString:
 			[self formatDescriptionString: [pkg fulldesc] forPackage: pkg]];
 		if (i != count - 1){  			//don't add newlines after last package

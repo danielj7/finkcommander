@@ -1,5 +1,5 @@
 /* 
- File: FinkController.h 
+File: FinkController.h
 
 FinkCommander
 
@@ -10,25 +10,41 @@ Unix software on Mac OS X.
 FinkController is the hub of the FinkCommander object system.  It instantiates and
 communicates with:
 
-* 	a FinkDataController object, which gathers and updates information on the user's fink
-	installation in the form of an array of FinkPackage objects;
+* 	user interface elements created in Interface Builder and located in the 
+	MainMenu.nib file (V).
 
-*	IOTaskWrapper objects, which run fink commands asynchronously in separate processes;
+* 	FinkDataController (MC) -- gathers and updates information on the user's fink
+	installation in the form of an array of FinkPackage objects (M);
 
-*	a FinkTableViewController object and FinkTextViewController object, which control
+*	IOTaskWrapper (M) -- runs fink commands asynchronously in separate processes;
+
+*	FinkOutputParser (M) -- parses the output from fink and apt-get commands and
+	returns signals indicating what type of action, if any, is appropriate for that output; 
+	will in a future release include signals that tell FinkCommander to send a follow-up
+	message for additional instructions;
+
+*	FinkTableViewController (VC) and FinkTextViewController (VC) -- control
 	the primary user interface elements;
 	
-*	a FinkPreferences object, which provides an interface for both the FinkCommander user
+*	a FinkPreferences object (C) -- provides an interface for both the FinkCommander user
 	interface system and for changing the fink.conf file (represented by
-	the FinkConf object);
+	the FinkConf object (M)); instantiates and communicates with user interface elements 
+	defined in Preferences.nib;
 	
-*	a FinkPackageInfo object, which obtains and formats information from FinkPackage
-	objects for display in the Package Inspector;
-	
-* 	user interface elements created in Interface Builder and located in the MainMenu.nib file.
+*	FinkPackageInfo (C) -- obtains and formats information from FinkPackage
+	objects for display in the Package Inspector (V); along with FinkController uses
+	a FinkInstallationInfo object (M) to format emails sent to package maintainers; 
+	instantiates and communicates with user interface elements defined in 
+	PackageInfo.nib (V).
 
-FinkController also creates the FinkCommander toolbar and registers the "factory defaults."  The
-settings for each are read from the files Toolbar.plist and UserDefaults.plist, respectively.
+FinkController also creates the FinkCommander toolbar and registers the "factory defaults" 
+for preferences set by FinkPreferences or programmatically.  The settings for each are 
+read from the files Toolbar.plist and UserDefaults.plist, respectively.
+
+Global variables, which are used solely to allow compiler checking for misspellings of 
+defaults and notification identifiers, are declared in FinkGlobals.h.  Functions that 
+do not fit well in the existing object model for FinkController are defined in 
+FinkUtilities.m. 
 
 Copyright (C) 2002  Steven J. Burr
 
@@ -140,7 +156,6 @@ enum {
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
--(NSString *)password;
 -(void)setPassword:(NSString *)s;
 -(NSMutableArray *)lastParams;
 -(void)setLastParams:(NSMutableArray *)a;

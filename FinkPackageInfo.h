@@ -49,6 +49,6 @@
 
 -(void)displayDescriptions:(NSArray *)packages;
 -(void)setEmailSig:(NSString *)s;
--(void)sendEmailForPackage:(FinkPackage *)pkg;
+-(NSURL *)mailURLForPackage:(FinkPackage *)pkg;
 
 @end

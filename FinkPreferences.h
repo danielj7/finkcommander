@@ -29,14 +29,17 @@ File: FinkPreferences.h
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
 #import <Cocoa/Cocoa.h>
-#import "FinkGlobals.h"
 #import "FinkConf.h"
+#import "FinkGlobals.h"
+#import "FinkUtilities.h"
 
 @interface FinkPreferences : NSWindowController
 {
+	IBOutlet NSTabView *tabView;
+
 	//widgets used for general preference settings
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
@@ -53,6 +56,13 @@ File: FinkPreferences.h
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
+	
+	//widgets used for environment settings
+	IBOutlet NSTableView *environmentTableView;
+	IBOutlet NSTextField *nameTextField;
+	IBOutlet NSTextField *valueTextField;
+	IBOutlet NSButton *addEnvironmentSettingButton;
+	IBOutlet NSButton *deleteEnvironmentSettingButton;
 	
 	//widgets used to alter table behavior
 	IBOutlet NSButton *scrollToSelectionButton;
@@ -77,7 +87,9 @@ File: FinkPreferences.h
 	
 	NSUserDefaults *defaults;
 	FinkConf *conf;
-	
+	NSMutableDictionary *environmentSettings;
+	NSMutableArray *environmentKeyList;
+
 	BOOL pathChoiceChanged;
 	BOOL autoExpandChanged;
 	BOOL finkConfChanged;
@@ -88,8 +100,16 @@ File: FinkPreferences.h
 -(IBAction)setAndClose:(id)sender;
 -(IBAction)cancel:(id)sender;
 
+//environment setting buttons
+-(IBAction)addEnvironmentSetting:(id)sender;
+-(IBAction)removeEnvironmentSettings:(id)sender;
+-(IBAction)restoreEnvironmentSettings:(id)sender;
+
 //choose directory for text fields ("Browse" button action)
 -(IBAction)selectDirectory:(id)sender;
+-(void)openPanelDidEnd:(NSOpenPanel *)openPanel
+		returnCode:(int)returnCode
+		textField:(NSTextField *)textField;
 
 //record whether certain preference items have changed
 -(IBAction)setPathChoiceChanged:(id)sender;

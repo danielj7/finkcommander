@@ -52,8 +52,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 		//Set base path default, if necessary; write base path into perl script used
 		//to obtain fink package data
-		if (! [defaults boolForKey: FinkBasePathFound]) { findFinkBasePath(); }
+		if (! [defaults boolForKey: FinkBasePathFound]) { 
+			findFinkBasePath(); 
+		}
 		fixScript();
+		
+		if (! [defaults boolForKey:FinkInitialEnvironmentHasBeenSet]){
+			setInitialEnvironmentVariables();
+			[defaults setBool:YES forKey:FinkInitialEnvironmentHasBeenSet];
+		}
 
 		//Set instance variables used to store information related to fink package data
 		packages = [[FinkDataController alloc] init];		// data used in table
@@ -219,7 +226,6 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	lastCommand = s;	
 }
 
--(NSString *)password {return password;}
 -(void)setPassword:(NSString *)s
 {
 	[s retain];
@@ -251,7 +257,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	int answer;
 	
-	if (commandIsRunning && ! userChoseToTerminate){
+	if (commandIsRunning && 
+		! userChoseToTerminate){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(@"Warning!", 
 			@"Quitting now will interrupt a Fink process.",
 			@"Cancel", @"Quit", nil);
@@ -279,7 +286,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			return NO;
 		}
 	}
-	userChoseToTerminate = YES;
+	userChoseToTerminate = YES; //flag to make sure we ask only once
 	return YES;
 }
 
@@ -487,7 +494,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	if (code = NSOKButton){
 		NSData *odata = [[textView string] dataUsingEncoding: NSUTF8StringEncoding];
-		[odata writeToFile: [sheet filename] atomically: YES];
+		[odata writeToFile: [sheet filename] atomically:YES];
 	}
 }
 
@@ -575,7 +582,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	[packageInfo setEmailSig: sig];
 	while (pkg = [e nextObject]){
-		[packageInfo sendEmailForPackage: pkg];
+		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
 	}
 }
 
@@ -884,7 +891,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 
 	if (passwordError && [[finkTask task] isRunning]){
-		[finkTask writeToStdin: [self password]];
+		[finkTask writeToStdin: password];
 	}
 }
 
@@ -932,15 +939,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(void)runCommandWithParameters:(NSMutableArray *)params
 {
 	NSString *executable = [params objectAtIndex: 0];
-	NSMutableDictionary *d;
-	NSString *proxy;
-	NSString *basePath = [defaults objectForKey: FinkBasePath];
-	NSString *binPath = [basePath stringByAppendingPathComponent: @"/bin"];
-	char *proxyEnv;
-
+	
 	passwordError = NO;
 
-	if ([[self password] length] < 1 && 
+	if ([password length] < 1 && 
 		! [defaults boolForKey: FinkNeverAskForPassword]){
 		[self setLastParams: params];
 		pendingCommand = YES;
@@ -964,7 +966,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if ([[params objectAtIndex: 1] isEqualToString: @"remove"] && 
 		[defaults boolForKey: FinkWarnBeforeRemoving]){
 		int answer = NSRunCriticalAlertPanel(@"Caution",
-			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Uniphobe or by pressing \"Remove/Don't Warn\".)",
+			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Commander or by clicking \"Remove/Don't Warn\".)",
 			@"Don't Remove", @"Remove",  @"Remove/Don't Warn");
 		switch(answer){
 			case NSAlertDefaultReturn:
@@ -990,40 +992,18 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		 [executable isEqualToString: @"apt-get"])){
 		[params insertObject: @"-y" atIndex: 3];
 	}
-	//give apt-get a chance to fix broken dependencies
-	if ([executable isEqualToString: @"apt-get"]){
+	if ([executable isEqualToString: @"apt-get"]){ //give apt-get a chance to fix broken dependencies
 		[params insertObject: @"-f" atIndex: 3];
 	}
-	if (DEBUGGING) { NSLog(@"Command = %@", [params componentsJoinedByString: @" "]); }
-	
-	//set up environment variables for task
-	d = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:
-				@"/%@:/%@/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:",
-				binPath, basePath],
-			@"PATH",
-			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
-			@"PERL5LIB",
-			@"ssh",
-			@"CVS_RSH",
-		nil];
-	proxy = [defaults objectForKey: FinkHTTPProxyVariable];
-	if ([proxy length] > 0){
-		[d setObject: proxy forKey: @"http_proxy"];
-	}else if (! [defaults boolForKey: FinkLookedForProxy]){
-		if (proxyEnv = getenv("http_proxy")){
-			proxy = [NSString stringWithCString: proxyEnv];
-			[d setObject: proxy  forKey: @"http_proxy"];
-			[defaults setObject: proxy forKey: FinkHTTPProxyVariable];
-		}
-		[defaults setBool: YES forKey: FinkLookedForProxy];
-	}
-		
+	if (DEBUGGING){
+		NSLog(@"Command = %@", [params componentsJoinedByString: @" "]);
+		NSLog(@"Environment for command: %@", [defaults objectForKey:FinkEnvironmentSettings]);
+	} 
 	pendingCommand = NO;
 
 	[finkTask release];
 	finkTask = [[IOTaskWrapper alloc] initWithController: self];
-	[finkTask setEnvironmentDictionary: d];
+	[finkTask setEnvironmentDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
 
 	// start the process asynchronously
 	[finkTask startProcessWithArgs: params];
@@ -1033,17 +1013,22 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {
 	NSMutableArray *args = [note object];
 	NSString *cmd = [args objectAtIndex: 0];
+	NSNumber *indicator = [[note userInfo] objectForKey:FinkRunProgressIndicator];
 		
 	if (commandIsRunning){
 		NSRunAlertPanel(@"Sorry",
-				  @"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"done\" appears below the output view.",
+				  @"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.",
 				  @"OK", nil, nil);
 		if ([cmd isEqualToString:@"/bin/cp"]){
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		}
 		return;
 	}
-	[self startProgressIndicatorAsIndeterminate:YES];
+		
+	if (indicator){
+		[self startProgressIndicatorAsIndeterminate:[indicator intValue]];
+	}
+		
 	[self setLastCommand: ([cmd contains:@"fink"] ? [args objectAtIndex:1] : cmd)];
 	commandIsRunning = YES; 
 	[self displayCommand: args];
@@ -1084,17 +1069,16 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 			[self raisePwdWindow: self];
 			break;
 		case FC_PASSWORD_PROMPT_SIGNAL:
-			[finkTask writeToStdin: [self password]];
+			[finkTask writeToStdin: password];
 			break;
 	}
 
 	[textView appendString:output];
 
-	//  according to Moriarity example, have to put off scrolling until next event loop
-	[self performSelector: @selector(scrollToVisible:) withObject: theTest 
-				  afterDelay: 0.0];
+	//according to Moriarity example, we have to put off scrolling until next event loop
+	[self performSelector:@selector(scrollToVisible:) withObject:theTest 
+				  afterDelay:0.0];
 }
-
 
 -(void)processStarted
 {
@@ -1164,8 +1148,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self updateTable: nil];
 	}
 	[[NSNotificationCenter defaultCenter]
-		postNotificationName: FinkCommandCompleted 
-		object: [self lastCommand]]; 
+		postNotificationName:FinkCommandCompleted 
+		object:[self lastCommand]]; 
 }
 
 @end

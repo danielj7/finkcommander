@@ -1,7 +1,3 @@
-//
-//  FinkOutputParser.h
-//  FinkCommander
-//
 /*
 File: FinkOutputParser.h
 
@@ -33,7 +29,7 @@ File: FinkOutputParser.h
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
 #import <Foundation/Foundation.h>
 #import "FinkGlobals.h"
@@ -41,7 +37,7 @@ File: FinkOutputParser.h
 #define ISPROMPT(x) ([(x) contains: @"proceed? ["] 	|| \
 					 [(x) contains: @"one: ["] 		|| \
 					 [(x) containsCI: @"[y/n]"] 	|| \
-					 [(x) contains: @"[anonymous]"] 	|| \
+					 [(x) contains: @"[anonymous]"] || \
 					 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
 
 #define ISMANDATORY_PROMPT(x)	([(x) contains: @"cvs.sourceforge.net's password:"] || \

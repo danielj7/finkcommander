@@ -127,12 +127,12 @@ NSString *DEVTOOLS_TEST_PATH =
 	NSString *pathToMake;
 	NSString *versionString;
 	NSString *versionNumber;
-	NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
 	NSScanner *versionScanner;
 	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
 													@"0123456789."];
 	NSArray *pathComponents;
 
+	//use which to find the path to make
 	[whichTask setLaunchPath: @"/usr/bin/which"];
 	[whichTask setArguments: [NSArray arrayWithObjects: @"make", nil]];
 	[whichTask setStandardOutput: whichPipe];
@@ -145,13 +145,13 @@ NSString *DEVTOOLS_TEST_PATH =
 	if ([pathToMake contains: @"not found"] || [pathToMake contains:@"no make"]){
 		return @"Unable to locate \"make.\"";
 	}
-	
+	//make sure we're looking at the last line of the result
 	pathComponents = [pathToMake componentsSeparatedByString:@"\n"];
-	NSLog(@"path array: %@", pathComponents);
 	pathToMake = [pathComponents count] > 1 ? 
 					[pathComponents objectAtIndex: [pathComponents count] - 2] :
 					[pathComponents objectAtIndex:0];
 	if (DEBUGGING) { NSLog(@"Path to make: %@", pathToMake); }
+	//get the result of make -v
 	[versionTask setLaunchPath: [pathToMake strip]];
 	[versionTask setArguments: [NSArray arrayWithObjects: @"-v", nil]];
 	[versionTask setStandardOutput: versionPipe];
@@ -160,7 +160,7 @@ NSString *DEVTOOLS_TEST_PATH =
 										encoding: NSUTF8StringEncoding] autorelease];
 	[versionTask release];
 	[versionStdout closeFile];
-	
+	//parse the result for the version number
 	versionScanner = [NSScanner scannerWithString:versionString];
 	[versionScanner scanUpToString:@"version " intoString:NULL];
 	[versionScanner scanString:@"version " intoString:NULL];

@@ -2,9 +2,12 @@
     IBClasses = (
         {
             ACTIONS = {
+                addEnvironmentSetting = id; 
                 askOnStartup = id; 
                 cancel = id; 
                 neverAsk = id; 
+                removeEnvironmentSettings = id; 
+                restoreEnvironmentSettings = id; 
                 selectDirectory = id; 
                 setAndClose = id; 
                 setAutoExpandChanged = id; 
@@ -17,11 +20,14 @@
             CLASS = FinkPreferences; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                addEnvironmentSettingButton = NSButton; 
                 alwaysChooseDefaultsButton = NSButton; 
                 askOnStartupButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
                 basePathTextField = NSTextField; 
+                deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 
+                environmentTableView = NSTableView; 
                 fetchAltDirButton = NSButton; 
                 fetchAltDirTextField = NSTextField; 
                 ftpProxyButton = NSButton; 
@@ -31,6 +37,7 @@
                 httpProxyTextField = NSTextField; 
                 keepBuildDirectoryButton = NSButton; 
                 keepRootDirectoryButton = NSButton; 
+                nameTextField = NSTextField; 
                 neverAskButton = NSButton; 
                 outputPathButton = NSButton; 
                 outputPathTextField = NSTextField; 
@@ -42,10 +49,12 @@
                 scrollToBottomButton = NSButton; 
                 scrollToSelectionButton = NSButton; 
                 showPackagesInTitleButton = NSButton; 
+                tabView = NSTabView; 
                 titleBarImageView = NSImageView; 
                 updateWithFinkButton = NSButton; 
                 useUnstableCryptoButton = NSButton; 
                 useUnstableMainButton = NSButton; 
+                valueTextField = NSTextField; 
                 verboseOutputButton = NSButton; 
                 warnBeforeRemovingButton = NSButton; 
                 warnBeforeRunningButton = NSButton; 

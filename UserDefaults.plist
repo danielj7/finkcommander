@@ -14,12 +14,21 @@
 	<string></string>
 	<key>FinkBasePathFound</key>
 	<false/>
+	<key>FinkBufferLimit</key>
+	<integer>10000</integer>
 	<key>FinkCheckForNewVersion</key>
 	<true/>
+	<key>FinkEnvironmentSettings</key>
+	<dict>
+		<key>CVS_RSH</key>
+		<string>ssh</string>
+	</dict>
 	<key>FinkGiveEmailCredit</key>
 	<true/>
 	<key>FinkHTTPProxyVariable</key>
 	<string></string>
+	<key>FinkInitialEnvironmentHasBeenSet</key>
+	<false/>
 	<key>FinkLookedForProxy</key>
 	<false/>
 	<key>FinkNeverAskForPassword</key>
@@ -67,7 +76,5 @@
 	<true/>
 	<key>FinkWarnBeforeRunning</key>
 	<false/>
-	<key>FinkBufferLimit</key>
-	<integer>0</integer>
 </dict>
 </plist>

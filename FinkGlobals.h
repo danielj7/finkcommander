@@ -63,6 +63,8 @@ extern NSString *FinkAutoExpandOutput;
 extern NSString *FinkGiveEmailCredit;
 extern NSString *FinkCheckForNewVersion;
 extern NSString *FinkBufferLimit;
+extern NSString *FinkEnvironmentSettings;
+extern NSString *FinkInitialEnvironmentHasBeenSet;
 //  not yet implemented
 extern NSString *FinkLastCheckedForNewVersion;
 extern NSString *FinkCheckForNewVersionInterval;
@@ -80,5 +82,8 @@ extern NSString *FinkRunCommandNotification;
 extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;
+
+//UserInfo Keys
+extern NSString *FinkRunProgressIndicator;
 
 extern NSString *FinkCreditString;

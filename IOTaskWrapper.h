@@ -54,9 +54,9 @@ Contact the author at sburrious@users.sourceforge.net.
 @end
 
 @interface IOTaskWrapper : NSObject {
-    NSTask 				*task;
-    id					<IOTaskWrapperController>controller;
-	NSDictionary		*environment;
+    NSTask *task;
+    id <IOTaskWrapperController>controller;
+	NSDictionary *environment;
 }
 
 // Accessor

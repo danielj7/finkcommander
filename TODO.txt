@@ -1,50 +1,54 @@
 NEXT RELEASE
 
-Optional limit on output buffer--bug fix
+x Optional limit on output buffer--bug fix
 
-Show info panel for fink installation; include:
-	fink version
-	package version
-	OSX version
-	Developer Tools installed
-	
-Command inspector:  show currently running command with list of
-	all packages
+x Allow user to set environment variables
 
 Automize check for new FinkCommander release
 
-Command to update fink from cvs
-	
+TESTING:  Check compatibility with existing installation, brand new installation
+
 
 FUNCTIONALITY
 
 **Short Term
 
-Allow user to set environment variables
+Show info panel for fink installation
 
-Command scheduling in preferences (e.g. selfupdate-cvs every 7 days)
+Command to update fink from cvs
+
+Use Camelbones and thread to gather package information
+
+Add installed version instance variable to package objects; allow display in table; display in Package Inspector
+
+Command inspector:  show currently running command with list of all packages subject to command (parse output to determine); show start time and duration; include refresh button
+
+Allow user to specify administrator name in password entry sheet
+
+Command scheduling (e.g. selfupdate-cvs every 7 days) in preferences or tool
 
 Run command in terminal option
 
 Find panel for output view
 
-Custom script suite
+Option to run command in Terminal as a solution to security concerns (waiting for Jaguar changes to dev tools)
 
 **Long Term
+
+Custom script suite
 
 Command to display a package's dependencies
 
 Dependency browser
 
-Redo authorization and command launch methods to use "correct" approach (see AuthSample)
+If feasible:  Redo authorization and command launch methods to use "correct" approach (see AuthSample)
 
 
 EASE OF USE
 
-Determinate progress bar for fink command phases
+Determinate progress bar and more detailed message text for fink command phases
 
-Put text of prompts and choices in the form of buttons in the
-interaction panel
+Put text of prompts and choices in the form of buttons in the interaction panel
 
 Localization strings
 
@@ -53,4 +57,4 @@ Additional toolbar commands and icons
 
 COSMETICS
 
-Better application icon
+X Better application icon

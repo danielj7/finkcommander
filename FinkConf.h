@@ -9,8 +9,8 @@ File: FinkConf.h
 
  The FinkConf class serves as a model for the /sw/etc/fink.conf configuration
  file.  Its methods are used by FinkPreferences to modify the file and thus
- configure fink itself.  It currently makes use of the FinkController 
- runCommandWithParams: method through a notification to make changes that require 
+ configure fink itself.  It sends a notification to FinkController which 
+ triggers the runCommandWithParams: method to make changes that require 
  root privileges.
 
  Copyright (C) 2002  Steven J. Burr
@@ -31,7 +31,7 @@ File: FinkConf.h
 
  Contact the author at sburrious@users.sourceforge.net.
 
- */
+*/
 
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"

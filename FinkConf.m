@@ -312,9 +312,11 @@ File: FinkConf.m
 		[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
 		backupFile,
 		nil];
+	NSDictionary *d = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:YES]
+									forKey:FinkRunProgressIndicator];
 
 	[center postNotificationName: FinkRunCommandNotification
-			object: backupFinkConfArray];
+			object: backupFinkConfArray userInfo:d];
 }
 
 //completes process of writing changes to fink.conf file;
@@ -325,8 +327,10 @@ File: FinkConf.m
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	NSString *basePath = [defaults objectForKey: FinkBasePath];
 	NSFileManager *manager = [NSFileManager defaultManager];
-	//if backup performed, write out temp fink.conf file and change ownership to root admin
-	
+	NSDictionary *d = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:YES] 
+									forKey:FinkRunProgressIndicator];
+
+	//afte backup, write out temp fink.conf file and change ownership to root admin	
 	if ([[n object] contains: @"cp"]){
 		NSString *fconfString = [self stringFromDictionary];
 		NSString *backupFile = [NSString stringWithFormat: @"%@/etc/fink.conf~", basePath];
@@ -336,16 +340,16 @@ File: FinkConf.m
 			@"root",
 			tempFile,
 			nil];
-#ifdef DEBUG
-		NSLog(@"Writing following to fink.conf:\n%@", fconfString);
-#endif
+		if (DEBUGGING){
+			NSLog(@"Writing following to fink.conf:\n%@", fconfString);
+		}
 		//note: NSString write to file method returns boolean YES if successful
 		if ([manager fileExistsAtPath: backupFile] &&
 			[fconfString writeToFile: tempFile atomically: YES]){
 			[manager changeFileAttributes: [NSDictionary dictionaryWithObject: @"admin" 
 				forKey: NSFileGroupOwnerAccountName] atPath: tempFile];
-			[center postNotificationName: FinkRunCommandNotification
-								  object: chownCommandArray];
+			[center postNotificationName:FinkRunCommandNotification
+								  object:chownCommandArray userInfo:d];
 		}else{			
 			NSRunCriticalAlertPanel(@"Error",
 						   @"FinkCommander was unable to write changes to fink.conf.",
@@ -358,8 +362,8 @@ File: FinkConf.m
 			@"/private/tmp/fink.conf.tmp",
 			[NSString stringWithFormat: @"%@/etc/fink.conf", basePath],
 			nil];
-		[center postNotificationName: FinkRunCommandNotification
-			object: writeFinkConfArray];
+		[center postNotificationName:FinkRunCommandNotification
+			object:writeFinkConfArray userInfo:d];
 	//if fink.conf file trees parameter was changed, call index to make table data reflect
 	//new fink.conf settings
 	}else if (finkTreesChanged && [[n object] contains: @"mv"]){
@@ -367,11 +371,9 @@ File: FinkConf.m
 			@"fink",
 			@"index",
 			nil];
-			
 		[self setFinkTreesChanged: NO];
-
-		[center postNotificationName: FinkRunCommandNotification
-				object: indexCommandArray];
+		[center postNotificationName:FinkRunCommandNotification
+				object:indexCommandArray userInfo:d];
 	}
 }
 

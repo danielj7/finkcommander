@@ -42,5 +42,14 @@ File: FinkUtilities.h
 
 void findFinkBasePath(void);
 void fixScript(void);
+void setInitialEnvironmentVariables(void);
 
 void terminateChildProcesses(void);
+
+BOOL addEnvironmentVariable(NSString *key, NSString *value);
+NSDictionary *environmentSettingWithName(NSString *name);
+BOOL removeEnvironmentVariable(NSDictionary *setting);
+
+
+
+

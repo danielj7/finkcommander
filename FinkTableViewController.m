@@ -139,13 +139,13 @@ File: FinkTableViewController.m
 -(void)removeColumnWithName:(NSString *)identifier
 {	
 	NSArray *columns = [defaults objectForKey: FinkTableColumnsArray];
-	NSMutableArray *reducedColumns = [columns mutableCopy];
+	NSMutableArray *reducedColumns = [[columns mutableCopy] autorelease];
 	
 	[self removeTableColumn: [self tableColumnWithIdentifier: identifier]];
 	[self sizeLastColumnToFit];
 	[reducedColumns removeObject: identifier];
 	columns = reducedColumns;
-	[defaults setObject: columns forKey: FinkTableColumnsArray];
+	[defaults setObject:columns forKey:FinkTableColumnsArray];
 }
 
 //----------------------------------------------->DataSource Methods

@@ -29,6 +29,8 @@ NSString *FinkCheckForNewVersion = @"FinkCheckForNewVersion";
 NSString *FinkBufferLimit = @"FinkBufferLimit";
 NSString *FinkLastCheckedForNewVersion = @"FinkLastCheckedForNewVersion";
 NSString *FinkCheckForNewVersionInterval = @"FinkCheckForNewVersionInterval";
+NSString *FinkEnvironmentSettings = @"FinkEnvironmentSettings";
+NSString *FinkInitialEnvironmentHasBeenSet = @"FinkInitialEnvironmentHasBeenSet";
 
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
@@ -43,6 +45,8 @@ NSString *FinkRunCommandNotification = @"FinkRunCommandNotification";
 NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";
+
+NSString *FinkRunProgressIndicator = @"FinkRunProgressIndicator";
 
 NSString *FinkCreditString = @"&body=%0A%0A--%0AFeedback%20courtesy%20%20of%20FinkCommander";
 

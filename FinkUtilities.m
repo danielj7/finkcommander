@@ -56,7 +56,8 @@ void findFinkBasePath(void)
 		[findTask setStandardOutput: pipeIn];
 		[findTask launch];
 		whichPath = [[[NSString alloc] initWithData: [cmdStdout readDataToEndOfFile]
-																encoding: NSUTF8StringEncoding] autorelease];
+														encoding: NSUTF8StringEncoding]
+														autorelease];
 		//get the stuff before /bin/fink
 		range = [whichPath rangeOfString: @"/bin/fink"];
         if (range.length > 0){
@@ -72,18 +73,51 @@ void findFinkBasePath(void)
 
 void fixScript(void)
 {
-	NSString *pathToScript = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType: @"pl"];
+	NSString *pathToScript = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
 	NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile: pathToScript];
 	NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath];
 	NSRange rangeOfBASEPATH;
 
 	while((rangeOfBASEPATH = [scriptText rangeOfString: @"BASEPATH"]).length > 0){
 		LOGIFDEBUG(@"Replacing BASEPATH with path to fink");
-		[scriptText replaceCharactersInRange: rangeOfBASEPATH withString: basePath];
+		[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 	}
 
 	[scriptText writeToFile:pathToScript atomically:YES];
 }
+
+//------------------------------------------------------------>Environment Defaults
+void setInitialEnvironmentVariables(void)
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSMutableDictionary *settings;
+	NSString *basePath = [defaults objectForKey:FinkBasePath];
+	NSString *proxy;
+	char *proxyEnv;
+
+	settings = 
+	[NSMutableDictionary 
+		dictionaryWithObjectsAndKeys: 
+			[NSString stringWithFormat:
+				@"%@/bin:%@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin", 
+				basePath, basePath],
+			@"PATH",
+			[NSString stringWithFormat: @"%@/lib/perl5", basePath],
+			@"PERL5LIB", nil];
+
+	proxy = [defaults objectForKey: FinkHTTPProxyVariable];
+	if ([proxy length] > 0){
+		[settings setObject:proxy forKey:@"http_proxy"];
+	}else if (! [defaults boolForKey: FinkLookedForProxy]){
+		if (proxyEnv = getenv("http_proxy")){
+			proxy = [NSString stringWithCString: proxyEnv];
+			[settings setObject:proxy forKey:@"http_proxy"];
+		}
+		[defaults setBool:YES forKey:FinkLookedForProxy];
+	}
+	[defaults setObject:settings forKey:FinkEnvironmentSettings];
+}
+
 
 //------------------------------------------------------------>Process Termination
 NSString *ps(void)
@@ -150,3 +184,5 @@ void terminateChildProcesses(void)
 		cpid = childOfProcess(ppid);
 	}
 }
+
+
