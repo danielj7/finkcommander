@@ -9,6 +9,7 @@ File: FinkInstallationInfo.m
 
 //Constants
 #define MAY_TOOLS_VERSION  @"2.0.1"
+#define DEVTOOLS_TEST_PATH0 @"/Developer/Applications/Xcode.app/Contents/version.plist"
 #define DEVTOOLS_TEST_PATH1 @"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist"
 #define DEVTOOLS_TEST_PATH2 @"/Developer/Applications/Interface Builder.app/Contents/version.plist"
 
@@ -199,6 +200,15 @@ File: FinkInstallationInfo.m
 {
 	NSString *error = @"Unable to determine Developer Tools version";
 	NSString *version;
+
+    if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
+		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH0);
+		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0]
+							objectForKey:@"CFBundleShortVersionString"];
+		if (! version  || [version length] < 3) return error;
+		version = [@"Xcode tools " stringByAppendingString:version];
+		return version;
+	}
 
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
