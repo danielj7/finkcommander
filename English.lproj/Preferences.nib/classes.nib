@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {cancel = id; setPreferences = id; }; 
+            CLASS = FinkPreferences; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {basePathTextField = NSTextField; pathChoiceMatrix = NSMatrix; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
