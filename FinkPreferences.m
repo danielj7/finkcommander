@@ -6,6 +6,8 @@ File: FinkPreferences.m
  */
 #import "FinkPreferences.h"
 
+//Global variables used throughout FinkCommander source code to set 
+//user defaults.
 NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
@@ -20,10 +22,13 @@ NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
 {
 	self = [super initWithWindowNibName: @"Preferences"];
 	defaults = [NSUserDefaults standardUserDefaults];
+	[self setWindowFrameAutosaveName: @"Preferences"];
+
 	return self;
 }
 
 //helper to set or reset state of preference widgets
+//used on startup by windowDidLoad: method and when "Cancel" button clicked
 -(void)resetPreferences
 {
 	NSString *basePath;

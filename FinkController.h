@@ -66,26 +66,17 @@ Contact the author at sburr@mac.com.
 	NSImage *normalSortImage;
 	BOOL commandIsRunning;
 
-//MOVE	
+	//Authentication and Process Control
 	NSString *password;
 	BOOL pendingCommand;
 	NSMutableArray *lastParams;
 	IOTaskWrapper *finkTask;
-//ENDMOVE
 }
 
 //Accessors
 -(FinkDataController *)packages;
-
-//MOVE
--(NSString *)password;
--(void)setPassword:(NSString *)s;
--(NSMutableArray *)lastParams;
--(void)setLastParams:(NSMutableArray *)a;
 -(BOOL)pendingCommand;
 -(void)setPendingCommand:(BOOL)b;
-//ENDMOVE
-
 -(NSArray *)selectedPackages;
 -(void)setSelectedPackages:(NSArray *)a;
 -(NSString *)lastCommand;
@@ -94,6 +85,11 @@ Contact the author at sburr@mac.com.
 -(void)setLastIdentifier:(NSString *)s;
 -(BOOL)commandIsRunning;
 -(void)setCommandIsRunning:(BOOL)b;
+//Authentication and process control
+-(NSString *)password;
+-(void)setPassword:(NSString *)s;
+-(NSMutableArray *)lastParams;
+-(void)setLastParams:(NSMutableArray *)a;
 
 //Action and sheet methods
 -(IBAction)raisePwdWindow:(id)sender;
@@ -124,9 +120,7 @@ Contact the author at sburr@mac.com.
 -(void)tableView:(NSTableView *)aTableView
         mouseDownInHeaderOfTableColumn:(NSTableColumn *)aTableColumn;
 
-#ifndef REFACTOR
 //Process control
 -(void)runCommandWithParams:(NSMutableArray *)params;
-#endif REFACTOR
 
 @end
