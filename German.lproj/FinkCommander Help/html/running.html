@@ -12,51 +12,75 @@
 
 <h3>Grundlagen</h3>
 
-<p>Kommandos ausf&uuml;hren ist selbsterkl&auml;rend. Wenn sich ein Kommando auf ein Paket bezieht 
+<p>Wenn sich ein Kommando auf ein Paket bezieht 
 (z.B. "Paket installieren"), dann markieren Sie ein oder mehrere Paket(e) in der Tabelle und
-w&auml;hlen aus dem Source oder Bin&auml;r Men&uuml; das Kommando, welches Sie ausf&uuml;hren m&ouml;chten. 
-Verwenden Sie Umstelltaste- oder Optionstaste-Klick um mehr als ein Paket zu markieren</p>
+w&auml;hlen aus dem Source oder Bin&auml;r Men&uuml; oder der Werkzeugleiste das Kommando,
+welches Sie ausf&uuml;hren m&ouml;chten. Wie in jeder Tabellenauflistung k&ouml;nnen Sie
+Umstelltaste- oder Optionstaste-Klick verwenden, um mehr als ein Paket zu markieren. Sie
+k&ouml;nnen ebenfalls mehrere Pakete ausw&auml;hlen, indem Sie den Mauszeiger bei
+gedr&uuml;ckter linker Maustaste vertikal &uuml;ber die Paketliste ziehen (beim horizontalen
+Ziehen <a href="learning.html#info">werden die .info and .patch Dateien eines Pakets kopiert
+oder ge&ouml;ffnet</a>).</p>
 
-<p>Um ein Kommando auszuf&uuml;hren, welches nicht paketabh&auml;ngig ist (z.B. "Aktualisieren der Paketliste")
-w&auml;hlen Sie einfach das Kommando von Men&uuml; oder Werkzeugleiste.</p>
+<p>Um ein Kommando auszuf&uuml;hren, welches nicht paketabh&auml;ngig ist (z.B.
+"Aktualisieren der Paketliste") w&auml;hlen Sie einfach das Kommando aus dem Men&uuml;
+oder der Werkzeugleiste.</p>
 
-<p>Die <strong>Werkzeugleiste</strong> stellt eine Anzahl Symbole zur Ausf&uuml;hrung von Kommandos zur Verf&uuml;gung, welche in der 
-Grundkonfiguration nicht enthalten sind. Um die Werkzeugleiste Ihren Bed&uuml;rfnissen anzupassen, &ouml;ffnen Sie 
-<kbd>Window:Customize Toolbar</kbd>. Generell sind Symbole f&uuml;r Operationen mit bin&auml;ren Paketen blau, solche f&uuml;r 
-Operationen mit Paketen, welche direkt von Quelldateien erstellt werden, gr&uuml;n.</p>
+<p>Die <strong>Werkzeugleiste</strong> stellt eine Anzahl Symbole zur Ausf&uuml;hrung von
+Kommandos zur Verf&uuml;gung, welche in der Grundkonfiguration nicht enthalten sind. Um
+die Werkzeugleiste Ihren Bed&uuml;rfnissen anzupassen, &ouml;ffnen Sie
+<kbd>Darstellung:Symbolleiste anpassen</kbd>. Generell sind Symbole f&uuml;r Operationen
+mit bin&auml;ren Paketen blau, solche f&uuml;r Operationen mit Paketen, welche direkt von
+Quelldateien erstellt werden, gr&uuml;n.</p>
 
-<p>Wenn <strong>ein Befehl ausgef&uuml;hrt wird</strong>, erscheint der Name des Kommandos und, falls dies der Platz 
-erlaubt, eine Liste der Pakete auf welche der Befehl angewendet wird, linksunten im Fenster. Sobald das Kommando beendet ist
-erscheint entweder die Meldung "Fertig" oder "Paketdaten werden jetzt aktualisiert".
- <a href="details/fc_tableupdate.html">Mehr Details</a>.</p>
+<p>Wenn <strong>ein Befehl ausgef&uuml;hrt wird</strong>, erscheint auf der linken Seite
+der Statuszeile (die Zeile ganz unten im Hauptfenster) der Name des Kommandos und, falls
+dies der Platz erlaubt, eine Liste der Pakete auf welche der Befehl angewendet
+wird. W&auml;hrend Pakete von Quelldateien erstellt werden, erscheinen stattdessen
+Nachrichten, die die aktuelle Installationsphase bezeichnen, sowie rechts davon eine
+(deterministische) Fortschrittsanzeige. Sobald das Kommando beendet ist, kann es sein,
+dass in der Statuszeile die Meldung "Paketdaten werden jetzt aktualisiert" und rechts
+davon eine (nicht deterministischer) Fortschrittsanzeige erscheinen.
+<a href="details/fc_tableupdate.html">Mehr Details</a>.</p>
 
-<p>Solange sich Kommandos in Ausf&uuml;hrung befinden, werden die entsprechenden Men&uuml;eintr&auml;ge und Werkzeugleisten-Symbole
-ausgeblendet.</p>
+<p>Solange sich Kommandos in Ausf&uuml;hrung befinden, werden die entsprechenden
+Men&uuml;eintr&auml;ge und Werkzeugleisten-Symbole ausgeblendet. Es ist jedoch m&ouml;glich,
+<a href="#terminal" target="_right">ein weiteres Kommando im Terminal auszuf&uuml;hren</a>.</p>
 
 <h3><a name="terminate">Kommandos zum Beenden von Prozessen</a></h3>
 
-<p>Sie k&ouml;nnen einen Prozess gew&ouml;hnlich beenden durch (1) Dr&uuml;cken des Stop-Symbols in der Werkzeugleiste, 
-(2) Dr&uuml;cken von <kbd>Option-.</kbd> auf der Tastatur oder (3) Auswahl des Men&uuml;eintrags 
-<kbd>Werkzeuge:Befehl beenden</kbd>.  
+<p>Sie k&ouml;nnen einen Prozess gew&ouml;hnlich beenden durch (1) Dr&uuml;cken des
+Stop-Symbols in der Werkzeugleiste, (2) Dr&uuml;cken von <kbd>Option-.</kbd> auf der
+Tastatur oder (3) Auswahl des Men&uuml;eintrags <kbd>Werkzeuge:Befehl beenden</kbd>.  
 
 <h3><a name="binary">Source vs. Bin&auml;r</a></h3>
 
 <p>Die Kommandos im Men&uuml; <kbd>Source</kbd> werden durch den Fink Paket Manager
-ausgef&uuml;hrt, Kommandos im Men&uuml; <kbd>Bin&auml;r</kbd> durch Apt-Get.  Generell &uuml;bernimmt Fink 
-Pakete, welche als Quellcode heruntergeladen werden, Apt-Get Pakete, die in bin&auml;rer Form 
-verf&uuml;gbar sind. Daher auch die Men&uuml;namen.</p>
+ausgef&uuml;hrt, Kommandos im Men&uuml; <kbd>Bin&auml;r</kbd> durch Apt-Get. Generell
+&uuml;bernimmt Fink Pakete, welche als Quellcode heruntergeladen werden, Apt-Get
+Pakete, die in bin&auml;rer Form verf&uuml;gbar sind. Daher auch die Men&uuml;namen.</p>
 
-<p>Zu jeder Regel gibt es nat&uuml;rlich auch Ausnahmen: Falls Sie zum Beispiel ein nur als Sourcecode 
-erh&auml;ltliches Paket installieren, es danach wieder entfernen und es erneut installieren bevor eine neuere
-Version erh&auml;ltlich wird, so verwendet der Fink Paket Manager das Kommando dpkg, da das Paket nun ja in bin&auml;rer 
-Form, als .deb Datei, auf Ihrem System vorliegt.</p>
+<p>Zu jeder Regel gibt es nat&uuml;rlich auch Ausnahmen: Falls Sie zum Beispiel ein
+nur als Sourcecode erh&auml;ltliches Paket installieren, es danach wieder entfernen
+und es erneut installieren, bevor eine neuere Version erh&auml;ltlich wird, so verwendet
+der Fink Paket Manager das Kommando dpkg, da das Paket nun ja in bin&auml;rer Form, als
+.deb Datei, auf Ihrem System vorliegt.</p>
 
 <h3><a name="terminal">Befehle im Terminal ausf&uuml;hren</a></h3>
 
-<p>Wenn Sie ein Befehl vom Men&uuml; <kbd>Source:Im Terminal ausf&uuml;hren</kbd> oder dem Men&uuml; 
-<kbd>Bin&auml;r:Im Terminal ausf&uuml;hren</kbd> ausw&auml;hlen, so &ouml;ffnet sich ein neues Terminalfenster, in welchem der ausgew&auml;hlte Befehl ausgef&uuml;hrt wird. M&ouml;glicherweise werden Sie hierbei aufgefordert Ihr Passwort einzugeben. Dieselbe Option ist auch &uuml;ber das Kontextmen&uuml; der Pakettabelle und einer Anzahl zus&auml;tzlicher Werkzeugleisten-Symbole erreichbar.</p>
+<p>Wenn Sie einen Befehl aus dem Men&uuml; <kbd>Source:Im Terminal ausf&uuml;hren</kbd>
+oder dem Men&uuml; <kbd>Bin&auml;r:Im Terminal ausf&uuml;hren</kbd> ausw&auml;hlen, so
+&ouml;ffnet sich ein neues Terminalfenster, in welchem der ausgew&auml;hlte Befehl
+ausgef&uuml;hrt wird. M&ouml;glicherweise werden Sie hierbei aufgefordert Ihr Passwort
+einzugeben. Dieselbe Option ist auch &uuml;ber das Kontextmen&uuml; der Pakettabelle
+und eine Anzahl zus&auml;tzlicher Werkzeugleisten-Symbole erreichbar.</p>
 
-<p>Falls Sie w&uuml;nschen k&ouml;nnen Sie diese Option verwenden, um ein zweites fink Kommando auszuf&uuml;hren, w&auml;hrend ein anderes Kommando in FinkCommander ausgef&uuml;hrt wird. Seien Sie bei der parallelen Ausf&uuml;hrung von Kommandos aber vorsichtig: Gleichzeitiges Installieren eines Paketes und Entfernen einer Abh&auml;ngigkeit desselben Paketes kann unvorhersehbare Folgen haben.</p>
+<p>Falls Sie w&uuml;nschen k&ouml;nnen Sie diese Option verwenden, um ein zweites fink
+Kommando auszuf&uuml;hren, w&auml;hrend ein anderes Kommando in FinkCommander
+ausgef&uuml;hrt wird. Setzen Sie diese M&ouml;glichkeit aber nur vorsichtig
+ein, da das gleichzeitige Ausf&uuml;hren von inkompatiblen Kommandos, wie z.B. das
+gleichzeitige Installieren eines Paketes und das Entfernen einer Abh&auml;ngigkeit
+desselben Paketes, unvorhersehbare Folgen haben kann.</p>
 
 </body>
 </html>

@@ -10,43 +10,40 @@
 <h2>Bekannte Fehler und Einschr&auml;nkungen</h2>
 
 <dl>
-
-    <dt>Ausf&uuml;hren von FinkCommander von einem Benutzerkonto aus, das keine Administrator Privilegien hat</dt>
-    <dd><p>Leider ist dies zurzeit nicht m&ouml;glich. FinkCommander verwendet das 
-    sudo Kommando um Aktionen, die Administrator Privilegien ben&ouml;tigen,
-    auszuf&uuml;hren, und ich habe noch keinen Weg gefunden neben dem Paswort auch den Namen 
-    eines Administrators an sudo weiterzureichen.<p></dd>
-	
     <dt>Fehler bei Aufforderung zur Benutzereingabe</dt>
-    <dd><p>In einigen F&auml;llen kann es vorkommen, dass die Aufforderung zur Benutzereingabe nicht angezeigt wird 
-    wenn Fink auf eine Antwort wartet. Der Grund hierf&uuml;r ist, dass Fink manchmal nicht automatisch auf eine Eingabe
-    reagiert, obwohl die Option <kbd>Einstellungen:Commander:Bei Fragen immer Vorschlag von Fink als Antwort verwenden</kbd> angew&auml;hlt 
-    ist. <a href="details/fc_defaults.html">Mehr details</a>. Falls dieses Problem auftritt, w&auml;hlen 
-    Sie <kbd>Werkzeuge:Eingabe an Fink senden</kbd> um eine Antwort einzugeben.  Optional ist hierf&uuml;r auch ein Symbol f&uuml;r 
-    die Symbolleiste vorhanden.</p></dd>
-	
+    <dd><p>In einigen F&auml;llen kann es vorkommen, dass die Aufforderung zur Benutzereingabe
+        nicht angezeigt wird, wenn Fink auf eine solche Eingabe wartet. Falls dieses Problem
+        auftritt, w&auml;hlen Sie <kbd>Werkzeuge:Eingabe an Fink senden</kbd>, um eine Antwort
+        einzugeben. Optional ist hierf&uuml;r auch ein Symbol in der Werkzeugleiste vorhanden.
+        Bitte senden Sie zus&auml;tzlich eine Email an sburrious@users.sourceforge.net mit der
+        Beschreibung des Prompts, f&uuml;r den die Aufforderung zur Benutzereingabe nicht angezeigt
+        wurde. Ich werde ihn in eine Liste von Prompts aufnehmen, die FinkCommander speziell
+        beachtet, wenn Kommandos ausgef&uuml;hrt werden.
+    </p></dd>
+
 	<dt>Fehler bei Aktualisierung mit apt-get</dt>
 	<dd><p>Falls Sie eine Fehlermeldung erhalten, nachdem Sie apt-get update ausgef&uuml;hrt haben, 
         versuchen Sie erst <kbd>Source:Scanpackages</kbd> auszuf&uuml;hren und dann erneut apt-get update.
 	</p></dd>
     
-    <dt>Falsche Tabelleneintr&auml;ge</dt>
-    <dd><p>Falls Sie die Option <dfn>Tabelle immer mit Fink aktualisieren</dfn>
-        abgew&auml;hlt haben, versucht FinkCommander selbst die Daten der Tabelle
-        zu aktualisieren, aber das Resultat wird h&ouml;chstens eine ungenaue
-        Ann&auml;herung des wahren Zustandes sein. Um eine komplette 
-        Aktualisierung zu erhalten, m&uuml;ssen Sie entweder die Option wieder 
-        einschalten oder <kbd>Ablage:Daten aktualisieren</kbd> ausf&uuml;hren.
-        <a href="details/fc_tableupdate.html">Mehr Details</a>.
-    </p></dd> 
-    
-    <dt>Tcsh Paket Problem</dt>
-    <dd><p>Die Auswahl von tcsh ist inaktiv, da FinkCommander abst&uuml;rzt
-    wenn versucht wird, dieses Paket zu installieren. Die Installation
-    von der Kommandozeile funktioniert hingegen problemlos. Falls Sie
-    dieses Problem auch mit anderen Paketen haben, senden Sie bitte einen
-     <a href="http://sourceforge.net/tracker/?group_id=48896&amp;atid=454467"
-        target="top">Fehlerreport.</a>
+	<dt>Atlas Installations Problem</dt>
+	<dd><p>Der Installationsvorgang des atlas Pakets beinhaltet einen langen interaktiven Teil,
+           w&auml;hrend dem mehrere Fragen auf der Kommandozeile beantwortet werden m&uuml;ssen.
+           Wenn FinkCommander diesen Punkt erreicht bleibt das Programm stehen und gibt nicht
+           einmal mehr die Eingabeaufforderungen aus. Ich bin nicht sicher wieso das passiert,
+           aber es w&auml;re ohnehin viel zu m&uuml;hsam, all die Fragen mit Hilfe der FinkCommander
+           Dialogaufforderung zur Benutzereingabe zu beantworten. Falls Sie also atlas installieren
+           wollen, m&uuml;ssen Sie das entweder direkt im Terminal Programm oder &uuml;ber den
+           FinkCommander Men&uuml;befehl <kbd>Source:Im Terminal ausf&uuml;hren:Install</kbd> tun.
+    </p></dd>
+
+    <dt>Problem mit den Paketen tcsh and term-readkey-pm</dt>
+    <dd><p>Bei der Auswahl von tcsh oder term-readkey-pm wird eine Warnung ausgel&ouml;st, da
+           FinkCommander bei der Installation dieser Pakete von Source h&auml;ngen bleibt. Die
+           Installation der Bin&auml;r-Pakete und die Installation &uuml;ber die Kommandozeile
+           funktioniert hingegen problemlos. Falls Sie dieses Problem auch mit anderen Paketen
+           haben, erfassen Sie bitte einen
+           <a href="http://finkcommander.sourceforge.net/pages/bugs.html" target="top">Bug Report</a>.
     </p></dd>  
 
 </dl>
