@@ -6,6 +6,23 @@ See the header file, FinkTableView.h, for interface and license information.
 
 #import "FinkTableView.h"
 
+//----------------------------------------------------------
+#pragma mark MACROS
+//----------------------------------------------------------
+
+#define MAX_FLAG_WIDTH 30.0
+#define MAX_STATUS_WIDTH 90.0
+#define MAX_CATEGORY_WIDTH 90.0
+#define MAX_NAME_WIDTH 200.0
+#define MAX_VERSION_WIDTH 130.0
+
+#define IS_VERSION_IDENTIFIER(id) 							\
+	[(id) isEqualToString:@"version"]	||					\
+	[(id) isEqualToString:@"stable"]	||					\
+	[(id) isEqualToString:@"unstable"]	||					\
+	[(id) isEqualToString:@"binary"]	||					\
+	[(id) isEqualToString:@"installed"]	
+
 @implementation FinkTableView
 
 //----------------------------------------------------------
@@ -130,10 +147,14 @@ See the header file, FinkTableView.h, for interface and license information.
 
 		while (nil != (theColumn = [colEnum nextObject])){
 			id columnValue = [self tableView:self objectValueForTableColumn:theColumn
-									row:[theRowNum intValue] ];
+									row:[theRowNum intValue]];
 			NSString *columnString = @"";
-			if (columnValue){
+			if ([columnValue isKindOfClass:[NSImage class]] && nil != columnValue){
+				columnString = @"YES";
+			}else if (nil != columnValue){
 				columnString = [columnValue description];
+			}else{
+				columnString = @"NO";
 			}
 			[theData appendFormat:@"%@\t", columnString];
 		}
@@ -144,8 +165,7 @@ See the header file, FinkTableView.h, for interface and license information.
 		[theData appendString:@"\n"];
 	}
 
-	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, NSStringPboardType, nil]
-						   owner:nil];
+	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, NSStringPboardType, nil] owner:nil];
 	[pb setString:[NSString stringWithString:theData]
 			 forType:NSStringPboardType];
 	[pb setString:[NSString stringWithString:theData]
@@ -252,14 +272,22 @@ See the header file, FinkTableView.h, for interface and license information.
 
 	if ([identifier isEqualToString:@"flagged"]){
 		NSCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
-		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];
 		[newColumn setDataCell:dataCell];
 		[dataCell release];
+		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];
+		[newColumn setMaxWidth:MAX_FLAG_WIDTH];
 	}else{
 		[[newColumn headerCell] setStringValue: title];
 		[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
+		if ([identifier isEqualToString:@"status"]){
+			[newColumn setMaxWidth:MAX_STATUS_WIDTH];
+		}else if ([identifier isEqualToString:@"category"]){
+			[newColumn setMaxWidth:MAX_CATEGORY_WIDTH];
+		}else if (IS_VERSION_IDENTIFIER(identifier)){
+			[newColumn setMaxWidth:MAX_CATEGORY_WIDTH];
+		}
 	}
-	
+	//Allow double click to open .info file
 	if ([identifier isEqualToString:@"name"]){
 		[newColumn setEditable:NO];
 	}else{
@@ -277,9 +305,11 @@ See the header file, FinkTableView.h, for interface and license information.
 	NSRect oldFrame = [[self window] frame];
 	NSRect newFrame = NSMakeRect(oldFrame.origin.x, oldFrame.origin.y,
 		oldFrame.size.width + 2, oldFrame.size.height);
-	
-	[lastColumn setWidth: [lastColumn width] * 0.5];
-	[newColumn setWidth: [lastColumn width] * 0.5];	
+		
+	[newColumn setWidth: MIN([newColumn maxWidth], [lastColumn width] *0.5)];
+	[lastColumn setWidth: MIN([lastColumn maxWidth], 
+							  [lastColumn width] - [newColumn width])];
+
 	[self addTableColumn: newColumn];
 	[[self window] setFrame:newFrame display:YES];
 	[self sizeLastColumnToFit];

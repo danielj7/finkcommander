@@ -18,8 +18,10 @@ See the header file, FinkController.h, for interface and license information.
 	[(x) contains: @"dpkg"]					|| 				\
 	[(x) contains: @"update"])
 
-/* Macros defining collections used to translate between tag numbers
-in MainMenu.nib and strings identifying FinkPackage attributes */
+/* 
+ * Macros defining collections used to translate between tag numbers
+ * in MainMenu.nib and strings identifying FinkPackage attributes 
+ */
 
 #define TAG_NAME_ARRAY 										\
  [NSArray arrayWithObjects: 								\
@@ -236,9 +238,11 @@ enum {
 #pragma mark GENERAL HELPERS
 //================================================================================
 
-/** Tag <-> Name Translation **/
-//Using tags rather than titles to tie the View menu items and search fields to
-//particular columns makes it possible to localize the column names
+/* 	
+	Tag <-> Name Translation 
+	Using tags rather than titles to tie the View menu items and search fields to
+	particular columns makes it possible to localize the column names. 
+*/
 
 -(NSString *)attributeNameFromTag:(int)atag
 {
@@ -472,25 +476,16 @@ enum {
     return YES;
 }
 
-//since this is a single window app, quit when window closes
--(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+-(void)windowWillClose:(NSNotification *)n
 {
-    return YES;
-}
+	NSMenuItem *raiseMainWindowItem = 
+		[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show Main Window", @"Menu Item Title")
+							action:@selector(bringBackMainWindow:)
+							keyEquivalent:@""];
 
-//but warn before closing window if a command is running
--(BOOL)windowShouldClose:(id)sender
-{
-    if (commandIsRunning){
-		int answer = NSRunCriticalAlertPanel(LS_WARNING,
-									   NSLocalizedString(@"QuittingNow", nil),
-									   LS_QUIT, LS_CANCEL,  nil);
-		if (answer == NSAlertAlternateReturn){
-			return NO;
-		}
-    }
-    userConfirmedQuit = YES; //flag to make sure we ask only once
-    return YES;
+	[windowMenu insertItem:raiseMainWindowItem atIndex:2];
+	[raiseMainWindowItem release];
+	[windowMenu insertItem:[NSMenuItem separatorItem] atIndex:3];
 }
 
 //make sure the authorization terminates at the end of each FC session
@@ -511,7 +506,7 @@ enum {
     if (!preferences){
 		preferences = [[FinkPreferences alloc] init];
     }
-    [preferences showWindow: self];
+    [preferences showWindow:self];
 }
 
 //helper; separated from action method because also called on schedule
@@ -819,6 +814,16 @@ enum {
 		path = [path stringByAppendingPathComponent:[pathContents objectAtIndex:0]];
 	}
 	[[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:root];
+}
+
+//----------------------------------------------->Window Menu
+#pragma mark Window Menu
+
+-(IBAction)bringBackMainWindow:(id)sender
+{
+	[window makeKeyAndOrderFront:sender];
+	[windowMenu removeItemAtIndex:2];
+	[windowMenu removeItemAtIndex:2];
 }
 
 //----------------------------------------------->Help and Tools Menu
@@ -1208,8 +1213,7 @@ enum {
     NSMutableArray *args;
     int answer = NSRunCriticalAlertPanel(LS_WARNING,
 										 NSLocalizedString(@"RunningForceRemove", nil),
-										 NSLocalizedString(@"Yes", nil),
-										 NSLocalizedString(@"No", nil), nil);
+										 LS_REMOVE, LS_CANCEL, nil);
     if (answer == NSAlertAlternateReturn) return;
 
     args = [self argumentListForCommand:sender packageSpecific:YES];
@@ -1226,7 +1230,7 @@ enum {
 	Dprintf(@"Running command %@ on notification", cmd);
 
     if (commandIsRunning && !toolIsBeingFixed){
-		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
+		NSRunAlertPanel(LS_SORRY,
 				  NSLocalizedString(@"YouMustWait", nil),
 				  LS_OK, nil, nil);
 		return;

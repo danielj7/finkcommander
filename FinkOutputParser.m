@@ -7,6 +7,64 @@ File: FinkOutputParser.m
 
 #import "FinkOutputParser.h"
 
+//------------------------------------------>Macros
+
+//Commands for which determinate PI is displayed
+
+#define IS_INSTALL_CMD(x) 													\
+	([(x) contains:@"install"]		|| 										\
+	 [(x) contains:@"build"]		|| 										\
+	 [(x) contains:@"update-all"]	|| 										\
+	 [(x) contains:@"selfupdate"])
+
+//Line parsing macros
+
+#define INSTALLTRIGGER(x)													\
+	([(x) containsPattern:@"*following *package* will be *installed*"]  || 	\
+	 [(x) contains:@"will be rebuilt"])
+
+#define FETCHTRIGGER(x) 													\
+	([(x) hasPrefix: @"wget -"]  	||   									\
+	 [(x) hasPrefix: @"curl -"]  	|| 										\
+	 [(x) hasPrefix: @"axel -"])
+
+#define UNPACKTRIGGER(x) 													\
+	(([(x) containsPattern:@"mkdir -p */src/*"] 	&& 						\
+		![(x) contains:@"root"])					||					 	\
+	 [(x) containsPattern:@"*/bin/tar -*"]	 		|| 						\
+	 [(x) containsPattern:@"*/bin/bzip2 -*"])
+
+#define CONFIGURETRIGGER(x)	\
+	([(x) hasPrefix:@"./configure"] 				|| 						\
+	 [(x) hasPrefix:@"checking for"]				|| 						\
+	 [(x) hasPrefix:@"patching file"])
+
+#define COMPILETRIGGER(x)													\
+	(([(x) hasPrefix: @"make"]						&& 						\
+		![(x) contains:@"makefile"])				|| 						\
+	 [(x) hasPrefix: @"Compiling"]					||	 					\
+	 [(x) hasPrefix: @"pbxbuild"]					|| 						\
+	 [(x) containsPattern: @"g77 [- ]*"]			|| 						\
+	 [(x) containsPattern: @"g[c+][c+] -[!E]*"]		|| 						\
+	 [(x) containsPattern: @"cc -[!E]*"]			|| 						\
+	 [(x) containsPattern: @"c++ -[!E]*"])
+
+#define ISPROMPT(x) 														\
+	([(x) containsPattern: @"*proceed? \[*"]		|| 						\
+	 [(x) contains: @"Make your choice:"]			|| 						\
+	 [(x) contains: @"Pick one:"]					|| 						\
+	 [(x) containsCI: @"[y/n]"] 					|| 						\
+	 [(x) contains: @"[anonymous]"] 				||					 	\
+	 [(x) contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])
+
+//fink's --yes option does not work for these prompts:
+#define ISMANDATORY_PROMPT(x)	\
+	([(x) contains: @"cvs.sourceforge.net's password:"] || 					\
+	 [(x) contains: @"return to continue"] 				||					\
+	 [(x) contains: @"CVS password:"])
+
+
+
 @implementation FinkOutputParser
 
 //------------------------------------------>Create and Destroy

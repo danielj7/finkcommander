@@ -53,7 +53,7 @@
     }else{
 		[warningMessageField setStringValue:NSLocalizedString(@"Are you certain you want to remove the selected package?", nil)];
     }
-	[confirmButton setTitle:NSLocalizedString(@"Remove", nil)];
+	[confirmButton setTitle:LS_REMOVE];
 	[cancelButton setTitle:LS_CANCEL];
     [removeWarningButton 
 		setTitle:NSLocalizedString(@"Warn me before removing a package.", nil)];

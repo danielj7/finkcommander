@@ -104,6 +104,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	IBOutlet NSMenu *columnsMenu;
 	IBOutlet NSMenuItem *collapseExpandMenuItem;
 	IBOutlet NSMenu *tableContextMenu;
+	IBOutlet NSMenu *windowMenu;
 	
 	//Interaction window outlets
 	IBOutlet NSWindow *interactionWindow;
@@ -169,6 +170,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)toggleFlags:(id)sender;
 -(IBAction)openDocumentation:(id)sender;
 -(IBAction)openPackageFileViewer:(id)sender;
+-(IBAction)bringBackMainWindow:(id)sender;
 
 //Toolbar Methods
 -(void)setupToolbar;

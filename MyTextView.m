@@ -41,12 +41,12 @@
     [myTextView setDelegate: [textView delegate]];
     [myTextView setDrawsBackground: [textView drawsBackground]];
     [myTextView setEditable: [textView isEditable]];
-    [myTextView setFont: [textView font]];
     [myTextView setImportsGraphics: [textView importsGraphics]];
     [myTextView setRichText: [textView isRichText]];
     [myTextView setSelectable: [textView isSelectable]];
     [myTextView setTextColor: [textView textColor]];
     [myTextView setToolTip: [textView toolTip]];
+	//[myTextView setFont:[textView font]];
 
     [scrollView setDocumentView: myTextView];
     [myTextView release];

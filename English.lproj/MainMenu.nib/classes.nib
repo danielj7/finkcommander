@@ -2,6 +2,7 @@
     IBClasses = (
         {
             ACTIONS = {
+                bringBackMainWindow = id; 
                 checkForLatestVersionAction = id; 
                 chooseTableColumn = id; 
                 collapseExpandOutput = id; 
@@ -9,7 +10,6 @@
                 goToWebsite = id; 
                 openDocumentation = id; 
                 openPackageFileViewer = id; 
-                openPackageFiles = id; 
                 raiseInteractionWindow = id; 
                 refilter = id; 
                 runForceRemove = id; 
@@ -25,6 +25,7 @@
                 showPreferencePanel = id; 
                 sortByPackageElement = id; 
                 terminateCommand = id; 
+                toggleFlags = id; 
                 updateTable = id; 
             }; 
             CLASS = FinkController; 
@@ -46,9 +47,10 @@
                 splitView = id; 
                 tableContextMenu = NSMenu; 
                 tableScrollView = NSScrollView; 
-                tableViewController = id; 
+                tableView = id; 
                 textView = NSTextView; 
                 window = NSWindow; 
+                windowMenu = NSMenu; 
             }; 
             SUPERCLASS = NSObject; 
         }, 

@@ -8,13 +8,17 @@
 #import "FinkPackageInfo.h"
 
 //medium gray
-#define SHORTDESCCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.7 alpha:1.0]
+#define SHORTDESCCOLOR 		\
+	[NSColor colorWithCalibratedHue:0.0 saturation:0.0 brightness:0.50 alpha:1.0]
 //medium gray
-#define VERSIONCOLOR [NSColor colorWithDeviceCyan:0.0 magenta:0.0 yellow:0.0 black:0.7 alpha:1.0]
+#define VERSIONCOLOR 		\
+	[NSColor colorWithCalibratedHue:0.0 saturation:0.0 brightness:0.40 alpha:1.0]
 //dark green
-#define URLCOLOR [NSColor colorWithCalibratedHue:0.32 saturation:1.0 brightness:0.67 alpha:1.0]
+#define URLCOLOR 			\
+	[NSColor colorWithCalibratedHue:0.33 saturation:1.0 brightness:0.60 alpha:1.0]
 //dark blue
-#define HEADINGCOLOR [NSColor colorWithCalibratedHue:0.68 saturation:1.0 brightness:0.79 alpha:1.0]
+#define HEADINGCOLOR 		\
+	[NSColor colorWithCalibratedHue:0.67 saturation:1.0 brightness:0.60 alpha:1.0]
 
 #define MAINHEADINGFONT [NSFont boldSystemFontOfSize:[NSFont systemFontSize]+2.0]
 
@@ -25,7 +29,7 @@
 	self = [super initWithWindowNibName:@"PackageInfo"];
 	defaults = [NSUserDefaults standardUserDefaults];
 	[self setWindowFrameAutosaveName: @"PackageInfo"];
-	[[self window] setTitle:NSLocalizedString(@"Package Inspector", nil)];
+	[[self window] setTitle:NSLocalizedString(@"Package Info", nil)];
 	[self setEmailSig:@""];
 
 	return self;

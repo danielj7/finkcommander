@@ -22,7 +22,7 @@ d Dock icon customization: show status of command
 
 d Flag column
 
-Size new columns appropriately
+d Size new columns appropriately
 
 Remove value for <key>ExecutionString</key> in com.apple.Terminal.plist after launching
 	command in Terminal
@@ -43,9 +43,6 @@ Add open and open with commands for file menu to open .deb files directly in pac
 Search output
 
 i Regex support in filter and output search (wrote wrapper as NSString category)
-
-Show .info, .patch file contents; open in editor; copy contents to 
-clipboard
 
 Additional fink installation info:
 	   last selfupdate-cvs 
