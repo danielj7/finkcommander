@@ -9,11 +9,18 @@
 
  The FinkProcessKiller class provides a method for terminating fink and apt-get
  processes.  The NSTask terminate method doesn't work on these processes because
- they are owned by root, while FinkCommander is owned by the user. 
+ they are owned by root, while FinkCommander is owned by the user.  
+ 
+ I have tried several alternatives, and the only method that seems to be at all 
+ reliable is to send a SIGKILL signal to the child process and to each of the "grandchildren."
+ 
+ Another alternative that I may try is to write a separate tool that calls killpg()
+ for the child process (which seems to set the process group for each of the grandchildren)
+ and then run that with sudo or the SecurityFramework.
 
  Copyright (C) 2002  Steven J. Burr
 
- This program is free software; you can redistribute it and/or modify
+ This program is free software; you may redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.

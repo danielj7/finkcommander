@@ -9,12 +9,15 @@ Moriarity sample code at:
 http://developer.apple.com/samplecode/Sample_Code/Cocoa/Moriarity.htm
 
 TaskWrapper is a generalized process handling class that facilitates asynchronous
-interaction with an NSTask.  The modifications in IOTaskWrapper allow the user to
-send input to the task and to modify the task's environment.  
+interaction with an NSTask.  The modifications in IOTaskWrapper allow the user to send 
+messages to the task's standard input.  The modifications in this version also
+customize the arguments list and environment to run fink and apt-get commands.  I chose
+to take this approach rather than writing a more modular version in order to 
+keep the code relating to running commands out of the FinkController class.  
 
 Copyright (C) 2002  Steven J. Burr
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
@@ -53,8 +56,8 @@ Contact the author at sburrious@users.sourceforge.net.
     NSTask 				*task;
     id					<IOTaskWrapperController>controller;
 	NSMutableDictionary	*environment;
-	NSString			*binPath;
 	NSString			*password;
+	NSUserDefaults 		*defaults;
 }
 
 // Accessor

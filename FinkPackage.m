@@ -9,16 +9,7 @@ See the header file, FinkPackage.h, for interface and license information.
 
 @implementation FinkPackage
 
-// Init and dealloc
-
--(id)init
-{
-	if (self = [super init])
-	{
-		;
-	}
-	return self;
-}
+// Dealloc
 
 -(void)dealloc
 {
@@ -81,8 +72,6 @@ See the header file, FinkPackage.h, for interface and license information.
 	category = s;
 }
 
-//unfortunate choice of name; consider changing to 
-//allow implementation of real description method
 -(NSString *)description;
 {
 	return description;
@@ -93,6 +82,18 @@ See the header file, FinkPackage.h, for interface and license information.
 	[s retain];
 	[description release];
 	description = s;
+}
+
+-(NSString *)fulldesc
+{
+	return fulldesc;
+}
+
+-(void)setFulldesc:(NSString *)s
+{
+	[s retain];
+	[fulldesc release];
+	fulldesc = s;
 }
 
 -(NSString *)binary;
@@ -229,6 +230,5 @@ See the header file, FinkPackage.h, for interface and license information.
 	return (result);
 
 }
-
 
 @end  

@@ -162,7 +162,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 		[self lastIdentifier]];
 				
-	if (! [[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
+	if (! [defaults boolForKey: FinkBasePathFound]){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
@@ -315,12 +315,13 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	if ([sender isKindOfClass: [NSMenuItem class]]){
 		cmd = [[sender title] lowercaseString];
 	}else{
-		cmd = [[[[sender label] componentsSeparatedByString:@" "] objectAtIndex: 0]			lowercaseString];
+		cmd = [[[[sender label] componentsSeparatedByString:@" "] 
+			objectAtIndex: 0] lowercaseString];
 	}	
 
 	//determine executable: source menu or toolbar item tag == 0
 	//binary item tag == 1
-	executable = ([sender tag] == 0 ? @"fink" : @"apt-get");
+	executable = ([sender tag] == SOURCE_COMMAND ? @"fink" : @"apt-get");
 	args = [NSMutableArray arrayWithObjects: executable, cmd, nil];
 	
 	[self setCommandIsRunning: YES];
@@ -363,12 +364,41 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	[self runCommandWithParams: args];
 }
 
+-(IBAction)showDescription:(id)sender
+{
+	NSEnumerator *e = [tableView selectedRowEnumerator];
+	NSNumber *anIndex;
+	int index;
+	int i = 0;
+	FinkPackage *pkg;
+	NSString *full = nil;
+	NSString *divider = @"________________________________________________________\n\n";
+	
+	[textView setString: @""];
+
+	while (anIndex = [e nextObject]){
+		index = [anIndex intValue];
+		pkg = [[self displayedPackages] objectAtIndex: index];
+		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
+					[pkg name],
+					[pkg version],
+					[pkg fulldesc]];
+		if (i > 0){
+			[[textView textStorage] appendAttributedString:
+				[[[NSAttributedString alloc] initWithString: divider] autorelease]];
+		}
+		[[textView textStorage] appendAttributedString:
+			[[[NSAttributedString alloc] initWithString: full] autorelease]];
+		i++;
+	}
+}
+
 -(IBAction)terminateCommand:(id)sender
 {
 	FinkProcessKiller *terminator = [[[FinkProcessKiller alloc] init] autorelease];
 	int answer1 = NSRunAlertPanel(@"Caution",
-			@"The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\nAre you sure you want to proceed?",
-			@"Terminate", @"Cancel", nil);
+			@"The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\nWhat would you like to do?",
+			@"Terminate", @"Continue", nil);
 
 	if (answer1 == NSAlertDefaultReturn){
 		[terminator terminateChildProcesses];
@@ -426,28 +456,34 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 }
 
 //----------------------------------------------->Menu Item Delegate
+//Helper for menu item and toolbar item validators
+-(BOOL)validateItem:(id)theItem
+{
+	//disable package-specific commands if no row selected
+	if ([tableView selectedRow] == -1 &&
+	    [theItem action] == @selector(runCommand:)){
+		return NO;
+	}
+	//disable Source and Binary menu items and table update if command is running
+	if ([self commandIsRunning] &&
+		([theItem action] == @selector(runCommand:) ||
+		 [theItem action] == @selector(runUpdater:) ||
+		 [theItem action] == @selector(updateTable:))){
+		return  NO;
+	}
+	if (! [self commandIsRunning] &&
+	 ([theItem action] == @selector(raiseInteractionWindow:) ||
+		 [theItem action] == @selector(terminateCommand:))){
+		return NO;
+	}
+	return YES;
+}
+
 
 //Disable menu item selections
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
 {
-	//disable package-specific commands if no row selected
-	if ([tableView selectedRow] == -1 &&
-	    [menuItem action] == @selector(runCommand:)){
-		return NO;
-	}
-	//disable Source and Binary menu items if command is running
-	if ([self commandIsRunning] &&
-		([menuItem action] == @selector(runCommand:) ||
-		 [menuItem action] == @selector(runUpdater:) ||
-		 [menuItem action] == @selector(updateTable:))){
-		return  NO;
-	}
-	if (! [self commandIsRunning] && 
-		([menuItem action] == @selector(raiseInteractionWindow:) ||
-		 [menuItem action] == @selector(terminateCommand:))){
-		return NO;
-	}
-	return YES;
+	return [self validateItem: menuItem];
 }
 
 
@@ -493,7 +529,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Install"];
 		[item setPaletteLabel: @"Install Source"];
 		[item setToolTip: @"Install package(s) from source"];
-		[item setTag: 0]; 		//source command
+		[item setTag: SOURCE_COMMAND]; 
 		[item setImage: [NSImage imageNamed:@"addsrc"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
@@ -501,7 +537,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Install Binary"];
 		[item setPaletteLabel: [item label]];
 		[item setToolTip: @"Install binary package(s)"];
-		[item setTag: 1]; 		//binary command
+		[item setTag: BINARY_COMMAND]; 
 		[item setImage: [NSImage imageNamed:@"addbin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
@@ -509,7 +545,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Remove"];
 		[item setPaletteLabel: @"Remove Source"];
 		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
-		[item setTag: 0]; 		//source command
+		[item setTag: SOURCE_COMMAND];
 		[item setImage: [NSImage imageNamed:@"delsrc"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
@@ -517,7 +553,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Remove Binary"];
 		[item setPaletteLabel: [item label]];
 		[item setToolTip: @"Delete files for package(s), but retain deb files for possible reinstallation"];
-		[item setTag: 1]; 		//binary command
+		[item setTag: BINARY_COMMAND];
 		[item setImage: [NSImage imageNamed:@"delbin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
@@ -525,15 +561,14 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Describe"];
 		[item setPaletteLabel: [item label]];
 		[item setToolTip: @"Print full description of package(s) in output window"];
-		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed: @"describe"]];
 		[item setTarget: self];
-		[item setAction: @selector(runCommand:)];
+		[item setAction: @selector(showDescription:)];
 	}else if ([itemIdentifier isEqualToString: FinkSelfUpdateItem]){
 		[item setLabel: @"Selfupdate"];
 		[item setPaletteLabel: [item label]];
 		[item setToolTip: @"Update package descriptions and package manager"];
-		[item setTag: 0]; 		//source command
+		[item setTag: SOURCE_COMMAND];
 		[item setImage: [NSImage imageNamed: @"update"]];
 		[item setTarget: self];
 		[item setAction: @selector(runUpdater:)];
@@ -541,7 +576,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Selfupdate-cvs"];
 		[item setPaletteLabel: [item label]];
 		[item setToolTip: @"Update package descriptions and package manager from fink cvs repository"];
-		[item setTag: 0]; 		//source command
+		[item setTag: SOURCE_COMMAND]; 
 		[item setImage: [NSImage imageNamed: @"cvs"]];
 		[item setTarget: self];
 		[item setAction: @selector(runUpdater:)];
@@ -549,7 +584,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		[item setLabel: @"Update"];
 		[item setPaletteLabel: @"Apt-Get Update"];
 		[item setToolTip: @"Update binary package descriptions"];
-		[item setTag: 1]; 		//binary command
+		[item setTag: BINARY_COMMAND];
 		[item setImage: [NSImage imageNamed: @"updatebin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runUpdater:)];
@@ -580,7 +615,6 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-		
 	return [NSArray arrayWithObjects: 
 		NSToolbarSeparatorItemIdentifier,
 		NSToolbarSpaceItemIdentifier,
@@ -615,39 +649,24 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 
 -(BOOL)validateToolbarItem:(NSToolbarItem *)theItem
 {
-	if ([self commandIsRunning] &&
-		([theItem action] == @selector(runCommand:) ||
-		 [theItem action] == @selector(runUpdater:))){
-		return  NO;
-	}
-	if (! [self commandIsRunning] &&
-		([theItem action] == @selector(raiseInteractionWindow:) ||
-		 [theItem action] == @selector(terminateCommand:))){
-		return NO;
-	}	
-	if ([tableView selectedRow] == -1 &&
-	    [theItem action] == @selector(runCommand:)){
-		return NO;
-	}	
-	return YES;
+	return [self validateItem: theItem]; //helper preceding menu item validator
 }
 
 //----------------------------------------------->Text Field Delegate
 //Used to filter table data
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
-	NSString *field = [[[searchPopUpButton selectedItem] title] lowercaseString];
-	NSString *filterText = [[searchTextField stringValue] lowercaseString];
-	NSString *pkgAttribute;
-	NSMutableArray *subset = [NSMutableArray array];
-	NSEnumerator *e = [[packages array] objectEnumerator];
-	FinkPackage *pkg;
-
 	if ([[aNotification object] tag] == 0){ 		//filter text field
+		NSString *field = [[[searchPopUpButton selectedItem] title] lowercaseString];
+		NSString *filterText = [[searchTextField stringValue] lowercaseString];
+		NSString *pkgAttribute;
+		NSMutableArray *subset = [NSMutableArray array];
+		NSEnumerator *e = [[packages array] objectEnumerator];
+		FinkPackage *pkg;
 		if ([filterText length] == 0){
 			[self setDisplayedPackages: [packages array]];
 		}else{
-			//deselect rows so automatic scrolling doesn't interfere
+			//deselect rows so automatic scrolling doesn't interfere with filter
 			[tableView deselectAll: self];
 			while (pkg = [e nextObject]){
 				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
@@ -659,8 +678,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		}
 		[self refreshAfterFilter];
 		[self displayNumberOfPackages];
-	}else{											//interaction sheet text field
-		[interactionMatrix selectCellWithTag: 1];
+	}else if ([[aNotification object] tag] == 1){	//interaction sheet text field		
+		if ([[interactionField stringValue] length]){
+			[interactionMatrix selectCellWithTag: 1];
+		}else{
+			[interactionMatrix selectCellWithTag: 0];
+		}
 	}	
 }
 
@@ -679,12 +702,12 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	int indexAfterSort = 0;
 	BOOL shouldScroll = [defaults boolForKey: FinkScrollToSelection];
 
-	indexBeforeSort = [tableView selectedRow];
+	indexBeforeSort = [tableView selectedRow]; //returns -1 if none
 	if (indexBeforeSort >= 0 && shouldScroll){
 		pkg = [[packages array] objectAtIndex: [tableView selectedRow]];
 	}
 
-	// sort data source; reload table; reset visual indicators
+	// sort data source
 	[[self displayedPackages] sortUsingSelector:
 		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
@@ -711,8 +734,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	[self displayNumberOfPackages];
 	[self setCommandIsRunning: NO];
-	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data
-	[self controlTextDidChange: nil]; //reapplies filter
+	[self sortTableAtColumn: lastColumn inDirection: direction]; //reloads table data	
+	[self controlTextDidChange: nil]; //reapplies filter	
 }
 
 //----------------------------------------------->Data Source Methods
@@ -732,7 +755,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 }
 
 
-//----------------------------------------------->Delegate Method
+//----------------------------------------------->Delegate Methods
 //sorts table when column header is clicked
 -(void)tableView:(NSTableView *)aTableView
 	didClickTableColumn:(NSTableColumn *)aTableColumn
@@ -771,6 +794,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 	[tableView setHighlightedTableColumn: aTableColumn];
 	
+	//sort the table contents
 	[self sortTableAtColumn: aTableColumn inDirection: direction];
 }
 
@@ -779,7 +803,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	if ([[[[self displayedPackages] objectAtIndex: rowIndex] name] contains: @"tcsh"]){
 		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
 				[self window], self, NULL,	NULL, nil,
-					@"FinkCommander is unable to install that package.\nSee Help:FinkCommander Guide:Known Bugs and Limitations",
+					@"FinkCommander is unable to install that package.\nSee Help:FinkCommander Help:Known Bugs and Limitations",
 					nil);
 		return NO;
 	}
@@ -906,7 +930,8 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	}
 }
 
-//run commands to change fink.conf file
+//run commands to change fink.conf file after FinkConf object
+//posts a notification
 -(void)runFinkConfCommand:(NSNotification *)note
 {
 	NSMutableArray *args = [note object];
@@ -946,8 +971,7 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 -(void)appendOutput:(NSString *)output
 {
 	NSAttributedString *lastOutput;
-	BOOL alwaysChooseDefaultSelected = [[NSUserDefaults standardUserDefaults]
-		boolForKey: FinkAlwaysChooseDefaults];
+	BOOL alwaysChooseDefaultSelected = [defaults boolForKey: FinkAlwaysChooseDefaults];
 	NSNumber *theTest = [NSNumber numberWithFloat: 
 		abs([textView bounds].size.height - [textView visibleRect].origin.y 
 			- [textView visibleRect].size.height)];
@@ -955,15 +979,15 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 	lastOutput = [[[NSAttributedString alloc] initWithString: output] autorelease];
 
 	//interaction
-	if ([output rangeOfString: @"Password:"].length > 0){
+	if ([output contains: @"Password:"]){
 		[finkTask writeToStdin: [self password]];
 	}
-	if ( ! alwaysChooseDefaultSelected        &&
-		 ([output rangeOfString: @"proceed? ["].length > 0  ||
-		  [output rangeOfString: @"one: ["].length > 0 ||
-		  [output rangeOfString: @"[y/n]" options: NSCaseInsensitiveSearch].length > 0 ||
-		  [output rangeOfString: [NSString stringWithFormat: @"[%@]", NSUserName()]].length > 0 ||
-		  [output rangeOfString: @"[anonymous]"].length > 0)){
+	if ( ! alwaysChooseDefaultSelected	&&
+		 ([output contains: @"proceed? ["]	||
+		  [output contains: @"one: ["]		||
+		  [output containsCI: @"[y/n]"]		||
+		  [output contains: @"[anonymous]"]	||
+		  [output contains: [NSString stringWithFormat: @"[%@]", NSUserName()]])){
 			NSBeep();
 			[self raiseInteractionWindow: self];
 	}
@@ -1036,9 +1060,9 @@ NSString *FinkInteractItem = @"FinkInteractItem";
 		}
 	}else{
 		NSBeginAlertSheet(@"Error",	@"OK", nil,	nil, //title, buttons
-		[self window], self, NULL,	NULL, nil,	 	//window, delegate, selectors, context info
+		[self window], self, NULL,	NULL, nil,	 	 //window, delegate, selectors, context info
 		@"FinkCommander detected a possible failure message.\nCheck the output window for problems.",
-		nil);										//msg string params
+		nil);										 //msg string params
 		[self updateTable: nil];
 	}
 	[[NSNotificationCenter defaultCenter]

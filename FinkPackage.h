@@ -14,7 +14,7 @@ of packages.
 
 Copyright (C) 2002  Steven J. Burr
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
@@ -35,7 +35,6 @@ Contact the author at sburrious@users.sourceforge.net.
 #import <Foundation/Foundation.h>
 
 #define PACKAGE_ATTRIBUTES @"name", @"version", @"installed", @"category", @"description", @"binary", @"unstable"
-#define ATTRIBUTE_NUMBER 7
 
 @interface FinkPackage : NSObject 
 {
@@ -45,11 +44,10 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSString *installed;
 	NSString *category;
 	NSString *description;
+	NSString *fulldesc;
 	NSString *binary;
 	NSString *unstable;
 }
-
--(id)init;
 
 //Instance variable access
 -(NSString *)name;
@@ -62,6 +60,8 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)setCategory:(NSString *)s;
 -(NSString *)description;
 -(void)setDescription:(NSString *)s;
+-(NSString *)fulldesc;
+-(void)setFulldesc:(NSString *)s;
 -(NSString *)binary;
 -(void)setBinary:(NSString *)s;
 -(NSString *)unstable;

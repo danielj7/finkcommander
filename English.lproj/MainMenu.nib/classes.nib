@@ -12,6 +12,7 @@
                 refilter = id; 
                 runCommand = id; 
                 runUpdater = id; 
+                showDescription = id; 
                 showPreferencePanel = id; 
                 terminateCommand = id; 
                 updateTable = id; 

@@ -33,7 +33,6 @@ See the header file, FinkDataController.h, for interface and license information
 {
 	[basePath release];
 	[finkArray release];
-//	[binaryPackages release];
 	[start release];
 	[super dealloc];
 }
@@ -144,7 +143,7 @@ See the header file, FinkDataController.h, for interface and license information
 	[temp removeObjectAtIndex: 0];  // "Reading package info . . . "
 	e = [temp objectEnumerator];
 
-	while (listRecord = [[e nextObject] componentsSeparatedByString: @"\n"]){
+	while (listRecord = [[e nextObject] componentsSeparatedByString: @"**\n"]){
 		p = [[FinkPackage alloc] init];
 		[p setName: [listRecord objectAtIndex: 0]];
 		[p setVersion: [listRecord objectAtIndex: 1]];
@@ -156,6 +155,7 @@ See the header file, FinkDataController.h, for interface and license information
 		}else{
 			[p setUnstable: @"*"];
 		}
+		[p setFulldesc: [listRecord objectAtIndex: 6]];
 		//make sure FULL name matches package on binary list
 		if ([binaryPackages contains:
 			[NSString stringWithFormat: @" %@#", [p name]]]){
@@ -200,6 +200,20 @@ See the header file, FinkDataController.h, for interface and license information
 			}
 		}
 	}
+}
+
+-(int)installedPackagesCount
+{
+	int count = 0;
+	NSEnumerator *e = [finkArray objectEnumerator];
+	FinkPackage *pkg;
+
+	while (pkg = [e nextObject]){
+		if ([[pkg installed] contains: @"e"]){
+			count++;
+		}
+	}
+	return count;
 }
 
 

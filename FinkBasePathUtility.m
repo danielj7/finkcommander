@@ -1,5 +1,5 @@
 /*
-File: FinkProcessKiller.m
+File: FinkBasePathUtility.m
 
  See the header file, FinkBasePathUtility.h, for interface and license information.
 */
@@ -7,17 +7,6 @@ File: FinkProcessKiller.m
 #import "FinkBasePathUtility.h"
 
 @implementation FinkBasePathUtility
-
--(id)init
-{
-	self = [super init];
-	return self;
-}
-
--(void)dealloc
-{
-	[super dealloc];
-}
 
 -(void)findFinkBasePath
 {
@@ -37,7 +26,7 @@ File: FinkProcessKiller.m
 	NSString *whichPath;
     
 	//look in some possible install paths
-	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", homeDir,
+	e = [[NSArray arrayWithObjects: @"/sw", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
         [homeDir stringByAppendingPathComponent: @"fink"],
         @"/usr/local/sw", @"/usr/local/fink",

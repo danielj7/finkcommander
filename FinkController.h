@@ -13,7 +13,7 @@ by the FinkDataController class.
 
 Copyright (C) 2002  Steven J. Burr
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
@@ -39,6 +39,11 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkBasePathUtility.h"
 #import "IOTaskWrapper.h"
 #import "FinkProcessKiller.h"
+
+enum {
+	SOURCE_COMMAND,
+	BINARY_COMMAND
+};
 
 @interface FinkController : NSWindowController <IOTaskWrapperController>
 {
@@ -116,6 +121,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)showPreferencePanel:(id)sender;
+-(IBAction)showDescription:(id)sender;
 //  help menu items
 -(IBAction)goToFinkCommanderWebSite:(id)sender;
 -(IBAction)goToFinkWebSite:(id)sender;

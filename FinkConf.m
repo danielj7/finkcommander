@@ -30,31 +30,37 @@ NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 
 //Globals for this file
-NSString *gProxyHTTP = @"ProxyHTTP";
-NSString *gProxyFTP = @"ProxyFTP";
+NSString *PROXY_HTTP = @"ProxyHTTP";
+NSString *PROXY_FTP = @"ProxyFTP";
 
 @implementation FinkConf
 
+//--------------------------------------------------->Startup and Shutdown
+
 -(id)init
 {
-	defaults = [NSUserDefaults standardUserDefaults];
-
 	if (self = [super init]){
 		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
+		defaults = [NSUserDefaults standardUserDefaults];
+		
 		[self readFinkConf];
 		[self setFinkTreesChanged: NO];
 
-	[[NSNotificationCenter defaultCenter] 
-		addObserver: self
-		selector: @selector(completeFinkConfUpdate:)
-		name: FinkCommandCompleted
-		object: nil];
-		
-		return self;
+		[[NSNotificationCenter defaultCenter] 
+			addObserver: self
+			selector: @selector(completeFinkConfUpdate:)
+			name: FinkCommandCompleted
+			object: nil];
 	}
-	return nil;
+	return self;
 }
 
+-(void)dealloc
+{
+	[finkConfDict release];
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[super dealloc];
+}
 
 -(void)readFinkConf
 {
@@ -75,10 +81,12 @@ NSString *gProxyFTP = @"ProxyFTP";
 	}
 	[finkConfDict setObject: [NSMutableArray arrayWithArray:
 								[[finkConfDict objectForKey: @"Trees"] 
-								componentsSeparatedByString: @" "]]
+									componentsSeparatedByString: @" "]]
 				  forKey: @"Trees"];				
 }
 
+
+//--------------------------------------------------->Fink.conf Accessors
 
 -(BOOL)useUnstableMain
 {
@@ -103,7 +111,6 @@ NSString *gProxyFTP = @"ProxyFTP";
 		}
 	}
 }
-
 
 -(BOOL)useUnstableCrypto
 {
@@ -165,29 +172,29 @@ NSString *gProxyFTP = @"ProxyFTP";
 
 -(NSString *)useHTTPProxy
 {
-	return [finkConfDict objectForKey: gProxyHTTP];
+	return [finkConfDict objectForKey: PROXY_HTTP];
 }
 
 -(void)setUseHTTPProxy:(NSString *)s
 {
 	if (s != nil){
-		[finkConfDict setObject: s forKey: gProxyHTTP];
+		[finkConfDict setObject: s forKey: PROXY_HTTP];
 	}else{
-		[finkConfDict removeObjectForKey: gProxyHTTP];
+		[finkConfDict removeObjectForKey: PROXY_HTTP];
 	}
 }
 
 -(NSString *)useFTPProxy
 {
-	return [finkConfDict objectForKey: gProxyFTP];
+	return [finkConfDict objectForKey: PROXY_FTP];
 }
 
 -(void)setUseFTPProxy:(NSString *)s
 {
 	if (s != nil){
-		[finkConfDict setObject: s forKey: gProxyFTP];
+		[finkConfDict setObject: s forKey: PROXY_FTP];
 	}else{
-		[finkConfDict removeObjectForKey: gProxyFTP];
+		[finkConfDict removeObjectForKey: PROXY_FTP];
 	}
 }
 
@@ -196,7 +203,10 @@ NSString *gProxyFTP = @"ProxyFTP";
 	finkTreesChanged = b;
 }
 
-//helper used in writeToFile:
+
+//--------------------------------------------------->Write Changes to Fink.conf
+
+//translate dictionary of fink.conf settings into string for writeToFile method
 -(NSString *)stringFromDictionary
 {
     NSMutableString *fconfString = [NSMutableString stringWithString:
@@ -227,7 +237,8 @@ NSString *gProxyFTP = @"ProxyFTP";
 }
 
 
-//starts process of writing changes to fink.conf file
+//starts process of writing changes to fink.conf file by copying existing fink.conf 
+//to a backup file
 -(void)writeToFile
 {
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];

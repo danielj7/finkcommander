@@ -12,7 +12,7 @@ packages and stores the information in an array of FinkPackage instances.
 
 Copyright (C) 2002  Steven J. Burr
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you may redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
@@ -49,5 +49,6 @@ Contact the author at sburrious@users.sourceforge.net.
 //Update finkArray to reflect latest package information.
 -(void)update;
 -(void)updateManuallyWithCommand:(NSString *)cmd packages:(NSArray *)pkgs;
+-(int)installedPackagesCount;
 
 @end

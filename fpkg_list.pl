@@ -26,10 +26,12 @@ foreach $pname (sort @pkglist) {
       $lversion = " ";
       $iflag = " ";
       $description = "virtual package";
+	  $full = "virtual package";
     } else {
       $lversion = &Fink::Services::latest_version($package->list_versions());
       $vo = $package->get_version($lversion);
       $description = $vo->get_shortdescription();
+	  $full = $vo->get_description();
       $section = $vo->get_section();
 	  $tree = $vo->get_tree();
       if ($vo->is_installed()) {
@@ -40,5 +42,5 @@ foreach $pname (sort @pkglist) {
         $iflag = "  ";
       }
     }
-    print "----\n$pname\n$lversion\n$iflag\n$section\n$description\n$tree\n";
+    print "----\n$pname**\n$lversion**\n$iflag**\n$section**\n$description**\n$tree**\n$full\n";
 }
