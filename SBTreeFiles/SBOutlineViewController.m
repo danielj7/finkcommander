@@ -62,8 +62,6 @@
 #pragma mark NSOUTLINE DATA SOURCE METHODS
 //----------------------------------------------------------
 
-//TRY CHANGING RETURN VALUE FOR ITEM == NIL TO ROOTITEM CHILDREN
-
 -(int)outlineView:(NSOutlineView *)outlineView 
 	numberOfChildrenOfItem:(id)item 
 {
@@ -89,9 +87,9 @@
 {
     NSString *identifier = [tableColumn identifier];
     if ([identifier isEqualToString:@"size"]){
-		unsigned long itemSize = (nil == item) ? 
-		[[[tree rootItem] valueForKey:identifier] unsignedLongValue]:
-		[[item valueForKey:identifier] unsignedLongValue];
+		unsigned long itemSize = (nil == item) 	? 
+			[[[tree rootItem] valueForKey:identifier] unsignedLongValue] :
+			[[item valueForKey:identifier] unsignedLongValue];
 		itemSize = itemSize / 1024 + 1;
 		return [NSString stringWithFormat:@"%u KB", itemSize];
     }
@@ -100,7 +98,27 @@
 		(id)[item valueForKey:identifier];
 }
 
-//Drag and Drop
+//----------------------------------------------------------
+#pragma mark NSOUTLINE DELEGATE METHOD(S)
+//----------------------------------------------------------
+
+- (void)outlineView:(NSOutlineView *)outlineView 
+	willDisplayCell:(id)cell 
+	forTableColumn:(NSTableColumn *)tableColumn 
+	item:(id)item
+{
+	if ([[tableColumn identifier] isEqualToString:@"filename"]){
+		NSImage *itemImage = [[NSWorkspace sharedWorkspace] 
+			iconForFile:[item path]];
+	
+		[itemImage setSize:NSMakeSize(16.0, 16.0)];
+		[cell setImage:itemImage];
+	}
+}
+
+//----------------------------------------------------------
+#pragma mark DRAG AND DROP
+//----------------------------------------------------------
 
 -(BOOL)outlineView:(NSOutlineView *)ov 
 	writeItems:(NSArray *)items
@@ -115,7 +133,7 @@
 	}
 	[ov registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
 	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
-						 owner:self];
+			owner:self];
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	return YES;
 }

@@ -9,7 +9,6 @@
 {
     myBrowser = newBrowser;  //Don't retain parent object!
 }
-
 #ifdef USE_MODIFIER
 
 -(void)mouseDown:(NSEvent *)theEvent
@@ -56,11 +55,8 @@
 	
 	clickPoint = [self convertPoint:clickPoint fromView:nil];
 	inMatrix = [self getRow:&row column:&col forPoint:clickPoint];
-	NSLog(@"Click received in row %d, column %d of matrix", row, col);
 	[self selectCellAtRow:row column:col];
 	[myBrowser selectRow:row inColumn:col];
-	[myBrowser loadedCellAtRow:row column:col];
-	[myBrowser reloadColumn:col];
 	[myBrowser mouseDown:theEvent];
 }
 

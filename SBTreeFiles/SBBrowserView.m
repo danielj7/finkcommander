@@ -11,12 +11,12 @@
 {
     self = [super initWithFrame:frame];
     if (nil != self){
+		[self setMatrixClass:[SBBrowserMatrix class]];
 		[self setDelegate:self];
 		[self setTarget:self];
 		[self setDoubleAction:@selector(openSelectedFiles:)];
 		[self setAllowsMultipleSelection:YES];
 		[self setAllowsBranchSelection:NO];
-		[self setMatrixClass:[SBBrowserMatrix class]];
 		[self setReusesColumns:YES];
 		[self setHasHorizontalScroller:YES];
 		[self setTitled:NO];
@@ -82,7 +82,7 @@ message. */
     NSBrowserCell *parentCell;
 
     if (0 == column){
-		/* Fill the first column (index 0) with the children of the root item. */
+		/* Put the root item in column 0. */
 		item = [tree rootItem];
     }else{
 		/* The representedObject of the selected item in the parent column
@@ -94,7 +94,8 @@ message. */
     //Cell should be a leaf rather than branch if represented object has no children
     [cell setLeaf:(nil == [item children])];
     /* Set the represented object for the current cell to the SBFileItem derived
-		above, so that its attributes can be accessed by SBBrowserView methods.  */
+		above, so that its attributes can be accessed by this method when it's
+		selected.  */
     [cell setRepresentedObject:item];
     [cell setStringValue:[item filename]];
     //Set the image for the item to an appropriately sized version of the file icon
