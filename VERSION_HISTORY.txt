@@ -5,16 +5,12 @@ VERSION HISTORY
 	First binary release
 
     Added toolbar, which includes an incremental filter for table data
-	
-	Added a terminate command for a running process
 
     Added progress indicator bar that appears at bottom of window when table is
     updating
 
     Moved status/package number message to bottom of window
 	
-	Temporarily removed scroll to selection; had difficulty making it work with filter
-
     Added warning alert when user attempts to quit Fink while a command is still
     running 
     
