@@ -26,7 +26,7 @@
 				F542CFF702C2F03B01A80166,
 				F5B9D9E402B1D61C01A8016B,
 				F55FF54A02CFC96301A80164,
-				F50DF77E035BC95201A8016C,
+				F55407EE035D0C8601A80170,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -192,7 +192,7 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
-				F50DF781035BD11601A8016C,
+				F55407F5035D334001A80170,
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
 				F5C523DD02A33E0A01A80165,
@@ -338,7 +338,7 @@
 				F55FBB1F02F3B8C901A80164,
 				F53B4D44031079C801A80164,
 				F5F8FA560331965D01A80166,
-				F50DF77F035BC95201A8016C,
+				F55407EF035D0C8601A80170,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,8 +373,8 @@
 				F568C4A402FC9D6101A80164,
 				F5458DC00303658001A80164,
 				F53B4D0603100C3501A80164,
-				F50DF782035BD11601A8016C,
 				F50DF7780359464F01A8016C,
+				F55407F7035D334001A80170,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,7 +399,7 @@
 				F55FBB2002F3B8C901A80164,
 				F53B4D43031079C801A80164,
 				F5F8FA580331966401A80166,
-				F50DF780035BC95201A8016C,
+				F55407F0035D0C8601A80170,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,12 +499,6 @@
 			settings = {
 			};
 		};
-		F50DF7750358B5B601A8016C = {
-			isa = PBXFileReference;
-			name = Dialogs.nib;
-			path = English.lproj/Dialogs.nib;
-			refType = 4;
-		};
 		F50DF7770359464F01A8016C = {
 			isa = PBXFileReference;
 			path = updateall.tiff;
@@ -512,42 +506,6 @@
 		};
 		F50DF7780359464F01A8016C = {
 			fileRef = F50DF7770359464F01A8016C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F50DF77D035BC95201A8016C = {
-			isa = PBXFileReference;
-			path = FinkDialogs.h;
-			refType = 4;
-		};
-		F50DF77E035BC95201A8016C = {
-			isa = PBXFileReference;
-			path = FinkDialogs.m;
-			refType = 4;
-		};
-		F50DF77F035BC95201A8016C = {
-			fileRef = F50DF77D035BC95201A8016C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F50DF780035BC95201A8016C = {
-			fileRef = F50DF77E035BC95201A8016C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F50DF781035BD11601A8016C = {
-			children = (
-				F50DF7750358B5B601A8016C,
-			);
-			isa = PBXVariantGroup;
-			name = Dialogs.nib;
-			refType = 4;
-		};
-		F50DF782035BD11601A8016C = {
-			fileRef = F50DF781035BD11601A8016C;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -992,7 +950,7 @@
 				F5C523D802A326B701A80165,
 				F5B9D9EC02B2B13501A8016B,
 				F55FF54B02CFC96301A80164,
-				F50DF77D035BC95201A8016C,
+				F55407ED035D0C8601A80170,
 			);
 			isa = PBXGroup;
 			name = Headers;
@@ -1054,6 +1012,49 @@
 		};
 		F553429302E9F45A015ADE4E = {
 			fileRef = F553429102E9F45A015ADE4E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55407ED035D0C8601A80170 = {
+			isa = PBXFileReference;
+			path = FinkWarningDialog.h;
+			refType = 4;
+		};
+		F55407EE035D0C8601A80170 = {
+			isa = PBXFileReference;
+			path = FinkWarningDialog.m;
+			refType = 4;
+		};
+		F55407EF035D0C8601A80170 = {
+			fileRef = F55407ED035D0C8601A80170;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55407F0035D0C8601A80170 = {
+			fileRef = F55407EE035D0C8601A80170;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F55407F5035D334001A80170 = {
+			children = (
+				F55407F6035D334001A80170,
+			);
+			isa = PBXVariantGroup;
+			name = Dialogs.nib;
+			path = "";
+			refType = 4;
+		};
+		F55407F6035D334001A80170 = {
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/Dialogs.nib;
+			refType = 4;
+		};
+		F55407F7035D334001A80170 = {
+			fileRef = F55407F5035D334001A80170;
 			isa = PBXBuildFile;
 			settings = {
 			};

@@ -22,9 +22,9 @@
 
 -(id)init
 {
-	self = [super initWithWindowNibName: @"PackageInfo"];
+	self = [super initWithWindowNibName:@"PackageInfo"];
+	Dprintf(@"Package info window: %@", [self window]);
 	defaults = [NSUserDefaults standardUserDefaults];
-
 	[self setWindowFrameAutosaveName: @"PackageInfo"];
 	[[self window] setTitle:NSLocalizedString(@"Package Inspector", nil)];
 

@@ -74,6 +74,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "FinkPackage.h"
 #import "FinkPreferences.h"
 #import "FinkPackageInfo.h"
+#import "FinkWarningDialog.h"
 #import "AuthorizedExecutable.h"
 #import "FinkTableViewController.h"
 #import "FinkTextViewController.h"
@@ -180,6 +181,7 @@ enum {
 	FinkDataController *packages;
 	FinkPreferences *preferences;
 	FinkPackageInfo *packageInfo;
+	FinkWarningDialog *warningDialog;
 	FinkOutputParser *parser;
 	AuthorizedExecutable *finkTask;
 	AuthorizedExecutable *killTask;

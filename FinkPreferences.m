@@ -160,6 +160,11 @@ File: FinkPreferences.m
 	
 }
 
+-(void)windowDidBecomeKey:(NSNotification *)ignore
+{
+	[self resetPreferences];
+}
+
 -(void)windowDidLoad
 {
 	[self resetPreferences];

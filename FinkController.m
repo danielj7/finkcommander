@@ -126,6 +126,7 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 	[killTask release];
 	[toolbar release];
 	[packageInfo release];
+	[warningDialog release];
 	[super dealloc];
 }
 
@@ -449,6 +450,20 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 
 	//set up args array to run the command
 	[args addObjectsFromArray: pkgNames];
+	
+	//show remove warning if appropriate; FinkWarningDialog will
+	//run command via notification if user confirms
+	if ([[args objectAtIndex: 1] isEqualToString: @"remove"] &&
+		[defaults boolForKey: FinkWarnBeforeRemoving]){
+		if (! warningDialog){
+			warningDialog = [[FinkWarningDialog alloc] init];
+		}
+		commandIsRunning = NO;
+		[warningDialog showRemoveWarningForArguments:args];
+		return;
+	}
+
+	//run the command
 	[self displayCommand: args];
 	[self runCommandWithParameters: args];
 }
@@ -954,26 +969,6 @@ NSString *FinkUpdateallItem = @"FinkUpdateallItem";
 			commandIsRunning = NO;
 			[self displayNumberOfPackages];
 			return;
-		}
-	}
-	if ([[params objectAtIndex: 1] isEqualToString: @"remove"] && 
-		[defaults boolForKey: FinkWarnBeforeRemoving]){
-		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Caution", nil),
-			NSLocalizedString(@"AreYouCertain", nil),
-			NSLocalizedString(@"DontRemove", nil), 
-			NSLocalizedString(@"Remove", nil),  
-			NSLocalizedString(@"RemoveDontWarn", nil));
-		switch(answer){
-			case NSAlertDefaultReturn:
-				commandIsRunning = NO;
-				[self displayNumberOfPackages];
-				return;
-			case NSAlertOtherReturn:
-				[defaults setBool:NO forKey:FinkWarnBeforeRemoving];
-				if (preferences){
-					[preferences setWarnBeforeRemovingButtonState:NO];
-				}
-				break;
 		}
 	}
 	if ([defaults boolForKey: FinkAutoExpandOutput]		&&
