@@ -695,6 +695,12 @@
 			settings = {
 			};
 		};
+		F53DA0DC02FCEC1D01A80164 = {
+			isa = PBXFileReference;
+			name = French;
+			path = French.lproj/Localizable.strings;
+			refType = 4;
+		};
 		F54147C202C18B7301A80165 = {
 			isa = PBXFileReference;
 			path = FinkGlobals.h;
@@ -978,6 +984,7 @@
 		F568C4A202FC9D6101A80164 = {
 			children = (
 				F568C4A302FC9D6101A80164,
+				F53DA0DC02FCEC1D01A80164,
 			);
 			isa = PBXVariantGroup;
 			name = Localizable.strings;

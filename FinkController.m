@@ -436,10 +436,12 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	while (pkg = [e nextObject]){
 		[pkgNames addObject: [pkg name]];
 	}
-	[self setSelectedPackages: pkgNames];
-	[args addObjectsFromArray: pkgNames];
-	[self displayCommand: args];
-	[self runCommandWithParameters: args];	
+	commandIsRunning = YES;
+	[self setLastCommand: @"dpkg"];
+	[self setSelectedPackages:pkgNames];
+	[args addObjectsFromArray:pkgNames];
+	[self displayCommand:args];
+	[self runCommandWithParameters: args];
 }
 
 //faster substitute for fink describe command; preserves original
@@ -1145,7 +1147,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	return  [cmd isEqualToString: @"install"]	||
 			[cmd isEqualToString: @"remove"]	||
 			[cmd isEqualToString: @"index"]		||
-			[cmd contains: @"build"]			||  
+			[cmd contains: @"build"]			|| 
+			[cmd contains: @"dpkg"]				|| 
 			[cmd contains: @"update"];
 }
 
@@ -1155,6 +1158,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int outputLength = [[textView string] length];
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
+
+#ifdef DEBUGGING		
+	NSLog(@"Finishing; lastCommand = %@", lastCommand);
+#endif
 
 	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"chown"] &&
 		! [[self lastCommand] contains: @"mv"]){
