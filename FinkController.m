@@ -22,8 +22,8 @@ See the header file, FinkController.h, for interface and license information.
 	[defaultValues setObject: @"name" forKey: FinkSelectedColumnIdentifier];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkBasePathFound];
 	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkUpdateWithFink];
-	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkScrollToSelectedRow];
 	[defaultValues setObject: [NSNumber numberWithBool: YES] forKey: FinkAlwaysChooseDefaults];
+	[defaultValues setObject: [NSNumber numberWithBool: NO] forKey: FinkScrollToSelection];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults: defaultValues];
 #ifdef DEBUG
@@ -129,7 +129,7 @@ See the header file, FinkController.h, for interface and license information.
 				
 	if (![[NSUserDefaults standardUserDefaults] boolForKey: FinkBasePathFound]){
 		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
-				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, context info
+				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 				@"Try setting the path to Fink manually in Preferences.", nil);
 	}
 	[self updateTable: nil];
@@ -149,26 +149,26 @@ See the header file, FinkController.h, for interface and license information.
 //helper used in refreshTable and in table column clicked delegate
 -(void)sortTableAtColumn: (NSTableColumn *)aTableColumn inDirection:(NSString *)direction
 {
-	BOOL scrollToSelection = [[NSUserDefaults standardUserDefaults] boolForKey:
-		FinkScrollToSelectedRow];
 	FinkPackage *pkg = nil;
-	int row = [tableView selectedRow];
-	int newrow;
+	int indexBeforeSort;
+	int indexAfterSort = 0;
+	BOOL shouldScroll = [defaults boolForKey: FinkScrollToSelection];
 
-	if (scrollToSelection && row >= 0){
-		pkg = [[self displayPackages] objectAtIndex: row];
+	indexBeforeSort = [tableView selectedRow];
+	if (indexBeforeSort >= 0 && shouldScroll){
+		pkg = [[packages array] objectAtIndex: [tableView selectedRow]];
 	}
-
+	
 	// sort data source; reload table; reset visual indicators
 	[[self displayPackages] sortUsingSelector:
 		NSSelectorFromString([NSString stringWithFormat: @"%@CompareBy%@:", direction,
 			[[aTableColumn identifier] capitalizedString]])]; // e.g. reverseCompareByName:
 	[tableView reloadData];
 
-	if (scrollToSelection && row >= 0){
-		newrow = [[self displayPackages] indexOfObject: pkg];
-		[tableView selectRow: newrow byExtendingSelection: NO];
-		[tableView scrollRowToVisible: newrow];
+	if (indexBeforeSort >= 0 && shouldScroll){
+		indexAfterSort = [[packages array] indexOfObject: pkg];
+		[tableView scrollRowToVisible: indexAfterSort];
+		[tableView selectRow: indexAfterSort byExtendingSelection: NO];
 	}
 }
 
@@ -377,6 +377,17 @@ See the header file, FinkController.h, for interface and license information.
 	[self runCommandWithParams: args];
 }
 
+//this isn't working
+-(IBAction)terminateCommand:(id)sender
+{
+	if ([[finkTask task] isRunning]){
+#ifdef DEBUG
+	NSLog(@"Found running task; trying to interrupt");
+#endif //DEBUG
+		[[finkTask task] interrupt];
+	}
+}
+
 //allow user to update table using Fink
 -(IBAction)updateTable:(id)sender
 {	
@@ -407,11 +418,13 @@ See the header file, FinkController.h, for interface and license information.
 		return NO;
 	}
 	//disable Source and Binary menu items if command is running
-	if ([self commandIsRunning]
-	 &&
-	 ([[[menuItem menu] title] isEqualToString: @"Source"] ||
-	  [[[menuItem menu] title] isEqualToString: @"Binary"] ||
-      [[menuItem title] isEqualToString: @"Update table"])){
+	if ([self commandIsRunning] &&
+		([menuItem action] == @selector(runCommand:) ||
+		 [menuItem action] == @selector(runUpdater:))){
+		return  NO;
+	}
+	if (! [self commandIsRunning] && 
+		[[menuItem title] rangeOfString: @"Terminate"].length > 0){
 		return NO;
 	}
 	return YES;
@@ -463,7 +476,7 @@ See the header file, FinkController.h, for interface and license information.
 	}else if ([itemIdentifier isEqualToString: FinkRemoveSourceItem]){
 		[item setLabel: @"Remove Source"];
 		[item setPaletteLabel: [item label]];
-		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reintallation"];
+		[item setToolTip: @"Delete the files for a package, but retain the deb file for possible reinstallation"];
 		[item setTag: 0]; 		//source command
 		[item setImage: [NSImage imageNamed:@"delsrc"]];
 		[item setTarget: self];
@@ -476,6 +489,15 @@ See the header file, FinkController.h, for interface and license information.
 		[item setImage: [NSImage imageNamed:@"delbin"]];
 		[item setTarget: self];
 		[item setAction: @selector(runCommand:)];
+#ifdef UNDEF
+	}else if ([itemIdentifier isEqualToString: FinkTerminateCommandItem]){
+		[item setLabel: @"Terminate"];
+		[item setPaletteLabel: [item label]];
+		[item setToolTip: @"Terminate current command"];
+		[item setImage: [NSImage imageNamed: @"terminate"]];
+		[item setTarget: self];
+		[item setAction: @selector(terminateCommand:)];
+#endif //UNDEF
 	}else if ([itemIdentifier isEqualToString: FinkFilterItem]) {
 		NSRect fRect = [searchView frame];
 		[item setLabel:@"Filter Table Data"];
@@ -499,6 +521,7 @@ See the header file, FinkController.h, for interface and license information.
 		FinkInstallBinaryItem,
 		FinkRemoveSourceItem,
 		FinkRemoveBinaryItem,
+//		FinkTerminateCommandItem,
 		FinkFilterItem,
 		nil];
 }
@@ -508,7 +531,8 @@ See the header file, FinkController.h, for interface and license information.
 	return [NSArray arrayWithObjects:
 		FinkInstallSourceItem,
 		FinkInstallBinaryItem,
-		FinkRemoveSourceItem, 	
+		FinkRemoveSourceItem, 
+//		FinkTerminateCommandItem,	
 		NSToolbarFlexibleSpaceItemIdentifier,
 		FinkFilterItem,
 		nil];
@@ -525,6 +549,11 @@ See the header file, FinkController.h, for interface and license information.
 		 [theItem action] == @selector(runUpdater:))){
 		return  NO;
 	}
+	if (! [self commandIsRunning] &&
+		[[theItem label] rangeOfString: @"Terminate"].length > 0){
+		return NO;
+	}
+	
 	return YES;
 }
 
@@ -541,8 +570,10 @@ See the header file, FinkController.h, for interface and license information.
 
 	if ([[aNotification object] tag] == 0){ 		//filter text field
 		if ([filterText length] == 0){
-		[self setDisplayPackages: [packages array]];
+			[self setDisplayPackages: [packages array]];
 		}else{
+			//deselect rows so autoscroll doesn't interfere
+			[tableView deselectAll: self];
 			while (pkg = [e nextObject]){
 				pkgAttribute = [[pkg performSelector: NSSelectorFromString(field)] lowercaseString];
 				if ([pkgAttribute rangeOfString: filterText].length > 0){
@@ -628,11 +659,11 @@ See the header file, FinkController.h, for interface and license information.
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
 {
 	if ([[[[self displayPackages] objectAtIndex: rowIndex] name]
-		isEqualToString: @"tcsh"]){
-		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, //title, buttons
-					[self window], self, NULL,	NULL, nil,	 //window, del, SELs, c info
-					@"FinkCommander is unable to install that package.\n\tSee Help:FinkCommander Guide:Known Bugs",
-					nil);		//msg string params
+		rangeOfString: @"tcsh"].length > 0){
+		NSBeginAlertSheet(@"Sorry",	@"OK", nil,	nil, 
+				[self window], self, NULL,	NULL, nil,
+					@"FinkCommander is unable to install that package.\nSee Help:FinkCommander Guide:Known Bugs and Limitations",
+					nil);
 		return NO;
 	}
 	return YES;

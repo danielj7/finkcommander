@@ -11,8 +11,8 @@ File: FinkPreferences.m
 NSString *FinkBasePath = @"FinkBasePath";
 NSString *FinkBasePathFound = @"FinkBasePathFound";
 NSString *FinkUpdateWithFink = @"FinkUpdateWithFink";
-NSString *FinkScrollToSelectedRow = @"FinkScrollToSelectedRow";
 NSString *FinkAlwaysChooseDefaults = @"FinkAlwaysChooseDefaults";
+NSString *FinkScrollToSelection = @"FinkScrollToSelection";
 NSString *FinkSelectedColumnIdentifier = @"FinkSelectedColumnIdentifier";
 NSString *FinkSelectedPopupMenuTitle = @"FinkSelectedPopupMenuTitle";
 
@@ -22,6 +22,7 @@ NSString *FinkInstallSourceItem = @"FinkInstallSourceItem";
 NSString *FinkInstallBinaryItem = @"FinkInstallBinaryItem";
 NSString *FinkRemoveSourceItem = @"FinkRemoveSourceItem";
 NSString *FinkRemoveBinaryItem = @"FinkRemoveBinaryItem";
+NSString *FinkTerminateCommandItem = @"FinkTerminateCommandItem";
 NSString *FinkFilterItem = @"FinkFilterItem";
 
 @implementation FinkPreferences
@@ -53,8 +54,8 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	}
 
 	[updateWithFinkButton setState: [defaults boolForKey: FinkUpdateWithFink]];
-	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelectedRow]];
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
+	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
 	pathChoiceChanged = NO;
 }
 
@@ -82,8 +83,8 @@ NSString *FinkFilterItem = @"FinkFilterItem";
 	[self setBasePath];
 	
 	[defaults setBool: [updateWithFinkButton state] forKey: FinkUpdateWithFink];
-	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelectedRow];
 	[defaults setBool: [alwaysChooseDefaultsButton state] forKey: FinkAlwaysChooseDefaults];
+	[defaults setBool: [scrollToSelectionButton state] forKey: FinkScrollToSelection];
 	//give manually set path a chance to work on startup
 	if (pathChoiceChanged){
 		[defaults setBool: YES forKey: FinkBasePathFound];

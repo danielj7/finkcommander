@@ -260,9 +260,9 @@
 	<key>CFBundleExecutable</key>
 	<string>FinkCommander</string>
 	<key>CFBundleHelpBookFolder</key>
-	<string>FinkCommander Guide</string>
+	<string>FinkCommander Help</string>
 	<key>CFBundleHelpBookName</key>
-	<string>FinkCommander Guide</string>
+	<string>FinkCommander Help</string>
 	<key>CFBundleIconFile</key>
 	<string>Darwinfinch.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -274,7 +274,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.1</string>
+	<string>0.2</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -316,6 +316,7 @@
 				F50C7FBE026BD92B01A80164,
 				F5C1B063026BFA2501A80164,
 				F554F376026E607801A80165,
+				F58205F90270087601A80166,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -561,6 +562,7 @@
 				F554F1D80266AA4B01A80164,
 				F538C3C1023495CF01A80164,
 				F538C3C2023495CF01A80164,
+				F58205F80270087601A80166,
 			);
 			isa = PBXGroup;
 			name = Images;
@@ -621,6 +623,17 @@
 			settings = {
 			};
 		};
+		F58205F80270087601A80166 = {
+			isa = PBXFileReference;
+			path = terminate.tiff;
+			refType = 4;
+		};
+		F58205F90270087601A80166 = {
+			fileRef = F58205F80270087601A80166;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F59BDD90026817BF01A80164 = {
 			isa = PBXFileReference;
 			path = addsrc.tiff;
@@ -667,7 +680,7 @@
 		};
 		F5C1B062026BFA2501A80164 = {
 			isa = PBXFolderReference;
-			path = "FinkCommander Guide";
+			path = "FinkCommander Help";
 			refType = 4;
 		};
 		F5C1B063026BFA2501A80164 = {

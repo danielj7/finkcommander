@@ -122,7 +122,9 @@ Contact the author at sburr@mac.com.
 
 -(IBAction)runCommand:(id)sender;
 -(IBAction)runUpdater:(id)sender;
+-(IBAction)terminateCommand:(id)sender;
 -(IBAction)updateTable:(id)sender;
+
 
 -(IBAction)showPreferencePanel:(id)sender;
 

@@ -35,7 +35,6 @@
 {
     [self stopProcess];
 
-//  [arguments release];
 	[environment release];
 	[password release];
     [task release];
@@ -101,7 +100,7 @@
 	  name: NSFileHandleReadCompletionNotification object: [[task standardOutput] fileHandleForReading]];
     
     // Probably superfluous given change made above
-    [task terminate];
+    //[task terminate];
 }
 
 // Get data asynchronously from process's standard output

@@ -10,6 +10,7 @@
                 runCommand = id; 
                 runUpdater = id; 
                 showPreferencePanel = id; 
+                terminateCommand = id; 
                 updateTable = id; 
             }; 
             CLASS = FinkController; 

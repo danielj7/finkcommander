@@ -34,15 +34,15 @@ File: FinkPreferences.h
 #import <AppKit/AppKit.h>
 
 // eliminate for release version:
-#define DEBUG 
+//#define DEBUG 
 
 //---------------------------------------------->Global Variables
 //User Default Items
 extern NSString *FinkBasePath;
 extern NSString *FinkBasePathFound;
 extern NSString *FinkUpdateWithFink;
-extern NSString *FinkScrollToSelectedRow;
 extern NSString *FinkAlwaysChooseDefaults;
+extern NSString *FinkScrollToSelection;
 extern NSString *FinkSelectedColumnIdentifier;
 extern NSString *FinkSelectedPopupMenuTitle;
 
@@ -51,6 +51,7 @@ extern NSString *FinkInstallSourceItem;
 extern NSString *FinkInstallBinaryItem;
 extern NSString *FinkRemoveSourceItem;
 extern NSString *FinkRemoveBinaryItem;
+extern NSString *FinkTerminateCommandItem;
 extern NSString *FinkFilterItem;
 
 
@@ -59,8 +60,8 @@ extern NSString *FinkFilterItem;
 	IBOutlet NSMatrix *pathChoiceMatrix;
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSButton *updateWithFinkButton;
-	IBOutlet NSButton *scrollToSelectionButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
+	IBOutlet NSButton *scrollToSelectionButton;
 	
 	NSUserDefaults *defaults;
 	BOOL pathChoiceChanged;
