@@ -24,8 +24,8 @@ File: FinkPreferences.m
 -(void)awakeFromNib
 {
 	if ([conf extendedVerboseOptions]){
-		[verboseOutputPopupButton insertItemWithTitle:@"Low" atIndex:1];
-		[verboseOutputPopupButton insertItemWithTitle:@"Medium" atIndex:2];
+		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", nil) atIndex:1];
+		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", nil) atIndex:2];
 
 	}	
 }
@@ -396,7 +396,7 @@ File: FinkPreferences.m
 	[panel setCanChooseDirectories: YES];
 	[panel setCanChooseFiles: NO];
 	[panel setAllowsMultipleSelection: NO];
-	[panel setPrompt: @"Choose"];
+	[panel setPrompt: NSLocalizedString(@"Choose", nil)];
 	
 	[panel beginSheetForDirectory: NSHomeDirectory()
 		file: nil

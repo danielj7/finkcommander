@@ -1,25 +1,68 @@
 /* FinkController.m */
 
-"UpdatingTable" = "Updating table data"
-"OK" = "OK"
-"TrySetting" = "Try setting the path to Fink manually in Preferences."
-"PackagesDisplayed" = "Packages: %d Displayed, %d Installed"
-"Done" = "Done"
-"packagesInstalled" = "%d packages (%d installed)"
-"Warning" = "Warning!"
-"Quitting now will interrupt a Fink process." = "Quitting now will interrupt a Fink process."
-"Quit" = "Quit"
-"Running" = "Running %@"
-"Error" = "Error"
-"Download" = "Download"
-"No" = "No"
-"Current" = "Current"
-"TheLatest" = "The latest version of FinkCommander is installed on your system."
-"Caution" = "Caution"
-"Continue" = "Continue"
-"Sorry" = "Sorry"
-"Continue" = "Continue"
-"JustChecking" = "Just Checking"
-"Caution" = "Caution"
-"RemoveWarn" = "Remove/Don't Warn"
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Quit" = "Quit";
+"Yes" = "Yes";
+"No" = "No";
+"Continue" = "Continue";
+"Error" = "Error";
+"Caution" = "Caution";
+"Sorry" = "Sorry";
+"Warning" = "Warning!";
+"Done" = "Done";
+
+"UpdatingTable" = "Updating table data";
+
+"UnableToLocate" = "Unable to Locate Fink";
+
+"TrySetting" = "Try setting the path to Fink manually in Preferences.";
+
+"PackagesDisplayed" = "Packages: %d Displayed, %d Installed";
+
+"packagesInstalled" = "%d packages (%d installed)";
+
+"QuittingNow" = "Quitting now will interrupt a Fink process.";
+
+"Running" = "Running %@";  /* as in running a command */
+
+"FinkCommanderWasUnable" = "FinkCommander was unable to locate on-line update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.";
+
+"Download" = "Download";
+
+"AMoreCurrentVersion" = "A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?";
+
+"Current" = "Current";
+
+"TheLatest" = "The latest version of FinkCommander is installed on your system.";
+
+"TheTerminateCommand" = "The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\n\nWhat would you like to do?";
+
+"Terminate" = "Terminate";
+
+"TheCurrentProcess" = "The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander and run ps and sudo kill from the Terminal (see help for more details).\nWhat would you like to do?";
+
+"JustChecking" = "Just Checking";
+
+"AreYouSure" = "Are you sure you want to run this command:\n%@?";
+
+"Caution" = "Caution";
+
+"AreYouCertain" = "Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Commander or by clicking \"Remove/Don't Warn\".)";
+
+"DontRemove" = "Don't Remove";
+
+"Remove" = "Remove";
+
+"RemoveDontWarn" = "Remove/Don't Warn";
+
+"YouMustWait" = "You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.";
+
+"FinkCommanderDetected" = "FinkCommander detected a possible failure message.\nCheck the output window for problems.";
+
+/* FinkPreferences.m */
+
+"Low" = "Low";
+"Medium" = "Medium";
+"Choose" = "Choose";
 

@@ -162,7 +162,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		[self expandOutput: nil]; 
 	}
 	[msgText setStringValue:
-		@"Updating table data"];
+		NSLocalizedString(@"UpdatingTable", nil)];
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -173,10 +173,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
 	NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
 				
-	if ([basePath length] <= 0 ){
-		NSBeginAlertSheet(@"Unable to Locate Fink",	@"OK", nil,	nil, //title, buttons
+	if ([basePath length] <= 1 ){
+		NSBeginAlertSheet(NSLocalizedString(@"UnableToLocate", nil),	
+				NSLocalizedString(@"OK", nil), nil,	nil, //title, buttons
 				[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
-				@"Try setting the path to Fink manually in Preferences.", nil);
+				NSLocalizedString(@"TrySetting", nil), nil);
 	}
 	[self updateTable:nil];
 
@@ -203,15 +204,15 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 {	
 	if ([defaults boolForKey: FinkPackagesInTitleBar]){				
 		[[self window] setTitle: [NSString stringWithFormat: 
-			@"Packages: %d Displayed, %d Installed",
+			NSLocalizedString(@"PackagesDisplayed", nil),
 			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
 		if (! commandIsRunning){
-			[msgText setStringValue: @"Done"];
+			[msgText setStringValue: NSLocalizedString(@"Done", nil)];
 		}
 	}else if (! commandIsRunning){
 		[[self window] setTitle: @"FinkCommander"];
 		[msgText setStringValue: [NSString stringWithFormat:
-			@"%d packages (%d installed)",
+			NSLocalizedString(@"packagesInstalled", nil),
 			[[tableView displayedPackages] count], [packages installedPackagesCount]]];
 	}
 }
@@ -271,9 +272,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	
 	if (commandIsRunning && 
 		! userChoseToTerminate){ //see windowShouldClose: method
-		answer = NSRunCriticalAlertPanel(@"Warning!", 
-			@"Quitting now will interrupt a Fink process.",
-			@"Cancel", @"Quit", nil);
+		answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil), 
+			NSLocalizedString(@"QuittingNow", nil),
+			NSLocalizedString(@"Cancel", nil), 
+			NSLocalizedString(@"Quit", nil), nil);
 		if (answer == NSAlertDefaultReturn){
 			return NO;
 		}
@@ -291,9 +293,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(BOOL)windowShouldClose:(id)sender
 {
 	if (commandIsRunning){
-		int answer = NSRunCriticalAlertPanel(@"Warning!",
-				@"Quitting now will interrupt a Fink process.",
-				@"Cancel", @"Quit", nil);
+		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Warning", nil),
+				NSLocalizedString(@"QuittingNow", nil),
+				NSLocalizedString(@"Cancel", nil), 
+				NSLocalizedString(@"Quit", nil), nil);
 		if (answer == NSAlertDefaultReturn){
 			return NO;
 		}
@@ -311,7 +314,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 //display running command below table
 -(void)displayCommand:(NSArray *)params
 {
-	[msgText setStringValue: [NSString stringWithFormat: @"Running %@",
+	[msgText setStringValue: [NSString stringWithFormat: NSLocalizedString(@"Running", nil),
 		[params componentsJoinedByString: @" "]]];
 }
 
@@ -351,7 +354,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)updateTable:(id)sender
 {
 	[self startProgressIndicatorAsIndeterminate:YES];
-	[msgText setStringValue: @"Updating table data"];
+	[msgText setStringValue: NSLocalizedString(@"UpdatingTable", nil)];
 	commandIsRunning = YES;
 
 	[packages update];
@@ -393,7 +396,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 -(IBAction)runCommand:(id)sender
 {
 	NSMutableArray *args = [self setupCommandFrom: sender];
-	NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity: 5];
+	NSMutableArray *pkgNames = [NSMutableArray array];
 	FinkPackage *pkg;
 	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 
@@ -418,6 +421,25 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 	[self displayCommand: args];
 	[self runCommandWithParameters: args];
+}
+
+-(IBAction)forceRemove:(id)sender
+{
+	NSString *dpkg = [NSString stringWithFormat:@"%@/bin/%@", 
+						[defaults objectForKey:FinkBasePath], @"dpkg"];
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:
+		dpkg, @"--remove", @"--force-depends", nil];
+	NSMutableArray *pkgNames = [NSMutableArray array];
+	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+	FinkPackage *pkg;
+
+	while (pkg = [e nextObject]){
+		[pkgNames addObject: [pkg name]];
+	}
+	[self setSelectedPackages: pkgNames];
+	[args addObjectsFromArray: pkgNames];
+	[self displayCommand: args];
+	[self runCommandWithParameters: args];	
 }
 
 //faster substitute for fink describe command; preserves original
@@ -462,26 +484,26 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if (latestVersionDict){
 		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
 	}else{
-		NSRunAlertPanel(@"Error",
-				  @"FinkCommander was unable to locate on-line update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.",
-				  @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Error", nil),
+				  NSLocalizedString(@"FinkCommanderWasUnable", nil),
+				  NSLocalizedString(@"OK", nil), nil, nil);
 		return;
 	}
 	if (! [installedVersion isEqualToString: latestVersion]){
-		int answer = NSRunAlertPanel(@"Download",
-							   @"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?",
-							   @"Yes", @"No", nil, latestVersion);
+		int answer = NSRunAlertPanel(NSLocalizedString(@"Download", nil),
+							   NSLocalizedString(@"AMoreCurrentVersion", nil),
+							   NSLocalizedString(@"Yes", nil), 
+							   NSLocalizedString(@"No", nil), nil, latestVersion);
 		if (answer == NSAlertDefaultReturn){
 			[[NSWorkspace sharedWorkspace] openURL:
 				[NSURL URLWithString:
-					[NSString stringWithFormat:
-													   @"http://finkcommander.sourceforge.net",
+					[NSString stringWithFormat:@"http://finkcommander.sourceforge.net",
 						latestVersion]]];
 		}
 	}else if (notifyWhenCurrent){
-		NSRunAlertPanel(@"Current",
-				  @"The latest version of FinkCommander is installed on your system.",
-				  @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Current", nil),
+				  NSLocalizedString(@"TheLatest", nil),
+				  NSLocalizedString(@"OK", nil), nil, nil);
 	}
 	[defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
 }
@@ -526,9 +548,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(IBAction)terminateCommand:(id)sender
 {
-	int answer1 = NSRunAlertPanel(@"Caution",
-			@"The terminate command will kill the current process without giving it the opportunity to run any clean-up routines.\nWhat would you like to do?",
-			@"Terminate", @"Continue", nil);
+	int answer1 = NSRunAlertPanel(NSLocalizedString(@"Caution", nil),
+			NSLocalizedString(@"TheTerminateCommand", nil),
+			NSLocalizedString(@"Terminate", nil), 
+			NSLocalizedString(@"Continue", nil), nil);
 
 	if (answer1 == NSAlertDefaultReturn){
 		terminateChildProcesses();
@@ -536,9 +559,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		sleep(1);
 
 		if ([[finkTask task] isRunning]){
-			int answer2 = NSRunAlertPanel(@"Sorry",
-					@"The current process is not responding to the terminate command.\nThe only way to stop it is to quit FinkCommander and run ps and sudo kill from the Terminal (see help for more details).\nWhat would you like to do?",
-					@"Quit", @"Continue", nil);
+			int answer2 = NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
+					NSLocalizedString(@"TheCurrentProcess", nil),
+					NSLocalizedString(@"Quit", nil), 
+					NSLocalizedString(@"Continue", nil), nil);
 			if (answer2 == NSAlertDefaultReturn){
 				userChoseToTerminate = YES;
 				[NSApp terminate: self];
@@ -677,6 +701,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	//disable package-specific commands if no row selected
 	if ([tableView selectedRow] == -1 						&&
 	    ([theItem action] == @selector(runCommand:)  		||
+		 [theItem action] == @selector(forceRemove:)		||
 		 [theItem action] == @selector(showDescription:)	||
 		 [theItem action] == @selector(emailMaintainer:))){
 		return NO;
@@ -685,6 +710,7 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	if (commandIsRunning &&
 		([theItem action] == @selector(runCommand:) 		||
 		 [theItem action] == @selector(runUpdater:) 		||
+		 [theItem action] == @selector(forceRemove:)		||
 		 [theItem action] == @selector(showDescription:)	||
 		 [theItem action] == @selector(saveOutput:)			||
 		 [theItem action] == @selector(updateTable:))){
@@ -976,9 +1002,10 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		return;
 	}
 	if ([defaults boolForKey: FinkWarnBeforeRunning]){
-		int answer = NSRunAlertPanel(@"Just Checking", 
-			@"Are you sure you want to run this command:\n%@?",
-			@"Yes", @"No", nil, 
+		int answer = NSRunAlertPanel(NSLocalizedString(@"JustChecking", nil), 
+			NSLocalizedString(@"AreYouSure", nil),
+			NSLocalizedString(@"Yes", nil), 
+			NSLocalizedString(@"No", nil), nil, 
 			[params componentsJoinedByString: @" "]);
 
 		if (answer == NSAlertAlternateReturn){
@@ -989,9 +1016,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	}
 	if ([[params objectAtIndex: 1] isEqualToString: @"remove"] && 
 		[defaults boolForKey: FinkWarnBeforeRemoving]){
-		int answer = NSRunCriticalAlertPanel(@"Caution",
-			@"Are you certain you want to remove the selected packages?\n(You can turn this warning  off in Preferences:Commander or by clicking \"Remove/Don't Warn\".)",
-			@"Don't Remove", @"Remove",  @"Remove/Don't Warn");
+		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"Caution", nil),
+			NSLocalizedString(@"AreYouCertain", nil),
+			NSLocalizedString(@"DontRemove", nil), 
+			NSLocalizedString(@"Remove", nil),  
+			NSLocalizedString(@"RemoveDontWarn", nil));
 		switch(answer){
 			case NSAlertDefaultReturn:
 				commandIsRunning = NO;
@@ -1040,9 +1069,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	NSNumber *indicator = [[note userInfo] objectForKey:FinkRunProgressIndicator];
 		
 	if (commandIsRunning){
-		NSRunAlertPanel(@"Sorry",
-				  @"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.",
-				  @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Sorry", nil),
+				  NSLocalizedString(@"YouMustWait", nil),
+				  NSLocalizedString(@"OK", nil), nil, nil);
 		if ([cmd isEqualToString:@"/bin/cp"]){
 			[preferences setFinkConfChanged: nil]; //action method; sets to YES
 		}
@@ -1138,8 +1167,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	[tableView setDisplayedPackages: [packages array]];
 	if (status == 0 && ! [last2lines containsCI: @"failed"]){
 		if ([self commandRequiresTableUpdate: lastCommand]){
-			if ([lastCommand contains: @"selfupdate"] ||
-				[lastCommand contains: @"index"]	  ||
+			if ([lastCommand contains: @"selfupdate"] 	||
+				[lastCommand contains: @"dpkg"]			||
+				[lastCommand contains: @"index"]	  	||
 	            [defaults boolForKey: FinkUpdateWithFink]){
 				[self updateTable: nil];   // resetInterface will be called by notification
 			}else{
@@ -1154,10 +1184,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 		if ([defaults boolForKey: FinkAutoExpandOutput]){
 			[self expandOutput: nil];
 		}
-		NSBeginAlertSheet(@"Error",	@"OK", nil,	nil, //title, buttons
-		[self window], self, NULL,	NULL, nil,	 	 //window, delegate, selectors, context info
-		@"FinkCommander detected a possible failure message.\nCheck the output window for problems.",
-		nil);										 //msg string params
+		NSBeginAlertSheet(NSLocalizedString(@"Error", nil),		//title
+			NSLocalizedString(@"OK", nil), nil,	nil, 			//buttons
+			[self window], self, NULL, NULL, nil,	 			//window, delegate, selectors, context
+			NSLocalizedString(@"FinkCommanderDetected", nil),	//msg string
+			nil);												//msg string params
 		[self updateTable: nil];
 	}
 	[[NSNotificationCenter defaultCenter]

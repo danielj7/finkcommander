@@ -9,6 +9,7 @@
                 endInteractionWindow = id; 
                 endPwdWindow = id; 
                 expandOutput = id; 
+                forceRemove = id; 
                 goToWebsite = id; 
                 raiseInteractionWindow = id; 
                 raisePwdWindow = id; 
@@ -42,7 +43,7 @@
                 tableContextMenu = NSMenu; 
                 tableScrollView = NSScrollView; 
                 tableView = id; 
-                textView = NSTextView; 
+                textView = id; 
                 viewMenu = NSMenu; 
             }; 
             SUPERCLASS = NSWindowController; 
