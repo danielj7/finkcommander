@@ -367,9 +367,10 @@ enum {
 	[defaults setObject:[perlPathTextField stringValue] forKey:FinkPerlPath];
 		//Give manually set path a chance to work on startup
 	if (pathChoiceChanged){
-		[defaults setBool: YES forKey: FinkBasePathFound];
+		[defaults setBool:YES forKey:FinkBasePathFound];
+		fixScript();
 	}
-
+	
 	//Display Tab
 	[self setScrollBackLimit];
 	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];

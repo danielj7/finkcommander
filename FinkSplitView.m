@@ -109,6 +109,15 @@ File: FinkSplitView.m
 	[self setNeedsDisplay: YES];
 }
 
+//Connected to First Responder
+-(IBAction)collapseExpandOutput:(id)sender
+{
+	if ([outputScrollView bounds].size.height > 1.0){
+		[self collapseOutput:nil];
+	}else{
+		[self expandOutputToMinimumRatio:0.0];
+	}
+}
 
 -(void)mouseDown:(NSEvent *)theEvent
 {

@@ -77,7 +77,7 @@ int isauthorizedcmd(char * const *cmd, int args)
     struct stat st;
 
     /* Test program name */
-    if (!strstr(cmd[1], "/bin/fink")	&&
+    if (!strstr(cmd[1], "/bin/fink")		&&
 		!strstr(cmd[1], "/bin/apt-get")		&&
 		!strstr(cmd[1], "/bin/dpkg")){
 		return cmdNotAuthorized;
@@ -217,6 +217,8 @@ int repair_self()
     int fd_tool;
     int result = FALSE;
     int resrep = TRUE;
+	int chownerr;
+	int chmoderr;
     char* path_to_self = getPathToMyself();
     char path_to_res[BUFSIZE];
     char* end_of_dir;
@@ -241,21 +243,25 @@ int repair_self()
             fd_tool = open(path_to_self, O_NONBLOCK|O_RDONLY|O_EXLOCK, 0);
             if ((fd_tool != -1) && (fstat(fd_tool, &st) == 0)){
                 if (st.st_uid != 0)
-                    fchown(fd_tool, 0, st.st_gid);
+                    chownerr = fchown(fd_tool, 0, st.st_gid);
 
                 /* Disable group and world writability and make setuid root. */
-                fchmod(fd_tool, (st.st_mode & (~(S_IWGRP|S_IWOTH))) | S_ISUID);
+                chmoderr = fchmod(fd_tool, (st.st_mode & (~(S_IWGRP|S_IWOTH))) | S_ISUID);
                 close(fd_tool);
-                result = TRUE;
+				if (0 == chownerr && 0 == chmoderr){
+					result = TRUE;
+				}
             }
 #ifndef DEBUGGING
 			/* Set ownership of Resource directory to root and disable group and world
 				writability */
 			if (path_to_res[0] != 0){
 				if (stat(path_to_res, &st) == 0){
-					chown(path_to_res, 0, st.st_gid);
-					chmod(path_to_res, st.st_mode & (~(S_IWGRP|S_IWOTH)));
-					resrep = TRUE;
+					chownerr = chown(path_to_res, 0, st.st_gid);
+					chmoderr = chmod(path_to_res, st.st_mode & (~(S_IWGRP|S_IWOTH)));
+					if (0 == chownerr && 0 == chmoderr){
+						resrep = TRUE;
+					}
 				}
 			}
 #endif //DEBUGGING
@@ -270,11 +276,10 @@ int repair_self()
     if (result && resrep){
 		fprintf(stderr, "Self-repair succeeded\n");
     }else if (result){
-		fprintf(stderr, "Unable to modify Resource directory\n");
+		fprintf(stderr, "/n/nWARNING:  Unable to modify Resource directory\n");
     }else{
-		fprintf(stderr, "Self-repair failed\n");
+		fprintf(stderr, "/n/nERROR:  Self-repair failed.  Please be sure you are running FinkCommander from a directory and disk you are authorized to modify.\n");
     }
-
     return ! result;  //will be used as exit code; so return 0 if successful, 1 otherwise
 }
 

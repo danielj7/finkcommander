@@ -21,7 +21,7 @@ communicates with:
 
 *	FinkOutputParser (M) -- parses the output from fink and apt-get commands and
 	returns signals indicating what type of action, if any, is appropriate for that output; 
-	some signals tell FinkCommander to send a follow-up message for additional 
+	some signals tell FinkController to send a follow-up message for additional 
 	information;
 
 *	FinkTableView (VC) and FinkTextViewController (C) -- control
@@ -170,7 +170,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)sendNegativeFeedback:(id)sender;
 -(IBAction)chooseTableColumn:(id)sender;
 -(IBAction)sortByPackageElement:(id)sender;
--(IBAction)collapseExpandOutput:(id)sender;
 -(IBAction)toggleFlags:(id)sender;
 -(IBAction)openDocumentation:(id)sender;
 -(IBAction)openPackageFileViewer:(id)sender;

@@ -47,6 +47,7 @@
 	NSMenuItem *collapseExpandMenuItem;
 }
 
+-(IBAction)collapseExpandOutput:(id)sender;
 -(void)connectSubviews;
 -(void)setCollapseExpandMenuItem:(NSMenuItem *)item;
 -(void)collapseOutput:(NSNotification *)n;

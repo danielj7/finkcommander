@@ -24,30 +24,20 @@ File: FinkOutputParser.m
 	 [(x) contains:@"will be rebuilt"])
 
 #define FETCHTRIGGER(x) 													\
-	([(x) hasPrefix: @"wget -"]  	||   									\
-	 [(x) hasPrefix: @"curl -"]  	|| 										\
-	 [(x) hasPrefix: @"axel -"])
+	[(x) containsExpression:@"^(wget|curl|axel) -"]
 
 #define UNPACKTRIGGER(x) 													\
 	(([(x) containsPattern:@"mkdir -p */src/*"] 	&& 						\
 		![(x) contains:@"root"])					||					 	\
-	 [(x) containsPattern:@"*/bin/tar -*"]	 		|| 						\
-	 [(x) containsPattern:@"*/bin/bzip2 -*"])
+	  [(x) containsExpression:@"/bin/(tar|bzip2) -.*"])
 
 #define CONFIGURETRIGGER(x)	\
-	([(x) hasPrefix:@"./configure"] 				|| 						\
-	 [(x) hasPrefix:@"checking for"]				|| 						\
-	 [(x) hasPrefix:@"patching file"])
-
+	[(x) containsExpression:@"^(\./configure|checking for|patching file) "]
+	
 #define COMPILETRIGGER(x)													\
 	(([(x) hasPrefix: @"make"]						&& 						\
 		![(x) contains:@"makefile"])				|| 						\
-	 [(x) hasPrefix: @"Compiling"]					||	 					\
-	 [(x) hasPrefix: @"pbxbuild"]					|| 						\
-	 [(x) containsPattern: @"g77 [- ]*"]			|| 						\
-	 [(x) containsPattern: @"g[c+][c+] -[!E]*"]		|| 						\
-	 [(x) containsPattern: @"cc -[!E]*"]			|| 						\
-	 [(x) containsPattern: @"c++ -[!E]*"])
+	 [(x) containsExpression:@"^(g?[c+7]{2} (-[^E]| ))|Compiling |pbxbuild "])
 
 #define ISPROMPT(x) 														\
 	([(x) containsPattern: @"*proceed? \[*"]		|| 						\
@@ -60,10 +50,10 @@ File: FinkOutputParser.m
 
 //fink's --yes option does not work for these prompts:
 #define ISMANDATORY_PROMPT(x)	\
-	([(x) contains: @"cvs.sourceforge.net's password:"] || 					\
-	 [(x) contains: @"return to continue"] 				||					\
-	 [(x) contains: @"CVS password:"])
-
+	([(x) contains:@"cvs.sourceforge.net's password:"]  || 					\
+	 [(x) contains:@"CVS password:"]					||					\
+	 [(x) contains:@"[default=N]?"] 					||					\
+	 [(x) containsExpression:@"(key|return) to continue\.?$"]) 				
 
 
 @implementation FinkOutputParser

@@ -114,9 +114,6 @@
 
 -(void)closingTreeWindowWithController:(id)sender
 {
-	Dprintf(@"Retain count of %@ before removed from array: %d",
-		 sender, [sender retainCount]);
-
 	[[self windowControllers] removeObject:sender];			//RC == 0
 }
 

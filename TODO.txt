@@ -1,16 +1,24 @@
-VERSION 0.5.1 (bug fix); target release date = 3/1/03
+VERSION 0.5.1 (bug fix); target release date = 3/23/03
+
+d Fix bug causing hang during selfupdate-cvs
 
 Fix bugs in Environment table
 	d Crash on setting same item more than once
 	Some items disappear during editing
 
-Update perl script whenever base path is set in Preferences
+d Fix bug -- erroneous success report for self-repair when FC is run from 
+Disk Image
+
+d Update perl script whenever base path is set in Preferences
 
 Warn that fink may not be installed when basepath can't be found
 
 Warn not to change Window Settings and make default when running in Terminal
 
 VERSION 0.5.2:
+
+Display interaction dialog when ':$' or '>$' (regex) appears and there is no 
+further output after 5 seconds
 
 Option to apply action to selected or flagged packages
 

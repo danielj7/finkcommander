@@ -63,6 +63,7 @@
         }, 
         {
             ACTIONS = {
+                collapseExpandOutput = id; 
                 openPackageFiles = id; 
                 openSelectedFiles = id; 
                 toggleFlags = id; 

@@ -101,7 +101,20 @@ File: FinkInstallationInfo.m
 	NSString *pathToFink = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 			stringByAppendingPathComponent: @"/bin/fink"];
 	NSString *version = [self versionOutputForExecutable:pathToFink];
+	NSArray *version_lines;
+	
 	if (! version) return @"Unable to determine fink version\n";
+	
+	version_lines = [version componentsSeparatedByString:@"\n"];
+	if ([version_lines count] >= 2 &&
+		[[version_lines objectAtIndex:0] containsCI:@"version"] &&
+		[[version_lines objectAtIndex:1] containsCI:@"version"]){
+		version = [NSString stringWithFormat:@"%@\n%@\n", 
+					[version_lines objectAtIndex:0], 
+					[version_lines objectAtIndex:1]];
+	}else{
+		version = @"Unable to determine fink version; the format changed again!\n"; 
+	}
 	return version;
 }
 

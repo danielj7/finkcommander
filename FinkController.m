@@ -153,7 +153,7 @@ enum {
 		//Check whether this is the initial startup of 0.4.0 or later for this user;
 		//if so, remove existing preferences relating to table columns
 		if (![[defaults objectForKey:FinkUsersArray] containsObject:NSUserName()]){
-			NSLog(@"Fixing preferences for first run of version 0.4");
+			NSLog(@"Fixing preferences for first run of version 0.4 or later");
 			fixPreferences();
 		}
 
@@ -245,7 +245,6 @@ enum {
 	[treeManager release];
     [super dealloc];
 }
-
 
 //================================================================================
 #pragma mark GENERAL HELPERS
@@ -638,15 +637,6 @@ enum {
 	[tableView tableView:tableView didClickTableColumn:column];
 }
 
--(IBAction)collapseExpandOutput:(id)sender
-{
-	if ([outputScrollView bounds].size.height > 1.0){
-		[splitView collapseOutput:nil];
-	}else{
-		[splitView expandOutputToMinimumRatio:0.0];
-	}
-}
-
 -(IBAction)toggleFlags:(id)sender
 {
 	int currentState = [[[tableView selectedPackageArray] lastObject]
@@ -867,7 +857,6 @@ enum {
 								ofType:nil]
 						stringByAppendingPathComponent:@"fchelp.html"];
 								
-	NSLog(@"Path to help: %@", pathToHelp);
 	openFileAtPath(pathToHelp);
 }
 
