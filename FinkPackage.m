@@ -96,6 +96,42 @@ See the header file, FinkPackage.h, for interface and license information.
 	fulldesc = s;
 }
 
+-(NSString *)weburl
+{
+	return weburl;
+}
+
+-(void)setWeburl:(NSString *)s
+{
+	[s retain];
+	[weburl release];
+	weburl = s;	
+}
+
+-(NSString *)maintainer
+{
+	return maintainer;
+}
+
+-(void)setMaintainer:(NSString *)s;
+{
+	[s retain];
+	[maintainer release];
+	maintainer = s;	
+}
+
+-(NSString *)email
+{
+	return email;
+}
+
+-(void)setEmail:(NSString *)s
+{
+	[s retain];
+	[email release];
+	email = s;	
+}
+
 -(NSString *)binary;
 {
 	return binary;
@@ -128,7 +164,7 @@ See the header file, FinkPackage.h, for interface and license information.
 		return NO;
 	}
 	if ([[anObject name] isEqualToString: [self name]] &&
-	 [[anObject version] isEqualToString: [self version]]){
+		[[anObject version] isEqualToString: [self version]]){
 		return YES;
 	}else{
 		return NO;

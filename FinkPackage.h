@@ -45,6 +45,9 @@ Contact the author at sburrious@users.sourceforge.net.
 	NSString *category;
 	NSString *description;
 	NSString *fulldesc;
+	NSString *weburl;
+	NSString *maintainer;
+	NSString *email;
 	NSString *binary;
 	NSString *unstable;
 }
@@ -52,18 +55,34 @@ Contact the author at sburrious@users.sourceforge.net.
 //Instance variable access
 -(NSString *)name;
 -(void)setName:(NSString *)s;
+
 -(NSString *)version;
 -(void)setVersion:(NSString *)s;
+
 -(NSString *)installed;
 -(void)setInstalled:(NSString *)s;
+
 -(NSString *)category;
 -(void)setCategory:(NSString *)s;
+
 -(NSString *)description;
 -(void)setDescription:(NSString *)s;
+
 -(NSString *)fulldesc;
 -(void)setFulldesc:(NSString *)s;
+
+-(NSString *)weburl;
+-(void)setWeburl:(NSString *)s;
+
+-(NSString *)maintainer;
+-(void)setMaintainer:(NSString *)s;
+
+-(NSString *)email;
+-(void)setEmail:(NSString *)s;
+
 -(NSString *)binary;
 -(void)setBinary:(NSString *)s;
+
 -(NSString *)unstable;
 -(void)setUnstable:(NSString *)s;
 
