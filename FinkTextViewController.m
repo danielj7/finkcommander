@@ -13,6 +13,7 @@ File: FinkTextViewController.m
 {
 	if (self = [super initWithFrame:frame]){
 		[self setEditable:NO];
+		Dprintf(@"Text view allows undo: %d", [self allowsUndo]);
 	}
 	return self;
 }
@@ -29,10 +30,12 @@ File: FinkTextViewController.m
 
 -(int)numberOfLinesInString:(NSString *)s
 {
-	NSArray *slines = [s componentsSeparatedByString:@"\n"];
-	int numlines = [slines count];
+//	NSArray *slines = [s componentsSeparatedByString:@"\n"];
+//	int numlines = [slines count];
 	
-	return numlines - 1;
+//	return numlines - 1;
+
+ 	return [[s componentsSeparatedByString:@"\n"] count] - 1;
 }
 
 -(NSRange)rangeOfLinesAtTopOfView:(int)numlines
@@ -71,7 +74,6 @@ File: FinkTextViewController.m
 	[[self textStorage] appendAttributedString:
 		[[[NSAttributedString alloc] initWithString: s] autorelease]];
 }
-
 
 
 @end

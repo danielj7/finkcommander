@@ -44,6 +44,7 @@ File: FinkOutputParser.h
 
 #define IS_INSTALL_CMD(x) 	([(x) contains:@"install"]		|| \
 							 [(x) contains:@"build"]		|| \
+							 [(x) contains:@"update-all"]	|| \
 							 [(x) contains:@"selfupdate"])
 
 //Line parsing macros
@@ -60,7 +61,7 @@ File: FinkOutputParser.h
 
 #define CONFIGURETRIGGER(x)	([[(x) strip] hasPrefix:@"./configure"] 		|| \
 							 [[(x) strip] hasPrefix:@"checking for"]		|| \
-							 [[(x) strip] hasPrefix:@"patch"])
+							 [[(x) strip] hasPrefix:@"patching file"])
 
 #define COMPILETRIGGER(x)	(([[(x) strip] hasPrefix: @"make"]						&& \
 							  ![(x) contains:@"makefile"])							|| \
@@ -115,7 +116,7 @@ enum {
 
     float increment;
     int currentPhase;
-	BOOL determinate;
+	BOOL installing;
     BOOL passwordErrorHasOccurred;
     BOOL readingPackageList;
     BOOL installStarted;

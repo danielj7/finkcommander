@@ -382,8 +382,9 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 
 -(void)startProgressIndicatorAsIndeterminate:(BOOL)b
 {
-	[self stopProgressIndicator];
-	[progressViewHolder addSubview: progressView];
+	if (! [progressView isDescendantOf: progressViewHolder]){
+		[progressViewHolder addSubview: progressView];
+	}
 	[progressIndicator setIndeterminate:b];
 	[progressIndicator setDoubleValue:0.0];
 	[progressIndicator setUsesThreadedAnimation: YES];
@@ -1069,7 +1070,8 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 				break;
 		}
 	}
-	if ([defaults boolForKey: FinkAutoExpandOutput]){
+	if ([defaults boolForKey: FinkAutoExpandOutput]		&&
+		! IS_INSTALL_CMD([params objectAtIndex: 1])){
 		[self startProgressIndicatorAsIndeterminate:YES];
 	}
 	//set up launch path and arguments array
@@ -1230,14 +1232,11 @@ NSString *FinkEmailItem = @"FinkEmailItem";
 	int outputLength = [[textView string] length];
 	NSString *last2lines = outputLength < 160 ? [textView string] : 
 		[[textView string] substringWithRange: NSMakeRange(outputLength - 160, 159)];
-		
-	if (IS_INSTALL_CMD(lastCommand)){
-		[progressIndicator setDoubleValue:99.0];
-	}
-		
+	
 	Dprintf(@"Finishing; lastCommand = %@", lastCommand);
 
-	if (! [[self lastCommand] contains: @"cp"] && ! [[self lastCommand] contains: @"chown"] &&
+	if (! [[self lastCommand] contains: @"cp"] 		&& 
+		! [[self lastCommand] contains: @"chown"] 	&&
 		! [[self lastCommand] contains: @"mv"]){
 		NSBeep();
 	}

@@ -17,12 +17,15 @@ File: FinkOutputParser.m
     if (self = [super init]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		command = [cmd retain];
-		packageList = [[NSMutableArray alloc] init];
-		[packageList addObject:@""];
-		increments = [[NSMutableArray alloc] init];
-		[self setCurrentPackage:@""];
 		passwordErrorHasOccurred = readingPackageList = installStarted = NO;		
-		determinate = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
+		installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
+		
+		if (installing){
+			packageList = [[NSMutableArray alloc] init];
+			[packageList addObject:@""];
+			increments = [[NSMutableArray alloc] init];
+			[self setCurrentPackage:@""];
+		}
     }
     return self;
 }
@@ -50,7 +53,7 @@ File: FinkOutputParser.m
     [currentPackage release];
     currentPackage = p;
 
-	NSLog(@"Set current package to %@", currentPackage);
+	NSLog(@"Setting new current package to %@", currentPackage);
 }
 
 
@@ -76,9 +79,9 @@ File: FinkOutputParser.m
 
 //set up array of increments and dictionary of package names matched with
 //the increment added so far for that package
--(void)setupInstall
+-(BOOL)setupInstall
 {
-    NSEnumerator *e = [packageList objectEnumerator];
+    NSEnumerator *e;
     NSString *pname;
     float cumulative[] = {
 		0.00,     //NONE
@@ -91,6 +94,12 @@ File: FinkOutputParser.m
     float perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
     int i;
 
+	if (!packageList){
+		NSLog(@"Warning: Empty package list; unable to track installation state");
+		return NO;
+	}
+	 
+	e = [packageList objectEnumerator];
     if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
     while (pname = [e nextObject]){
 		[ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
@@ -104,6 +113,7 @@ File: FinkOutputParser.m
 		Dprintf(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
     }
     currentPhase = NONE;
+	return YES;
 }
 
 
@@ -111,10 +121,15 @@ File: FinkOutputParser.m
 
 //set increment to a level that will bring the progress indicator up to date
 //if a previous phase has been skipped (e.g. b/c pkg was already fetched)
--(void)setIncrementForCurrentPhase
+-(void)setIncrementForLastPhase
 {
     float phaseTotal = [[increments objectAtIndex:currentPhase] floatValue];
 	float pkgTotal;
+	
+	if (!currentPackage || !packageList || !ptracker){
+		NSLog(@"Warning:  Data objects for installation tracking were not created");
+		return;
+	}
 	
 	if ([currentPackage isEqualToString:@"package"]){
 		increment = 0;
@@ -122,20 +137,33 @@ File: FinkOutputParser.m
 	}else{
 		pkgTotal = [[ptracker objectForKey:currentPackage] floatValue];
 	}
-	increment = phaseTotal - pkgTotal;
-	Dprintf(@"Incrementing for phase = %d, package = %@", currentPhase, currentPackage);
-	Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
-	[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
+	
+	Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, currentPackage);
+	if (phaseTotal > pkgTotal){
+		increment = phaseTotal - pkgTotal;
+		[ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
+		Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
+	}else{
+		increment = 0;
+		Dprintf(@"Old total increment %f >= new total %f; setting increment to 0",
+		  pkgTotal, phaseTotal);
+
+	}
 }
 
 
 //find longest name in packageList that matches a string in this line
 -(NSString *)packageNameFromLine:(NSString *)line
 {
-    NSEnumerator *e = [packageList objectEnumerator];
+    NSEnumerator *e;
     NSString *candidate;
     NSString *best = @"";
 	
+	if (!packageList){
+		NSLog(@"Warning: No package list created; unable to determine current package");
+		return best;
+	}
+	e = [packageList objectEnumerator];
 	//first see if the line contains any of the names in the package list;
 	//if so, return the longest name that matches 
     while (candidate = [e nextObject]){
@@ -148,31 +176,33 @@ File: FinkOutputParser.m
 	//sometimes the actual file name doesn't include the fink package name,
 	//e.g.  <pkg>-ssl is built from <pkg>-<version>.tgz;
 	//so parse the line for the file name and look for it in the package name
-	if ([best length] < 1){
+	if ([best length] < 1 && [line contains:@"-"]){
 		NSString *path = [[[line componentsSeparatedByString:@" "] lastObject] lastPathComponent];
 		NSString *chars;
 		NSMutableString *fname = [NSMutableString stringWithString:@""];
 		NSScanner *lineScanner;
 		NSCharacterSet *nums = [NSCharacterSet decimalDigitCharacterSet];
+		BOOL foundDash;
 			
 		lineScanner = [NSScanner scannerWithString:path];
 		while (! [lineScanner isAtEnd]){
-			BOOL foundDash = [lineScanner scanUpToString:@"-" intoString:&chars];
+			foundDash = [lineScanner scanUpToString:@"-" intoString:&chars];
 			if  (! foundDash){
 				break;
 			}
 			[fname appendString:chars];
-			foundDash = [lineScanner scanString:@"-" intoString:nil];
-			if (! foundDash || [lineScanner scanCharactersFromSet:nums intoString:nil]){
+			[lineScanner scanString:@"-" intoString:nil];
+			if ([lineScanner scanCharactersFromSet:nums intoString:nil]){
 				break;
 			}
 			[fname appendString:@"-"];
 		}
-		Dprintf(@"file name to compare to pkg names: %@", fname);
+		Dprintf(@"Failed to find listed package in line; trying to find best match for %@", fname);
 		if ([fname length] > 0){
 			NSEnumerator *e = [packageList objectEnumerator];
 			while (candidate = [e nextObject]){
 				if ([candidate contains:fname]){  //e.g. wget-ssl contains wget
+					Dprintf(@"Listed package %@ contains %@", candidate, fname);
 					if ([best length] < 1){
 						best = candidate;
 					}else if ([candidate length] < [best length]){
@@ -194,7 +224,7 @@ File: FinkOutputParser.m
 -(int)parseLineOfOutput:(NSString *)line
 {
 	//Look for package lists
-	if (determinate && readingPackageList){
+	if (installing && readingPackageList){
 		//lines listing pkgs to be installed start with a space
 		if ([line hasPrefix:@" "]){
 			[self addPackagesFromLine:line];
@@ -208,28 +238,33 @@ File: FinkOutputParser.m
 		}
 		//not blank, list or intro; done looking for package names
 		readingPackageList = NO;
-		[self setupInstall];
+		//if we were unable to create a package list, 
+		//turn off installation state signals
+		installing = [self setupInstall];
 		//look for prompt or installation event immediately after pkg list
 		if (ISPROMPT(line)){
-			return PROMPT_AND_START;
+			if (installing){
+				return PROMPT_AND_START;
+			}
+			return PROMPT;
 		}
-		if (FETCHTRIGGER(line)){
+		if (installing && FETCHTRIGGER(line)){
 			Dprintf(@"Fetch phase triggered by:\n%@", line);
-			[self setIncrementForCurrentPhase];
+			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
 			currentPhase = FETCH;
 			return START_AND_FETCH;
 		}
-		if (UNPACKTRIGGER(line)){
+		if (installing && UNPACKTRIGGER(line)){
 			Dprintf(@"Unpack phase triggered by:\n%@", line);
-			[self setIncrementForCurrentPhase];
+			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
 			currentPhase = UNPACK;
 			return START_AND_UNPACK;
 		}
-		if ([line contains: @"dpkg -i"]){
+		if (installing && [line contains: @"dpkg -i"]){
 			Dprintf(@"Activate phase triggered by:\n%@", line);
-			[self setIncrementForCurrentPhase];
+			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
 			currentPhase = ACTIVATE;
 			return START_AND_ACTIVATE;			
@@ -238,55 +273,55 @@ File: FinkOutputParser.m
 		return START_INSTALL;
     }
 	//Look for introduction to package lists
-    if (determinate && INSTALLTRIGGER(line)){
+    if (installing && INSTALLTRIGGER(line)){
 		Dprintf(@"Package scan triggered by:\n%@", line);
 		readingPackageList = YES;
 		return NONE;
     }
 	
 	//Look for installation events
-	if (determinate && FETCHTRIGGER(line)){
+	if (installing && FETCHTRIGGER(line)){
 		Dprintf(@"Fetch phase triggered by:\n%@", line);
 		NSString *name = [self packageNameFromLine:line];
 		//no action required if retrying failed download
 		if ([name isEqualToString:currentPackage]) return NONE;
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		[self setCurrentPackage:name];
 		currentPhase = FETCH;
 		return FETCH;
     }
-    if (determinate && UNPACKTRIGGER(line)){
+    if (installing && UNPACKTRIGGER(line)){
 		Dprintf(@"Unpack phase triggered by:\n%@", line);
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		[self setCurrentPackage:[self packageNameFromLine:line]];		
 		currentPhase = UNPACK;
 		return UNPACK;
     }
-    if (determinate	&& (currentPhase != CONFIGURE) && CONFIGURETRIGGER(line)){
+    if (installing	&& (currentPhase == UNPACK) && CONFIGURETRIGGER(line)){
 		Dprintf(@"Configure phase triggered by:\n%@", line);
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		currentPhase = CONFIGURE;
 		return CONFIGURE;
     }
-    if (determinate	&& (currentPhase != COMPILE) && COMPILETRIGGER(line)){
+    if (installing	&& (currentPhase != COMPILE) && COMPILETRIGGER(line)){
 		Dprintf(@"Compile phase triggered by:\n%@", line);
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		currentPhase = COMPILE;
 		return COMPILE;
     }
-    if (determinate && [line contains: @"dpkg-deb -b"]){
+    if (installing && [line contains: @"dpkg-deb -b"]){
 		Dprintf(@"Build phase triggered by:\n%@", line);		
 		//make sure we catch up if this file is archived
 		if (currentPhase < 1) currentPhase = COMPILE;
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		currentPhase = BUILD;
 		return BUILD;
     }
-    if (determinate && [line contains: @"dpkg -i"]){
+    if (installing && [line contains: @"dpkg -i"]){
 		Dprintf(@"Activate phase triggered by:\n%@", line);
 		if (currentPhase < 1) currentPhase = COMPILE;
-		[self setIncrementForCurrentPhase];
+		[self setIncrementForLastPhase];
 		[self setCurrentPackage:[self packageNameFromLine:line]];
 		currentPhase = ACTIVATE;
 		return ACTIVATE;

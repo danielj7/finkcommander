@@ -48,6 +48,10 @@ New View menu item:  hide/show splitoffs
 
 New command: update fink from cvs (raise warning alert)
 
+Search output
+
+Regex support in filter and output search 
+
 Additional fink installation info:
 	   last selfupdate-cvs 
 	   last apt-get update
