@@ -49,8 +49,6 @@ File: FinkPreferences.h
 	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *alwaysChooseDefaultsButton;
-	IBOutlet NSButton *askOnStartupButton;
-	IBOutlet NSButton *neverAskButton;
 	IBOutlet NSButton *scrollToBottomButton;
 	IBOutlet NSButton *warnBeforeRunningButton;
 	IBOutlet NSButton *warnBeforeRemovingButton;
@@ -119,10 +117,6 @@ File: FinkPreferences.h
 -(IBAction)setAutoExpandChanged:(id)sender;
 -(IBAction)setFinkConfChanged:(id)sender;
 -(IBAction)setFinkTreesChanged:(id)sender;
-
-//keep password options consistent
--(IBAction)neverAsk:(id)sender;
--(IBAction)askOnStartup:(id)sender;
 
 //set title bar image to reflect user's choice
 -(IBAction)setTitleBarImage:(id)sender;

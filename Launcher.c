@@ -144,7 +144,7 @@ int mycopy(const char *fromfile, const char *tofile, bool create)
 }
 
 /*
- *  write_conf
+ *  write_fconf
  *
  *  Back up fink.conf to fink.conf~.
  *  Read in fink.conf.tmp (created by FinkConf object).

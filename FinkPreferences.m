@@ -94,8 +94,6 @@ File: FinkPreferences.m
 	[outputPathTextField setStringValue: outputPath];
 	
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
-	[askOnStartupButton setState: [defaults boolForKey: FinkAskForPasswordOnStartup]];
-	[neverAskButton setState: [defaults boolForKey: FinkNeverAskForPassword]];
 	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
 	[warnBeforeRunningButton setState: [defaults boolForKey: FinkWarnBeforeRunning]];
 	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
@@ -264,8 +262,6 @@ File: FinkPreferences.m
 	[defaults setBool: [updateWithFinkButton state] 		forKey: FinkUpdateWithFink];
 	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
 	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
-	[defaults setBool: [askOnStartupButton state] 			forKey: FinkAskForPasswordOnStartup];
-	[defaults setBool: [neverAskButton state] 				forKey: FinkNeverAskForPassword];
 	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
 	[defaults setBool: [warnBeforeRunningButton state]	 	forKey: FinkWarnBeforeRunning];
 	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
@@ -349,23 +345,6 @@ File: FinkPreferences.m
 	[conf setFinkTreesChanged: YES];
 	
 }
-
-//keep ask for password buttons consistent (2)
-
--(IBAction)neverAsk:(id)sender
-{
-	if ([neverAskButton state]){
-		[askOnStartupButton setState: NO];
-	}
-}
-
--(IBAction)askOnStartup:(id)sender
-{
-	if ([askOnStartupButton state]){
-		[neverAskButton setState: NO];
-	}
-}
-
 
 -(IBAction)setTitleBarImage:(id)sender
 {

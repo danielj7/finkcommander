@@ -1108,6 +1108,7 @@
 				F5C1B062026BFA2501A80164,
 				F53D231602FF9B1201A80164,
 				F53D235802FF9C3201A80164,
+				F5DABE8B03359EF601FEFA3F,
 			);
 			isa = PBXVariantGroup;
 			name = "FinkCommander Help";
@@ -1485,6 +1486,13 @@
 			isa = PBXFileReference;
 			name = Spanish;
 			path = Spanish.lproj/Localizable.strings;
+			refType = 4;
+		};
+		F5DABE8B03359EF601FEFA3F = {
+			includeInIndex = 1;
+			isa = PBXFolderReference;
+			name = German;
+			path = "German.lproj/FinkCommander Help";
 			refType = 4;
 		};
 		F5DE3CD602CAE98601A80164 = {
