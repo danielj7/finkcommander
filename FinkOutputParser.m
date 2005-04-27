@@ -41,7 +41,7 @@
 
 #define PROMPT_PAT															\
     [NSString stringWithFormat:												\
-        @"proceed\\? \\[.*\\]|your choice:|Pick one|\\[[YyNn/]+\\]|\\[anonymous\\]|\\[root\\]|\\[%@\\]", 		\
+        @"proceed\\? \\[.*\\]|your choice:|Pick one|\\[[Yy]+/[Nn]+\\]|\\[[Nn]+/[Yy]+\\]|\\? \\[[0-9]+\\]|\\[anonymous\\]|\\[root\\]|\\[%@\\]", 		\
             NSUserName()]
 
  //fink's --yes option does not work for these prompts:
@@ -276,7 +276,6 @@
 -(int)parseLineOfOutput:(NSString *)line
 {
     NSString *sline = [line strip];
-
     //Read process group id for Launcher
     if (!pgid && [line contains:@"PGID="]){
         pgid = [[line substringFromIndex:AFTER_EQUAL_SIGN] intValue];

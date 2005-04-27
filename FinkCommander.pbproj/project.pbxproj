@@ -78,8 +78,7 @@
 			sourceTree = "<group>";
 		};
 		1058C7A1FEA54F0111CA2CBB = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
@@ -109,8 +108,7 @@
 //174
 		17587328FF379C6511CA2CBB = {
 			explicitFileType = wrapper.application;
-			fallbackIsa = PBXFileReference;
-			isa = PBXApplicationReference;
+			isa = PBXFileReference;
 			path = FinkCommander.app;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -267,8 +265,7 @@
 			sourceTree = "<group>";
 		};
 		29B97324FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AppKit.framework;
 			path = /System/Library/Frameworks/AppKit.framework;
@@ -276,8 +273,7 @@
 			sourceTree = "<absolute>";
 		};
 		29B97325FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Foundation.framework;
 			path = /System/Library/Frameworks/Foundation.framework;
@@ -512,8 +508,6 @@
 //4A3
 //4A4
 		4A9504CCFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -527,8 +521,6 @@
 			name = Development;
 		};
 		4A9504CDFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -827,8 +819,7 @@
 			};
 		};
 		F52F0AF70319CAFC01A80164 = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Security.framework;
 			path = /System/Library/Frameworks/Security.framework;
@@ -904,8 +895,7 @@
 			};
 		};
 		F536582302A89F0D01A8016A = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = CoreFoundation.framework;
 			path = /System/Library/Frameworks/CoreFoundation.framework;
@@ -1076,7 +1066,7 @@
 		F53B4CA303100C0E01A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Toolbar.plist;
 			path = English.lproj/Toolbar.plist;
 			refType = 4;
@@ -1101,7 +1091,7 @@
 		F53B4D0803100C5101A80164 = {
 			fileEncoding = 10;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = German;
 			path = German.lproj/Toolbar.plist;
 			refType = 4;
@@ -1282,7 +1272,7 @@
 		F5458DBF0303658001A80164 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = UserDefaults.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1702,8 +1692,7 @@
 		};
 		F580FC3F0332C30701A80166 = {
 			explicitFileType = "compiled.mach-o.executable";
-			fallbackIsa = PBXFileReference;
-			isa = PBXExecutableFileReference;
+			isa = PBXFileReference;
 			path = Launcher;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -1906,9 +1895,8 @@
 			sourceTree = "<group>";
 		};
 		F5C1B062026BFA2501A80164 = {
-			fallbackIsa = PBXFileReference;
 			includeInIndex = 0;
-			isa = PBXFolderReference;
+			isa = PBXFileReference;
 			lastKnownFileType = folder;
 			name = English;
 			path = "English.lproj/FinkCommander Help";
@@ -2255,9 +2243,8 @@
 			sourceTree = "<group>";
 		};
 		F5DABE8B03359EF601FEFA3F = {
-			fallbackIsa = PBXFileReference;
 			includeInIndex = 1;
-			isa = PBXFolderReference;
+			isa = PBXFileReference;
 			lastKnownFileType = folder;
 			name = German;
 			path = "German.lproj/FinkCommander Help";
