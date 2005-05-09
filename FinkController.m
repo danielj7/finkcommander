@@ -413,10 +413,10 @@ enum {
     NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
 
     if ([basePath length] <= 1 ){
-		NSBeginAlertSheet(NSLocalizedString(@"Unable to Locate Fink", @"Alert sheet title"),
+		NSBeginAlertSheet(NSLocalizedString(@"Fink could not be located.", @"Alert sheet title"),
 					LS_OK, nil,	nil, //title, buttons
 					window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
-					NSLocalizedString(@"Try setting the path to Fink manually in Preferences.", 
+					NSLocalizedString(@"Please make sure Fink is installed before using FinkCommander. If you've already installed Fink, try setting the path to Fink manually in Preferences.", 
 										@"Alert sheet message"), nil);
     }
     [self updateTable:nil];
