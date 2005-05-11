@@ -46,6 +46,7 @@ my (@pkglist, $package);                    #list of pkg names, name of each
 my ($vo, $lversion);                        #PkgVersion object, version number
 my ($pname, $iflag, $description, $full);               #pkg data items
 my ($section, $lvinstalled, $lvstable, $lvunstable, $lvfilename);    #ditto
+my (@versions, $pvo);	#list of providers for virtual package
 
 
 ### Sub: latest_version_for_tree ###
@@ -54,16 +55,16 @@ my ($section, $lvinstalled, $lvstable, $lvunstable, $lvfilename);    #ditto
 
 sub latest_version_for_tree {       
     my ($mypkg, $mytree) = @_;   #Parameters: Package object, tree as string
-    my (@all_versions, @tree_versions);
+	my (@all_versions, @tree_versions);
     my ($version_string, $vobj);
-
+    
     @all_versions = $mypkg->list_versions();  #all versions of the package
-    foreach $version_string (@all_versions) {
+	foreach $version_string (@all_versions) {
 	    $vobj = $mypkg->get_version($version_string);  
-        if ($vobj->get_tree() eq $mytree) {   #make list of Vs in target tree
-            push(@tree_versions, $version_string);
-        }
-    }
+	    if ($vobj->get_tree() eq $mytree) {   #make list of Vs in target tree
+		push(@tree_versions, $version_string);
+	    }
+	}
     if (! defined(@tree_versions)) { return " " ;}
     return &Fink::Services::latest_version(@tree_versions); #latest V in tree
 }
@@ -83,10 +84,10 @@ sub latest_installed_version {
 $configpath = "BASEPATH/etc/fink.conf";   
 
 if (-f $configpath) {
-  $config = &Fink::Services::read_config($configpath);
+    $config = &Fink::Services::read_config($configpath);
 } else {
-  print "ERROR: Configuration file \"$configpath\" not found.\n";
-  exit 1;
+    print "ERROR: Configuration file \"$configpath\" not found.\n";
+    exit 1;
 }
 
 Fink::Package->require_packages();
@@ -95,35 +96,66 @@ Fink::Package->require_packages();
 
 foreach $pname (sort @pkglist) {
     $package = Fink::Package->package_by_name($pname);   
-    if ($package->is_virtual()) {
-      $lvstable = $lvunstable = $lvfilename = $iflag = $section = " ";
-      $description = "virtual package";
-      $full = "virtual package";
+    if ($package->is_virtual() == 1) {
+	$lvstable = $lvunstable = $lvfilename = $iflag = $lversion = $lvinstalled = " ";
+	$description = "[virtual package]";
+	$full = "$description\nThis is a virtual package provided by another package. It can't be removed or installed.\n.\n$pname is provided by the following packages:\n.\n";
+	@versions = $package->get_all_providers();
+	foreach $pvo (@versions) {
+	    if ($pvo->get_name() ne $pname) {
+		$full = join "", $full, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
+		if ($pvo->is_installed()) {
+		    $iflag = "current";
+		    $lvinstalled = "provided";
+		    $full = join " ", $full, "(installed)";
+		}
+		$full = join "", $full, "\n.\n";
+	    }
+	}
+	$section = "virtual";
     } else {
-      $lversion = &Fink::Services::latest_version($package->list_versions());
-      $lvstable = &latest_version_for_tree($package, "stable") || " ";
-      $lvunstable = &latest_version_for_tree($package, "unstable") || " ";
-      $lvinstalled = &latest_installed_version($package) || " ";
-      $vo = $package->get_version($lversion) || " ";
-      $description = $vo->get_shortdescription() || " ";
-      $full = $vo->get_description() || " ";
-      $section = $vo->get_section() || " ";
-      if ($vo->is_installed()) {
+	$lversion = &Fink::Services::latest_version($package->list_versions());
+	$lvstable = &latest_version_for_tree($package, "stable") || " ";
+	$lvunstable = &latest_version_for_tree($package, "unstable") || " ";
+	$lvinstalled = &latest_installed_version($package) || " ";
+	$vo = $package->get_version($lversion) || " ";
+	$description = $vo->get_shortdescription() || " ";
+	$full = $vo->get_description() || " ";
+	$section = $vo->get_section() || " ";
+	$section = "virtual" if ($section eq "unknown" and $description =~ /virtual/);
+	if ($vo->is_installed()) {
 	    $iflag = "current";
-      } elsif ($package->is_any_installed()) {
-	    $iflag = "outdated";
-      } elsif ($vo->is_present()) {
-	    $iflag = "archived";
-      } else {
-        $iflag = " ";
-      }      
-      eval { #Post-0.19.0 fink
-      	  $lvfilename = $vo->get_filename() || " ";
-      };
-      if ($@) {
-	      $lvfilename = $vo->{_filename} || " ";
-      }
-  }
+	} else {
+	    $iflag = " ";
+	    if ($package->is_any_installed()) {
+		$iflag = "outdated";
+	    } elsif ($vo->is_present()) {
+		$iflag = "archived";
+	    }
+	    @versions = $package->get_all_providers();
+	    my $tempfull = join "", $full, "\n.\n$pname is provided by the following packages:\n.\n";
+	    my $pkgcounter = 0;
+	    foreach $pvo (@versions) {
+		if ($pvo->get_name() ne $pname) {
+		    $tempfull = join "", $tempfull, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
+		    $pkgcounter++;
+		    if ($pvo->is_installed()) {
+			$iflag = "current" if $iflag eq " ";
+			$lvinstalled = "provided";
+			$tempfull = join " ", $tempfull, "(installed)";
+		    }
+		    $tempfull = join "", $tempfull, "\n.\n";
+		}
+	    }
+	    $full = $tempfull if $pkgcounter > 0;
+	}
+	eval { #Post-0.19.0 fink
+	    $lvfilename = $vo->get_filename() || " ";
+	};
+	if ($@) {
+	    $lvfilename = $vo->{_filename} || " ";
+	}
+    }
     print "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
         "$lvunstable**\n$section**\n$lvfilename**\n$description**\n$full\n";
 }
