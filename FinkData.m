@@ -266,10 +266,11 @@ See the header file, FinkData.h, for interface and license information.
 		[p setInstalled:[packageComponents objectAtIndex: 3]];
 		[p setStable:[packageComponents objectAtIndex: 4]];
 		[p setUnstable:[packageComponents objectAtIndex: 5]];
-		[p setCategory:[packageComponents objectAtIndex: 6]];
-		[p setFilename:[packageComponents objectAtIndex: 7]];
-		[p setSummary:[packageComponents objectAtIndex: 8]];
-		[p setFulldesc:[packageComponents objectAtIndex: 9]];
+		[p setLocal:[packageComponents objectAtIndex: 6]];
+		[p setCategory:[packageComponents objectAtIndex: 7]];
+		[p setFilename:[packageComponents objectAtIndex: 8]];
+		[p setSummary:[packageComponents objectAtIndex: 9]];
+		[p setFulldesc:[packageComponents objectAtIndex: 10]];
 		
 		/* 	Many package have identical versions in the stable and
 			unstable branches. If unstable is listed first in

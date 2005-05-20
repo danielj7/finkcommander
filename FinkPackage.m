@@ -145,6 +145,19 @@ See the header file, FinkPackage.h, for interface and license information.
 	unstable = s;
 }
 
+//Local
+-(NSString *)local;
+{
+	return local;
+}
+
+-(void)setLocal:(NSString *)s;
+{
+	[s retain];
+	[local release];
+	local = s;
+}
+
 //Category
 -(NSString *)category
 {
@@ -372,6 +385,19 @@ See the header file, FinkPackage.h, for interface and license information.
 -(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg
 {
 	return (0 - [self normalCompareByUnstable:pkg]);
+}
+
+//Local
+-(NSComparisonResult)normalCompareByLocal:(FinkPackage *)pkg
+{
+	NSComparisonResult result = [self xExists:[self local] yExists:[pkg local]];
+	if (result == 0) return [self normalCompareByName: pkg];
+	return (result);
+}
+
+-(NSComparisonResult)reverseCompareByLocal:(FinkPackage *)pkg
+{
+	return (0 - [self normalCompareByLocal:pkg]);
 }
 
 //Category

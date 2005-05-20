@@ -145,7 +145,15 @@ enum {
 	Dprintf(@"Sender tag in openPackageFiles: %d", senderTag);
 
     while (nil != (pkg = [e nextObject])){
-		tree = ([[pkg unstable] length] > 1) ? @"unstable" : @"stable";
+		if ([[pkg unstable] length] > 1) {
+			tree = @"unstable";
+		} else {
+			if ([[pkg stable] length] > 1) {
+				tree = @"stable";
+			} else {
+				tree = @"local";
+			}
+		}
 		if (senderTag == FINKPATCH){
 			path = [pkg pathToPackageInTree:tree withExtension:@"patch"];
 		}else{

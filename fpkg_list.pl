@@ -45,7 +45,7 @@ my ($configpath, $config);                  #used to scan pkgs
 my (@pkglist, $package);                    #list of pkg names, name of each
 my ($vo, $lversion);                        #PkgVersion object, version number
 my ($pname, $iflag, $description, $full);               #pkg data items
-my ($section, $lvinstalled, $lvstable, $lvunstable, $lvfilename);    #ditto
+my ($section, $lvinstalled, $lvstable, $lvunstable, $lvlocal, $lvfilename);    #ditto
 my (@versions, $pvo);	#list of providers for virtual package
 
 
@@ -97,7 +97,7 @@ Fink::Package->require_packages();
 foreach $pname (sort @pkglist) {
     $package = Fink::Package->package_by_name($pname);   
     if ($package->is_virtual() == 1) {
-	$lvstable = $lvunstable = $lvfilename = $iflag = $lversion = $lvinstalled = " ";
+	$lvstable = $lvunstable = $lvlocal = $lvfilename = $iflag = $lversion = $lvinstalled = " ";
 	$description = "[virtual package]";
 	$full = "$description\nThis is a virtual package provided by another package. It can't be removed or installed.\n.\n$pname is provided by the following packages:\n.\n";
 	@versions = $package->get_all_providers();
@@ -117,6 +117,7 @@ foreach $pname (sort @pkglist) {
 	$lversion = &Fink::Services::latest_version($package->list_versions());
 	$lvstable = &latest_version_for_tree($package, "stable") || " ";
 	$lvunstable = &latest_version_for_tree($package, "unstable") || " ";
+	$lvlocal = &latest_version_for_tree($package, "local") || " ";
 	$lvinstalled = &latest_installed_version($package) || " ";
 	$vo = $package->get_version($lversion) || " ";
 	$description = $vo->get_shortdescription() || " ";
@@ -157,5 +158,5 @@ foreach $pname (sort @pkglist) {
 	}
     }
     print "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
-        "$lvunstable**\n$section**\n$lvfilename**\n$description**\n$full\n";
+        "$lvunstable**\n$lvlocal**\n$section**\n$lvfilename**\n$description**\n$full\n";
 }

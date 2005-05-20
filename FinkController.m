@@ -29,6 +29,7 @@ See the header file, FinkController.h, for interface and license information.
 	@"binary",           									\
 	@"stable",												\
 	@"unstable",											\
+	@"local",												\
 	@"status",												\
 	@"category",											\
 	@"summary",												\
@@ -44,6 +45,7 @@ See the header file, FinkController.h, for interface and license information.
 	[NSNumber numberWithInt: BINARY], @"binary",            \
 	[NSNumber numberWithInt: STABLE], @"stable",            \
 	[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
+	[NSNumber numberWithInt: LOCAL], @"local",        \
 	[NSNumber numberWithInt: STATUS], @"status",            \
 	[NSNumber numberWithInt: CATEGORY], @"category",        \
 	[NSNumber numberWithInt: SUMMARY], @"summary",          \
@@ -82,13 +84,14 @@ enum {
     BINARY     	= 2001,
     STABLE     	= 2002,
     UNSTABLE   	= 2003,
-    STATUS     	= 2004,
-    CATEGORY   	= 2005,
-    SUMMARY    	= 2006,
-    MAINTAINER 	= 2007,
-    INSTALLED  	= 2008,
-    NAME	    = 2009,
-	FLAGGED 	= 2010
+	LOCAL = 2004,
+    STATUS     	= 2005,
+    CATEGORY   	= 2006,
+    SUMMARY    	= 2007,
+    MAINTAINER 	= 2008,
+    INSTALLED  	= 2009,
+    NAME	    = 2010,
+	FLAGGED 	= 2011
 };
 
 /* Identify web site to open based on menu item tag */
@@ -388,7 +391,7 @@ enum {
 									
 	//Set state of View menu column items
     while (nil != (columnName = [columnNameEnumerator nextObject])){
-		int atag = [self tagFromAttributeName:columnName];
+    	int atag = [self tagFromAttributeName:columnName];
 		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
 

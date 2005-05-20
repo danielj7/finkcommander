@@ -50,6 +50,7 @@ enum {
 	NSString *binary;
 	NSString *stable;
 	NSString *unstable;
+	NSString *local;
 	NSString *category;
 	NSString *filename;
 	NSString *summary;
@@ -84,6 +85,9 @@ enum {
 
 -(NSString *)unstable;
 -(void)setUnstable:(NSString *)s;
+
+-(NSString *)local;
+-(void)setLocal:(NSString *)s;
 
 -(NSString *)category;
 -(void)setCategory:(NSString *)s;
@@ -145,6 +149,9 @@ enum {
 
 -(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg;
+
+-(NSComparisonResult)normalCompareByLocal:(FinkPackage *)pkg;
+-(NSComparisonResult)reverseCompareByLocal:(FinkPackage *)pkg;
 
 -(NSComparisonResult)normalCompareByMaintainer:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByMaintainer:(FinkPackage *)pkg;

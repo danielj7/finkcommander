@@ -44,6 +44,8 @@
 		<string>normal</string>
 		<key>version</key>
 		<string>normal</string>
+		<key>local</key>
+		<string>normal</string>
 	</dict>
 	<key>FinkEnvironmentSettings</key>
 	<dict>
@@ -76,6 +78,7 @@
 		<string>binary</string>
 		<string>stable</string>
 		<string>unstable</string>
+		<string>local</string>
 		<string>status</string>
 		<string>category</string>
 		<string>summary</string>
@@ -100,6 +103,7 @@
 		<string>binary</string>
 		<string>category</string>
 		<string>summary</string>
+		<string>local</string>
 	</array>
 	<key>FinkUpdateWithFink</key>
 	<true/>
