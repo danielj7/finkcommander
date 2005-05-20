@@ -1,188 +1,74 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"
-        "http://www.w3.org/MarkUp/Wilbur/HTML32.dtd">
-<html lang="en">
+<?xml version="1.1" encoding="iso-8859-1"?>
+<?xml-stylesheet type="text/css" href="stylesheet2.css"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl">
 <head>
-	<title>README</title>
-	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+<title>README</title>
+<link href="../fcstyle.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-
 <h2>Readme</h2>
-
 <h3>Contents</h3>
-
 <ul>
-	<li><a href="#description">Overview</a></li>
-	<li><a href="#installation">Installation and Initial Startup</a></li>
-	<li><a href="#timeout">Changing the Authorization Timeout</a></li>
-	<li><a href="#license">License</a></li>
+<li><a href="#description">Overview</a></li>
+<li><a href="#installation">Installation and Initial Startup</a></li>
+<li><a href="#timeout">Changing the Authorization Timeout</a></li>
+<li><a href="#license">License</a></li>
 </ul>
-
-<h3> <a name="description">Overview</a> </h3>
-
-<p> <a href="http://finkcommander.sourceforge.net"
-target="top">FinkCommander</a> provides a GUI frontend to the <a
-href="http://fink.sourceforge.net" target="top">Fink</a> package manager.  You
-will need to <a href="http://fink.sourceforge.net/download/"
-target="top">install Fink</a> itself in order for FinkCommander to be of any
-use. </p>
-
-<p> FinkCommander is designed to be intuitive.  A fairly extensive set of help
-files is nevertheless included.  There is even a German translation in the
-German localization. </p>
-
-<p>If you find a bug in FinkCommander, please consult the
-<a href="http://finkcommander.sourceforge.net/pages/bugs.html">bug reporting 
-guidelines</a> web page.  A link to the SourceForge Bug Tracker is provided
-from that page.</p>
-
-<p>I do not provide direct support for FinkCommander. Software
-development is my hobby.  I have a pretty demanding &quot;day job,&quot; so
-responding directly to every request for help is not possible.  I will,
-however, take your comments into account in designing, and drafting
-documentation for, future versions of FinkCommander.  Please send comments
-(other than bug reports) to my <a
-href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.
-</p>
-
-<h3><a name="installation">Installation and Initial Startup</a></h3>
-
-<p>If you already have version 0.4.2 or later of FinkCommander installed, you 
-will need to drag it to the trash before replacing it with the new version.  
-This is due to the changes in the privileges of some of the internal files 
-described below.  For some reason you can delete an .app bundle containing files
-owned by root but you can't overwrite it!</p>
-
-<p>The first time you run a command in FinkCommander after installing a new 
-version, it will announce that it does not have the necessary permissions and 
-needs to &quot;self-repair.&quot;  You will then be presented with Mac OS X's 
-security dialog asking for an administrator's password.     
-You will need to enter your password twice and then re-try the command after 
-the self-repair process is complete.</p>
-  
-<p>Once the self-repair is complete, 
-you should only need to enter your password once per <a href="#timeout">timeout 
+<h3> <a id="description">Overview</a> </h3>
+<p> <a href="http://finkcommander.sourceforge.net">FinkCommander</a> provides a GUI frontend to the <a href="http://fink.sourceforge.net">Fink</a> package manager.  You will need to <a href="http://fink.sourceforge.net/download/">install Fink</a> itself in order for FinkCommander to be of any use. </p>
+<p> FinkCommander is designed to be intuitive.  A fairly extensive set of help files is nevertheless included.  There is even a German translation in the German localization. </p>
+<p>If you find a bug in FinkCommander, please consult the <a href="http://finkcommander.sourceforge.net/pages/bugs.html">bug reporting guidelines</a> web page.  A link to the SourceForge Bug Tracker is provided from that page.</p>
+<p>I do not provide direct support for FinkCommander. Software development is my hobby. I have a pretty demanding &quot;day job,&quot; so responding directly to every request for help is not possible. I will, however, take your comments into account in designing, and drafting documentation for, future versions of FinkCommander.  Please send comments (other than bug reports) to my <a href="mailto:sburrious@users.sourceforge.net">SourceForge email account</a>.</p>
+<h3><a id="installation">Installation and Initial Startup</a></h3>
+<p>If you already have version 0.4.2 or later of FinkCommander installed, you will need to drag it to the trash before replacing it with the new version. This is due to the changes in the privileges of some of the internal files described below.  For some reason you can delete an .app bundle containing files owned by root but you can't overwrite it!</p>
+<p>The first time you run a command in FinkCommander after installing a new version, it will announce that it does not have the necessary permissions and needs to &quot;self-repair.&quot;  You will then be presented with Mac OS X's security dialog asking for an administrator's password. You will need to enter your password twice and then re-try the command after the self-repair process is complete.</p>
+<p>Once the self-repair is complete, you should only need to enter your password once per <a href="#timeout">timeout 
 period</a>.</p>
-
-<p>For those with sufficient interest, the following is an explanation of the 
-changes made by the self-repair routine.  It assumes a basic knowledge of Unix file permissions.</p>
-
-<p>As of version 0.4.0, FinkCommander uses Apple's Security Framework to
-authorize commands requiring root privileges.  An application needs root 
-privileges in order to modify files and directories, such as those in your Fink 
-installation, that are owned by root.</p>
-
-<p>To obtain root privileges, earlier versions of FinkCommander asked for
-a user's password in a custom dialog sheet and then passed it along to the
-sudo command.  The current version, consistent with Apple's recommendations,
-calls on OS X's security server to obtain authorization and never touches the 
-user's password.</p>
-
-<p>In order to use the security server in the manner recommended by Apple, 
-FinkCommander must include an auxiliary program, or &quot;tool,&quot; that 
-is owned by root and possesses a special file permission called 
-&quot;setuid.&quot; Unix processes ordinarily acquire the identity, and 
-therefore the file permissions, of the user who starts the process.  A process 
-started by a program with setuid permission, on the other hand, can assume the 
-identity of the owner of the program's file.  Thus, a program that is owned by 
-root and has setuid permission can modify files owned by root, provided the user 
-supplies an administrative password.</p>
-
-<p>The sudo program mentioned earlier is a familiar example of a setuid tool. 
-If at the command line you type <kbd>ls -l /usr/bin/sudo</kbd>, you will see 
-the following result:</p>
-<pre>---s--x--x    1 root     wheel       96384 Sep 18 21:23 /usr/bin/sudo 
-</pre> 
-<p>The &quot;s&quot; appearing where one would ordinarily
-expect to see an &quot;x&quot; shows that sudo has setuid permission.</p>
-
-<p>When you first install or compile FinkCommander, the tool does not have
-setuid permission and is not owned by root.  The tool therefore re-executes 
-itself using a special authorization function from the Security Framework and 
-makes itself setuid root.</p>
-
-<p>In addition to changing its
-own permissions, the tool changes the owner of its enclosing directory to root.
-This is necessary to prevent someone without administrative privileges from 
-replacing the tool. A replacement tool could use the root privileges obtained 
-when you enter your password to do damage to your system or invade your 
-privacy.</p>
-
-<h3><a name="timeout">Changing the Authorization Timeout</a></h3>
-
-<p> By default, FinkCommander works in much the same way as sudo.  If you
-run a command and provide your password to authorize root privileges, that
-authorization has a timeout period of five minutes.  You can enter
-additional commands without retyping your password for five minutes.  After
-that, you need to reauthenticate. </p>
-
-<p> You can customize the timeout for FinkCommander by editing the
-/private/etc/authorization file.  To do so, open Terminal and type the
-following at the command line: </p>
-
+<p>For those with sufficient interest, the following is an explanation of the changes made by the self-repair routine.  It assumes a basic knowledge of Unix file permissions.</p>
+<p>As of version 0.4.0, FinkCommander uses Apple's Security Framework to authorize commands requiring root privileges.  An application needs root privileges in order to modify files and directories, such as those in your Fink installation, that are owned by root.</p>
+<p>To obtain root privileges, earlier versions of FinkCommander asked for a user's password in a custom dialog sheet and then passed it along to the
+sudo command.  The current version, consistent with Apple's recommendations, calls on OS X's security server to obtain authorization and never touches the user's password.</p>
+<p>In order to use the security server in the manner recommended by Apple, FinkCommander must include an auxiliary program, or &quot;tool,&quot; that is owned by root and possesses a special file permission called &quot;setuid.&quot; Unix processes ordinarily acquire the identity, and therefore the file permissions, of the user who starts the process.  A process started by a program with setuid permission, on the other hand, can assume the identity of the owner of the program's file.  Thus, a program that is owned by root and has setuid permission can modify files owned by root, provided the user supplies an administrative password.</p>
+<p>The sudo program mentioned earlier is a familiar example of a setuid tool. If at the command line you type <kbd>ls -l /usr/bin/sudo</kbd>, you will see the following result:</p>
+<pre>---s--x--x    1 root     wheel       96384 Sep 18 21:23 /usr/bin/sudo</pre> 
+<p>The &quot;s&quot; appearing where one would ordinarily expect to see an &quot;x&quot; shows that sudo has setuid permission.</p>
+<p>When you first install or compile FinkCommander, the tool does not have setuid permission and is not owned by root. The tool therefore re-executes itself using a special authorization function from the Security Framework and makes itself setuid root.</p>
+<p>In addition to changing its own permissions, the tool changes the owner of its enclosing directory to root. This is necessary to prevent someone without administrative privileges from replacing the tool. A replacement tool could use the root privileges obtained when you enter your password to do damage to your system or invade your privacy.</p>
+<h3><a id="timeout">Changing the Authorization Timeout</a></h3>
+<p> By default, FinkCommander works in much the same way as sudo. If you run a command and provide your password to authorize root privileges, that authorization has a timeout period of five minutes. You can enter additional commands without retyping your password for five minutes. After that, you need to reauthenticate. </p>
+<p> You can customize the timeout for FinkCommander by editing the /private/etc/authorization file. To do so, open Terminal and type the following at the command line: </p>
 <p><kbd>sudo [editor] /private/etc/authorization</kbd></p>
-
-<p>where [editor] is the name of your favorite command-line editor. 
-You should not use the Property List Editor in /Developer/Applications to edit 
-the file, 
-because it will fail to preserve the comments.</p>
-
-<p>To eliminate the timeout for FinkCommander, add the following &quot;rule&quot; to the 
-authorization file:</p>
+<p>where [editor] is the name of your favorite command-line editor.</p>
+<p>To eliminate the timeout for FinkCommander, add the following &quot;rule&quot; to the authorization file:</p>
 <pre>
-&lt;!-- Your comment here --&gt;
-    &lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
-        &lt;dict&gt;
-            &lt;key&gt;group&lt;/key&gt;
-            &lt;string&gt;admin&lt;/string&gt;
-            &lt;key&gt;shared&lt;/key&gt;
-            &lt;true/&gt;
-        &lt;/dict&gt;
+	&lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
+	&lt;dict&gt;
+		&lt;key&gt;class&lt;/key&gt;
+		&lt;string&gt;user&lt;/string&gt;
+		&lt;key&gt;group&lt;/key&gt;
+		&lt;string&gt;admin&lt;/string&gt;
+		&lt;key&gt;mechanisms&lt;/key&gt;
+		&lt;array&gt;
+			&lt;string&gt;builtin:authenticate&lt;/string&gt;
+		&lt;/array&gt;
+		&lt;key&gt;shared&lt;/key&gt;
+		&lt;true/&gt;
+	&lt;/dict&gt;
 </pre>
-
-<p>You can place these lines before any of the comment lines 
-(the lines starting with &quot;&lt;!--&quot;) in the file.  A logical location 
-would be right before the final comment introducing the default 
-authorization rule. Once you have made these changes, entering your password 
-at the beginning of a FinkCommander session will authorize all subsequent 
-commands during the session.</p>
-
-<p>To extend or shorten the timeout period, include the following key/value pair
-in the lines shown above before the &lt;&nbsp;/dict&gt; tag.</p> 
+<p>You can place these lines after the first &lt;dict&gt; in &lt;key&gt;class&lt;/key&gt;. Once you have made these changes, entering your password at the beginning of a FinkCommander session will authorize all subsequent commands during the session.</p>
+<p>To extend or shorten the timeout period, include the following key/value pair in the lines shown above before the &lt;&nbsp;/dict&gt; tag.</p>
 <pre>
 	&lt;key&gt;timeout&lt;/key&gt;
-	&lt;integer&gt;N&lt;/integer&gt; 
+	&lt;integer&gt;N&lt;/integer&gt;
 </pre>
-
-<p>Where N is the timeout period in seconds.  To require a password for each
-command, set N to 0.</p>
-
-<p>I hope to automate this process in a future release, possibly through
-FinkCommander's Preferences panel.</p>
-
-<h3><a name="license">License</a></h3>
-
-<p> This program is free software; you may redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the Free
-Software Foundation; either version 2 of the License, or (at your option) any
-later version. </p>
-
-<p> This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-</p>
-
-<p> A copy of the GPL is included in the file "LICENSE.html."  It can be viewed
-in the package installer and is included in the disk image for the binary
-versions of FinkCommander.  In the source code version, the file is available in
-the top directory as well as in the Documentation group in Project Builder.  It
-can also be viewed via the help system. </p>
-
-<p> If you have downloaded the binary version of this software but would like
-the source, it is available at the <a
-href="http://sourceforge.net/project/showfiles.php?group_id=48896"
-target="top">FinkCommander SourceForge site</a>. </p>
-
-
+<p>Where N is the timeout period in seconds.  To require a password for each command, set N to 0.</p>
+<p>I hope to automate this process in a future release, possibly through FinkCommander's Preferences panel.</p>
+<h3><a id="license">License</a></h3>
+<p> This program is free software; you may redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option) any later version. </p>
+<p> This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+<p> A copy of the GPL is included in the file "LICENSE.html."  It can be viewed in the package installer and is included in the disk image for the binary versions of FinkCommander. In the source code version, the file is available in the top directory as well as in the Documentation group in Project Builder. It can also be viewed via the help system.</p>
+<p> If you have downloaded the binary version of this software but would like the source, it is available at the <a href="http://sourceforge.net/project/showfiles.php?group_id=48896">FinkCommander SourceForge site</a>. </p>
 </body>
 </html>

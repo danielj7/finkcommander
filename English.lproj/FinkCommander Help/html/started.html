@@ -1,83 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<?xml version="1.1" encoding="iso-8859-1"?>
+<?xml-stylesheet type="text/css" href="stylesheet2.css"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="nl">
 <head>
-	<title>FinkCommander Help--Getting Started</title>
-	<link href="../fcstyle.css" rel="stylesheet" type="text/css">
+<title>FinkCommander Help--Getting Started</title>
+<link href="../fcstyle.css" rel="stylesheet" type="text/css"/>
 </head>
-
 <body>
-
 <h2>Getting Started with FinkCommander</h2>
-
 <h3 id="startup">Initial Startup</h3>
-
-<p>The first time you run a command in FinkCommander after installing a new 
-version, it will announce that it does not have the necessary permissions and 
-needs to &quot;self-repair.&quot;  You will then be presented with 
-Mac OS X&#039;s security dialog asking for an administrator&#039;s password.     
-You will need to enter your password twice and then re-try the command after 
-the self-repair process is complete.</p>
-  
-<p>Once the self-repair is complete, 
-you should only need to enter your password once per <a href="#timeout">timeout 
-period</a>.</p>
-
-<p>For those with sufficient interest, more information on FinkCommander security is available
-<a href="http://finkcommander.sf.net/about/permissions.php">
-on the web</a>.</p>
-
-<h3 id="timeout">Changing the Authorization Timeout</h3>
-
-<p> By default, FinkCommander works in much the same way as sudo.  If you
-run a command and provide your password to authorize root privileges, that
-authorization has a timeout period of five minutes.  You can enter
-additional commands without retyping your password for five minutes.  After
-that, you need to reauthenticate. </p>
-
-<p> You can customize the timeout for FinkCommander by editing the
-/private/etc/authorization file.  To do so, open Terminal and type the
-following at the command line: </p>
-
+<p>The first time you run a command in FinkCommander after installing a new version, it will announce that it does not have the necessary permissions and needs to &quot;self-repair.&quot;  You will then be presented with Mac OS X&#039;s security dialog asking for an administrator&#039;s password. You will need to enter your password twice and then re-try the command after the self-repair process is complete.</p>
+<p>Once the self-repair is complete, you should only need to enter your password once per <a href="#timeout">timeout period</a>.</p>
+<p>For those with sufficient interest, more information on FinkCommander security is available <a href="http://finkcommander.sf.net/about/permissions.php"> on the web</a>.</p>
+<h3><a id="timeout">Changing the Authorization Timeout</a></h3>
+<p> By default, FinkCommander works in much the same way as sudo. If you run a command and provide your password to authorize root privileges, that authorization has a timeout period of five minutes. You can enter additional commands without retyping your password for five minutes. After that, you need to reauthenticate. </p>
+<p> You can customize the timeout for FinkCommander by editing the /private/etc/authorization file. To do so, open Terminal and type the following at the command line: </p>
 <p><kbd>sudo [editor] /private/etc/authorization</kbd></p>
-
-<p>where [editor] is the name of your favorite command-line editor. 
-You should not use the Property List Editor in /Developer/Applications to edit 
-the file, 
-because it will fail to preserve the comments.</p>
-
-<p>To eliminate the timeout for FinkCommander, add the following &quot;rule&quot; to the 
-authorization file:</p>
+<p>where [editor] is the name of your favorite command-line editor.</p>
+<p>To eliminate the timeout for FinkCommander, add the following &quot;rule&quot; to the authorization file:</p>
 <pre>
-    &lt;!-- Your comment here --&gt;
-    &lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
-        &lt;dict&gt;
-            &lt;key&gt;group&lt;/key&gt;
-            &lt;string&gt;admin&lt;/string&gt;
-            &lt;key&gt;shared&lt;/key&gt;
-            &lt;true/&gt;
-        &lt;/dict&gt;
+	&lt;key&gt;com.sburrious.finkcommander&lt;/key&gt;
+	&lt;dict&gt;
+		&lt;key&gt;class&lt;/key&gt;
+		&lt;string&gt;user&lt;/string&gt;
+		&lt;key&gt;group&lt;/key&gt;
+		&lt;string&gt;admin&lt;/string&gt;
+		&lt;key&gt;mechanisms&lt;/key&gt;
+		&lt;array&gt;
+			&lt;string&gt;builtin:authenticate&lt;/string&gt;
+		&lt;/array&gt;
+		&lt;key&gt;shared&lt;/key&gt;
+		&lt;true/&gt;
+	&lt;/dict&gt;
 </pre>
-
-<p>You can place these lines before any of the comment lines 
-(the lines starting with &quot;&lt;!--&quot;) in the file.  A logical location 
-would be right before the final comment introducing the default 
-authorization rule. Once you have made these changes, entering your password 
-at the beginning of a FinkCommander session will authorize all subsequent 
-commands during the session.</p>
-
-<p>To extend or shorten the timeout period, include the following key/value pair
-in the lines shown above before the &lt;&nbsp;/dict&gt; tag.</p> 
+<p>You can place these lines after the first &lt;dict&gt; in &lt;key&gt;class&lt;/key&gt;. Once you have made these changes, entering your password at the beginning of a FinkCommander session will authorize all subsequent commands during the session.</p>
+<p>To extend or shorten the timeout period, include the following key/value pair in the lines shown above before the &lt;&nbsp;/dict&gt; tag.</p>
 <pre>
 	&lt;key&gt;timeout&lt;/key&gt;
-	&lt;integer&gt;N&lt;/integer&gt; 
+	&lt;integer&gt;N&lt;/integer&gt;
 </pre>
-
-<p>Where N is the timeout period in seconds.  To require a password for each
-command, set N to 0.</p>
-
-<p>I hope to automate this process in a future release, possibly through
-FinkCommander&#039;s Preferences panel.</p>
-
+<p>Where N is the timeout period in seconds.  To require a password for each command, set N to 0.</p>
+<p>I hope to automate this process in a future release, possibly through FinkCommander's Preferences panel.</p>
 </body>
 </html>
