@@ -37,21 +37,25 @@ File: FinkInstallationInfo.m
 
 //------------------------------>Helpers for Specific Version Methods
 
-//Scan version output for the version number
--(NSString *)numericVersionFromString:(NSString *)s
+//Scan version output for the version number and extra version information
+-(NSArray *)versionInformationFromString:(NSString *)s
 {
 	NSScanner *versionScanner;
 	NSCharacterSet *versionChars = [NSCharacterSet characterSetWithCharactersInString:
 		@"0123456789."];
-	NSString *result;
+	NSCharacterSet *endOfLine = [NSCharacterSet characterSetWithCharactersInString:
+		@"\n\r"];
+	NSString *version;
+	NSString *extraInformation;
 
 	if (! s) return nil;
 	versionScanner = [NSScanner scannerWithString:s];
 	[versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL];
-	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&result]){
+	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&version]){
 		return nil;
 	}
-	return result;
+	[versionScanner scanUpToCharactersFromSet:endOfLine intoString:&extraInformation];
+	return [NSArray arrayWithObjects:version, extraInformation, nil];
 }
 
 //Run CLI tool to get its version information
@@ -144,7 +148,7 @@ File: FinkInstallationInfo.m
 	sysVerString = [self versionOutputForExecutable:@"/usr/bin/sw_vers"
 								usingArgument:nil];
 	if (nil != sysVerString){
-		sysVerString = [self numericVersionFromString:sysVerString];
+		sysVerString = [[self versionInformationFromString:sysVerString] objectAtIndex:0];
 		if (nil != sysVerString){
 			return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
 		}
@@ -157,6 +161,7 @@ File: FinkInstallationInfo.m
 {
 	NSString *error = @"Unable to determine gcc version";
 	NSString *result; 
+	NSString *extraInformation;
 	
 	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
 		return @"Developer Tools not installed";
@@ -164,9 +169,10 @@ File: FinkInstallationInfo.m
 	
 	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
 	if (nil == result) return error;
-	result = [self numericVersionFromString:result];
+	result = [[self versionInformationFromString:result] objectAtIndex:0];
+	extraInformation = [[self versionInformationFromString:result] objectAtIndex:1];
 	if (nil == result) return error;
-	return [NSString stringWithFormat: @"gcc version: %@", result];
+	return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformation];
 }
 
 -(NSString *)makeVersion
@@ -189,7 +195,7 @@ File: FinkInstallationInfo.m
 	
 	result = [self versionOutputForExecutable:pathToMake];
 	if (nil == result) return error;
-	result = [self numericVersionFromString:result];
+	result = [[self versionInformationFromString:result] objectAtIndex:0];
 	if (nil == result) return error;
 	return [NSString stringWithFormat: @"make version: %@", result];
 }
