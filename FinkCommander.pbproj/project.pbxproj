@@ -212,10 +212,10 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
+				F2C4F1D5084361C400CA6079,
 				F55407F5035D334001A80170,
 				29B97318FDCFA39411CA2CEA,
 				F5375A6C0246DE1901A80164,
-				F5C523DD02A33E0A01A80165,
 				F53B4D0503100C3501A80164,
 				F5458DBF0303658001A80164,
 				089C165CFE840E0CC02AAC07,
@@ -408,7 +408,6 @@
 				F542437E028CE54B01A80166,
 				F5424380028CE59801A80166,
 				F50A222A0296AB2901A80166,
-				F5B40B2F033A578801FE217B,
 				F5B9D9EB02B232D501A8016B,
 				F5B9D9F602B3D67A01A8016B,
 				F5B9D9F702B3D67A01A8016B,
@@ -437,6 +436,7 @@
 				FBCD47D003C60D9A00A80164,
 				FBCD47D203C60DB000A80164,
 				FB84A70B03C93AF400A80164,
+				F2C4F1D7084361C400CA6079,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -579,6 +579,49 @@
 //C72
 //C73
 //C74
+//F20
+//F21
+//F22
+//F23
+//F24
+		F28A84610843648B00E529E9 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = French;
+			path = French.lproj/PackageInfo.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		F2C4F1D5084361C400CA6079 = {
+			children = (
+				F2C4F1D6084361C400CA6079,
+				F28A84610843648B00E529E9,
+			);
+			isa = PBXVariantGroup;
+			name = PackageInfo.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		F2C4F1D6084361C400CA6079 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/PackageInfo.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		F2C4F1D7084361C400CA6079 = {
+			fileRef = F2C4F1D5084361C400CA6079;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//F20
+//F21
+//F22
+//F23
+//F24
 //F50
 //F51
 //F52
@@ -1799,12 +1842,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		F5B40B2F033A578801FE217B = {
-			fileRef = F5C523DD02A33E0A01A80165;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F5B9D9E402B1D61C01A8016B = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -1916,13 +1953,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		F5C523DD02A33E0A01A80165 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
-			path = PackageInfo.nib;
-			refType = 4;
-			sourceTree = "<group>";
 		};
 		F5C94460039C68BC01A80164 = {
 			children = (
