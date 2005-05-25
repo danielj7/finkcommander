@@ -463,7 +463,7 @@ enum {
     parser = p;
 }
 
--(NSTextField *)searchTextField
+-(NSSearchField *)searchTextField
 {
     return searchTextField;
 }

@@ -121,7 +121,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	//Search view outlets
 	IBOutlet id searchView;
 	IBOutlet NSPopUpButton *searchPopUpButton;
-	IBOutlet NSTextField *searchTextField;
+	IBOutlet NSSearchField *searchTextField;
 
 	//FinkCommander objects
 	FinkData *packages;
@@ -153,7 +153,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
 -(void)setParser:(FinkOutputParser *)p;
--(NSTextField *)searchTextField;
+-(NSSearchField *)searchTextField;
 -(NSPopUpButton *)searchPopUpButton;
 
 //Menu and Toolbar Action Methods
