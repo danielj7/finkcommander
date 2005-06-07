@@ -120,7 +120,6 @@ Contact the author at sburrious@users.sourceforge.net.
 		
 	//Search view outlets
 	IBOutlet id searchView;
-	IBOutlet NSPopUpButton *searchPopUpButton;
 	IBOutlet NSSearchField *searchTextField;
 
 	//FinkCommander objects
@@ -146,6 +145,8 @@ Contact the author at sburrious@users.sourceforge.net.
 	BOOL commandTerminated;
 	BOOL pendingCommand;
 	BOOL toolIsBeingFixed;
+
+	int searchTag;
 }
 
 //Accessors
@@ -153,8 +154,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSString *)lastCommand;
 -(void)setLastCommand:(NSString *)s;
 -(void)setParser:(FinkOutputParser *)p;
--(NSSearchField *)searchTextField;
--(NSPopUpButton *)searchPopUpButton;
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;

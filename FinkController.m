@@ -222,6 +222,8 @@ enum {
 				selector: @selector(tableViewSelectionDidChange:)
 					name: NSTableViewSelectionDidChangeNotification
 				  object: nil];
+
+		searchTag = 2010;
     }
     return self;
 }
@@ -461,16 +463,6 @@ enum {
     [p retain];
     [parser release];
     parser = p;
-}
-
--(NSSearchField *)searchTextField
-{
-    return searchTextField;
-}
-
--(NSPopUpButton *)searchPopUpButton
-{
-    return searchPopUpButton;
 }
 
 //================================================================================
@@ -895,18 +887,26 @@ enum {
     [toolbar setAutosavesConfiguration: YES];
     [toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
 	[toolbar setSearchField:searchTextField];
-	[toolbar setSearchButton:searchPopUpButton];
+	[searchTextField setSearchMenuTemplate: [searchTextField searchMenuTemplate]];
 #ifndef OSXVER101
 	[toolbar setSizeMode:NSToolbarSizeModeSmall];
 #endif
     [window setToolbar: toolbar];
 }
 
-//reapply filter if popup selection changes
+//reapply filter if search field values have changed
 -(IBAction)refilter:(id)sender
 {
-    [searchTextField selectText: nil];
-    [self controlTextDidChange: nil];
+	if ([(sender) isKindOfClass:[NSMenuItem class]]) {
+		NSEnumerator *menuItems = [[[sender menu] itemArray] objectEnumerator];
+		NSMenuItem *menuItem;
+		while (nil != (menuItem = [menuItems nextObject])) {
+			[menuItem setState:NSOffState];
+		}
+		[sender setState:NSOnState];
+		searchTag = [sender tag];
+	}
+	[self controlTextDidChange: nil];
 }
 
 //----------------------------------------------->Toolbar Delegates
@@ -1012,7 +1012,7 @@ enum {
     if ([[aNotification object] tag] == FILTER){
 		/* 	Translate the tag for the selected menu in the popup button into a string
 			corresponding to a fink package attribute */
-		NSString *field = [self attributeNameFromTag:[[searchPopUpButton selectedItem] tag]];
+		NSString *field = [self attributeNameFromTag: searchTag];
 		NSString *filterText = [[searchTextField stringValue] lowercaseString];
 		NSString *pkgAttribute;
 		/* 	Used to store the subset of the packages array that matches the filter text */

@@ -42,7 +42,6 @@
                 progressIndicator = NSProgressIndicator; 
                 progressView = NSView; 
                 progressViewHolder = NSView; 
-                searchPopUpButton = NSPopUpButton; 
                 searchTextField = NSTextField; 
                 searchView = id; 
                 splitView = id; 
