@@ -47,10 +47,15 @@ File: FinkInstallationInfo.m
 		@"\n\r"];
 	NSString *version;
 	NSString *extraInformation;
+	NSString *start = @"(GCC) ";
 
 	if (! s) return nil;
 	versionScanner = [NSScanner scannerWithString:s];
-	[versionScanner scanUpToCharactersFromSet:versionChars intoString:NULL];
+	[versionScanner scanUpToString:start intoString:nil];
+	if (! [versionScanner scanString:start intoString:nil]){
+		[versionScanner setScanLocation:0];
+		[versionScanner scanUpToCharactersFromSet:versionChars intoString:nil];
+	}
 	if (! [versionScanner scanCharactersFromSet:versionChars intoString:&version]){
 		return nil;
 	}
@@ -212,7 +217,7 @@ File: FinkInstallationInfo.m
 		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0]
 							objectForKey:@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;
-		version = [@"Xcode tools " stringByAppendingString:version];
+		version = [@"Xcode version: " stringByAppendingString:version];
 		return version;
 	}
 
