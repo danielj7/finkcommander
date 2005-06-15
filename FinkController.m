@@ -1254,8 +1254,15 @@ enum {
 	NSAppleScript *script;
 	NSAppleEventDescriptor *descriptor;
 	NSDictionary *errord;
+	NSString *terminal = [[defaults objectForKey: @"FinkEnvironmentSettings"] valueForKey:@"TERM_PROGRAM"];
 
-	cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
+	if ([terminal isEqualToString: @"Apple_Terminal"]){
+		cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
+	} else {
+		if ([terminal isEqualToString: @"iTerm.app"]){
+			cmd = [NSString stringWithFormat:@"tell application \"iTerm\"\nactivate\ntell the first terminal\nset mysession to (make new session at the end of sessions)\ntell mysession\nset name to \"FinkCommander\"\nexec command \"%@\"\nend tell\nend tell\nend tell", cmd];
+		}
+	}
 	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
 	descriptor = [script executeAndReturnError:&errord];
 	if (! descriptor){

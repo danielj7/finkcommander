@@ -127,6 +127,11 @@ void setInitialEnvironmentVariables(void)
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSMutableDictionary *settings;
 	NSString *basePath = [defaults objectForKey:FinkBasePath];
+	NSString *terminal;
+
+	if (! (terminal = [[[NSProcessInfo processInfo] environment] valueForKey: @"TERM_PROGRAM"])){
+		terminal = @"Apple_Terminal";
+	}
 
 	settings = 
 		[NSMutableDictionary 
@@ -141,7 +146,7 @@ void setInitialEnvironmentVariables(void)
 				@"CVS_RSH",
 				NSHomeDirectory(),
 				@"HOME",
-				@"Apple_Terminal",
+				terminal,
 				@"TERM_PROGRAM",
 				@"C",
 				@"LC_ALL",
