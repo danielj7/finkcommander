@@ -241,7 +241,13 @@ File: FinkConf.m
 
 -(NSString *)useHTTPProxy
 {
-	return [finkConfDict objectForKey: @"ProxyHTTP"];
+	NSString *proxy = [finkConfDict objectForKey: @"ProxyHTTP"];
+
+	if (proxy != nil){
+		return proxy;
+	} else {
+		return @"";
+	}
 }
 
 -(void)setUseHTTPProxy:(NSString *)s
@@ -255,7 +261,13 @@ File: FinkConf.m
 
 -(NSString *)useFTPProxy
 {
-	return [finkConfDict objectForKey: @"ProxyFTP"];
+	NSString *proxy = [finkConfDict objectForKey: @"ProxyFTP"];
+
+	if (proxy != nil){
+		return proxy;
+	} else {
+		return @"";
+	}
 }
 
 -(void)setUseFTPProxy:(NSString *)s

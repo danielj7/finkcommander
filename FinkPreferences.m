@@ -221,29 +221,11 @@ enum {
 	//Download Tab
 	[passiveFTPButton setState: [conf passiveFTP]];
 
-	httpProxy = [environmentSettings objectForKey:@"http_proxy"];
-	if (! httpProxy){
-		httpProxy = [conf useHTTPProxy];
-		if (httpProxy){
-			[environmentSettings setObject:httpProxy forKey:@"http_proxy"];
-			[defaults setObject:environmentSettings forKey:FinkEnvironmentSettings];
-		}else{
-			httpProxy = @"";
-		}
-	}
+	httpProxy = [conf useHTTPProxy];
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
 	
-	ftpProxy = [environmentSettings objectForKey:@"ftp_proxy"];
-	if (! ftpProxy){
-		ftpProxy = [conf useFTPProxy];
-		if (ftpProxy){
-			[environmentSettings setObject:ftpProxy forKey:@"ftp_proxy"];
-			[defaults setObject:environmentSettings forKey:FinkEnvironmentSettings];
-		}else{
-			ftpProxy = @"";
-		}
-	} 
+	ftpProxy = [conf useFTPProxy];
 	[ftpProxyButton setState: ([ftpProxy length] > 0 ? YES : NO)];
 	[ftpProxyTextField setStringValue: ftpProxy];
 
@@ -325,7 +307,6 @@ enum {
 	if ([httpProxyButton state] == NSOnState){
 		NSString *proxy = [httpProxyTextField stringValue];
 		[conf setUseHTTPProxy: proxy];
-		[self addEnvironmentKey:@"http_proxy" value:proxy];
 	}else{
 		[conf setUseHTTPProxy: nil];
 	}
@@ -336,7 +317,6 @@ enum {
 	if ([ftpProxyButton state] == NSOnState){
 		NSString *proxy = [ftpProxyTextField stringValue];
 		[conf setUseFTPProxy:proxy];
-		[self addEnvironmentKey:@"ftp_proxy" value:proxy];
 	}else{
 		[conf setUseFTPProxy: nil];
 	}
