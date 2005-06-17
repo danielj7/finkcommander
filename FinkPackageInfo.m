@@ -98,6 +98,7 @@
 							   nil]] autorelease];
 	NSString *line;
 	NSString *field;
+	NSString *uri;
 	NSRange r;	      //general purpose range variable
 	
 	[lineEnumerator nextObject];   //discard summary; already included
@@ -140,11 +141,14 @@
 	}
 	
 	//look for web url and if found turn it into an active link
-	if ([[p weburl] length] > 0){
-		r = [[description string] rangeOfString: [p weburl]];
+	uri = [p weburl]; 
+	if ([uri length] > 0){
+		uri = [uri stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"\""]];
+		[p setWeburl: uri];
+		r = [[description string] rangeOfString: uri];
 		[description addAttributes: urlAttributes range: r];
 		[description addAttribute: NSLinkAttributeName
-							value: [NSURL URLWithString: [p weburl]]
+							value: [NSURL URLWithString: uri]
 							range: r];
 	}
 		
