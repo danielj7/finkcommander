@@ -1082,6 +1082,7 @@ enum {
 		if (itemAction == @selector(runPackageSpecificCommand:) 	||
 			itemAction == @selector(runForceRemove:)	           	||
 			itemAction == @selector(showDescription:)           	||
+			itemAction == @selector(showPackageInfoPanel:)			||
 			itemAction == @selector(sendNegativeFeedback:)	   		||
 			itemAction == @selector(sendPositiveFeedback:)	   		||
 			itemAction == @selector(openDocumentation:)	   			||
