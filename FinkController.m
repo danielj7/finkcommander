@@ -334,16 +334,18 @@ enum {
 
 /*	Reset the interface--stop and remove progress indicator, revalidate
 	command menu and toolbar items, reapply filter--after the table data
-	is updated or a command is completed */
+	is updated or a command is completed */
 -(void)resetInterface:(NSNotification *)ignore
 {
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
-    [self stopProgressIndicator];
-    [self displayNumberOfPackages];
-    commandIsRunning = NO;
-    [tableView deselectAll: self];
-    [self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
-    [toolbar validateVisibleItems];
+	[self stopProgressIndicator];
+	[self displayNumberOfPackages];
+	commandIsRunning = NO;
+	if (![[ignore name] isEqualToString: @"FinkError"]){
+		[tableView deselectAll: self];
+	}
+	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
+	[toolbar validateVisibleItems];
 }
 
 //================================================================================
@@ -1612,7 +1614,7 @@ enum {
 					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", @"Alert sheet message"),
 					 nil);
 		}
-		[self resetInterface:nil];
+		[self resetInterface:[NSNotification notificationWithName:@"FinkError" object:nil]];
 	}
 	
     commandTerminated = NO;
