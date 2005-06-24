@@ -187,17 +187,21 @@ See the header file, FinkData.h, for interface and license information.
 	emailAddress:(NSString **)address
 	fromDescription:(NSString *)s
 {
-    int emailstart = [s rangeOfString: @"<"].location;
-    int emailend   = [s rangeOfString: @">"].location;
-	    if (emailstart == NSNotFound || emailend == NSNotFound){
+	int emailstart = [s rangeOfString: @"<"].location;
+	int emailend   = [s rangeOfString: @">"].location;
+	if (emailstart == NSNotFound || emailend == NSNotFound){
 			*name = @"";
 			*address = @"";
 			return;
 		}
+	if (emailstart - NAMESTART - 1 >= 0){
 		*name = [s substringWithRange:
-					NSMakeRange(NAMESTART, emailstart - NAMESTART - 1)];
-		*address = [s substringWithRange:
-					NSMakeRange(emailstart + 1, emailend - emailstart - 1)];
+			NSMakeRange(NAMESTART, emailstart - NAMESTART - 1)];
+	} else {
+		*name = @"";
+	}
+	*address = [s substringWithRange:
+		NSMakeRange(emailstart + 1, emailend - emailstart - 1)];
 }
 
 -(NSArray *)descriptionComponentsFromString:(NSString *)s
