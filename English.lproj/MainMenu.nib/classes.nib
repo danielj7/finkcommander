@@ -21,6 +21,7 @@
                 saveOutput = id; 
                 sendNegativeFeedback = id; 
                 sendPositiveFeedback = id; 
+                showAboutWindow = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 

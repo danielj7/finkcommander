@@ -855,6 +855,18 @@ enum {
 	openFileAtPath(pathToHelp);
 }
 
+// show the "About FinkCommander" window with some fink information
+-(IBAction)showAboutWindow:(id)sender
+{
+	NSString *finkVersion = [NSString stringWithFormat:@"Fink version\n%@",[[FinkInstallationInfo sharedInfo] finkVersion]];
+	NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] setAlignment:NSCenterTextAlignment];
+	NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+		[NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
+		style,NSParagraphStyleAttributeName,
+		nil];
+	NSAttributedString *credits = [[NSAttributedString alloc] initWithString:finkVersion attributes:attributes];
+	[NSApp orderFrontStandardAboutPanelWithOptions:[NSDictionary dictionaryWithObject:credits forKey:@"Credits"]];
+}
 //Help menu internet access items
 -(IBAction)goToWebsite:(id)sender
 {

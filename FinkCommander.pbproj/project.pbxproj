@@ -1623,15 +1623,6 @@
 			settings = {
 			};
 		};
-		F57DA17B02B4680D01A8016B = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = text.html;
-			name = Credits.html;
-			path = English.lproj/Credits.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		F57E59B403A998D701A80165 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -1819,7 +1810,6 @@
 		};
 		F59FF425032134BD01A80175 = {
 			children = (
-				F57DA17B02B4680D01A8016B,
 				F59FF428032134D901A80175,
 			);
 			isa = PBXVariantGroup;
