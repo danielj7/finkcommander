@@ -859,7 +859,8 @@ enum {
 -(IBAction)showAboutWindow:(id)sender
 {
 	NSString *finkVersion = [NSString stringWithFormat:@"Fink version\n%@",[[FinkInstallationInfo sharedInfo] finkVersion]];
-	NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] setAlignment:NSCenterTextAlignment];
+	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	[style setAlignment:NSCenterTextAlignment];
 	NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
 		[NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
 		style,NSParagraphStyleAttributeName,
