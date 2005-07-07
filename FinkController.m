@@ -541,7 +541,7 @@ enum {
 				  LS_OK, nil, nil);
 		return;
     }
-    if (! [installedVersion isEqualToString: latestVersion]){
+    if (! [installedVersion compare: latestVersion]){
 		int answer = NSRunAlertPanel(LS_DOWNLOAD,
 							   NSLocalizedString(@"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?", @"Alert dialog query"),
 							   LS_DOWNLOAD, LS_CANCEL, nil, latestVersion);
