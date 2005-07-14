@@ -6,36 +6,27 @@
 	<string>177 168 375 319 0 0 1152 746 </string>
 	<key>IBEditorPositions</key>
 	<dict>
+		<key>1089</key>
+		<string>727 675 225 69 0 0 1680 1028 </string>
+		<key>1097</key>
+		<string>297 604 121 201 0 0 1680 1028 </string>
 		<key>29</key>
-		<string>63 675 628 44 0 0 1152 746 </string>
-		<key>553</key>
-		<string>454 477 244 69 0 0 1152 746 </string>
+		<string>546 981 665 44 0 0 1680 1028 </string>
 		<key>577</key>
 		<string>476 480 200 62 0 0 1152 746 </string>
 		<key>663</key>
-		<string>68 440 201 276 0 0 1152 746 </string>
+		<string>106 710 210 287 0 0 1680 1028 </string>
 	</dict>
 	<key>IBFramework Version</key>
-	<string>291.0</string>
-	<key>IBGroupedObjects</key>
-	<dict>
-		<key>1</key>
-		<array>
-			<string>250</string>
-			<string>257</string>
-			<string>256</string>
-			<string>249</string>
-			<string>253</string>
-		</array>
-	</dict>
-	<key>IBLastGroupID</key>
-	<string>2</string>
+	<string>364.0</string>
 	<key>IBOpenObjects</key>
 	<array>
 		<integer>29</integer>
 		<integer>663</integer>
+		<integer>1097</integer>
+		<integer>1089</integer>
 	</array>
 	<key>IBSystem Version</key>
-	<string>6G30</string>
+	<string>7W98</string>
 </dict>
 </plist>

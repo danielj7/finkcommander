@@ -21,6 +21,7 @@
                 saveOutput = id; 
                 sendNegativeFeedback = id; 
                 sendPositiveFeedback = id; 
+                showAboutWindow = id; 
                 showDescription = id; 
                 showPackageInfoPanel = id; 
                 showPreferencePanel = id; 
@@ -42,7 +43,6 @@
                 progressIndicator = NSProgressIndicator; 
                 progressView = NSView; 
                 progressViewHolder = NSView; 
-                searchPopUpButton = NSPopUpButton; 
                 searchTextField = NSTextField; 
                 searchView = id; 
                 splitView = id; 
@@ -57,6 +57,7 @@
         }, 
         {
             ACTIONS = {
+                collapseExpandOutput = id; 
                 openPackageFiles = id; 
                 openSelectedFiles = id; 
                 toggleFlags = id; 
