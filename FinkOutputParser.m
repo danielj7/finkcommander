@@ -41,12 +41,16 @@
 
 #define PROMPT_PAT															\
     [NSString stringWithFormat:												\
-        @"proceed\\? \\[.*\\]|your choice:|Pick one|\\[[Yy]+/[Nn]+\\]|\\[[Nn]+/[Yy]+\\]|\\? \\[[0-9]+\\]|\\[anonymous\\]|\\[root\\]|\\[%@\\]", 		\
+        @"proceed\\? \\[.*\\]|your choice:|Pick one|\\[(Yn)\\]|\\[[Yy]+/[Nn]+\\]|\\[[Nn]+/[Yy]+\\]|\\? \\[[0-9]+\\]|\\[anonymous\\]|\\[root\\]|\\[%@\\]", 		\
             NSUserName()]
 
  //fink's --yes option does not work for these prompts:
 #define MANPROMPT_PAT														\
     @"(CVS|cvs).*password|\\[default=N\\]|either license\\?|(key|[Rr]eturn) to continue"
+
+// dynamic output is output that replaces the current line in stdout to simulate movement
+#define DYNAMIC_PAT														\
+	@"Downloading.*\\[[\\\\\\|\\*-/]\\]"
 
 #define AFTER_EQUAL_SIGN 5
 
@@ -73,7 +77,7 @@
 		executable:(NSString *)exe;
 {
     if (self = [super init]){
-        int aPrompt, mPrompt, config;  //test regex compilation success
+        int aPrompt, mPrompt, config, dOutput;  //test regex compilation success
 
         defaults = [NSUserDefaults standardUserDefaults];
         command = [cmd retain];
@@ -86,6 +90,7 @@
         config = compiledExpressionFromString(CONFIG_PAT, &configure);
         aPrompt = compiledExpressionFromString(PROMPT_PAT, &prompt);
         mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &manPrompt);
+		dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
         if (mPrompt != 0 || aPrompt != 0){
             NSLog(@"Compiling regex failed.");
         }
@@ -111,6 +116,7 @@
     regfree(&configure);
     regfree(&prompt);
     regfree(&manPrompt);
+	regfree (&dynamicOutput);
 
     [super dealloc];
 }
@@ -398,7 +404,10 @@
         Dprintf(@"Found prompt: %@", line);
         return PROMPT;
     }
-	
+	if ([line containsCompiledExpression:&dynamicOutput]){
+		return DYNAMIC_OUTPUT;
+	}
+
     //Look for self-repair messages
 	//NB:  Find a way to avoid looking for this in every line
 	if ([line contains:@"Running self-repair"]){

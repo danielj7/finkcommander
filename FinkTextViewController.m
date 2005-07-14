@@ -100,5 +100,16 @@ File: FinkTextViewController.m
 	[[textView textStorage] endEditing];
 }
 
+-(void)replaceLastLineByString:(NSString *)s
+{
+	// if the string consists of more lines than it's invalid for dynamic output
+	if (([self numberOfLinesInString:s] > 0) || (([[s componentsSeparatedByString:@"\r"] count] - 1) > 1)) {
+		return;
+	}
+	[[textView textStorage] beginEditing];
+	[textView replaceCharactersInRange:NSMakeRange([[textView string] length] - [s length], [s length])
+		withString:s];
+	[[textView textStorage] endEditing];
+}
 
 @end

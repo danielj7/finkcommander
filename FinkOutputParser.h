@@ -66,7 +66,8 @@ enum {
     RUNNING_SELF_REPAIR,
     SELF_REPAIR_COMPLETE,
     RESOURCE_DIR_ERROR,
-    SELF_REPAIR_FAILED
+    SELF_REPAIR_FAILED,
+	DYNAMIC_OUTPUT
 };
  
 
@@ -83,6 +84,7 @@ enum {
     regex_t configure;
     regex_t prompt;
     regex_t manPrompt;
+	regex_t dynamicOutput;
 
     float increment;
     int currentPhase;

@@ -145,6 +145,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	BOOL commandTerminated;
 	BOOL pendingCommand;
 	BOOL toolIsBeingFixed;
+	BOOL outputIsDynamic;
 
 	int searchTag;
 }

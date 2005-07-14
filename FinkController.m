@@ -224,6 +224,7 @@ enum {
 				  object: nil];
 
 		searchTag = 2010;
+		outputIsDynamic = NO;
     }
     return self;
 }
@@ -1577,9 +1578,19 @@ enum {
 		case PGID:
 			output = @"";
 			break;
-    }
+	}
 
-    [textViewController appendString:output];
+	if (signal != DYNAMIC_OUTPUT){
+		outputIsDynamic = NO;
+		[textViewController appendString:output];
+	} else {
+		if (!outputIsDynamic) {
+			outputIsDynamic = YES;
+			[textViewController appendString:output];
+		}else{
+			[textViewController replaceLastLineByString:output];
+		}
+	}
 	//According to Moriarity example, we have to put off scrolling until next event loop
     [self performSelector:@selector(scrollToVisible:)
 					 withObject:pixelsBelowView

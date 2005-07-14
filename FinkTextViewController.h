@@ -43,6 +43,7 @@ File: FinkTextViewController.h
 	   forScrollView:(NSScrollView *)aScrollView;
 -(void)setLimits;
 -(void)appendString:(NSString *)s;
+-(void)replaceLastLineByString:(NSString *)s;
 
 - (NSTextView *)textView;
 - (void)setTextView:(NSTextView *)newTextView;
