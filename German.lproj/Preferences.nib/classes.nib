@@ -4,6 +4,7 @@
             ACTIONS = {
                 addEnvironmentSetting = id; 
                 cancel = id; 
+                checkNow = id; 
                 removeEnvironmentSettings = id; 
                 restoreEnvironmentSettings = id; 
                 selectDirectory = id; 
@@ -21,10 +22,9 @@
                 addEnvironmentSettingButton = NSButton; 
                 alwaysChooseDefaultsButton = NSButton; 
                 autoExpandOutputButton = NSButton; 
+                automaticallyCheckUpdatesButton = id; 
                 basePathTextField = NSTextField; 
-                checkForUpdateButton = NSButton; 
-                checkForUpdateIntervalStepper = NSStepper; 
-                checkForUpdateIntervalTextField = NSTextField; 
+                checkNowButton = NSButton; 
                 deleteEnvironmentSettingButton = NSButton; 
                 downloadMethodMatrix = NSMatrix; 
                 environmentTableView = NSTableView; 

@@ -53,6 +53,7 @@ NSString *FinkCommandCompleted = @"FinkCommandCompleted";
 NSString *FinkPackageArrayIsFinished = @"FinkPackageArrayIsFinished";
 NSString *FinkCollapseOutputView = @"FinkCollapseOutputView";
 NSString *FinkTerminateNotification = @"FinkTerminateNotification";
+NSString *CheckForUpdate = @"CheckForUpdate";
 
 NSString *FinkRunProgressIndicator = @"FinkRunProgressIndicator";
 

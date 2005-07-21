@@ -223,6 +223,13 @@ enum {
 					name: NSTableViewSelectionDidChangeNotification
 				  object: nil];
 
+		//Register for notification to check for updates
+		//to update Package Inspector
+		[center addObserver: self
+			selector: @selector(checkForUpdate:)
+			name: CheckForUpdate
+			object: nil];
+
 		searchTag = 2010;
 		outputIsDynamic = NO;
     }
@@ -417,8 +424,6 @@ enum {
 	NSString *direction = [[defaults objectForKey:FinkColumnStateDictionary]
 							objectForKey:[tableView lastIdentifier]];
     NSString *basePath = [defaults objectForKey:FinkBasePath];
-    int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
-    NSDate *lastCheckDate = [defaults objectForKey:FinkLastCheckedForNewVersion];
 
     if ([basePath length] <= 1 ){
 		NSBeginAlertSheet(NSLocalizedString(@"Fink could not be located.", @"Alert sheet title"),
@@ -438,13 +443,10 @@ enum {
 		[splitView collapseOutput: nil];
     }
 
-    Dprintf(@"Interval for new version check: %d", interval);
-    Dprintf(@"Last checked for new version: %@", [lastCheckDate description]);
-
-    if (interval > 0 && -([lastCheckDate timeIntervalSinceNow] / 34560) >= interval){ //24*60*60
+	if ([defaults boolForKey:FinkCheckForNewVersion]){
 		NSLog(@"Checking for FinkCommander update");
-		[self checkForLatestVersion:NO]; //don't notify if current
-    }
+		[NSThread detachNewThreadSelector:@selector(checkForLatestVersion:) toTarget:self withObject:NO];
+	}
 }
 
 //================================================================================
@@ -527,41 +529,47 @@ enum {
 //Helper; separated from action method because also called on schedule
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
-    NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
 		infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSDictionary *latestVersionDict =
+	NSDictionary *latestVersionDict =
 		[NSDictionary dictionaryWithContentsOfURL:
 			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
-    NSString *latestVersion;
+	NSString *latestVersion = [defaults objectForKey: @"FinkAvailableUpdate"];
 
-    if (latestVersionDict){
-		latestVersion = [latestVersionDict objectForKey: @"FinkCommander"];
-    }else{
-		NSRunAlertPanel(LS_ERROR,
-				  NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
-				  LS_OK, nil, nil);
-		return;
-    }
-    if ([installedVersion compare: latestVersion] == NSOrderedAscending){
-		int answer = NSRunAlertPanel(LS_DOWNLOAD,
-							   NSLocalizedString(@"A more current version of FinkCommander (%@) is available.\nWould you like to go to the FinkCommander home page to download it?", @"Alert dialog query"),
-							   LS_DOWNLOAD, LS_CANCEL, nil, latestVersion);
-		if (answer == NSAlertDefaultReturn){
-			[[NSWorkspace sharedWorkspace] openURL:
-				[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
+	if ([installedVersion compare: latestVersion] == NSOrderedAscending){
+		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
+			NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify if how frequently to check for updates.", @"Update alert message"),
+			NSLocalizedString(@"Upgrade Now", @"Update alert default"),
+			NSLocalizedString(@"Change PreferencesÉ", @"Update alert alternate"),
+			NSLocalizedString( @"Ask Again Later", @"Update alert other"));
+		switch (answer){
+			case NSAlertDefaultReturn:
+				[[NSWorkspace sharedWorkspace] openURL:
+					[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
+			case NSAlertAlternateReturn:
+				[self showPreferencePanel:nil];
 		}
-    }else if (notifyWhenCurrent){
+	}else if (notifyWhenCurrent && latestVersionDict){
 		NSRunAlertPanel(
-				NSLocalizedString(@"Current", @"Title of update alert panel when the current version of FC is installed"),
-				NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", @"Message of update alert panel when the current version of FC is installed"),
-				LS_OK, nil, nil);
-    }
-    [defaults setObject:[NSDate date] forKey:FinkLastCheckedForNewVersion];
+			NSLocalizedString(@"Current", @"Title of update alert panel when the current version of FC is installed"),
+			NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", @"Message of update alert panel when the current version of FC is installed"),
+			LS_OK, nil, nil);
+	}
+
+	if (latestVersionDict){
+		[defaults setObject:[latestVersionDict objectForKey: @"FinkCommander"] forKey: @"FinkAvailableUpdate"];
+	}else if (notifyWhenCurrent){
+		NSRunAlertPanel(LS_ERROR,
+			NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
+			LS_OK, nil, nil);
+	}
+	[pool release];
 }
 
--(IBAction)checkForLatestVersionAction:(id)sender
+-(void)checkForUpdate:(NSNotification *)aNotification
 {
-    [self checkForLatestVersion:YES];
+	[self checkForLatestVersion:YES];
 }
 
 //----------------------------------------------->File Menu

@@ -86,6 +86,7 @@ extern NSString *FinkCommandCompleted;
 extern NSString *FinkPackageArrayIsFinished;
 extern NSString *FinkCollapseOutputView;
 extern NSString *FinkTerminateNotification;
+extern NSString *CheckForUpdate;
 
 //UserInfo Key
 extern NSString *FinkRunProgressIndicator;

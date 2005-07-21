@@ -45,9 +45,7 @@ File: FinkPreferences.h
 	IBOutlet NSTextField *basePathTextField;
 	IBOutlet NSTextField *outputPathTextField;
 	IBOutlet NSTextField *scrollBackLimitTextField;
-	IBOutlet NSTextField *checkForUpdateIntervalTextField;
 	IBOutlet NSTextField *perlPathTextField;
-	IBOutlet NSStepper *checkForUpdateIntervalStepper;
 	IBOutlet NSButton *scrollBackLimitButton;
 	IBOutlet NSButton *outputPathButton;
 	IBOutlet NSButton *perlPathButton;
@@ -58,8 +56,8 @@ File: FinkPreferences.h
 	IBOutlet NSButton *showPackagesInTitleButton;
 	IBOutlet NSButton *autoExpandOutputButton;
 	IBOutlet NSButton *giveEmailCreditButton;
-	IBOutlet NSButton *checkForUpdateButton;
 	IBOutlet NSButton *showRedundantPackagesButton;
+	IBOutlet NSButton *automaticallyCheckUpdatesButton;
 	
 	//widgets used for environment settings
 	IBOutlet NSTableView *environmentTableView;
@@ -88,7 +86,10 @@ File: FinkPreferences.h
 	IBOutlet NSMatrix *downloadMethodMatrix;
 	IBOutlet NSMatrix *rootMethodMatrix;
 	IBOutlet NSImageView *titleBarImageView;
-		
+
+	//widgets used for software update
+	IBOutlet NSButton *checkNowButton;
+
 	NSUserDefaults *defaults;
 	FinkConf *conf;
 	NSMutableArray *environmentArray;
@@ -122,5 +123,8 @@ File: FinkPreferences.h
 
 //set title bar image to reflect user's choice
 -(IBAction)setTitleBarImage:(id)sender;
+
+//software update buttons
+-(IBAction)checkNow:(id)sender;
 
 @end

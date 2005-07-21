@@ -153,7 +153,6 @@ enum {
 	NSMutableDictionary *environmentSettings = [[[defaults objectForKey:FinkEnvironmentSettings]
 													mutableCopy] autorelease];
 	int scrollBackLimit;
-	int interval = [defaults integerForKey:FinkCheckForNewVersionInterval];
 	
 	Dprintf(@"Resetting preferences");
 	
@@ -164,11 +163,6 @@ enum {
 	[warnBeforeTerminatingButton setState: [defaults boolForKey: FinkWarnBeforeTerminating]];
 	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
 	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
-	[checkForUpdateButton setState:  interval > 0];	
-	if (interval){
-		[checkForUpdateIntervalTextField setIntValue:interval];
-		[checkForUpdateIntervalStepper setIntValue:interval];
-	}
 	
 	//Paths Tab
 	pathChoiceChanged = NO;
@@ -242,6 +236,9 @@ enum {
 	
 	[self readEnvironmentDefaultsIntoArray];
 	[environmentTableView reloadData];
+
+	//software update tab
+	[automaticallyCheckUpdatesButton setState: [defaults boolForKey: FinkCheckForNewVersion]];
 }
 
 //--------------------------------------------------------------------------------
@@ -337,13 +334,7 @@ enum {
 	[defaults setBool: [warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
 	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
 	[defaults setBool: [allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
-	if ([checkForUpdateButton state]){
-		[defaults setInteger:[checkForUpdateIntervalTextField intValue]
-							   forKey:FinkCheckForNewVersionInterval];
-	}else{
-		[defaults setInteger:0 forKey:FinkCheckForNewVersionInterval];
-	}
-	
+
 	//Paths Tab
 	[self setBasePath];
 	[defaults setObject:[outputPathTextField stringValue] forKey: FinkOutputPath];
@@ -371,6 +362,9 @@ enum {
 	
 	//Environment Tab
 	[self writeEnvironmentArrayIntoDefaults];
+
+	//software update tab
+	[defaults setBool: [automaticallyCheckUpdatesButton state] forKey: FinkCheckForNewVersion];
 
 	/***  Fink Settings in fink.conf ***/
 	
@@ -631,5 +625,10 @@ enum {
 	[[environmentArray objectAtIndex:rowIndex] setObject:anObject forKey:identifier];
 }
 
+-(IBAction)checkNow:(id)sender
+{
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName:CheckForUpdate
+		object:nil];
+}
 @end
-

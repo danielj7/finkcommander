@@ -16,10 +16,10 @@
 	<true/>
 	<key>FinkBufferLimit</key>
 	<integer>10000</integer>
+	<key>FinkAvailableUpdate</key>
+	<string></string>
 	<key>FinkCheckForNewVersion</key>
 	<true/>
-	<key>FinkCheckForNewVersionInterval</key>
-	<integer>7</integer>
 	<key>FinkColumnStateDictionary</key>
 	<dict>
 		<key>binary</key>

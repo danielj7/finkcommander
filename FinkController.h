@@ -158,7 +158,6 @@ Contact the author at sburrious@users.sourceforge.net.
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
--(IBAction)checkForLatestVersionAction:(id)sender;
 -(IBAction)showPreferencePanel:(id)sender;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)saveOutput:(id)sender;
