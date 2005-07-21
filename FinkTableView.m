@@ -56,6 +56,7 @@ enum {
 		[self setVerticalMotionCanBeginDrag:NO];
 		[self setTarget:self];
 		[self setDoubleAction:@selector(openPackageFiles:)];
+		[self setUsesAlternatingRowBackgroundColors:YES];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
 		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
@@ -333,6 +334,9 @@ enum {
 		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];
 		[newColumn setMaxWidth:MAX_FLAG_WIDTH];
 	}else{
+		NSCell *dataCell = [[NSCell alloc] initTextCell:@""];
+		[newColumn setDataCell:dataCell];
+		[dataCell release];
 		[[newColumn headerCell] setStringValue: title];
 		[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
 		if ([identifier isEqualToString:@"status"]){
