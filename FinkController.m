@@ -539,7 +539,7 @@ enum {
 
 	if ([installedVersion compare: latestVersion] == NSOrderedAscending){
 		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
-			NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify if how frequently to check for updates.", @"Update alert message"),
+			NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify how frequently to check for updates.", @"Update alert message"),
 			NSLocalizedString(@"Upgrade Now", @"Update alert default"),
 			NSLocalizedString(@"Change Preferences…", @"Update alert alternate"),
 			NSLocalizedString( @"Ask Again Later", @"Update alert other"));
