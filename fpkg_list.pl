@@ -35,10 +35,12 @@
 ### Import Modules ###
 require 5.006;  # perl 5.6.0 or newer required
 use strict;
-use lib "BASEPATH/lib/perl5";
-use lib "BASEPATH/lib/perl5/darwin";
+use lib "/sw/lib/perl5";
+use lib "/sw/lib/perl5/darwin";
 use Fink::Services;
 use Fink::Package;
+use File::Basename;
+use File::Spec;
 
 ### Declarations ###
 my ($configpath, $config);                  #used to scan pkgs
@@ -81,7 +83,7 @@ sub latest_installed_version {
 ### Main Routine ###
 
 # read the configuration file
-$configpath = "BASEPATH/etc/fink.conf";   
+$configpath = "/sw/etc/fink.conf";   
 
 if (-f $configpath) {
     $config = &Fink::Services::read_config($configpath);
@@ -92,71 +94,99 @@ if (-f $configpath) {
 
 Fink::Package->require_packages();
 
-@pkglist = Fink::Package->list_packages();
 
-foreach $pname (sort @pkglist) {
-    $package = Fink::Package->package_by_name($pname);   
-    if ($package->is_virtual() == 1) {
-	$lvstable = $lvunstable = $lvlocal = $lvfilename = $iflag = $lversion = $lvinstalled = " ";
-	$description = "[virtual package]";
-	$full = "$description\nThis is a virtual package provided by another package. It can't be removed or installed.\n.\n$pname is provided by the following packages:\n.\n";
-	@versions = $package->get_all_providers();
-	foreach $pvo (@versions) {
-	    if ($pvo->get_name() ne $pname) {
-		$full = join "", $full, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
-		if ($pvo->is_installed()) {
-		    $iflag = "current";
-		    $lvinstalled = "provided";
-		    $full = join " ", $full, "(installed)";
-		}
-		$full = join "", $full, "\n.\n";
-	    }
-	}
-	$section = "virtual";
-    } else {
-	$lversion = &Fink::Services::latest_version($package->list_versions());
-	$lvstable = &latest_version_for_tree($package, "stable") || " ";
-	$lvunstable = &latest_version_for_tree($package, "unstable") || " ";
-	$lvlocal = &latest_version_for_tree($package, "local") || " ";
-	$lvinstalled = &latest_installed_version($package) || " ";
-	$vo = $package->get_version($lversion) || " ";
-	$description = $vo->get_shortdescription() || " ";
-	$full = $vo->get_description() || " ";
-	$section = $vo->get_section() || " ";
-	$section = "virtual" if ($section eq "unknown" and $description =~ /virtual/);
-	if ($vo->is_installed()) {
-	    $iflag = "current";
-	} else {
-	    $iflag = " ";
-	    if ($package->is_any_installed()) {
-		$iflag = "outdated";
-	    } elsif ($vo->is_present()) {
-		$iflag = "archived";
-	    }
-	    @versions = $package->get_all_providers();
-	    my $tempfull = join "", $full, "\n.\n$pname is provided by the following packages:\n.\n";
-	    my $pkgcounter = 0;
-	    foreach $pvo (@versions) {
-		if ($pvo->get_name() ne $pname) {
-		    $tempfull = join "", $tempfull, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
-		    $pkgcounter++;
-		    if ($pvo->is_installed()) {
-			$iflag = "current" if $iflag eq " ";
-			$lvinstalled = "provided";
-			$tempfull = join " ", $tempfull, "(installed)";
-		    }
-		    $tempfull = join "", $tempfull, "\n.\n";
-		}
-	    }
-	    $full = $tempfull if $pkgcounter > 0;
-	}
-	eval { #Post-0.19.0 fink
-	    $lvfilename = $vo->get_filename() || " ";
-	};
-	if ($@) {
-	    $lvfilename = $vo->{_filename} || " ";
-	}
-    }
-    print "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
-        "$lvunstable**\n$lvlocal**\n$section**\n$lvfilename**\n$description**\n$full\n";
+### Try to cache the results
+my $use_cache = Fink::Package->can('db_valid_since'); # Can we try caching?
+my $cache_file = File::Spec->catfile(dirname($0), "infocache");
+
+my $cache_ok = 0; # Is the cache valid?
+if ($use_cache) {
+	$cache_ok = -r $cache_file && (stat(_))[9] > Fink::Package->db_valid_since;
 }
+
+if ($use_cache && !$cache_ok) {
+	open OUTPUT, ">$cache_file.tmp";	# Write the cache
+} elsif (!$use_cache) {
+	open OUTPUT, '>&STDOUT';			# Just print normally
+}
+
+
+if (!$cache_ok) { # Don't calculate anything if the cache is ok
+	@pkglist = Fink::Package->list_packages();
+	
+	foreach $pname (sort @pkglist) {
+		$package = Fink::Package->package_by_name($pname);   
+		if ($package->is_virtual() == 1) {
+		$lvstable = $lvunstable = $lvlocal = $lvfilename = $iflag = $lversion = $lvinstalled = " ";
+		$description = "[virtual package]";
+		$full = "$description\nThis is a virtual package provided by another package. It can't be removed or installed.\n.\n$pname is provided by the following packages:\n.\n";
+		@versions = $package->get_all_providers();
+		foreach $pvo (@versions) {
+			if ($pvo->get_name() ne $pname) {
+			$full = join "", $full, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
+			if ($pvo->is_installed()) {
+				$iflag = "current";
+				$lvinstalled = "provided";
+				$full = join " ", $full, "(installed)";
+			}
+			$full = join "", $full, "\n.\n";
+			}
+		}
+		$section = "virtual";
+		} else {
+		$lversion = &Fink::Services::latest_version($package->list_versions());
+		$lvstable = &latest_version_for_tree($package, "stable") || " ";
+		$lvunstable = &latest_version_for_tree($package, "unstable") || " ";
+		$lvlocal = &latest_version_for_tree($package, "local") || " ";
+		$lvinstalled = &latest_installed_version($package) || " ";
+		$vo = $package->get_version($lversion) || " ";
+		$description = $vo->get_shortdescription() || " ";
+		$full = $vo->get_description() || " ";
+		$section = $vo->get_section() || " ";
+		$section = "virtual" if ($section eq "unknown" and $description =~ /virtual/);
+		if ($vo->is_installed()) {
+			$iflag = "current";
+		} else {
+			$iflag = " ";
+			if ($package->is_any_installed()) {
+			$iflag = "outdated";
+			} elsif ($vo->is_present()) {
+			$iflag = "archived";
+			}
+			@versions = $package->get_all_providers();
+			my $tempfull = join "", $full, "\n.\n$pname is provided by the following packages:\n.\n";
+			my $pkgcounter = 0;
+			foreach $pvo (@versions) {
+			if ($pvo->get_name() ne $pname) {
+				$tempfull = join "", $tempfull, $pvo->get_tree(), " ", $pvo->get_name(), " ", $pvo->get_fullversion();
+				$pkgcounter++;
+				if ($pvo->is_installed()) {
+				$iflag = "current" if $iflag eq " ";
+				$lvinstalled = "provided";
+				$tempfull = join " ", $tempfull, "(installed)";
+				}
+				$tempfull = join "", $tempfull, "\n.\n";
+			}
+			}
+			$full = $tempfull if $pkgcounter > 0;
+		}
+		eval { #Post-0.19.0 fink
+			$lvfilename = $vo->get_filename() || " ";
+		};
+		if ($@) {
+			$lvfilename = $vo->{_filename} || " ";
+		}
+		}
+		print OUTPUT "----\n$pname**\n$iflag**\n$lversion**\n$lvinstalled**\n$lvstable**\n".
+			"$lvunstable**\n$lvlocal**\n$section**\n$lvfilename**\n$description**\n$full\n";
+	}
+} # End !$cache_ok
+
+close OUTPUT;
+rename "$cache_file.tmp", "$cache_file";
+
+if ($use_cache) { # Print the actual cache
+	open CACHE, "<$cache_file";
+	print while <CACHE>;
+}
+
