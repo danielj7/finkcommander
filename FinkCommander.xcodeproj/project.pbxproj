@@ -1,0 +1,1235 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXApplicationTarget section */
+		29B97326FDCFA39411CA2CEA /* FinkCommander */ = {
+			isa = PBXApplicationTarget;
+			buildConfigurationList = F200074B08ED3CB4004A31F7 /* Build configuration list for PBXApplicationTarget "FinkCommander" */;
+			buildPhases = (
+				29B97327FDCFA39411CA2CEA /* Headers */,
+				29B97328FDCFA39411CA2CEA /* Resources */,
+				29B9732BFDCFA39411CA2CEA /* Sources */,
+				29B9732DFDCFA39411CA2CEA /* Frameworks */,
+				F580FC780332C42601A80166 /* CopyFiles */,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = FinkCommander;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			dependencies = (
+				F580FC440332C36F01A80166 /* PBXTargetDependency */,
+			);
+			name = FinkCommander;
+			productInstallPath = /Applications;
+			productName = FinkTable;
+			productReference = 17587328FF379C6511CA2CBB /* FinkCommander.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict/>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>FinkCommander</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>FinkCommander Help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>FinkCommander Help</string>
+	<key>CFBundleIconFile</key>
+	<string>finkcommander.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sburrious.finkcommander</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.5.4</string>
+	<key>CFBundleSignature</key>
+	<string>Fcmd</string>
+	<key>CFBundleVersion</key>
+	<string>.release</string>
+	<key>NSAppleScriptEnabled</key>
+	<string>YES</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright (C) 2002 Steven J. Burr, subject to Gnu General Public License; see Help:FinkCommander Help:License to read the GPL</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>
+";
+		};
+/* End PBXApplicationTarget section */
+
+/* Begin PBXBuildFile section */
+		080E96DCFE201CFB7F000001 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		089C165EFE840E0CC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		29B9732CFDCFA39411CA2CEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		F2C4F1D7084361C400CA6079 /* PackageInfo.nib in Resources */ = {isa = PBXBuildFile; fileRef = F2C4F1D5084361C400CA6079 /* PackageInfo.nib */; };
+		F5019E9803625D2701A80165 /* FinkToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F5019E9703625D2701A80165 /* FinkToolbar.m */; };
+		F5019E9A03625D4201A80165 /* FinkToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = F5019E9903625D4201A80165 /* FinkToolbar.h */; };
+		F5067EF503A1BF3001A80167 /* SBBrowserView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7615039F174E01A80165 /* SBBrowserView.h */; };
+		F5067EF603A1BF3101A80167 /* SBBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7616039F174E01A80165 /* SBBrowserView.m */; };
+		F50A222A0296AB2901A80166 /* terminate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50A22290296AB2801A80166 /* terminate.tiff */; };
+		F50C7FBC026BD8BD01A80164 /* delsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBB026BD8BD01A80164 /* delsrc.tiff */; };
+		F50C7FBE026BD92B01A80164 /* delbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBD026BD92B01A80164 /* delbin.tiff */; };
+		F50DF7780359464F01A8016C /* updateall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50DF7770359464F01A8016C /* updateall.tiff */; };
+		F50EC0D603A0464101A80165 /* Date.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50EC0D503A0464101A80165 /* Date.strings */; };
+		F50EC36703A0559001A80165 /* SBFileItem.h in Headers */ = {isa = PBXBuildFile; fileRef = F50EC36503A0559001A80165 /* SBFileItem.h */; };
+		F50EC36803A0559001A80165 /* SBFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F50EC36603A0559001A80165 /* SBFileItem.m */; };
+		F5128EE90366617D01A80166 /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
+		F512CBF002E6749301BD3D51 /* FinkTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */; };
+		F512CBF102E6749301BD3D51 /* FinkTextViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */; };
+		F52728500221B4E801A80164 /* FinkPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = F527284C0221B4E801A80164 /* FinkPackage.h */; };
+		F52728520221B4E801A80164 /* FinkPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F527284E0221B4E801A80164 /* FinkPackage.m */; };
+		F52F0B270319CAFC01A80164 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
+		F5314640022C801601A80164 /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
+		F53369F70218261B01A80165 /* FinkController.h in Headers */ = {isa = PBXBuildFile; fileRef = F53369F50218261B01A80165 /* FinkController.h */; };
+		F53649820388930201A80164 /* negemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53649810388930201A80164 /* negemail.tiff */; };
+		F5364A1B0388964301A80164 /* posemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5364A1A0388964301A80164 /* posemail.tiff */; };
+		F536582402A89F0D01A8016A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F536582302A89F0D01A8016A /* CoreFoundation.framework */; };
+		F536C0400280F24501A80164 /* SBString.h in Headers */ = {isa = PBXBuildFile; fileRef = F536C03E0280F24501A80164 /* SBString.h */; };
+		F536C0410280F24501A80164 /* SBString.m in Sources */ = {isa = PBXBuildFile; fileRef = F536C03F0280F24501A80164 /* SBString.m */; };
+		F5375A690246DDDC01A80164 /* FinkPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = F5375A680246DDDC01A80164 /* FinkPreferences.h */; };
+		F5375A6B0246DDEB01A80164 /* FinkPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F5375A6A0246DDEB01A80164 /* FinkPreferences.m */; };
+		F5375A6E0246DE1901A80164 /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5375A6C0246DE1901A80164 /* Preferences.nib */; };
+		F538C3C3023495CF01A80164 /* reverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C1023495CF01A80164 /* reverse.tiff */; };
+		F538C3C4023495CF01A80164 /* normal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C2023495CF01A80164 /* normal.tiff */; };
+		F53B4D0603100C3501A80164 /* Toolbar.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53B4D0503100C3501A80164 /* Toolbar.plist */; };
+		F53B4D43031079C801A80164 /* FinkSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = F53B4D41031079C801A80164 /* FinkSplitView.m */; };
+		F53B4D44031079C801A80164 /* FinkSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = F53B4D42031079C801A80164 /* FinkSplitView.h */; };
+		F53D651E0280296801A80164 /* interact.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651D0280296801A80164 /* interact.tiff */; };
+		F53D652002802F3101A80164 /* describe.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651F02802F3101A80164 /* describe.tiff */; };
+		F54147C402C18B7301A80165 /* FinkGlobals.h in Headers */ = {isa = PBXBuildFile; fileRef = F54147C202C18B7301A80165 /* FinkGlobals.h */; };
+		F54147C502C18B7301A80165 /* FinkGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = F54147C302C18B7301A80165 /* FinkGlobals.m */; };
+		F542437C028CE53E01A80166 /* cvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437B028CE53E01A80166 /* cvs.tiff */; };
+		F542437E028CE54B01A80166 /* update.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437D028CE54B01A80166 /* update.tiff */; };
+		F5424380028CE59801A80166 /* updatebin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437F028CE59801A80166 /* updatebin.tiff */; };
+		F542CFF802C2F03B01A80166 /* FinkPackageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */; };
+		F54436BA027F6AD501A80164 /* FinkConf.h in Headers */ = {isa = PBXBuildFile; fileRef = F54436B8027F6AD501A80164 /* FinkConf.h */; };
+		F54436BB027F6AD501A80164 /* FinkConf.m in Sources */ = {isa = PBXBuildFile; fileRef = F54436B9027F6AD501A80164 /* FinkConf.m */; };
+		F5458DC00303658001A80164 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5458DBF0303658001A80164 /* UserDefaults.plist */; };
+		F54A055F029CA39401A80166 /* FinkController.m in Sources */ = {isa = PBXBuildFile; fileRef = F53369F60218261B01A80165 /* FinkController.m */; };
+		F54BD02802D549F101A80165 /* FinkOutputParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F54BD02602D549F101A80165 /* FinkOutputParser.m */; };
+		F54BD02902D549F101A80165 /* FinkOutputParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F54BD02702D549F101A80165 /* FinkOutputParser.h */; };
+		F553429202E9F45A015ADE4E /* FinkUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F553429002E9F45A015ADE4E /* FinkUtilities.m */; };
+		F553429302E9F45A015ADE4E /* FinkUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F553429102E9F45A015ADE4E /* FinkUtilities.h */; };
+		F55407EF035D0C8601A80170 /* FinkWarningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = F55407ED035D0C8601A80170 /* FinkWarningDialog.h */; };
+		F55407F0035D0C8601A80170 /* FinkWarningDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = F55407EE035D0C8601A80170 /* FinkWarningDialog.m */; };
+		F55407F7035D334001A80170 /* Dialogs.nib in Resources */ = {isa = PBXBuildFile; fileRef = F55407F5035D334001A80170 /* Dialogs.nib */; };
+		F554F1DB0266AA4B01A80164 /* addbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F554F1D80266AA4B01A80164 /* addbin.tiff */; };
+		F55FBAE802F3B82B01A80164 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		F55FBB1F02F3B8C901A80164 /* FinkData.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FBB1D02F3B8C901A80164 /* FinkData.h */; };
+		F55FBB2002F3B8C901A80164 /* FinkData.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FBB1E02F3B8C901A80164 /* FinkData.m */; };
+		F55FF54C02CFC96301A80164 /* FinkInstallationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FF54A02CFC96301A80164 /* FinkInstallationInfo.m */; };
+		F55FF54D02CFC96301A80164 /* FinkInstallationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */; };
+		F5607A9602CE125001A80164 /* FinkTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5607A9502CE125001A80164 /* FinkTableView.m */; };
+		F5607A9802CE125E01A80164 /* FinkTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5607A9702CE125E01A80164 /* FinkTableView.h */; };
+		F56200AA02FC768601A80164 /* FinkCommander Help in Resources */ = {isa = PBXBuildFile; fileRef = F56200A902FC768601A80164 /* FinkCommander Help */; };
+		F568C4A402FC9D6101A80164 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F568C4A202FC9D6101A80164 /* Localizable.strings */; };
+		F57E59B603A998D701A80165 /* SBBrowserMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = F57E59B403A998D701A80165 /* SBBrowserMatrix.h */; };
+		F57E59B703A998D701A80165 /* SBBrowserMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = F57E59B503A998D701A80165 /* SBBrowserMatrix.m */; };
+		F57E59C203A9ABBA01A80165 /* info.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F57E59C103A9ABBA01A80165 /* info.tiff */; };
+		F580FC410332C34C01A80166 /* getpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA5D033196BF01A80166 /* getpath.c */; };
+		F580FC420332C34C01A80166 /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
+		F580FC430332C34D01A80166 /* Launcher.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA5B033196B301A80166 /* Launcher.h */; };
+		F580FC760332C3D601A80166 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
+		F580FC770332C3D801A80166 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		F580FC790332C44601A80166 /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = F580FC3F0332C30701A80166 /* Launcher */; };
+		F5897AAB02C6E37B01A80166 /* email.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5897AAA02C6E37B01A80166 /* email.tiff */; };
+		F59BDD91026817BF01A80164 /* addsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F59BDD90026817BF01A80164 /* addsrc.tiff */; };
+		F59FF426032134BD01A80175 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = F59FF425032134BD01A80175 /* Credits.html */; };
+		F5B9D9E502B1D61C01A8016B /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B9D9E402B1D61C01A8016B /* MyTextView.m */; };
+		F5B9D9EB02B232D501A8016B /* hand.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9EA02B232D501A8016B /* hand.tiff */; };
+		F5B9D9ED02B2B13501A8016B /* MyTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B9D9EC02B2B13501A8016B /* MyTextView.h */; };
+		F5B9D9F602B3D67A01A8016B /* number.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F402B3D67A01A8016B /* number.tiff */; };
+		F5B9D9F702B3D67A01A8016B /* title.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F502B3D67A01A8016B /* title.tiff */; };
+		F5C523DA02A326B701A80165 /* FinkPackageInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C523D802A326B701A80165 /* FinkPackageInfo.h */; };
+		F5C9446F039C6BE201A80164 /* TreeView.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5C9446D039C6BE201A80164 /* TreeView.nib */; };
+		F5CA48B10394730301A80164 /* finkcommanderatwork.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5CA48B00394730301A80164 /* finkcommanderatwork.icns */; };
+		F5CC7621039F174E01A80165 /* SBFileItemTree.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7617039F174E01A80165 /* SBFileItemTree.h */; };
+		F5CC7622039F174E01A80165 /* SBFileItemTree.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7618039F174E01A80165 /* SBFileItemTree.m */; };
+		F5CC7623039F174E01A80165 /* SBOutlineViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7619039F174E01A80165 /* SBOutlineViewController.h */; };
+		F5CC7624039F174E01A80165 /* SBOutlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761A039F174E01A80165 /* SBOutlineViewController.m */; };
+		F5CC7625039F174E01A80165 /* SBTreeWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761B039F174E01A80165 /* SBTreeWindowController.h */; };
+		F5CC7626039F174E01A80165 /* SBTreeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761C039F174E01A80165 /* SBTreeWindowController.m */; };
+		F5CC7627039F174E01A80165 /* SBTreeWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */; };
+		F5CC7628039F174E01A80165 /* SBTreeWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761E039F174E01A80165 /* SBTreeWindowManager.m */; };
+		F5CC765E039F19D801A80165 /* SBDateColumnController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC765C039F19D801A80165 /* SBDateColumnController.h */; };
+		F5CC765F039F19D801A80165 /* SBDateColumnController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC765D039F19D801A80165 /* SBDateColumnController.m */; };
+		F5D01DA903636CB601A80165 /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
+		F5D01DAB03636FB201A80165 /* termcvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAA03636FB201A80165 /* termcvs.tiff */; };
+		F5D01DAD03636FC001A80165 /* terminstall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAC03636FC001A80165 /* terminstall.tiff */; };
+		F5DE3CD702CAE98601A80164 /* finkcommander.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5DE3CD602CAE98601A80164 /* finkcommander.icns */; };
+		F5F8FA560331965D01A80166 /* AuthorizedExecutable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */; };
+		F5F8FA580331966401A80166 /* AuthorizedExecutable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA570331966401A80166 /* AuthorizedExecutable.m */; };
+		F5F99DB703AD4F4D01A80165 /* outline.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB603AD4F4D01A80165 /* outline.tiff */; };
+		F5F99DB903AD5AC401A80165 /* browser.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB803AD5AC401A80165 /* browser.tiff */; };
+		FB84A70B03C93AF400A80164 /* SBTree.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB84A70903C93AF400A80164 /* SBTree.strings */; };
+		FBB8F6DC03BFE6E500A8016B /* Programmatic.strings in Resources */ = {isa = PBXBuildFile; fileRef = FBB8F6DB03BFE6E500A8016B /* Programmatic.strings */; };
+		FBC8655103BABC0400A80165 /* SBUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FBC8654F03BABC0400A80165 /* SBUtilities.h */; };
+		FBC8655203BABC0400A80165 /* SBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC8655003BABC0400A80165 /* SBUtilities.m */; };
+		FBCD45F103C5FF3100A80164 /* SBBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */; };
+		FBCD45F203C5FF3100A80164 /* SBOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45F003C5FF3100A80164 /* SBOutlineView.m */; };
+		FBCD472A03C6070000A80164 /* SBOutlineView.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472903C6070000A80164 /* SBOutlineView.h */; };
+		FBCD472C03C6070E00A80164 /* SBBrowserCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472B03C6070E00A80164 /* SBBrowserCell.h */; };
+		FBCD47CF03C60D9A00A80164 /* bomb.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CD03C60D9A00A80164 /* bomb.tiff */; };
+		FBCD47D003C60D9A00A80164 /* browse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CE03C60D9A00A80164 /* browse.tiff */; };
+		FBCD47D203C60DB000A80164 /* doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47D103C60DB000A80164 /* doc.tiff */; };
+		FBD2DBD803BAA14500A80165 /* SBMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */; };
+		FBD2DBD903BAA14500A80165 /* SBMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD2DBD703BAA14500A80165 /* SBMutableAttributedString.m */; };
+		FBEE855903B4E18400A80164 /* flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855703B4E18400A80164 /* flag.tiff */; };
+		FBEE855A03B4E18400A80164 /* header_flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855803B4E18400A80164 /* header_flag.tiff */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		4A9504CCFFE6A4B311CA0CBA /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		4A9504CDFFE6A4B311CA0CBA /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		B53C834905A51B6400841E3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F580FC3E0332C30701A80166;
+			remoteInfo = Launcher;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F580FC780332C42601A80166 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				F580FC790332C44601A80166 /* Launcher in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		17587328FF379C6511CA2CBB /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		C77360DE03E9D23200EE6D09 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = German; path = German.lproj/README.html; sourceTree = "<group>"; };
+		F28A84610843648B00E529E9 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/PackageInfo.nib; sourceTree = "<group>"; };
+		F2C4F1D6084361C400CA6079 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/PackageInfo.nib; sourceTree = "<group>"; };
+		F5019E9703625D2701A80165 /* FinkToolbar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkToolbar.m; sourceTree = "<group>"; };
+		F5019E9903625D4201A80165 /* FinkToolbar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkToolbar.h; sourceTree = "<group>"; };
+		F501F21202FDF20001A80164 /* RELEASE_STEPS.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = RELEASE_STEPS.txt; sourceTree = "<group>"; };
+		F50A22290296AB2801A80166 /* terminate.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = terminate.tiff; sourceTree = "<group>"; };
+		F50C7FBB026BD8BD01A80164 /* delsrc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = delsrc.tiff; sourceTree = "<group>"; };
+		F50C7FBD026BD92B01A80164 /* delbin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = delbin.tiff; sourceTree = "<group>"; };
+		F50DF7770359464F01A8016C /* updateall.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = updateall.tiff; sourceTree = "<group>"; };
+		F50EC0D303A0463201A80165 /* Date.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = Date.strings; path = SBTreeFiles/English.lproj/Date.strings; sourceTree = "<group>"; };
+		F50EC0D703A0465701A80165 /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = German; path = SBTreeFiles/German.lproj/Date.strings; sourceTree = "<group>"; };
+		F50EC36503A0559001A80165 /* SBFileItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBFileItem.h; path = SBTreeFiles/SBFileItem.h; sourceTree = "<group>"; };
+		F50EC36603A0559001A80165 /* SBFileItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBFileItem.m; path = SBTreeFiles/SBFileItem.m; sourceTree = "<group>"; };
+		F5128EE803665EE101A80166 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/Dialogs.nib; sourceTree = "<group>"; };
+		F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkTextViewController.m; sourceTree = "<group>"; };
+		F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkTextViewController.h; sourceTree = "<group>"; };
+		F527284C0221B4E801A80164 /* FinkPackage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPackage.h; sourceTree = "<group>"; };
+		F527284E0221B4E801A80164 /* FinkPackage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkPackage.m; sourceTree = "<group>"; };
+		F52F0AF70319CAFC01A80164 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
+		F531463F022C801601A80164 /* fpkg_list.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = fpkg_list.pl; sourceTree = "<group>"; };
+		F53369F50218261B01A80165 /* FinkController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkController.h; sourceTree = "<group>"; };
+		F53369F60218261B01A80165 /* FinkController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkController.m; sourceTree = "<group>"; };
+		F53649810388930201A80164 /* negemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = negemail.tiff; sourceTree = "<group>"; };
+		F5364A1A0388964301A80164 /* posemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = posemail.tiff; sourceTree = "<group>"; };
+		F536582302A89F0D01A8016A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		F536C03E0280F24501A80164 /* SBString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SBString.h; sourceTree = "<group>"; };
+		F536C03F0280F24501A80164 /* SBString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SBString.m; sourceTree = "<group>"; };
+		F5375A680246DDDC01A80164 /* FinkPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPreferences.h; sourceTree = "<group>"; };
+		F5375A6A0246DDEB01A80164 /* FinkPreferences.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkPreferences.m; sourceTree = "<group>"; };
+		F5375A6D0246DE1901A80164 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/Preferences.nib; sourceTree = "<group>"; };
+		F538C3C1023495CF01A80164 /* reverse.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = reverse.tiff; sourceTree = "<group>"; };
+		F538C3C2023495CF01A80164 /* normal.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = normal.tiff; sourceTree = "<group>"; };
+		F53B4CA303100C0E01A80164 /* Toolbar.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Toolbar.plist; path = English.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		F53B4D0803100C5101A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.xml; name = German; path = German.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		F53B4D0A031033D401A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F53B4D41031079C801A80164 /* FinkSplitView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkSplitView.m; sourceTree = "<group>"; };
+		F53B4D42031079C801A80164 /* FinkSplitView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkSplitView.h; sourceTree = "<group>"; };
+		F53D651D0280296801A80164 /* interact.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = interact.tiff; sourceTree = "<group>"; };
+		F53D651F02802F3101A80164 /* describe.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = describe.tiff; sourceTree = "<group>"; };
+		F54147C202C18B7301A80165 /* FinkGlobals.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkGlobals.h; sourceTree = "<group>"; };
+		F54147C302C18B7301A80165 /* FinkGlobals.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkGlobals.m; sourceTree = "<group>"; };
+		F542437B028CE53E01A80166 /* cvs.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = cvs.tiff; sourceTree = "<group>"; };
+		F542437D028CE54B01A80166 /* update.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = update.tiff; sourceTree = "<group>"; };
+		F542437F028CE59801A80166 /* updatebin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = updatebin.tiff; sourceTree = "<group>"; };
+		F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkPackageInfo.m; sourceTree = "<group>"; };
+		F54436B8027F6AD501A80164 /* FinkConf.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkConf.h; sourceTree = "<group>"; };
+		F54436B9027F6AD501A80164 /* FinkConf.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkConf.m; sourceTree = "<group>"; };
+		F5458DBF0303658001A80164 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
+		F54A669802DA8F3701A80165 /* VERSION_HISTORY.html */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; path = VERSION_HISTORY.html; sourceTree = "<group>"; };
+		F54BD02602D549F101A80165 /* FinkOutputParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkOutputParser.m; sourceTree = "<group>"; };
+		F54BD02702D549F101A80165 /* FinkOutputParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkOutputParser.h; sourceTree = "<group>"; };
+		F55057270231E5F701A80164 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		F553429002E9F45A015ADE4E /* FinkUtilities.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkUtilities.m; sourceTree = "<group>"; };
+		F553429102E9F45A015ADE4E /* FinkUtilities.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkUtilities.h; sourceTree = "<group>"; };
+		F55407ED035D0C8601A80170 /* FinkWarningDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkWarningDialog.h; sourceTree = "<group>"; };
+		F55407EE035D0C8601A80170 /* FinkWarningDialog.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkWarningDialog.m; sourceTree = "<group>"; };
+		F55407F6035D334001A80170 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/Dialogs.nib; sourceTree = "<group>"; };
+		F554F1D80266AA4B01A80164 /* addbin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = addbin.tiff; sourceTree = "<group>"; };
+		F55FBB1D02F3B8C901A80164 /* FinkData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkData.h; sourceTree = "<group>"; };
+		F55FBB1E02F3B8C901A80164 /* FinkData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkData.m; sourceTree = "<group>"; };
+		F55FF54A02CFC96301A80164 /* FinkInstallationInfo.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkInstallationInfo.m; sourceTree = "<group>"; };
+		F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkInstallationInfo.h; sourceTree = "<group>"; };
+		F5607A9502CE125001A80164 /* FinkTableView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkTableView.m; sourceTree = "<group>"; };
+		F5607A9702CE125E01A80164 /* FinkTableView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkTableView.h; sourceTree = "<group>"; };
+		F568C4A302FC9D6101A80164 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F57E59B403A998D701A80165 /* SBBrowserMatrix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBBrowserMatrix.h; path = SBTreeFiles/SBBrowserMatrix.h; sourceTree = "<group>"; };
+		F57E59B503A998D701A80165 /* SBBrowserMatrix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBBrowserMatrix.m; path = SBTreeFiles/SBBrowserMatrix.m; sourceTree = "<group>"; };
+		F57E59C103A9ABBA01A80165 /* info.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = info.tiff; sourceTree = "<group>"; };
+		F580FC3F0332C30701A80166 /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5897AAA02C6E37B01A80166 /* email.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = email.tiff; sourceTree = "<group>"; };
+		F59BDD90026817BF01A80164 /* addsrc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = addsrc.tiff; sourceTree = "<group>"; };
+		F59FF428032134D901A80175 /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = German; path = German.lproj/Credits.html; sourceTree = "<group>"; };
+		F5B9D9E402B1D61C01A8016B /* MyTextView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MyTextView.m; sourceTree = "<group>"; };
+		F5B9D9EA02B232D501A8016B /* hand.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hand.tiff; sourceTree = "<group>"; };
+		F5B9D9EC02B2B13501A8016B /* MyTextView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyTextView.h; sourceTree = "<group>"; };
+		F5B9D9F402B3D67A01A8016B /* number.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = number.tiff; sourceTree = "<group>"; };
+		F5B9D9F502B3D67A01A8016B /* title.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = title.tiff; sourceTree = "<group>"; };
+		F5BBDFAF023AF89301A80164 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		F5C1B062026BFA2501A80164 /* English */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; name = English; path = "English.lproj/FinkCommander Help"; sourceTree = "<group>"; };
+		F5C523D802A326B701A80165 /* FinkPackageInfo.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPackageInfo.h; sourceTree = "<group>"; };
+		F5C9446E039C6BE201A80164 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/TreeView.nib; sourceTree = "<group>"; };
+		F5CA48B00394730301A80164 /* finkcommanderatwork.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = finkcommanderatwork.icns; sourceTree = "<group>"; };
+		F5CC37130304F27C01A80164 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		F5CC37160304F2A201A80164 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/Preferences.nib; sourceTree = "<group>"; };
+		F5CC7615039F174E01A80165 /* SBBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBBrowserView.h; path = SBTreeFiles/SBBrowserView.h; sourceTree = "<group>"; };
+		F5CC7616039F174E01A80165 /* SBBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBBrowserView.m; path = SBTreeFiles/SBBrowserView.m; sourceTree = "<group>"; };
+		F5CC7617039F174E01A80165 /* SBFileItemTree.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBFileItemTree.h; path = SBTreeFiles/SBFileItemTree.h; sourceTree = "<group>"; };
+		F5CC7618039F174E01A80165 /* SBFileItemTree.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBFileItemTree.m; path = SBTreeFiles/SBFileItemTree.m; sourceTree = "<group>"; };
+		F5CC7619039F174E01A80165 /* SBOutlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBOutlineViewController.h; path = SBTreeFiles/SBOutlineViewController.h; sourceTree = "<group>"; };
+		F5CC761A039F174E01A80165 /* SBOutlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBOutlineViewController.m; path = SBTreeFiles/SBOutlineViewController.m; sourceTree = "<group>"; };
+		F5CC761B039F174E01A80165 /* SBTreeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBTreeWindowController.h; path = SBTreeFiles/SBTreeWindowController.h; sourceTree = "<group>"; };
+		F5CC761C039F174E01A80165 /* SBTreeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBTreeWindowController.m; path = SBTreeFiles/SBTreeWindowController.m; sourceTree = "<group>"; };
+		F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBTreeWindowManager.h; path = SBTreeFiles/SBTreeWindowManager.h; sourceTree = "<group>"; };
+		F5CC761E039F174E01A80165 /* SBTreeWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBTreeWindowManager.m; path = SBTreeFiles/SBTreeWindowManager.m; sourceTree = "<group>"; };
+		F5CC765C039F19D801A80165 /* SBDateColumnController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBDateColumnController.h; path = SBTreeFiles/SBDateColumnController.h; sourceTree = "<group>"; };
+		F5CC765D039F19D801A80165 /* SBDateColumnController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBDateColumnController.m; path = SBTreeFiles/SBDateColumnController.m; sourceTree = "<group>"; };
+		F5D01DA703636C2C01A80165 /* Debugging.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Debugging.h; sourceTree = "<group>"; };
+		F5D01DAA03636FB201A80165 /* termcvs.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = termcvs.tiff; sourceTree = "<group>"; };
+		F5D01DAC03636FC001A80165 /* terminstall.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = terminstall.tiff; sourceTree = "<group>"; };
+		F5D3EE420336DD8B01A80165 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F5D5018B0342BADE01A80165 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = English; path = English.lproj/README.html; sourceTree = "<group>"; };
+		F5DABE8B03359EF601FEFA3F /* German */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = German; path = "German.lproj/FinkCommander Help"; sourceTree = "<group>"; };
+		F5DE3CD602CAE98601A80164 /* finkcommander.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = finkcommander.icns; sourceTree = "<group>"; };
+		F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AuthorizedExecutable.h; sourceTree = "<group>"; };
+		F5F8FA570331966401A80166 /* AuthorizedExecutable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = AuthorizedExecutable.m; sourceTree = "<group>"; };
+		F5F8FA59033196AC01A80166 /* Launcher.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = Launcher.c; sourceTree = "<group>"; };
+		F5F8FA5B033196B301A80166 /* Launcher.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Launcher.h; sourceTree = "<group>"; };
+		F5F8FA5D033196BF01A80166 /* getpath.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = getpath.c; sourceTree = "<group>"; };
+		F5F99DB603AD4F4D01A80165 /* outline.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = outline.tiff; path = SBTreeFiles/outline.tiff; sourceTree = "<group>"; };
+		F5F99DB803AD5AC401A80165 /* browser.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = browser.tiff; path = SBTreeFiles/browser.tiff; sourceTree = "<group>"; };
+		FB084B8303DBA6EE00A8016C /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/TreeView.nib; sourceTree = "<group>"; };
+		FB7F569003F8C24E00A8016A /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = German; path = German.lproj/TRANSLATION_STEPS.txt; sourceTree = "<group>"; };
+		FB84A70A03C93AF400A80164 /* SBTree.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/English.lproj/SBTree.strings; sourceTree = "<group>"; };
+		FB84A70F03C93D9C00A80164 /* SBTree.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/German.lproj/SBTree.strings; sourceTree = "<group>"; };
+		FBB8F6D903BFE6D000A8016B /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Programmatic.strings; sourceTree = "<group>"; };
+		FBB8F6DD03BFE6FF00A8016B /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Programmatic.strings; sourceTree = "<group>"; };
+		FBC8654F03BABC0400A80165 /* SBUtilities.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBUtilities.h; path = SBTreeFiles/SBUtilities.h; sourceTree = "<group>"; };
+		FBC8655003BABC0400A80165 /* SBUtilities.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBUtilities.m; path = SBTreeFiles/SBUtilities.m; sourceTree = "<group>"; };
+		FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBBrowserCell.m; path = SBTreeFiles/SBBrowserCell.m; sourceTree = "<group>"; };
+		FBCD45F003C5FF3100A80164 /* SBOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBOutlineView.m; path = SBTreeFiles/SBOutlineView.m; sourceTree = "<group>"; };
+		FBCD472903C6070000A80164 /* SBOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBOutlineView.h; path = SBTreeFiles/SBOutlineView.h; sourceTree = "<group>"; };
+		FBCD472B03C6070E00A80164 /* SBBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBBrowserCell.h; path = SBTreeFiles/SBBrowserCell.h; sourceTree = "<group>"; };
+		FBCD47CD03C60D9A00A80164 /* bomb.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = bomb.tiff; sourceTree = "<group>"; };
+		FBCD47CE03C60D9A00A80164 /* browse.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = browse.tiff; sourceTree = "<group>"; };
+		FBCD47D103C60DB000A80164 /* doc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = doc.tiff; sourceTree = "<group>"; };
+		FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBMutableAttributedString.h; sourceTree = "<group>"; };
+		FBD2DBD703BAA14500A80165 /* SBMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBMutableAttributedString.m; sourceTree = "<group>"; };
+		FBEE855703B4E18400A80164 /* flag.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = flag.tiff; sourceTree = "<group>"; };
+		FBEE855803B4E18400A80164 /* header_flag.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = header_flag.tiff; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29B9732DFDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F536582402A89F0D01A8016A /* CoreFoundation.framework in Frameworks */,
+				F55FBAE802F3B82B01A80164 /* Cocoa.framework in Frameworks */,
+				F52F0B270319CAFC01A80164 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3C0332C30701A80166 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F580FC760332C3D601A80166 /* Security.framework in Frameworks */,
+				F580FC770332C3D801A80166 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* FC Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F53369F60218261B01A80165 /* FinkController.m */,
+				F55FBB1E02F3B8C901A80164 /* FinkData.m */,
+				F527284E0221B4E801A80164 /* FinkPackage.m */,
+				F54BD02602D549F101A80165 /* FinkOutputParser.m */,
+				F5607A9502CE125001A80164 /* FinkTableView.m */,
+				F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */,
+				F53B4D41031079C801A80164 /* FinkSplitView.m */,
+				F5019E9703625D2701A80165 /* FinkToolbar.m */,
+				F5375A6A0246DDEB01A80164 /* FinkPreferences.m */,
+				F54436B9027F6AD501A80164 /* FinkConf.m */,
+				F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */,
+				F55FF54A02CFC96301A80164 /* FinkInstallationInfo.m */,
+				F55407EE035D0C8601A80170 /* FinkWarningDialog.m */,
+			);
+			name = "FC Classes";
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				F52F0AF70319CAFC01A80164 /* Security.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F536582302A89F0D01A8016A /* CoreFoundation.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				17587328FF379C6511CA2CBB /* FinkCommander.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* FinkTable */ = {
+			isa = PBXGroup;
+			children = (
+				F54A055E029C9F0101A80166 /* FC Headers */,
+				080E96DDFE201D6D7F000001 /* FC Classes */,
+				F5C94460039C68BC01A80164 /* SBTree Files */,
+				F5CC7614039F16B901A80165 /* Other Classes */,
+				F53B283802879DF201A80164 /* Categories */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				F5BBDFAC023AF87D01A80164 /* Documentation */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = FinkTable;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				F5D01DA703636C2C01A80165 /* Debugging.h */,
+				F54147C202C18B7301A80165 /* FinkGlobals.h */,
+				F54147C302C18B7301A80165 /* FinkGlobals.m */,
+				F553429102E9F45A015ADE4E /* FinkUtilities.h */,
+				F553429002E9F45A015ADE4E /* FinkUtilities.m */,
+				F5F8FA5D033196BF01A80166 /* getpath.c */,
+				F5F8FA5B033196B301A80166 /* Launcher.h */,
+				F5F8FA59033196AC01A80166 /* Launcher.c */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F2C4F1D5084361C400CA6079 /* PackageInfo.nib */,
+				F55407F5035D334001A80170 /* Dialogs.nib */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				F5375A6C0246DE1901A80164 /* Preferences.nib */,
+				F53B4D0503100C3501A80164 /* Toolbar.plist */,
+				F5458DBF0303658001A80164 /* UserDefaults.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				F568C4A202FC9D6101A80164 /* Localizable.strings */,
+				FBB8F6DB03BFE6E500A8016B /* Programmatic.strings */,
+				F59FF425032134BD01A80175 /* Credits.html */,
+				F538C3C5023496DC01A80164 /* Images */,
+				F5DE3CD602CAE98601A80164 /* finkcommander.icns */,
+				F531463F022C801601A80164 /* fpkg_list.pl */,
+				F580FC3F0332C30701A80166 /* Launcher */,
+				F56200A902FC768601A80164 /* FinkCommander Help */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F538C3C5023496DC01A80164 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F538C3C1023495CF01A80164 /* reverse.tiff */,
+				F538C3C2023495CF01A80164 /* normal.tiff */,
+				F59BDD90026817BF01A80164 /* addsrc.tiff */,
+				F554F1D80266AA4B01A80164 /* addbin.tiff */,
+				FBCD47CD03C60D9A00A80164 /* bomb.tiff */,
+				FBCD47CE03C60D9A00A80164 /* browse.tiff */,
+				F542437B028CE53E01A80166 /* cvs.tiff */,
+				F50C7FBB026BD8BD01A80164 /* delsrc.tiff */,
+				F50C7FBD026BD92B01A80164 /* delbin.tiff */,
+				F53D651F02802F3101A80164 /* describe.tiff */,
+				FBCD47D103C60DB000A80164 /* doc.tiff */,
+				F5897AAA02C6E37B01A80166 /* email.tiff */,
+				FBEE855703B4E18400A80164 /* flag.tiff */,
+				FBEE855803B4E18400A80164 /* header_flag.tiff */,
+				F5B9D9EA02B232D501A8016B /* hand.tiff */,
+				F57E59C103A9ABBA01A80165 /* info.tiff */,
+				F53D651D0280296801A80164 /* interact.tiff */,
+				F53649810388930201A80164 /* negemail.tiff */,
+				F5364A1A0388964301A80164 /* posemail.tiff */,
+				F5B9D9F402B3D67A01A8016B /* number.tiff */,
+				F5D01DAA03636FB201A80165 /* termcvs.tiff */,
+				F50A22290296AB2801A80166 /* terminate.tiff */,
+				F5D01DAC03636FC001A80165 /* terminstall.tiff */,
+				F5B9D9F502B3D67A01A8016B /* title.tiff */,
+				F542437D028CE54B01A80166 /* update.tiff */,
+				F50DF7770359464F01A8016C /* updateall.tiff */,
+				F542437F028CE59801A80166 /* updatebin.tiff */,
+				F5CA48B00394730301A80164 /* finkcommanderatwork.icns */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		F53B283802879DF201A80164 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F536C03E0280F24501A80164 /* SBString.h */,
+				F536C03F0280F24501A80164 /* SBString.m */,
+				FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */,
+				FBD2DBD703BAA14500A80165 /* SBMutableAttributedString.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		F54A055E029C9F0101A80166 /* FC Headers */ = {
+			isa = PBXGroup;
+			children = (
+				F53369F50218261B01A80165 /* FinkController.h */,
+				F55FBB1D02F3B8C901A80164 /* FinkData.h */,
+				F527284C0221B4E801A80164 /* FinkPackage.h */,
+				F54BD02702D549F101A80165 /* FinkOutputParser.h */,
+				F5607A9702CE125E01A80164 /* FinkTableView.h */,
+				F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */,
+				F53B4D42031079C801A80164 /* FinkSplitView.h */,
+				F5019E9903625D4201A80165 /* FinkToolbar.h */,
+				F5375A680246DDDC01A80164 /* FinkPreferences.h */,
+				F54436B8027F6AD501A80164 /* FinkConf.h */,
+				F5C523D802A326B701A80165 /* FinkPackageInfo.h */,
+				F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */,
+				F55407ED035D0C8601A80170 /* FinkWarningDialog.h */,
+			);
+			name = "FC Headers";
+			sourceTree = "<group>";
+		};
+		F5BBDFAC023AF87D01A80164 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				FB7F568F03F8C24E00A8016A /* TRANSLATION_STEPS.txt */,
+				F55057270231E5F701A80164 /* LICENSE.txt */,
+				C77360DD03E9D21200EE6D09 /* README.html */,
+				F501F21202FDF20001A80164 /* RELEASE_STEPS.txt */,
+				F5BBDFAF023AF89301A80164 /* TODO.txt */,
+				F54A669802DA8F3701A80165 /* VERSION_HISTORY.html */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		F5C94460039C68BC01A80164 /* SBTree Files */ = {
+			isa = PBXGroup;
+			children = (
+				F5F99D8503AC1F8101A80165 /* Headers */,
+				F5F99D8603AC1F8D01A80165 /* Classes */,
+				F5CB063C03B03E5E01A80165 /* Other Sources */,
+				F50EC0D503A0464101A80165 /* Date.strings */,
+				FB84A70903C93AF400A80164 /* SBTree.strings */,
+				F5C9446D039C6BE201A80164 /* TreeView.nib */,
+				F5F99DB803AD5AC401A80165 /* browser.tiff */,
+				F5F99DB603AD4F4D01A80165 /* outline.tiff */,
+			);
+			name = "SBTree Files";
+			sourceTree = "<group>";
+		};
+		F5CB063C03B03E5E01A80165 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FBC8654F03BABC0400A80165 /* SBUtilities.h */,
+				FBC8655003BABC0400A80165 /* SBUtilities.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		F5CC7614039F16B901A80165 /* Other Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */,
+				F5F8FA570331966401A80166 /* AuthorizedExecutable.m */,
+				F5B9D9EC02B2B13501A8016B /* MyTextView.h */,
+				F5B9D9E402B1D61C01A8016B /* MyTextView.m */,
+			);
+			name = "Other Classes";
+			sourceTree = "<group>";
+		};
+		F5F99D8503AC1F8101A80165 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */,
+				F5CC761B039F174E01A80165 /* SBTreeWindowController.h */,
+				F5CC7617039F174E01A80165 /* SBFileItemTree.h */,
+				F50EC36503A0559001A80165 /* SBFileItem.h */,
+				F5CC7619039F174E01A80165 /* SBOutlineViewController.h */,
+				FBCD472903C6070000A80164 /* SBOutlineView.h */,
+				FBCD472B03C6070E00A80164 /* SBBrowserCell.h */,
+				F5CC765C039F19D801A80165 /* SBDateColumnController.h */,
+				F5CC7615039F174E01A80165 /* SBBrowserView.h */,
+				F57E59B403A998D701A80165 /* SBBrowserMatrix.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		F5F99D8603AC1F8D01A80165 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F5CC761E039F174E01A80165 /* SBTreeWindowManager.m */,
+				F5CC761C039F174E01A80165 /* SBTreeWindowController.m */,
+				F5CC7618039F174E01A80165 /* SBFileItemTree.m */,
+				F50EC36603A0559001A80165 /* SBFileItem.m */,
+				F5CC761A039F174E01A80165 /* SBOutlineViewController.m */,
+				FBCD45F003C5FF3100A80164 /* SBOutlineView.m */,
+				F5CC765D039F19D801A80165 /* SBDateColumnController.m */,
+				FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */,
+				F5CC7616039F174E01A80165 /* SBBrowserView.m */,
+				F57E59B503A998D701A80165 /* SBBrowserMatrix.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		29B97327FDCFA39411CA2CEA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F53369F70218261B01A80165 /* FinkController.h in Headers */,
+				F52728500221B4E801A80164 /* FinkPackage.h in Headers */,
+				F5375A690246DDDC01A80164 /* FinkPreferences.h in Headers */,
+				F54436BA027F6AD501A80164 /* FinkConf.h in Headers */,
+				F536C0400280F24501A80164 /* SBString.h in Headers */,
+				F5C523DA02A326B701A80165 /* FinkPackageInfo.h in Headers */,
+				F5B9D9ED02B2B13501A8016B /* MyTextView.h in Headers */,
+				F54147C402C18B7301A80165 /* FinkGlobals.h in Headers */,
+				F5607A9802CE125E01A80164 /* FinkTableView.h in Headers */,
+				F55FF54D02CFC96301A80164 /* FinkInstallationInfo.h in Headers */,
+				F54BD02902D549F101A80165 /* FinkOutputParser.h in Headers */,
+				F512CBF102E6749301BD3D51 /* FinkTextViewController.h in Headers */,
+				F553429302E9F45A015ADE4E /* FinkUtilities.h in Headers */,
+				F55FBB1F02F3B8C901A80164 /* FinkData.h in Headers */,
+				F53B4D44031079C801A80164 /* FinkSplitView.h in Headers */,
+				F5F8FA560331965D01A80166 /* AuthorizedExecutable.h in Headers */,
+				F55407EF035D0C8601A80170 /* FinkWarningDialog.h in Headers */,
+				F5019E9A03625D4201A80165 /* FinkToolbar.h in Headers */,
+				F5128EE90366617D01A80166 /* Debugging.h in Headers */,
+				F5CC7621039F174E01A80165 /* SBFileItemTree.h in Headers */,
+				F5CC7623039F174E01A80165 /* SBOutlineViewController.h in Headers */,
+				F5CC7625039F174E01A80165 /* SBTreeWindowController.h in Headers */,
+				F5CC7627039F174E01A80165 /* SBTreeWindowManager.h in Headers */,
+				F5CC765E039F19D801A80165 /* SBDateColumnController.h in Headers */,
+				F50EC36703A0559001A80165 /* SBFileItem.h in Headers */,
+				F5067EF503A1BF3001A80167 /* SBBrowserView.h in Headers */,
+				F57E59B603A998D701A80165 /* SBBrowserMatrix.h in Headers */,
+				FBD2DBD803BAA14500A80165 /* SBMutableAttributedString.h in Headers */,
+				FBC8655103BABC0400A80165 /* SBUtilities.h in Headers */,
+				FBCD472A03C6070000A80164 /* SBOutlineView.h in Headers */,
+				FBCD472C03C6070E00A80164 /* SBBrowserCell.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3A0332C30701A80166 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F580FC430332C34D01A80166 /* Launcher.h in Headers */,
+				F5D01DA903636CB601A80165 /* Debugging.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = F200074F08ED3CB4004A31F7 /* Build configuration list for PBXProject "FinkCommander" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				4A9504CCFFE6A4B311CA0CBA /* Development */,
+				4A9504CDFFE6A4B311CA0CBA /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Spanish,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* FinkTable */;
+			projectDirPath = "";
+			targets = (
+				29B97326FDCFA39411CA2CEA /* FinkCommander */,
+				F580FC3E0332C30701A80166 /* Launcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		29B97328FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				080E96DCFE201CFB7F000001 /* MainMenu.nib in Resources */,
+				089C165EFE840E0CC02AAC07 /* InfoPlist.strings in Resources */,
+				F5314640022C801601A80164 /* fpkg_list.pl in Resources */,
+				F538C3C3023495CF01A80164 /* reverse.tiff in Resources */,
+				F538C3C4023495CF01A80164 /* normal.tiff in Resources */,
+				F5375A6E0246DE1901A80164 /* Preferences.nib in Resources */,
+				F554F1DB0266AA4B01A80164 /* addbin.tiff in Resources */,
+				F59BDD91026817BF01A80164 /* addsrc.tiff in Resources */,
+				F50C7FBC026BD8BD01A80164 /* delsrc.tiff in Resources */,
+				F50C7FBE026BD92B01A80164 /* delbin.tiff in Resources */,
+				F56200AA02FC768601A80164 /* FinkCommander Help in Resources */,
+				F53D651E0280296801A80164 /* interact.tiff in Resources */,
+				F53D652002802F3101A80164 /* describe.tiff in Resources */,
+				F542437C028CE53E01A80166 /* cvs.tiff in Resources */,
+				F542437E028CE54B01A80166 /* update.tiff in Resources */,
+				F5424380028CE59801A80166 /* updatebin.tiff in Resources */,
+				F50A222A0296AB2901A80166 /* terminate.tiff in Resources */,
+				F5B9D9EB02B232D501A8016B /* hand.tiff in Resources */,
+				F5B9D9F602B3D67A01A8016B /* number.tiff in Resources */,
+				F5B9D9F702B3D67A01A8016B /* title.tiff in Resources */,
+				F59FF426032134BD01A80175 /* Credits.html in Resources */,
+				F5897AAB02C6E37B01A80166 /* email.tiff in Resources */,
+				F5DE3CD702CAE98601A80164 /* finkcommander.icns in Resources */,
+				F568C4A402FC9D6101A80164 /* Localizable.strings in Resources */,
+				F5458DC00303658001A80164 /* UserDefaults.plist in Resources */,
+				F53B4D0603100C3501A80164 /* Toolbar.plist in Resources */,
+				F50DF7780359464F01A8016C /* updateall.tiff in Resources */,
+				F55407F7035D334001A80170 /* Dialogs.nib in Resources */,
+				F5D01DAB03636FB201A80165 /* termcvs.tiff in Resources */,
+				F5D01DAD03636FC001A80165 /* terminstall.tiff in Resources */,
+				F53649820388930201A80164 /* negemail.tiff in Resources */,
+				F5364A1B0388964301A80164 /* posemail.tiff in Resources */,
+				F5CA48B10394730301A80164 /* finkcommanderatwork.icns in Resources */,
+				F5C9446F039C6BE201A80164 /* TreeView.nib in Resources */,
+				F50EC0D603A0464101A80165 /* Date.strings in Resources */,
+				F57E59C203A9ABBA01A80165 /* info.tiff in Resources */,
+				F5F99DB703AD4F4D01A80165 /* outline.tiff in Resources */,
+				F5F99DB903AD5AC401A80165 /* browser.tiff in Resources */,
+				FBEE855903B4E18400A80164 /* flag.tiff in Resources */,
+				FBEE855A03B4E18400A80164 /* header_flag.tiff in Resources */,
+				FBB8F6DC03BFE6E500A8016B /* Programmatic.strings in Resources */,
+				FBCD47CF03C60D9A00A80164 /* bomb.tiff in Resources */,
+				FBCD47D003C60D9A00A80164 /* browse.tiff in Resources */,
+				FBCD47D203C60DB000A80164 /* doc.tiff in Resources */,
+				FB84A70B03C93AF400A80164 /* SBTree.strings in Resources */,
+				F2C4F1D7084361C400CA6079 /* PackageInfo.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		F580FC3D0332C30701A80166 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		29B9732BFDCFA39411CA2CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29B9732CFDCFA39411CA2CEA /* main.m in Sources */,
+				F52728520221B4E801A80164 /* FinkPackage.m in Sources */,
+				F5375A6B0246DDEB01A80164 /* FinkPreferences.m in Sources */,
+				F54436BB027F6AD501A80164 /* FinkConf.m in Sources */,
+				F536C0410280F24501A80164 /* SBString.m in Sources */,
+				F54A055F029CA39401A80166 /* FinkController.m in Sources */,
+				F5B9D9E502B1D61C01A8016B /* MyTextView.m in Sources */,
+				F54147C502C18B7301A80165 /* FinkGlobals.m in Sources */,
+				F542CFF802C2F03B01A80166 /* FinkPackageInfo.m in Sources */,
+				F5607A9602CE125001A80164 /* FinkTableView.m in Sources */,
+				F55FF54C02CFC96301A80164 /* FinkInstallationInfo.m in Sources */,
+				F54BD02802D549F101A80165 /* FinkOutputParser.m in Sources */,
+				F512CBF002E6749301BD3D51 /* FinkTextViewController.m in Sources */,
+				F553429202E9F45A015ADE4E /* FinkUtilities.m in Sources */,
+				F55FBB2002F3B8C901A80164 /* FinkData.m in Sources */,
+				F53B4D43031079C801A80164 /* FinkSplitView.m in Sources */,
+				F5F8FA580331966401A80166 /* AuthorizedExecutable.m in Sources */,
+				F55407F0035D0C8601A80170 /* FinkWarningDialog.m in Sources */,
+				F5019E9803625D2701A80165 /* FinkToolbar.m in Sources */,
+				F5CC7622039F174E01A80165 /* SBFileItemTree.m in Sources */,
+				F5CC7624039F174E01A80165 /* SBOutlineViewController.m in Sources */,
+				F5CC7626039F174E01A80165 /* SBTreeWindowController.m in Sources */,
+				F5CC7628039F174E01A80165 /* SBTreeWindowManager.m in Sources */,
+				F5CC765F039F19D801A80165 /* SBDateColumnController.m in Sources */,
+				F50EC36803A0559001A80165 /* SBFileItem.m in Sources */,
+				F5067EF603A1BF3101A80167 /* SBBrowserView.m in Sources */,
+				F57E59B703A998D701A80165 /* SBBrowserMatrix.m in Sources */,
+				FBD2DBD903BAA14500A80165 /* SBMutableAttributedString.m in Sources */,
+				FBC8655203BABC0400A80165 /* SBUtilities.m in Sources */,
+				FBCD45F103C5FF3100A80164 /* SBBrowserCell.m in Sources */,
+				FBCD45F203C5FF3100A80164 /* SBOutlineView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F580FC3B0332C30701A80166 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F580FC410332C34C01A80166 /* getpath.c in Sources */,
+				F580FC420332C34C01A80166 /* Launcher.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F580FC440332C36F01A80166 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F580FC3E0332C30701A80166 /* Launcher */;
+			targetProxy = B53C834905A51B6400841E3A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXToolTarget section */
+		F580FC3E0332C30701A80166 /* Launcher */ = {
+			isa = PBXToolTarget;
+			buildConfigurationList = F200074708ED3CB4004A31F7 /* Build configuration list for PBXToolTarget "Launcher" */;
+			buildPhases = (
+				F580FC3A0332C30701A80166 /* Headers */,
+				F580FC3B0332C30701A80166 /* Sources */,
+				F580FC3C0332C30701A80166 /* Frameworks */,
+				F580FC3D0332C30701A80166 /* Rez */,
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			dependencies = (
+			);
+			name = Launcher;
+			productInstallPath = /usr/local/bin;
+			productName = Launcher;
+			productReference = F580FC3F0332C30701A80166 /* Launcher */;
+		};
+/* End PBXToolTarget section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+				F53B4D0A031033D401A80164 /* German */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+				F5CC37130304F27C01A80164 /* German */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		C77360DD03E9D21200EE6D09 /* README.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5D5018B0342BADE01A80165 /* English */,
+				C77360DE03E9D23200EE6D09 /* German */,
+			);
+			name = README.html;
+			sourceTree = "<group>";
+		};
+		F2C4F1D5084361C400CA6079 /* PackageInfo.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F2C4F1D6084361C400CA6079 /* English */,
+				F28A84610843648B00E529E9 /* French */,
+			);
+			name = PackageInfo.nib;
+			sourceTree = "<group>";
+		};
+		F50EC0D503A0464101A80165 /* Date.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F50EC0D303A0463201A80165 /* Date.strings */,
+				F50EC0D703A0465701A80165 /* German */,
+			);
+			name = Date.strings;
+			sourceTree = "<group>";
+		};
+		F5375A6C0246DE1901A80164 /* Preferences.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5375A6D0246DE1901A80164 /* English */,
+				F5CC37160304F2A201A80164 /* German */,
+			);
+			name = Preferences.nib;
+			sourceTree = "<group>";
+		};
+		F53B4D0503100C3501A80164 /* Toolbar.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F53B4CA303100C0E01A80164 /* Toolbar.plist */,
+				F53B4D0803100C5101A80164 /* German */,
+			);
+			name = Toolbar.plist;
+			sourceTree = "<group>";
+		};
+		F55407F5035D334001A80170 /* Dialogs.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F55407F6035D334001A80170 /* English */,
+				F5128EE803665EE101A80166 /* German */,
+			);
+			name = Dialogs.nib;
+			sourceTree = "<group>";
+		};
+		F56200A902FC768601A80164 /* FinkCommander Help */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5C1B062026BFA2501A80164 /* English */,
+				F5DABE8B03359EF601FEFA3F /* German */,
+			);
+			name = "FinkCommander Help";
+			sourceTree = "<group>";
+		};
+		F568C4A202FC9D6101A80164 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F568C4A302FC9D6101A80164 /* English */,
+				F5D3EE420336DD8B01A80165 /* German */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F59FF425032134BD01A80175 /* Credits.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F59FF428032134D901A80175 /* German */,
+			);
+			name = Credits.html;
+			sourceTree = "<group>";
+		};
+		F5C9446D039C6BE201A80164 /* TreeView.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5C9446E039C6BE201A80164 /* English */,
+				FB084B8303DBA6EE00A8016C /* German */,
+			);
+			name = TreeView.nib;
+			sourceTree = "<group>";
+		};
+		FB7F568F03F8C24E00A8016A /* TRANSLATION_STEPS.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB7F569003F8C24E00A8016A /* German */,
+			);
+			name = TRANSLATION_STEPS.txt;
+			sourceTree = "<group>";
+		};
+		FB84A70903C93AF400A80164 /* SBTree.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB84A70A03C93AF400A80164 /* SBTree.strings */,
+				FB84A70F03C93D9C00A80164 /* SBTree.strings */,
+			);
+			name = SBTree.strings;
+			sourceTree = "<group>";
+		};
+		FBB8F6DB03BFE6E500A8016B /* Programmatic.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FBB8F6D903BFE6D000A8016B /* English */,
+				FBB8F6DD03BFE6FF00A8016B /* German */,
+			);
+			name = Programmatic.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F200074808ED3CB4004A31F7 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		F200074908ED3CB4004A31F7 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		F200074A08ED3CB4004A31F7 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Default;
+		};
+		F200074C08ED3CB4004A31F7 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = FinkCommander;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		F200074D08ED3CB4004A31F7 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = FinkCommander;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		F200074E08ED3CB4004A31F7 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = FinkCommander;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		F200075008ED3CB4004A31F7 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		F200075108ED3CB4004A31F7 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		F200075208ED3CB4004A31F7 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F200074708ED3CB4004A31F7 /* Build configuration list for PBXToolTarget "Launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200074808ED3CB4004A31F7 /* Development */,
+				F200074908ED3CB4004A31F7 /* Deployment */,
+				F200074A08ED3CB4004A31F7 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		F200074B08ED3CB4004A31F7 /* Build configuration list for PBXApplicationTarget "FinkCommander" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200074C08ED3CB4004A31F7 /* Development */,
+				F200074D08ED3CB4004A31F7 /* Deployment */,
+				F200074E08ED3CB4004A31F7 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		F200074F08ED3CB4004A31F7 /* Build configuration list for PBXProject "FinkCommander" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200075008ED3CB4004A31F7 /* Development */,
+				F200075108ED3CB4004A31F7 /* Deployment */,
+				F200075208ED3CB4004A31F7 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
