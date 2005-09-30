@@ -150,8 +150,6 @@ enum {
 	NSString *downloadMethod;
 	NSString *basePath;
 	NSString *outputPath;
-	NSMutableDictionary *environmentSettings = [[[defaults objectForKey:FinkEnvironmentSettings]
-													mutableCopy] autorelease];
 	int scrollBackLimit;
 	
 	Dprintf(@"Resetting preferences");

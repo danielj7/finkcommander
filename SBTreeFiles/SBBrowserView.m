@@ -94,7 +94,7 @@
 			is the SBFileItem ancestor of the objects that will be represented
 			in the child (i.e. new) column. */
 		parentCell = [self selectedCellInColumn:column-1];
-		item = [[parentCell representedObject] childAtIndex:row];
+		item = (SBFileItem *)[[parentCell representedObject] childAtIndex:row];
     }
     //Cell should be a leaf rather than branch if represented object has no children
     [cell setLeaf:(nil == [item children])];

@@ -89,7 +89,7 @@
 		[self setAllowsColumnReordering:[oldView allowsColumnReordering]];
 		[self setAllowsColumnResizing :[oldView allowsColumnReordering]];
 		[self setAutoresizesOutlineColumn:NO];
-		[self setAutoresizesAllColumnsToFit:NO];
+		[self setColumnAutoresizingStyle:NSTableViewNoColumnAutoresizing];
 		[self setVerticalMotionCanBeginDrag:NO];
 	}
 	return self;

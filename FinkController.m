@@ -905,13 +905,14 @@ enum {
 
 -(void)setupToolbar
 {
-    toolbar = [[FinkToolbar alloc] initWithIdentifier: @"mainToolbar"];
-    [toolbar setDelegate: self];
-    [toolbar setAllowsUserCustomization: YES];
-    [toolbar setAutosavesConfiguration: YES];
-    [toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
+	toolbar = [[FinkToolbar alloc] initWithIdentifier: @"mainToolbar"];
+	[toolbar setDelegate: self];
+	[toolbar setAllowsUserCustomization: YES];
+	[toolbar setAutosavesConfiguration: YES];
+	[toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
 	[toolbar setSearchField:searchTextField];
-	[searchTextField setSearchMenuTemplate: [searchTextField searchMenuTemplate]];
+	id searchCell = [searchTextField cell];
+	[searchCell setSearchMenuTemplate: [searchCell searchMenuTemplate]];
 #ifndef OSXVER101
 	[toolbar setSizeMode:NSToolbarSizeModeSmall];
 #endif

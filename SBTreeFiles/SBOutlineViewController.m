@@ -88,7 +88,7 @@
 		   child:(int)index 
 		  ofItem:(id)item 
 {
-    return (nil == item) ? [tree rootItem] : [item childAtIndex:index];
+    return (nil == item) ? (id)[tree rootItem] : [item childAtIndex:index];
 }
 
 -(id)outlineView:(NSOutlineView *)outlineView 
