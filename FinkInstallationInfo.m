@@ -164,20 +164,23 @@ File: FinkInstallationInfo.m
 
 -(NSString *)gccVersion
 {
-	NSString *error = @"Unable to determine gcc version";
-	NSString *result; 
-	NSString *extraInformation;
-	
-	if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
-		return @"Developer Tools not installed";
-	}
-	
-	result = [self versionOutputForExecutable:@"/usr/bin/cc"];
-	if (nil == result) return error;
-	result = [[self versionInformationFromString:result] objectAtIndex:0];
-	extraInformation = [[self versionInformationFromString:result] objectAtIndex:1];
-	if (nil == result) return error;
-	return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformation];
+NSString *error = @"Unable to determine gcc version";
+NSArray *versInfo;
+NSString *result;
+NSString *extraInformation;
+
+if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
+return @"Developer Tools not installed";
+}
+
+result = [self versionOutputForExecutable:@"/usr/bin/cc"];
+if (nil == result) return error;
+
+versInfo = [self versionInformationFromString:result];
+result = [versInfo objectAtIndex:0];
+extraInformation = [versInfo objectAtIndex:1];
+if (nil == result) return error;
+return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformation];
 }
 
 -(NSString *)makeVersion
