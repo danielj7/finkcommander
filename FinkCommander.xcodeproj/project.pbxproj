@@ -6,203 +6,126 @@
 	objectVersion = 42;
 	objects = {
 
-/* Begin PBXApplicationTarget section */
-		29B97326FDCFA39411CA2CEA /* FinkCommander */ = {
-			isa = PBXApplicationTarget;
-			buildConfigurationList = F200074B08ED3CB4004A31F7 /* Build configuration list for PBXApplicationTarget "FinkCommander" */;
-			buildPhases = (
-				29B97327FDCFA39411CA2CEA /* Headers */,
-				29B97328FDCFA39411CA2CEA /* Resources */,
-				29B9732BFDCFA39411CA2CEA /* Sources */,
-				29B9732DFDCFA39411CA2CEA /* Frameworks */,
-				F580FC780332C42601A80166 /* CopyFiles */,
-			);
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
-			dependencies = (
-				F580FC440332C36F01A80166 /* PBXTargetDependency */,
-			);
-			name = FinkCommander;
-			productInstallPath = /Applications;
-			productName = FinkTable;
-			productReference = 17587328FF379C6511CA2CBB /* FinkCommander.app */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict/>
-	</array>
-	<key>CFBundleExecutable</key>
-	<string>FinkCommander</string>
-	<key>CFBundleHelpBookFolder</key>
-	<string>FinkCommander Help</string>
-	<key>CFBundleHelpBookName</key>
-	<string>FinkCommander Help</string>
-	<key>CFBundleIconFile</key>
-	<string>finkcommander.icns</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.sburrious.finkcommander</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.5.4</string>
-	<key>CFBundleSignature</key>
-	<string>Fcmd</string>
-	<key>CFBundleVersion</key>
-	<string>.release</string>
-	<key>NSAppleScriptEnabled</key>
-	<string>YES</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (C) 2002 Steven J. Burr, subject to Gnu General Public License; see Help:FinkCommander Help:License to read the GPL</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-</dict>
-</plist>
-";
-		};
-/* End PBXApplicationTarget section */
-
 /* Begin PBXBuildFile section */
-		080E96DCFE201CFB7F000001 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
-		089C165EFE840E0CC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		29B9732CFDCFA39411CA2CEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		F2C4F1D7084361C400CA6079 /* PackageInfo.nib in Resources */ = {isa = PBXBuildFile; fileRef = F2C4F1D5084361C400CA6079 /* PackageInfo.nib */; };
-		F5019E9803625D2701A80165 /* FinkToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F5019E9703625D2701A80165 /* FinkToolbar.m */; };
-		F5019E9A03625D4201A80165 /* FinkToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = F5019E9903625D4201A80165 /* FinkToolbar.h */; };
-		F5067EF503A1BF3001A80167 /* SBBrowserView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7615039F174E01A80165 /* SBBrowserView.h */; };
-		F5067EF603A1BF3101A80167 /* SBBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7616039F174E01A80165 /* SBBrowserView.m */; };
-		F50A222A0296AB2901A80166 /* terminate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50A22290296AB2801A80166 /* terminate.tiff */; };
-		F50C7FBC026BD8BD01A80164 /* delsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBB026BD8BD01A80164 /* delsrc.tiff */; };
-		F50C7FBE026BD92B01A80164 /* delbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBD026BD92B01A80164 /* delbin.tiff */; };
-		F50DF7780359464F01A8016C /* updateall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50DF7770359464F01A8016C /* updateall.tiff */; };
-		F50EC0D603A0464101A80165 /* Date.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50EC0D503A0464101A80165 /* Date.strings */; };
-		F50EC36703A0559001A80165 /* SBFileItem.h in Headers */ = {isa = PBXBuildFile; fileRef = F50EC36503A0559001A80165 /* SBFileItem.h */; };
-		F50EC36803A0559001A80165 /* SBFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F50EC36603A0559001A80165 /* SBFileItem.m */; };
-		F5128EE90366617D01A80166 /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
-		F512CBF002E6749301BD3D51 /* FinkTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */; };
-		F512CBF102E6749301BD3D51 /* FinkTextViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */; };
-		F52728500221B4E801A80164 /* FinkPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = F527284C0221B4E801A80164 /* FinkPackage.h */; };
-		F52728520221B4E801A80164 /* FinkPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F527284E0221B4E801A80164 /* FinkPackage.m */; };
-		F52F0B270319CAFC01A80164 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
-		F5314640022C801601A80164 /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
-		F53369F70218261B01A80165 /* FinkController.h in Headers */ = {isa = PBXBuildFile; fileRef = F53369F50218261B01A80165 /* FinkController.h */; };
-		F53649820388930201A80164 /* negemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53649810388930201A80164 /* negemail.tiff */; };
-		F5364A1B0388964301A80164 /* posemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5364A1A0388964301A80164 /* posemail.tiff */; };
-		F536582402A89F0D01A8016A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F536582302A89F0D01A8016A /* CoreFoundation.framework */; };
-		F536C0400280F24501A80164 /* SBString.h in Headers */ = {isa = PBXBuildFile; fileRef = F536C03E0280F24501A80164 /* SBString.h */; };
-		F536C0410280F24501A80164 /* SBString.m in Sources */ = {isa = PBXBuildFile; fileRef = F536C03F0280F24501A80164 /* SBString.m */; };
-		F5375A690246DDDC01A80164 /* FinkPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = F5375A680246DDDC01A80164 /* FinkPreferences.h */; };
-		F5375A6B0246DDEB01A80164 /* FinkPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F5375A6A0246DDEB01A80164 /* FinkPreferences.m */; };
-		F5375A6E0246DE1901A80164 /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5375A6C0246DE1901A80164 /* Preferences.nib */; };
-		F538C3C3023495CF01A80164 /* reverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C1023495CF01A80164 /* reverse.tiff */; };
-		F538C3C4023495CF01A80164 /* normal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C2023495CF01A80164 /* normal.tiff */; };
-		F53B4D0603100C3501A80164 /* Toolbar.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53B4D0503100C3501A80164 /* Toolbar.plist */; };
-		F53B4D43031079C801A80164 /* FinkSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = F53B4D41031079C801A80164 /* FinkSplitView.m */; };
-		F53B4D44031079C801A80164 /* FinkSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = F53B4D42031079C801A80164 /* FinkSplitView.h */; };
-		F53D651E0280296801A80164 /* interact.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651D0280296801A80164 /* interact.tiff */; };
-		F53D652002802F3101A80164 /* describe.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651F02802F3101A80164 /* describe.tiff */; };
-		F54147C402C18B7301A80165 /* FinkGlobals.h in Headers */ = {isa = PBXBuildFile; fileRef = F54147C202C18B7301A80165 /* FinkGlobals.h */; };
-		F54147C502C18B7301A80165 /* FinkGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = F54147C302C18B7301A80165 /* FinkGlobals.m */; };
-		F542437C028CE53E01A80166 /* cvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437B028CE53E01A80166 /* cvs.tiff */; };
-		F542437E028CE54B01A80166 /* update.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437D028CE54B01A80166 /* update.tiff */; };
-		F5424380028CE59801A80166 /* updatebin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437F028CE59801A80166 /* updatebin.tiff */; };
-		F542CFF802C2F03B01A80166 /* FinkPackageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */; };
-		F54436BA027F6AD501A80164 /* FinkConf.h in Headers */ = {isa = PBXBuildFile; fileRef = F54436B8027F6AD501A80164 /* FinkConf.h */; };
-		F54436BB027F6AD501A80164 /* FinkConf.m in Sources */ = {isa = PBXBuildFile; fileRef = F54436B9027F6AD501A80164 /* FinkConf.m */; };
-		F5458DC00303658001A80164 /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5458DBF0303658001A80164 /* UserDefaults.plist */; };
-		F54A055F029CA39401A80166 /* FinkController.m in Sources */ = {isa = PBXBuildFile; fileRef = F53369F60218261B01A80165 /* FinkController.m */; };
-		F54BD02802D549F101A80165 /* FinkOutputParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F54BD02602D549F101A80165 /* FinkOutputParser.m */; };
-		F54BD02902D549F101A80165 /* FinkOutputParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F54BD02702D549F101A80165 /* FinkOutputParser.h */; };
-		F553429202E9F45A015ADE4E /* FinkUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F553429002E9F45A015ADE4E /* FinkUtilities.m */; };
-		F553429302E9F45A015ADE4E /* FinkUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F553429102E9F45A015ADE4E /* FinkUtilities.h */; };
-		F55407EF035D0C8601A80170 /* FinkWarningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = F55407ED035D0C8601A80170 /* FinkWarningDialog.h */; };
-		F55407F0035D0C8601A80170 /* FinkWarningDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = F55407EE035D0C8601A80170 /* FinkWarningDialog.m */; };
-		F55407F7035D334001A80170 /* Dialogs.nib in Resources */ = {isa = PBXBuildFile; fileRef = F55407F5035D334001A80170 /* Dialogs.nib */; };
-		F554F1DB0266AA4B01A80164 /* addbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F554F1D80266AA4B01A80164 /* addbin.tiff */; };
-		F55FBAE802F3B82B01A80164 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		F55FBB1F02F3B8C901A80164 /* FinkData.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FBB1D02F3B8C901A80164 /* FinkData.h */; };
-		F55FBB2002F3B8C901A80164 /* FinkData.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FBB1E02F3B8C901A80164 /* FinkData.m */; };
-		F55FF54C02CFC96301A80164 /* FinkInstallationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FF54A02CFC96301A80164 /* FinkInstallationInfo.m */; };
-		F55FF54D02CFC96301A80164 /* FinkInstallationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */; };
-		F5607A9602CE125001A80164 /* FinkTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5607A9502CE125001A80164 /* FinkTableView.m */; };
-		F5607A9802CE125E01A80164 /* FinkTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5607A9702CE125E01A80164 /* FinkTableView.h */; };
-		F56200AA02FC768601A80164 /* FinkCommander Help in Resources */ = {isa = PBXBuildFile; fileRef = F56200A902FC768601A80164 /* FinkCommander Help */; };
-		F568C4A402FC9D6101A80164 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F568C4A202FC9D6101A80164 /* Localizable.strings */; };
-		F57E59B603A998D701A80165 /* SBBrowserMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = F57E59B403A998D701A80165 /* SBBrowserMatrix.h */; };
-		F57E59B703A998D701A80165 /* SBBrowserMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = F57E59B503A998D701A80165 /* SBBrowserMatrix.m */; };
-		F57E59C203A9ABBA01A80165 /* info.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F57E59C103A9ABBA01A80165 /* info.tiff */; };
-		F580FC410332C34C01A80166 /* getpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA5D033196BF01A80166 /* getpath.c */; };
-		F580FC420332C34C01A80166 /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
-		F580FC430332C34D01A80166 /* Launcher.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA5B033196B301A80166 /* Launcher.h */; };
-		F580FC760332C3D601A80166 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
-		F580FC770332C3D801A80166 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		F580FC790332C44601A80166 /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = F580FC3F0332C30701A80166 /* Launcher */; };
-		F5897AAB02C6E37B01A80166 /* email.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5897AAA02C6E37B01A80166 /* email.tiff */; };
-		F59BDD91026817BF01A80164 /* addsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F59BDD90026817BF01A80164 /* addsrc.tiff */; };
-		F59FF426032134BD01A80175 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = F59FF425032134BD01A80175 /* Credits.html */; };
-		F5B9D9E502B1D61C01A8016B /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B9D9E402B1D61C01A8016B /* MyTextView.m */; };
-		F5B9D9EB02B232D501A8016B /* hand.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9EA02B232D501A8016B /* hand.tiff */; };
-		F5B9D9ED02B2B13501A8016B /* MyTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B9D9EC02B2B13501A8016B /* MyTextView.h */; };
-		F5B9D9F602B3D67A01A8016B /* number.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F402B3D67A01A8016B /* number.tiff */; };
-		F5B9D9F702B3D67A01A8016B /* title.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F502B3D67A01A8016B /* title.tiff */; };
-		F5C523DA02A326B701A80165 /* FinkPackageInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C523D802A326B701A80165 /* FinkPackageInfo.h */; };
-		F5C9446F039C6BE201A80164 /* TreeView.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5C9446D039C6BE201A80164 /* TreeView.nib */; };
-		F5CA48B10394730301A80164 /* finkcommanderatwork.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5CA48B00394730301A80164 /* finkcommanderatwork.icns */; };
-		F5CC7621039F174E01A80165 /* SBFileItemTree.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7617039F174E01A80165 /* SBFileItemTree.h */; };
-		F5CC7622039F174E01A80165 /* SBFileItemTree.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7618039F174E01A80165 /* SBFileItemTree.m */; };
-		F5CC7623039F174E01A80165 /* SBOutlineViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7619039F174E01A80165 /* SBOutlineViewController.h */; };
-		F5CC7624039F174E01A80165 /* SBOutlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761A039F174E01A80165 /* SBOutlineViewController.m */; };
-		F5CC7625039F174E01A80165 /* SBTreeWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761B039F174E01A80165 /* SBTreeWindowController.h */; };
-		F5CC7626039F174E01A80165 /* SBTreeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761C039F174E01A80165 /* SBTreeWindowController.m */; };
-		F5CC7627039F174E01A80165 /* SBTreeWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */; };
-		F5CC7628039F174E01A80165 /* SBTreeWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761E039F174E01A80165 /* SBTreeWindowManager.m */; };
-		F5CC765E039F19D801A80165 /* SBDateColumnController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC765C039F19D801A80165 /* SBDateColumnController.h */; };
-		F5CC765F039F19D801A80165 /* SBDateColumnController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC765D039F19D801A80165 /* SBDateColumnController.m */; };
-		F5D01DA903636CB601A80165 /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
-		F5D01DAB03636FB201A80165 /* termcvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAA03636FB201A80165 /* termcvs.tiff */; };
-		F5D01DAD03636FC001A80165 /* terminstall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAC03636FC001A80165 /* terminstall.tiff */; };
-		F5DE3CD702CAE98601A80164 /* finkcommander.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5DE3CD602CAE98601A80164 /* finkcommander.icns */; };
-		F5F8FA560331965D01A80166 /* AuthorizedExecutable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */; };
-		F5F8FA580331966401A80166 /* AuthorizedExecutable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA570331966401A80166 /* AuthorizedExecutable.m */; };
-		F5F99DB703AD4F4D01A80165 /* outline.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB603AD4F4D01A80165 /* outline.tiff */; };
-		F5F99DB903AD5AC401A80165 /* browser.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB803AD5AC401A80165 /* browser.tiff */; };
-		FB84A70B03C93AF400A80164 /* SBTree.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB84A70903C93AF400A80164 /* SBTree.strings */; };
-		FBB8F6DC03BFE6E500A8016B /* Programmatic.strings in Resources */ = {isa = PBXBuildFile; fileRef = FBB8F6DB03BFE6E500A8016B /* Programmatic.strings */; };
-		FBC8655103BABC0400A80165 /* SBUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FBC8654F03BABC0400A80165 /* SBUtilities.h */; };
-		FBC8655203BABC0400A80165 /* SBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC8655003BABC0400A80165 /* SBUtilities.m */; };
-		FBCD45F103C5FF3100A80164 /* SBBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */; };
-		FBCD45F203C5FF3100A80164 /* SBOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45F003C5FF3100A80164 /* SBOutlineView.m */; };
-		FBCD472A03C6070000A80164 /* SBOutlineView.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472903C6070000A80164 /* SBOutlineView.h */; };
-		FBCD472C03C6070E00A80164 /* SBBrowserCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472B03C6070E00A80164 /* SBBrowserCell.h */; };
-		FBCD47CF03C60D9A00A80164 /* bomb.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CD03C60D9A00A80164 /* bomb.tiff */; };
-		FBCD47D003C60D9A00A80164 /* browse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CE03C60D9A00A80164 /* browse.tiff */; };
-		FBCD47D203C60DB000A80164 /* doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47D103C60DB000A80164 /* doc.tiff */; };
-		FBD2DBD803BAA14500A80165 /* SBMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */; };
-		FBD2DBD903BAA14500A80165 /* SBMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD2DBD703BAA14500A80165 /* SBMutableAttributedString.m */; };
-		FBEE855903B4E18400A80164 /* flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855703B4E18400A80164 /* flag.tiff */; };
-		FBEE855A03B4E18400A80164 /* header_flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855803B4E18400A80164 /* header_flag.tiff */; };
+		5956660F09CE01660099082A /* FCPrefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 5956660E09CE01660099082A /* FCPrefix.pch */; };
+		59E03FE209CDC73B001280FD /* FinkController.h in Headers */ = {isa = PBXBuildFile; fileRef = F53369F50218261B01A80165 /* FinkController.h */; };
+		59E03FE309CDC73B001280FD /* FinkPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = F527284C0221B4E801A80164 /* FinkPackage.h */; };
+		59E03FE409CDC73B001280FD /* FinkPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = F5375A680246DDDC01A80164 /* FinkPreferences.h */; };
+		59E03FE509CDC73B001280FD /* FinkConf.h in Headers */ = {isa = PBXBuildFile; fileRef = F54436B8027F6AD501A80164 /* FinkConf.h */; };
+		59E03FE609CDC73B001280FD /* SBString.h in Headers */ = {isa = PBXBuildFile; fileRef = F536C03E0280F24501A80164 /* SBString.h */; };
+		59E03FE709CDC73B001280FD /* FinkPackageInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C523D802A326B701A80165 /* FinkPackageInfo.h */; };
+		59E03FE809CDC73B001280FD /* MyTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B9D9EC02B2B13501A8016B /* MyTextView.h */; };
+		59E03FE909CDC73B001280FD /* FinkGlobals.h in Headers */ = {isa = PBXBuildFile; fileRef = F54147C202C18B7301A80165 /* FinkGlobals.h */; };
+		59E03FEA09CDC73B001280FD /* FinkTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5607A9702CE125E01A80164 /* FinkTableView.h */; };
+		59E03FEB09CDC73B001280FD /* FinkInstallationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */; };
+		59E03FEC09CDC73B001280FD /* FinkOutputParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F54BD02702D549F101A80165 /* FinkOutputParser.h */; };
+		59E03FED09CDC73B001280FD /* FinkTextViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */; };
+		59E03FEE09CDC73B001280FD /* FinkUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F553429102E9F45A015ADE4E /* FinkUtilities.h */; };
+		59E03FEF09CDC73B001280FD /* FinkData.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FBB1D02F3B8C901A80164 /* FinkData.h */; };
+		59E03FF009CDC73B001280FD /* FinkSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = F53B4D42031079C801A80164 /* FinkSplitView.h */; };
+		59E03FF109CDC73B001280FD /* AuthorizedExecutable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */; };
+		59E03FF209CDC73B001280FD /* FinkWarningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = F55407ED035D0C8601A80170 /* FinkWarningDialog.h */; };
+		59E03FF309CDC73B001280FD /* FinkToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = F5019E9903625D4201A80165 /* FinkToolbar.h */; };
+		59E03FF409CDC73B001280FD /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
+		59E03FF509CDC73B001280FD /* SBFileItemTree.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7617039F174E01A80165 /* SBFileItemTree.h */; };
+		59E03FF609CDC73B001280FD /* SBOutlineViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7619039F174E01A80165 /* SBOutlineViewController.h */; };
+		59E03FF709CDC73B001280FD /* SBTreeWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761B039F174E01A80165 /* SBTreeWindowController.h */; };
+		59E03FF809CDC73B001280FD /* SBTreeWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */; };
+		59E03FF909CDC73B001280FD /* SBDateColumnController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC765C039F19D801A80165 /* SBDateColumnController.h */; };
+		59E03FFA09CDC73B001280FD /* SBFileItem.h in Headers */ = {isa = PBXBuildFile; fileRef = F50EC36503A0559001A80165 /* SBFileItem.h */; };
+		59E03FFB09CDC73B001280FD /* SBBrowserView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7615039F174E01A80165 /* SBBrowserView.h */; };
+		59E03FFC09CDC73B001280FD /* SBBrowserMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = F57E59B403A998D701A80165 /* SBBrowserMatrix.h */; };
+		59E03FFD09CDC73B001280FD /* SBMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */; };
+		59E03FFE09CDC73B001280FD /* SBUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FBC8654F03BABC0400A80165 /* SBUtilities.h */; };
+		59E03FFF09CDC73B001280FD /* SBOutlineView.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472903C6070000A80164 /* SBOutlineView.h */; };
+		59E0400009CDC73B001280FD /* SBBrowserCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472B03C6070E00A80164 /* SBBrowserCell.h */; };
+		59E0400209CDC73B001280FD /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
+		59E0400509CDC73B001280FD /* reverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C1023495CF01A80164 /* reverse.tiff */; };
+		59E0400609CDC73B001280FD /* normal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C2023495CF01A80164 /* normal.tiff */; };
+		59E0400709CDC73B001280FD /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5375A6C0246DE1901A80164 /* Preferences.nib */; };
+		59E0400809CDC73B001280FD /* addbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F554F1D80266AA4B01A80164 /* addbin.tiff */; };
+		59E0400909CDC73B001280FD /* addsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F59BDD90026817BF01A80164 /* addsrc.tiff */; };
+		59E0400A09CDC73B001280FD /* delsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBB026BD8BD01A80164 /* delsrc.tiff */; };
+		59E0400B09CDC73B001280FD /* delbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBD026BD92B01A80164 /* delbin.tiff */; };
+		59E0400C09CDC73B001280FD /* FinkCommander Help in Resources */ = {isa = PBXBuildFile; fileRef = F56200A902FC768601A80164 /* FinkCommander Help */; };
+		59E0400D09CDC73B001280FD /* interact.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651D0280296801A80164 /* interact.tiff */; };
+		59E0400E09CDC73B001280FD /* describe.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53D651F02802F3101A80164 /* describe.tiff */; };
+		59E0400F09CDC73B001280FD /* cvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437B028CE53E01A80166 /* cvs.tiff */; };
+		59E0401009CDC73B001280FD /* update.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437D028CE54B01A80166 /* update.tiff */; };
+		59E0401109CDC73B001280FD /* updatebin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F542437F028CE59801A80166 /* updatebin.tiff */; };
+		59E0401209CDC73B001280FD /* terminate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50A22290296AB2801A80166 /* terminate.tiff */; };
+		59E0401309CDC73B001280FD /* hand.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9EA02B232D501A8016B /* hand.tiff */; };
+		59E0401409CDC73B001280FD /* number.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F402B3D67A01A8016B /* number.tiff */; };
+		59E0401509CDC73B001280FD /* title.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5B9D9F502B3D67A01A8016B /* title.tiff */; };
+		59E0401609CDC73B001280FD /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = F59FF425032134BD01A80175 /* Credits.html */; };
+		59E0401709CDC73B001280FD /* email.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5897AAA02C6E37B01A80166 /* email.tiff */; };
+		59E0401809CDC73B001280FD /* finkcommander.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5DE3CD602CAE98601A80164 /* finkcommander.icns */; };
+		59E0401909CDC73B001280FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F568C4A202FC9D6101A80164 /* Localizable.strings */; };
+		59E0401A09CDC73B001280FD /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5458DBF0303658001A80164 /* UserDefaults.plist */; };
+		59E0401B09CDC73B001280FD /* Toolbar.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53B4D0503100C3501A80164 /* Toolbar.plist */; };
+		59E0401C09CDC73B001280FD /* updateall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50DF7770359464F01A8016C /* updateall.tiff */; };
+		59E0401D09CDC73B001280FD /* Dialogs.nib in Resources */ = {isa = PBXBuildFile; fileRef = F55407F5035D334001A80170 /* Dialogs.nib */; };
+		59E0401E09CDC73B001280FD /* termcvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAA03636FB201A80165 /* termcvs.tiff */; };
+		59E0401F09CDC73B001280FD /* terminstall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAC03636FC001A80165 /* terminstall.tiff */; };
+		59E0402009CDC73B001280FD /* negemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53649810388930201A80164 /* negemail.tiff */; };
+		59E0402109CDC73B001280FD /* posemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5364A1A0388964301A80164 /* posemail.tiff */; };
+		59E0402209CDC73B001280FD /* finkcommanderatwork.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5CA48B00394730301A80164 /* finkcommanderatwork.icns */; };
+		59E0402309CDC73B001280FD /* TreeView.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5C9446D039C6BE201A80164 /* TreeView.nib */; };
+		59E0402409CDC73B001280FD /* Date.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50EC0D503A0464101A80165 /* Date.strings */; };
+		59E0402509CDC73B001280FD /* info.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F57E59C103A9ABBA01A80165 /* info.tiff */; };
+		59E0402609CDC73B001280FD /* outline.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB603AD4F4D01A80165 /* outline.tiff */; };
+		59E0402709CDC73B001280FD /* browser.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB803AD5AC401A80165 /* browser.tiff */; };
+		59E0402809CDC73B001280FD /* flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855703B4E18400A80164 /* flag.tiff */; };
+		59E0402909CDC73B001280FD /* header_flag.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBEE855803B4E18400A80164 /* header_flag.tiff */; };
+		59E0402A09CDC73B001280FD /* Programmatic.strings in Resources */ = {isa = PBXBuildFile; fileRef = FBB8F6DB03BFE6E500A8016B /* Programmatic.strings */; };
+		59E0402B09CDC73B001280FD /* bomb.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CD03C60D9A00A80164 /* bomb.tiff */; };
+		59E0402C09CDC73B001280FD /* browse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CE03C60D9A00A80164 /* browse.tiff */; };
+		59E0402D09CDC73B001280FD /* doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47D103C60DB000A80164 /* doc.tiff */; };
+		59E0402E09CDC73B001280FD /* SBTree.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB84A70903C93AF400A80164 /* SBTree.strings */; };
+		59E0402F09CDC73B001280FD /* PackageInfo.nib in Resources */ = {isa = PBXBuildFile; fileRef = F2C4F1D5084361C400CA6079 /* PackageInfo.nib */; };
+		59E0403109CDC73B001280FD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		59E0403209CDC73B001280FD /* FinkPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F527284E0221B4E801A80164 /* FinkPackage.m */; };
+		59E0403309CDC73B001280FD /* FinkPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F5375A6A0246DDEB01A80164 /* FinkPreferences.m */; };
+		59E0403409CDC73B001280FD /* FinkConf.m in Sources */ = {isa = PBXBuildFile; fileRef = F54436B9027F6AD501A80164 /* FinkConf.m */; };
+		59E0403509CDC73B001280FD /* SBString.m in Sources */ = {isa = PBXBuildFile; fileRef = F536C03F0280F24501A80164 /* SBString.m */; };
+		59E0403609CDC73B001280FD /* FinkController.m in Sources */ = {isa = PBXBuildFile; fileRef = F53369F60218261B01A80165 /* FinkController.m */; };
+		59E0403709CDC73B001280FD /* MyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B9D9E402B1D61C01A8016B /* MyTextView.m */; };
+		59E0403809CDC73B001280FD /* FinkGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = F54147C302C18B7301A80165 /* FinkGlobals.m */; };
+		59E0403909CDC73B001280FD /* FinkPackageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */; };
+		59E0403A09CDC73B001280FD /* FinkTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5607A9502CE125001A80164 /* FinkTableView.m */; };
+		59E0403B09CDC73B001280FD /* FinkInstallationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FF54A02CFC96301A80164 /* FinkInstallationInfo.m */; };
+		59E0403C09CDC73B001280FD /* FinkOutputParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F54BD02602D549F101A80165 /* FinkOutputParser.m */; };
+		59E0403D09CDC73B001280FD /* FinkTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */; };
+		59E0403E09CDC73B001280FD /* FinkUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F553429002E9F45A015ADE4E /* FinkUtilities.m */; };
+		59E0403F09CDC73B001280FD /* FinkData.m in Sources */ = {isa = PBXBuildFile; fileRef = F55FBB1E02F3B8C901A80164 /* FinkData.m */; };
+		59E0404009CDC73B001280FD /* FinkSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = F53B4D41031079C801A80164 /* FinkSplitView.m */; };
+		59E0404109CDC73B001280FD /* AuthorizedExecutable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA570331966401A80166 /* AuthorizedExecutable.m */; };
+		59E0404209CDC73B001280FD /* FinkWarningDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = F55407EE035D0C8601A80170 /* FinkWarningDialog.m */; };
+		59E0404309CDC73B001280FD /* FinkToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F5019E9703625D2701A80165 /* FinkToolbar.m */; };
+		59E0404409CDC73B001280FD /* SBFileItemTree.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7618039F174E01A80165 /* SBFileItemTree.m */; };
+		59E0404509CDC73B001280FD /* SBOutlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761A039F174E01A80165 /* SBOutlineViewController.m */; };
+		59E0404609CDC73B001280FD /* SBTreeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761C039F174E01A80165 /* SBTreeWindowController.m */; };
+		59E0404709CDC73B001280FD /* SBTreeWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC761E039F174E01A80165 /* SBTreeWindowManager.m */; };
+		59E0404809CDC73B001280FD /* SBDateColumnController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC765D039F19D801A80165 /* SBDateColumnController.m */; };
+		59E0404909CDC73B001280FD /* SBFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F50EC36603A0559001A80165 /* SBFileItem.m */; };
+		59E0404A09CDC73B001280FD /* SBBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CC7616039F174E01A80165 /* SBBrowserView.m */; };
+		59E0404B09CDC73B001280FD /* SBBrowserMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = F57E59B503A998D701A80165 /* SBBrowserMatrix.m */; };
+		59E0404C09CDC73B001280FD /* SBMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD2DBD703BAA14500A80165 /* SBMutableAttributedString.m */; };
+		59E0404D09CDC73B001280FD /* SBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC8655003BABC0400A80165 /* SBUtilities.m */; };
+		59E0404E09CDC73B001280FD /* SBBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */; };
+		59E0404F09CDC73B001280FD /* SBOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45F003C5FF3100A80164 /* SBOutlineView.m */; };
+		59E0405109CDC73B001280FD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F536582302A89F0D01A8016A /* CoreFoundation.framework */; };
+		59E0405209CDC73B001280FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		59E0405309CDC73B001280FD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
+		59E0405F09CDC73B001280FD /* Launcher.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA5B033196B301A80166 /* Launcher.h */; };
+		59E0406009CDC73B001280FD /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
+		59E0406209CDC73B001280FD /* getpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA5D033196BF01A80166 /* getpath.c */; };
+		59E0406309CDC73B001280FD /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
+		59E0406509CDC73B001280FD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
+		59E0406609CDC73B001280FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
@@ -231,23 +154,23 @@
 /* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
-		B53C834905A51B6400841E3A /* PBXContainerItemProxy */ = {
+		59E0406E09CDC73C001280FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F580FC3E0332C30701A80166;
-			remoteInfo = Launcher;
+			remoteGlobalIDString = 59E0405D09CDC73B001280FD;
+			remoteInfo = "Launcher (Upgraded)";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		F580FC780332C42601A80166 /* CopyFiles */ = {
+		59E0405409CDC73B001280FD /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				F580FC790332C44601A80166 /* Launcher in CopyFiles */,
+				59E0407009CDC73C001280FD /* Launcher in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,11 +179,14 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		17587328FF379C6511CA2CBB /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		5956660E09CE01660099082A /* FCPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPrefix.pch; sourceTree = "<group>"; };
+		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77360DE03E9D23200EE6D09 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = German; path = German.lproj/README.html; sourceTree = "<group>"; };
 		F28A84610843648B00E529E9 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/PackageInfo.nib; sourceTree = "<group>"; };
 		F2C4F1D6084361C400CA6079 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/PackageInfo.nib; sourceTree = "<group>"; };
@@ -330,7 +256,6 @@
 		F57E59B403A998D701A80165 /* SBBrowserMatrix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBBrowserMatrix.h; path = SBTreeFiles/SBBrowserMatrix.h; sourceTree = "<group>"; };
 		F57E59B503A998D701A80165 /* SBBrowserMatrix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SBBrowserMatrix.m; path = SBTreeFiles/SBBrowserMatrix.m; sourceTree = "<group>"; };
 		F57E59C103A9ABBA01A80165 /* info.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = info.tiff; sourceTree = "<group>"; };
-		F580FC3F0332C30701A80166 /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5897AAA02C6E37B01A80166 /* email.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = email.tiff; sourceTree = "<group>"; };
 		F59BDD90026817BF01A80164 /* addsrc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = addsrc.tiff; sourceTree = "<group>"; };
 		F59FF428032134D901A80175 /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = German; path = German.lproj/Credits.html; sourceTree = "<group>"; };
@@ -394,22 +319,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		29B9732DFDCFA39411CA2CEA /* Frameworks */ = {
+		59E0405009CDC73B001280FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F536582402A89F0D01A8016A /* CoreFoundation.framework in Frameworks */,
-				F55FBAE802F3B82B01A80164 /* Cocoa.framework in Frameworks */,
-				F52F0B270319CAFC01A80164 /* Security.framework in Frameworks */,
+				59E0405109CDC73B001280FD /* CoreFoundation.framework in Frameworks */,
+				59E0405209CDC73B001280FD /* Cocoa.framework in Frameworks */,
+				59E0405309CDC73B001280FD /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F580FC3C0332C30701A80166 /* Frameworks */ = {
+		59E0406409CDC73B001280FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F580FC760332C3D601A80166 /* Security.framework in Frameworks */,
-				F580FC770332C3D801A80166 /* Cocoa.framework in Frameworks */,
+				59E0406509CDC73B001280FD /* Security.framework in Frameworks */,
+				59E0406609CDC73B001280FD /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +383,8 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				17587328FF379C6511CA2CBB /* FinkCommander.app */,
+				59E0405B09CDC73B001280FD /* FinkCommander.app */,
+				59E0406C09CDC73C001280FD /* Launcher */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -499,6 +425,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				59E0405A09CDC73B001280FD /* Info.plist */,
 				F2C4F1D5084361C400CA6079 /* PackageInfo.nib */,
 				F55407F5035D334001A80170 /* Dialogs.nib */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
@@ -512,7 +439,6 @@
 				F538C3C5023496DC01A80164 /* Images */,
 				F5DE3CD602CAE98601A80164 /* finkcommander.icns */,
 				F531463F022C801601A80164 /* fpkg_list.pl */,
-				F580FC3F0332C30701A80166 /* Launcher */,
 				F56200A902FC768601A80164 /* FinkCommander Help */,
 			);
 			name = Resources;
@@ -589,6 +515,7 @@
 				F5C523D802A326B701A80165 /* FinkPackageInfo.h */,
 				F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */,
 				F55407ED035D0C8601A80170 /* FinkWarningDialog.h */,
+				5956660E09CE01660099082A /* FCPrefix.pch */,
 			);
 			name = "FC Headers";
 			sourceTree = "<group>";
@@ -678,54 +605,127 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		29B97327FDCFA39411CA2CEA /* Headers */ = {
+		59E03FE109CDC73B001280FD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F53369F70218261B01A80165 /* FinkController.h in Headers */,
-				F52728500221B4E801A80164 /* FinkPackage.h in Headers */,
-				F5375A690246DDDC01A80164 /* FinkPreferences.h in Headers */,
-				F54436BA027F6AD501A80164 /* FinkConf.h in Headers */,
-				F536C0400280F24501A80164 /* SBString.h in Headers */,
-				F5C523DA02A326B701A80165 /* FinkPackageInfo.h in Headers */,
-				F5B9D9ED02B2B13501A8016B /* MyTextView.h in Headers */,
-				F54147C402C18B7301A80165 /* FinkGlobals.h in Headers */,
-				F5607A9802CE125E01A80164 /* FinkTableView.h in Headers */,
-				F55FF54D02CFC96301A80164 /* FinkInstallationInfo.h in Headers */,
-				F54BD02902D549F101A80165 /* FinkOutputParser.h in Headers */,
-				F512CBF102E6749301BD3D51 /* FinkTextViewController.h in Headers */,
-				F553429302E9F45A015ADE4E /* FinkUtilities.h in Headers */,
-				F55FBB1F02F3B8C901A80164 /* FinkData.h in Headers */,
-				F53B4D44031079C801A80164 /* FinkSplitView.h in Headers */,
-				F5F8FA560331965D01A80166 /* AuthorizedExecutable.h in Headers */,
-				F55407EF035D0C8601A80170 /* FinkWarningDialog.h in Headers */,
-				F5019E9A03625D4201A80165 /* FinkToolbar.h in Headers */,
-				F5128EE90366617D01A80166 /* Debugging.h in Headers */,
-				F5CC7621039F174E01A80165 /* SBFileItemTree.h in Headers */,
-				F5CC7623039F174E01A80165 /* SBOutlineViewController.h in Headers */,
-				F5CC7625039F174E01A80165 /* SBTreeWindowController.h in Headers */,
-				F5CC7627039F174E01A80165 /* SBTreeWindowManager.h in Headers */,
-				F5CC765E039F19D801A80165 /* SBDateColumnController.h in Headers */,
-				F50EC36703A0559001A80165 /* SBFileItem.h in Headers */,
-				F5067EF503A1BF3001A80167 /* SBBrowserView.h in Headers */,
-				F57E59B603A998D701A80165 /* SBBrowserMatrix.h in Headers */,
-				FBD2DBD803BAA14500A80165 /* SBMutableAttributedString.h in Headers */,
-				FBC8655103BABC0400A80165 /* SBUtilities.h in Headers */,
-				FBCD472A03C6070000A80164 /* SBOutlineView.h in Headers */,
-				FBCD472C03C6070E00A80164 /* SBBrowserCell.h in Headers */,
+				59E03FE209CDC73B001280FD /* FinkController.h in Headers */,
+				59E03FE309CDC73B001280FD /* FinkPackage.h in Headers */,
+				59E03FE409CDC73B001280FD /* FinkPreferences.h in Headers */,
+				59E03FE509CDC73B001280FD /* FinkConf.h in Headers */,
+				59E03FE609CDC73B001280FD /* SBString.h in Headers */,
+				59E03FE709CDC73B001280FD /* FinkPackageInfo.h in Headers */,
+				59E03FE809CDC73B001280FD /* MyTextView.h in Headers */,
+				59E03FE909CDC73B001280FD /* FinkGlobals.h in Headers */,
+				59E03FEA09CDC73B001280FD /* FinkTableView.h in Headers */,
+				59E03FEB09CDC73B001280FD /* FinkInstallationInfo.h in Headers */,
+				59E03FEC09CDC73B001280FD /* FinkOutputParser.h in Headers */,
+				59E03FED09CDC73B001280FD /* FinkTextViewController.h in Headers */,
+				59E03FEE09CDC73B001280FD /* FinkUtilities.h in Headers */,
+				59E03FEF09CDC73B001280FD /* FinkData.h in Headers */,
+				59E03FF009CDC73B001280FD /* FinkSplitView.h in Headers */,
+				59E03FF109CDC73B001280FD /* AuthorizedExecutable.h in Headers */,
+				59E03FF209CDC73B001280FD /* FinkWarningDialog.h in Headers */,
+				59E03FF309CDC73B001280FD /* FinkToolbar.h in Headers */,
+				59E03FF409CDC73B001280FD /* Debugging.h in Headers */,
+				59E03FF509CDC73B001280FD /* SBFileItemTree.h in Headers */,
+				59E03FF609CDC73B001280FD /* SBOutlineViewController.h in Headers */,
+				59E03FF709CDC73B001280FD /* SBTreeWindowController.h in Headers */,
+				59E03FF809CDC73B001280FD /* SBTreeWindowManager.h in Headers */,
+				59E03FF909CDC73B001280FD /* SBDateColumnController.h in Headers */,
+				59E03FFA09CDC73B001280FD /* SBFileItem.h in Headers */,
+				59E03FFB09CDC73B001280FD /* SBBrowserView.h in Headers */,
+				59E03FFC09CDC73B001280FD /* SBBrowserMatrix.h in Headers */,
+				59E03FFD09CDC73B001280FD /* SBMutableAttributedString.h in Headers */,
+				59E03FFE09CDC73B001280FD /* SBUtilities.h in Headers */,
+				59E03FFF09CDC73B001280FD /* SBOutlineView.h in Headers */,
+				59E0400009CDC73B001280FD /* SBBrowserCell.h in Headers */,
+				5956660F09CE01660099082A /* FCPrefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F580FC3A0332C30701A80166 /* Headers */ = {
+		59E0405E09CDC73B001280FD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F580FC430332C34D01A80166 /* Launcher.h in Headers */,
-				F5D01DA903636CB601A80165 /* Debugging.h in Headers */,
+				59E0405F09CDC73B001280FD /* Launcher.h in Headers */,
+				59E0406009CDC73B001280FD /* Debugging.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		59E03FDE09CDC73B001280FD /* FinkCommander */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 59E0405609CDC73B001280FD /* Build configuration list for PBXNativeTarget "FinkCommander" */;
+			buildPhases = (
+				59E03FE109CDC73B001280FD /* Headers */,
+				59E0400109CDC73B001280FD /* Resources */,
+				59E0403009CDC73B001280FD /* Sources */,
+				59E0405009CDC73B001280FD /* Frameworks */,
+				59E0405409CDC73B001280FD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = FinkCommander;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			dependencies = (
+				59E0406F09CDC73C001280FD /* PBXTargetDependency */,
+			);
+			name = FinkCommander;
+			productInstallPath = /Applications;
+			productName = FinkTable;
+			productReference = 59E0405B09CDC73B001280FD /* FinkCommander.app */;
+			productType = "com.apple.product-type.application";
+		};
+		59E0405D09CDC73B001280FD /* Launcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 59E0406809CDC73B001280FD /* Build configuration list for PBXNativeTarget "Launcher" */;
+			buildPhases = (
+				59E0405E09CDC73B001280FD /* Headers */,
+				59E0406109CDC73B001280FD /* Sources */,
+				59E0406409CDC73B001280FD /* Frameworks */,
+				59E0406709CDC73B001280FD /* Rez */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			dependencies = (
+			);
+			name = Launcher;
+			productInstallPath = /usr/local/bin;
+			productName = Launcher;
+			productReference = 59E0406C09CDC73C001280FD /* Launcher */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
@@ -748,70 +748,70 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* FinkTable */;
 			projectDirPath = "";
 			targets = (
-				29B97326FDCFA39411CA2CEA /* FinkCommander */,
-				F580FC3E0332C30701A80166 /* Launcher */,
+				59E03FDE09CDC73B001280FD /* FinkCommander */,
+				59E0405D09CDC73B001280FD /* Launcher */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		29B97328FDCFA39411CA2CEA /* Resources */ = {
+		59E0400109CDC73B001280FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				080E96DCFE201CFB7F000001 /* MainMenu.nib in Resources */,
-				089C165EFE840E0CC02AAC07 /* InfoPlist.strings in Resources */,
-				F5314640022C801601A80164 /* fpkg_list.pl in Resources */,
-				F538C3C3023495CF01A80164 /* reverse.tiff in Resources */,
-				F538C3C4023495CF01A80164 /* normal.tiff in Resources */,
-				F5375A6E0246DE1901A80164 /* Preferences.nib in Resources */,
-				F554F1DB0266AA4B01A80164 /* addbin.tiff in Resources */,
-				F59BDD91026817BF01A80164 /* addsrc.tiff in Resources */,
-				F50C7FBC026BD8BD01A80164 /* delsrc.tiff in Resources */,
-				F50C7FBE026BD92B01A80164 /* delbin.tiff in Resources */,
-				F56200AA02FC768601A80164 /* FinkCommander Help in Resources */,
-				F53D651E0280296801A80164 /* interact.tiff in Resources */,
-				F53D652002802F3101A80164 /* describe.tiff in Resources */,
-				F542437C028CE53E01A80166 /* cvs.tiff in Resources */,
-				F542437E028CE54B01A80166 /* update.tiff in Resources */,
-				F5424380028CE59801A80166 /* updatebin.tiff in Resources */,
-				F50A222A0296AB2901A80166 /* terminate.tiff in Resources */,
-				F5B9D9EB02B232D501A8016B /* hand.tiff in Resources */,
-				F5B9D9F602B3D67A01A8016B /* number.tiff in Resources */,
-				F5B9D9F702B3D67A01A8016B /* title.tiff in Resources */,
-				F59FF426032134BD01A80175 /* Credits.html in Resources */,
-				F5897AAB02C6E37B01A80166 /* email.tiff in Resources */,
-				F5DE3CD702CAE98601A80164 /* finkcommander.icns in Resources */,
-				F568C4A402FC9D6101A80164 /* Localizable.strings in Resources */,
-				F5458DC00303658001A80164 /* UserDefaults.plist in Resources */,
-				F53B4D0603100C3501A80164 /* Toolbar.plist in Resources */,
-				F50DF7780359464F01A8016C /* updateall.tiff in Resources */,
-				F55407F7035D334001A80170 /* Dialogs.nib in Resources */,
-				F5D01DAB03636FB201A80165 /* termcvs.tiff in Resources */,
-				F5D01DAD03636FC001A80165 /* terminstall.tiff in Resources */,
-				F53649820388930201A80164 /* negemail.tiff in Resources */,
-				F5364A1B0388964301A80164 /* posemail.tiff in Resources */,
-				F5CA48B10394730301A80164 /* finkcommanderatwork.icns in Resources */,
-				F5C9446F039C6BE201A80164 /* TreeView.nib in Resources */,
-				F50EC0D603A0464101A80165 /* Date.strings in Resources */,
-				F57E59C203A9ABBA01A80165 /* info.tiff in Resources */,
-				F5F99DB703AD4F4D01A80165 /* outline.tiff in Resources */,
-				F5F99DB903AD5AC401A80165 /* browser.tiff in Resources */,
-				FBEE855903B4E18400A80164 /* flag.tiff in Resources */,
-				FBEE855A03B4E18400A80164 /* header_flag.tiff in Resources */,
-				FBB8F6DC03BFE6E500A8016B /* Programmatic.strings in Resources */,
-				FBCD47CF03C60D9A00A80164 /* bomb.tiff in Resources */,
-				FBCD47D003C60D9A00A80164 /* browse.tiff in Resources */,
-				FBCD47D203C60DB000A80164 /* doc.tiff in Resources */,
-				FB84A70B03C93AF400A80164 /* SBTree.strings in Resources */,
-				F2C4F1D7084361C400CA6079 /* PackageInfo.nib in Resources */,
+				59E0400209CDC73B001280FD /* MainMenu.nib in Resources */,
+				59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */,
+				59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */,
+				59E0400509CDC73B001280FD /* reverse.tiff in Resources */,
+				59E0400609CDC73B001280FD /* normal.tiff in Resources */,
+				59E0400709CDC73B001280FD /* Preferences.nib in Resources */,
+				59E0400809CDC73B001280FD /* addbin.tiff in Resources */,
+				59E0400909CDC73B001280FD /* addsrc.tiff in Resources */,
+				59E0400A09CDC73B001280FD /* delsrc.tiff in Resources */,
+				59E0400B09CDC73B001280FD /* delbin.tiff in Resources */,
+				59E0400C09CDC73B001280FD /* FinkCommander Help in Resources */,
+				59E0400D09CDC73B001280FD /* interact.tiff in Resources */,
+				59E0400E09CDC73B001280FD /* describe.tiff in Resources */,
+				59E0400F09CDC73B001280FD /* cvs.tiff in Resources */,
+				59E0401009CDC73B001280FD /* update.tiff in Resources */,
+				59E0401109CDC73B001280FD /* updatebin.tiff in Resources */,
+				59E0401209CDC73B001280FD /* terminate.tiff in Resources */,
+				59E0401309CDC73B001280FD /* hand.tiff in Resources */,
+				59E0401409CDC73B001280FD /* number.tiff in Resources */,
+				59E0401509CDC73B001280FD /* title.tiff in Resources */,
+				59E0401609CDC73B001280FD /* Credits.html in Resources */,
+				59E0401709CDC73B001280FD /* email.tiff in Resources */,
+				59E0401809CDC73B001280FD /* finkcommander.icns in Resources */,
+				59E0401909CDC73B001280FD /* Localizable.strings in Resources */,
+				59E0401A09CDC73B001280FD /* UserDefaults.plist in Resources */,
+				59E0401B09CDC73B001280FD /* Toolbar.plist in Resources */,
+				59E0401C09CDC73B001280FD /* updateall.tiff in Resources */,
+				59E0401D09CDC73B001280FD /* Dialogs.nib in Resources */,
+				59E0401E09CDC73B001280FD /* termcvs.tiff in Resources */,
+				59E0401F09CDC73B001280FD /* terminstall.tiff in Resources */,
+				59E0402009CDC73B001280FD /* negemail.tiff in Resources */,
+				59E0402109CDC73B001280FD /* posemail.tiff in Resources */,
+				59E0402209CDC73B001280FD /* finkcommanderatwork.icns in Resources */,
+				59E0402309CDC73B001280FD /* TreeView.nib in Resources */,
+				59E0402409CDC73B001280FD /* Date.strings in Resources */,
+				59E0402509CDC73B001280FD /* info.tiff in Resources */,
+				59E0402609CDC73B001280FD /* outline.tiff in Resources */,
+				59E0402709CDC73B001280FD /* browser.tiff in Resources */,
+				59E0402809CDC73B001280FD /* flag.tiff in Resources */,
+				59E0402909CDC73B001280FD /* header_flag.tiff in Resources */,
+				59E0402A09CDC73B001280FD /* Programmatic.strings in Resources */,
+				59E0402B09CDC73B001280FD /* bomb.tiff in Resources */,
+				59E0402C09CDC73B001280FD /* browse.tiff in Resources */,
+				59E0402D09CDC73B001280FD /* doc.tiff in Resources */,
+				59E0402E09CDC73B001280FD /* SBTree.strings in Resources */,
+				59E0402F09CDC73B001280FD /* PackageInfo.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXRezBuildPhase section */
-		F580FC3D0332C30701A80166 /* Rez */ = {
+		59E0406709CDC73B001280FD /* Rez */ = {
 			isa = PBXRezBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -821,94 +821,62 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		29B9732BFDCFA39411CA2CEA /* Sources */ = {
+		59E0403009CDC73B001280FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29B9732CFDCFA39411CA2CEA /* main.m in Sources */,
-				F52728520221B4E801A80164 /* FinkPackage.m in Sources */,
-				F5375A6B0246DDEB01A80164 /* FinkPreferences.m in Sources */,
-				F54436BB027F6AD501A80164 /* FinkConf.m in Sources */,
-				F536C0410280F24501A80164 /* SBString.m in Sources */,
-				F54A055F029CA39401A80166 /* FinkController.m in Sources */,
-				F5B9D9E502B1D61C01A8016B /* MyTextView.m in Sources */,
-				F54147C502C18B7301A80165 /* FinkGlobals.m in Sources */,
-				F542CFF802C2F03B01A80166 /* FinkPackageInfo.m in Sources */,
-				F5607A9602CE125001A80164 /* FinkTableView.m in Sources */,
-				F55FF54C02CFC96301A80164 /* FinkInstallationInfo.m in Sources */,
-				F54BD02802D549F101A80165 /* FinkOutputParser.m in Sources */,
-				F512CBF002E6749301BD3D51 /* FinkTextViewController.m in Sources */,
-				F553429202E9F45A015ADE4E /* FinkUtilities.m in Sources */,
-				F55FBB2002F3B8C901A80164 /* FinkData.m in Sources */,
-				F53B4D43031079C801A80164 /* FinkSplitView.m in Sources */,
-				F5F8FA580331966401A80166 /* AuthorizedExecutable.m in Sources */,
-				F55407F0035D0C8601A80170 /* FinkWarningDialog.m in Sources */,
-				F5019E9803625D2701A80165 /* FinkToolbar.m in Sources */,
-				F5CC7622039F174E01A80165 /* SBFileItemTree.m in Sources */,
-				F5CC7624039F174E01A80165 /* SBOutlineViewController.m in Sources */,
-				F5CC7626039F174E01A80165 /* SBTreeWindowController.m in Sources */,
-				F5CC7628039F174E01A80165 /* SBTreeWindowManager.m in Sources */,
-				F5CC765F039F19D801A80165 /* SBDateColumnController.m in Sources */,
-				F50EC36803A0559001A80165 /* SBFileItem.m in Sources */,
-				F5067EF603A1BF3101A80167 /* SBBrowserView.m in Sources */,
-				F57E59B703A998D701A80165 /* SBBrowserMatrix.m in Sources */,
-				FBD2DBD903BAA14500A80165 /* SBMutableAttributedString.m in Sources */,
-				FBC8655203BABC0400A80165 /* SBUtilities.m in Sources */,
-				FBCD45F103C5FF3100A80164 /* SBBrowserCell.m in Sources */,
-				FBCD45F203C5FF3100A80164 /* SBOutlineView.m in Sources */,
+				59E0403109CDC73B001280FD /* main.m in Sources */,
+				59E0403209CDC73B001280FD /* FinkPackage.m in Sources */,
+				59E0403309CDC73B001280FD /* FinkPreferences.m in Sources */,
+				59E0403409CDC73B001280FD /* FinkConf.m in Sources */,
+				59E0403509CDC73B001280FD /* SBString.m in Sources */,
+				59E0403609CDC73B001280FD /* FinkController.m in Sources */,
+				59E0403709CDC73B001280FD /* MyTextView.m in Sources */,
+				59E0403809CDC73B001280FD /* FinkGlobals.m in Sources */,
+				59E0403909CDC73B001280FD /* FinkPackageInfo.m in Sources */,
+				59E0403A09CDC73B001280FD /* FinkTableView.m in Sources */,
+				59E0403B09CDC73B001280FD /* FinkInstallationInfo.m in Sources */,
+				59E0403C09CDC73B001280FD /* FinkOutputParser.m in Sources */,
+				59E0403D09CDC73B001280FD /* FinkTextViewController.m in Sources */,
+				59E0403E09CDC73B001280FD /* FinkUtilities.m in Sources */,
+				59E0403F09CDC73B001280FD /* FinkData.m in Sources */,
+				59E0404009CDC73B001280FD /* FinkSplitView.m in Sources */,
+				59E0404109CDC73B001280FD /* AuthorizedExecutable.m in Sources */,
+				59E0404209CDC73B001280FD /* FinkWarningDialog.m in Sources */,
+				59E0404309CDC73B001280FD /* FinkToolbar.m in Sources */,
+				59E0404409CDC73B001280FD /* SBFileItemTree.m in Sources */,
+				59E0404509CDC73B001280FD /* SBOutlineViewController.m in Sources */,
+				59E0404609CDC73B001280FD /* SBTreeWindowController.m in Sources */,
+				59E0404709CDC73B001280FD /* SBTreeWindowManager.m in Sources */,
+				59E0404809CDC73B001280FD /* SBDateColumnController.m in Sources */,
+				59E0404909CDC73B001280FD /* SBFileItem.m in Sources */,
+				59E0404A09CDC73B001280FD /* SBBrowserView.m in Sources */,
+				59E0404B09CDC73B001280FD /* SBBrowserMatrix.m in Sources */,
+				59E0404C09CDC73B001280FD /* SBMutableAttributedString.m in Sources */,
+				59E0404D09CDC73B001280FD /* SBUtilities.m in Sources */,
+				59E0404E09CDC73B001280FD /* SBBrowserCell.m in Sources */,
+				59E0404F09CDC73B001280FD /* SBOutlineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F580FC3B0332C30701A80166 /* Sources */ = {
+		59E0406109CDC73B001280FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F580FC410332C34C01A80166 /* getpath.c in Sources */,
-				F580FC420332C34C01A80166 /* Launcher.c in Sources */,
+				59E0406209CDC73B001280FD /* getpath.c in Sources */,
+				59E0406309CDC73B001280FD /* Launcher.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F580FC440332C36F01A80166 /* PBXTargetDependency */ = {
+		59E0406F09CDC73C001280FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F580FC3E0332C30701A80166 /* Launcher */;
-			targetProxy = B53C834905A51B6400841E3A /* PBXContainerItemProxy */;
+			target = 59E0405D09CDC73B001280FD /* Launcher */;
+			targetProxy = 59E0406E09CDC73C001280FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXToolTarget section */
-		F580FC3E0332C30701A80166 /* Launcher */ = {
-			isa = PBXToolTarget;
-			buildConfigurationList = F200074708ED3CB4004A31F7 /* Build configuration list for PBXToolTarget "Launcher" */;
-			buildPhases = (
-				F580FC3A0332C30701A80166 /* Headers */,
-				F580FC3B0332C30701A80166 /* Sources */,
-				F580FC3C0332C30701A80166 /* Frameworks */,
-				F580FC3D0332C30701A80166 /* Rez */,
-			);
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			dependencies = (
-			);
-			name = Launcher;
-			productInstallPath = /usr/local/bin;
-			productName = Launcher;
-			productReference = F580FC3F0332C30701A80166 /* Launcher */;
-		};
-/* End PBXToolTarget section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -1047,174 +1015,199 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		F200074808ED3CB4004A31F7 /* Development */ = {
+		59E0405709CDC73B001280FD /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
+				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
+				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
-		F200074908ED3CB4004A31F7 /* Deployment */ = {
+		59E0405809CDC73B001280FD /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
+				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
+				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
 			name = Deployment;
 		};
-		F200074A08ED3CB4004A31F7 /* Default */ = {
+		59E0405909CDC73B001280FD /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Applications;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
+				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
+				WRAPPER_EXTENSION = app;
 			};
 			name = Default;
 		};
-		F200074C08ED3CB4004A31F7 /* Development */ = {
+		59E0406909CDC73B001280FD /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
 			name = Development;
 		};
-		F200074D08ED3CB4004A31F7 /* Deployment */ = {
+		59E0406A09CDC73B001280FD /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
 			name = Deployment;
 		};
-		F200074E08ED3CB4004A31F7 /* Default */ = {
+		59E0406B09CDC73B001280FD /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Launcher;
+				REZ_EXECUTABLE = YES;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
-				WRAPPER_EXTENSION = app;
 			};
 			name = Default;
 		};
 		F200075008ED3CB4004A31F7 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = FCPrefix.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Development;
 		};
 		F200075108ED3CB4004A31F7 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = FCPrefix.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Deployment;
 		};
 		F200075208ED3CB4004A31F7 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = FCPrefix.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Default;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F200074708ED3CB4004A31F7 /* Build configuration list for PBXToolTarget "Launcher" */ = {
+		59E0405609CDC73B001280FD /* Build configuration list for PBXNativeTarget "FinkCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F200074808ED3CB4004A31F7 /* Development */,
-				F200074908ED3CB4004A31F7 /* Deployment */,
-				F200074A08ED3CB4004A31F7 /* Default */,
+				59E0405709CDC73B001280FD /* Development */,
+				59E0405809CDC73B001280FD /* Deployment */,
+				59E0405909CDC73B001280FD /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
 		};
-		F200074B08ED3CB4004A31F7 /* Build configuration list for PBXApplicationTarget "FinkCommander" */ = {
+		59E0406809CDC73B001280FD /* Build configuration list for PBXNativeTarget "Launcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F200074C08ED3CB4004A31F7 /* Development */,
-				F200074D08ED3CB4004A31F7 /* Deployment */,
-				F200074E08ED3CB4004A31F7 /* Default */,
+				59E0406909CDC73B001280FD /* Development */,
+				59E0406A09CDC73B001280FD /* Deployment */,
+				59E0406B09CDC73B001280FD /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
