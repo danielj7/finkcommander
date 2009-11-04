@@ -63,7 +63,8 @@ File: FinkTextViewController.m
 -(NSRange)rangeOfLinesAtTopOfView:(int)numlines
 {
 	NSString *viewString = [textView string];
-	int i, test;
+	int i;
+	NSInteger test;
 	int lastReturn = 0;
 	
 	for (i = 0; i < numlines; i++){

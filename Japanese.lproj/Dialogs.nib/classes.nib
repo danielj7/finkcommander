@@ -1,0 +1,18 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {cancelAction = id; confirmAction = id; }; 
+            CLASS = FinkWarningDialog; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                cancelButton = NSButton; 
+                confirmButton = NSButton; 
+                removeWarningButton = NSButton; 
+                warningMessageField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

@@ -144,7 +144,7 @@ File SBFileItem.m
 	return [[self children] containsObject:item];
 }
 
--(SBFileItem *)childAtIndex:(int)n
+-(SBFileItem *)childAtIndex:(NSUInteger)n
 {
 	return [[self children] objectAtIndex:n];
 }

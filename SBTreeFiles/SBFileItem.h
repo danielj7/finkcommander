@@ -83,7 +83,7 @@
 
 -(BOOL)hasChild:(SBFileItem *)item;
 
--(SBFileItem *)childAtIndex:(int)n;
+-(SBFileItem *)childAtIndex:(NSUInteger)n;
 
 -(SBFileItem *)childWithPath:(NSString *)iPath;
 

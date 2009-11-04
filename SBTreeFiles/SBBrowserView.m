@@ -156,7 +156,7 @@
 //----------------------------------------------------------
 
 //Allows drag and drop from the browser to other apps (including finder)
--(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+-(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
 {
     return NSDragOperationCopy; 
 }

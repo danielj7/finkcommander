@@ -541,7 +541,7 @@ enum {
 		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
 			NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify how frequently to check for updates.", @"Update alert message"),
 			NSLocalizedString(@"Upgrade Now", @"Update alert default"),
-			NSLocalizedString(@"Change PreferencesÉ", @"Update alert alternate"),
+			NSLocalizedString(@"Change Preferencesâ€¦", @"Update alert alternate"),
 			NSLocalizedString( @"Ask Again Later", @"Update alert other"));
 		switch (answer){
 			case NSAlertDefaultReturn:
@@ -611,7 +611,7 @@ enum {
    returnCode:(int)code
   contextInfo:(void *)contextInfo
 {
-    if (code = NSOKButton){
+    if (code == NSOKButton){
 		NSData *odata = [[textView string] dataUsingEncoding: NSMacOSRomanStringEncoding];
 		[odata writeToFile: [sheet filename] atomically:YES];
     }
@@ -744,12 +744,20 @@ enum {
 {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     NSString *sig = [installationInfo formattedEmailSig];
+	NSString *feedbackMessage;
     FinkPackage *pkg;
     NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
     if (!packageInfo){
 		packageInfo = [[FinkPackageInfo alloc] init];
     }
+	
+	if (typeOfFeedback == POSITIVE)
+		feedbackMessage = @"Feedback: works for me";
+	else if (typeOfFeedback == NEGATIVE)
+		feedbackMessage = @"Feedback: not good";
+	else
+		feedbackMessage = @"Feedback: ???";
 
     [packageInfo setEmailSig:sig];
     while (nil != (pkg = [e nextObject])){
@@ -765,7 +773,7 @@ enum {
 			! [[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
 		}
-		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg]];
+		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg withBody:feedbackMessage]];
     }
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 ? 
@@ -876,6 +884,9 @@ enum {
 		nil];
 	NSAttributedString *credits = [[NSAttributedString alloc] initWithString:finkVersion attributes:attributes];
 	[NSApp orderFrontStandardAboutPanelWithOptions:[NSDictionary dictionaryWithObject:credits forKey:@"Credits"]];
+	[attributes release];
+	[style release];
+	[credits release];
 }
 //Help menu internet access items
 -(IBAction)goToWebsite:(id)sender
@@ -1051,7 +1062,7 @@ enum {
 			[tableView storeSelectedObjectInfo];
 		} 
                 if ([defaults boolForKey: FinkAllowRegexFiltering]){                    
-                    regcomp(&regex, [filterText cString], REG_EXTENDED);
+                    regcomp(&regex, [filterText UTF8String], REG_EXTENDED);
                     // If regex construction fails it is no big deal really, probably in the middle of typing one like "Ben|"
 		}		
 
@@ -1062,7 +1073,7 @@ enum {
 				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
 				/* 	If the value matches the filter term, add it to the subset */
                                 if([defaults boolForKey: FinkAllowRegexFiltering] && 
-                                    !regexec(&regex, [pkgAttribute cString], 0, 0, 0)){
+                                    !regexec(&regex, [pkgAttribute UTF8String], 0, 0, 0)){
                                     [subset addObject: pkg];
 				} else 
 				if ([pkgAttribute contains:filterText]){
@@ -1251,6 +1262,10 @@ enum {
 		if (type == APT_GET){
 			[args insertObject: @"-f" atIndex: 1];
 			[args insertObject: @"-q0" atIndex: 1];
+		}
+		if (type == FINK && [cmd isEqualToString:@"cleanup"]){
+			args = [NSMutableArray arrayWithObjects: exe, cmd,
+			@"--srcs", @"--debs", @"--bl", @"--dpkg-status", nil];
 		}
     }else{
 		[self setLastCommand:exe];

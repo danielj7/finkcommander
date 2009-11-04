@@ -1,0 +1,78 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                bringBackMainWindow = id; 
+                checkForLatestVersionAction = id; 
+                chooseTableColumn = id; 
+                collapseExpandOutput = id; 
+                endInteractionWindow = id; 
+                goToWebsite = id; 
+                openDocumentation = id; 
+                openHelpInWebBrowser = id; 
+                openPackageFileViewer = id; 
+                raiseInteractionWindow = id; 
+                refilter = id; 
+                runForceRemove = id; 
+                runNonSpecificCommand = id; 
+                runNonSpecificCommandInTerminal = id; 
+                runPackageSpecificCommand = id; 
+                runPackageSpecificCommandInTerminal = id; 
+                saveOutput = id; 
+                sendNegativeFeedback = id; 
+                sendPositiveFeedback = id; 
+                showAboutWindow = id; 
+                showDescription = id; 
+                showPackageInfoPanel = id; 
+                showPreferencePanel = id; 
+                sortByPackageElement = id; 
+                terminateCommand = id; 
+                toggleFlags = id; 
+                updateTable = id; 
+            }; 
+            CLASS = FinkController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                collapseExpandMenuItem = NSMenuItem; 
+                columnsMenu = NSMenu; 
+                interactionField = NSTextField; 
+                interactionMatrix = NSMatrix; 
+                interactionWindow = NSWindow; 
+                msgText = id; 
+                outputScrollView = NSScrollView; 
+                progressIndicator = NSProgressIndicator; 
+                progressView = NSView; 
+                progressViewHolder = NSView; 
+                searchTextField = NSTextField; 
+                searchView = id; 
+                splitView = id; 
+                tableContextMenu = NSMenu; 
+                tableScrollView = NSScrollView; 
+                tableView = id; 
+                textView = NSTextView; 
+                window = NSWindow; 
+                windowMenu = NSMenu; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = FinkSplitView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {collapseExpandMenuItem = NSMenuItem; }; 
+            SUPERCLASS = NSSplitView; 
+        }, 
+        {
+            ACTIONS = {
+                collapseExpandOutput = id; 
+                openPackageFiles = id; 
+                openSelectedFiles = id; 
+                toggleFlags = id; 
+                treeWindowWillClose = id; 
+            }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

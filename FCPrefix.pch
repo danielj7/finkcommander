@@ -1,9 +1,15 @@
+#include <AvailabilityMacros.h>
 #ifdef __OBJC__
     #import <AppKit/AppKit.h>
     #import <Cocoa/Cocoa.h>
     #import <Foundation/Foundation.h>
-    #import <Security/Authorization.h>
     #import <Security/AuthorizationTags.h>
+    #import <Security/Authorization.h>
+    #import <Security/Security.h>
+    #if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+        typedef int NSInteger;
+        typedef unsigned int NSUInteger;
+    #endif
 #endif
 
 #include <sys/types.h>

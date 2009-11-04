@@ -187,8 +187,8 @@ See the header file, FinkData.h, for interface and license information.
 	emailAddress:(NSString **)address
 	fromDescription:(NSString *)s
 {
-	int emailstart = [s rangeOfString: @"<"].location;
-	int emailend   = [s rangeOfString: @">"].location;
+	NSInteger emailstart = [s rangeOfString: @"<"].location;
+	NSInteger emailend   = [s rangeOfString: @">"].location;
 	if (emailstart == NSNotFound || emailend == NSNotFound){
 			*name = @"";
 			*address = @"";

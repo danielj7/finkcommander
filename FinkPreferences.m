@@ -601,14 +601,14 @@ enum {
 #pragma mark ENVIRONMENT TABLE DATA SOURCE METHODS
 //--------------------------------------------------------------------------------
 
--(int)numberOfRowsInTableView:(NSTableView *)aTableView
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
 	return [environmentArray count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
 	objectValueForTableColumn:(NSTableColumn *)aTableColumn
-	row:(int)rowIndex
+	row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
 	return [[environmentArray objectAtIndex:rowIndex] objectForKey:identifier];
@@ -617,7 +617,7 @@ enum {
 -(void)tableView:(NSTableView *)aTableView 
 		setObjectValue:(id)anObject 
 		forTableColumn:(NSTableColumn *)aTableColumn 
-		row:(int)rowIndex
+		row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
 	[[environmentArray objectAtIndex:rowIndex] setObject:anObject forKey:identifier];

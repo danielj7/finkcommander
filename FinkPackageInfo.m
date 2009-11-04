@@ -65,11 +65,11 @@
 
 /* Used to set URL attribute for email addresses displayed by Package Inspector and
 	in FinkController's emailMaintainer method */
--(NSURL *)mailURLForPackage:(FinkPackage *)pkg
+-(NSURL *)mailURLForPackage:(FinkPackage *)pkg withBody:(NSString *)body
 { 
 	return [[NSString stringWithFormat: 
-						@"mailto:%@?subject=%@-%@&body=\n\n%@", 
-						[pkg email], [pkg name], [pkg version], emailSig]
+						@"mailto:%@?subject=%@-%@&body=%@\n\n%@", 
+						[pkg email], [pkg name], [pkg version], body, emailSig]
 				URLByAddingPercentEscapesToString];
 }
 
@@ -154,7 +154,7 @@
 		
 	//look for e-mail url and if found turn it into an active link
 	if ([[p email] length] > 0){
-		NSURL *murl = [self mailURLForPackage:p];
+		NSURL *murl = [self mailURLForPackage:p withBody:@""];
 		r = [[description string] rangeOfString:[p email]];
 		[description addAttributes:urlAttributes range:r];
 		[description addAttribute:NSLinkAttributeName

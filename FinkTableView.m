@@ -310,7 +310,7 @@ enum {
 	return dragImage;
 }
 
--(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+-(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
 {
     return NSDragOperationCopy;
 }
@@ -394,14 +394,14 @@ enum {
 #pragma mark DATA SOURCE METHODS
 //----------------------------------------------------------
 
--(int)numberOfRowsInTableView:(NSTableView *)aTableView
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
 	return [[self displayedPackages] count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
 	objectValueForTableColumn:(NSTableColumn *)aTableColumn
-	row:(int)rowIndex
+	row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
 	FinkPackage *package = [[self displayedPackages] objectAtIndex:rowIndex];
@@ -458,7 +458,7 @@ enum {
 {
 	if ([self selectedObjectInfo]){
 		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
-		int selection = [[self displayedPackages] indexOfObject: selectedObject];
+		NSInteger selection = [[self displayedPackages] indexOfObject: selectedObject];
 
 		if (selection != NSNotFound){
 			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
@@ -557,7 +557,7 @@ enum {
 	}
 }
 
--(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
+-(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
 	NSString *pname = [[[self displayedPackages] objectAtIndex: rowIndex] name];
 	if ([pname contains:@"tcsh"] 				|| 

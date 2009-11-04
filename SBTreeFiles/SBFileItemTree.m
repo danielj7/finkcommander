@@ -14,22 +14,22 @@ NSString *SBDescendingOrder = @"SBDescendingOrder";
 #pragma mark SORTING FUNCTIONS
 //----------------------------------------------------------
 
-int sortByFilename(id firstItem, id secondItem, void *direction)
+NSInteger sortByFilename(id firstItem, id secondItem, void *direction)
 {
 	NSString *firstName = [firstItem filename];
 	NSString *secondName = [secondItem filename];
-    int result = [firstName compare:secondName];
+    NSInteger result = [firstName compare:secondName];
     NSString *order = (NSString *)direction;
 
     if ([order isEqualToString:SBAscendingOrder]) return result;
     return (0 - result);
 }
 
-int sortByMdate(id firstItem, id secondItem, void *direction)
+NSInteger sortByMdate(id firstItem, id secondItem, void *direction)
 {
 	NSDate *itemOne = [firstItem mdate];
 	NSDate *itemTwo = [secondItem mdate];
-    int result = [itemOne compare:itemTwo];
+    NSInteger result = [itemOne compare:itemTwo];
     NSString *order = (NSString *)direction;
 
     if (result == NSOrderedSame){
@@ -41,13 +41,13 @@ int sortByMdate(id firstItem, id secondItem, void *direction)
     return (0 - result);
 }
 
-int sortBySize(id firstItem, id secondItem, void *direction)
+NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 {
 	SBFileItem *itemOne = (SBFileItem *)firstItem;
 	SBFileItem *itemTwo = (SBFileItem *)secondItem;
 	float firstSize = [itemOne size];
 	float secondSize = [itemTwo size];
-	int result = firstSize - secondSize;
+	NSInteger result = firstSize - secondSize;
 	NSString *order = (NSString *)direction;
 	
     if (result == 0){
@@ -231,7 +231,7 @@ int sortBySize(id firstItem, id secondItem, void *direction)
     NSData *sortHint = [[pitem children] sortedArrayHint];
     SBFileItem *citem;
     NSEnumerator *e;
-    int (*sorter)(id, id, void *); //pointer to sorting function
+    NSInteger (*sorter)(id, id, void *); //pointer to sorting function
 
 	if ([element isEqualToString:@"filename"]){
 		sorter = sortByFilename; //func name is pointer to func

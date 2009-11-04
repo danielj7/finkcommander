@@ -51,6 +51,6 @@
 
 -(void)setEmailSig:(NSString *)s;
 
--(NSURL *)mailURLForPackage:(FinkPackage *)pkg;
+-(NSURL *)mailURLForPackage:(FinkPackage *)pkg withBody:(NSString *)body;
 
 @end

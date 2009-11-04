@@ -73,6 +73,7 @@ File: FinkInstallationInfo.m
 	NSString *result;
 
 	if (! [manager fileExistsAtPath:path]){
+		[versionTask release];
 		return nil;
 	}
 	

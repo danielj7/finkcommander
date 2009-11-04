@@ -3,42 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5956660F09CE01660099082A /* FCPrefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 5956660E09CE01660099082A /* FCPrefix.pch */; };
-		59E03FE209CDC73B001280FD /* FinkController.h in Headers */ = {isa = PBXBuildFile; fileRef = F53369F50218261B01A80165 /* FinkController.h */; };
-		59E03FE309CDC73B001280FD /* FinkPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = F527284C0221B4E801A80164 /* FinkPackage.h */; };
-		59E03FE409CDC73B001280FD /* FinkPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = F5375A680246DDDC01A80164 /* FinkPreferences.h */; };
-		59E03FE509CDC73B001280FD /* FinkConf.h in Headers */ = {isa = PBXBuildFile; fileRef = F54436B8027F6AD501A80164 /* FinkConf.h */; };
-		59E03FE609CDC73B001280FD /* SBString.h in Headers */ = {isa = PBXBuildFile; fileRef = F536C03E0280F24501A80164 /* SBString.h */; };
-		59E03FE709CDC73B001280FD /* FinkPackageInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C523D802A326B701A80165 /* FinkPackageInfo.h */; };
-		59E03FE809CDC73B001280FD /* MyTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B9D9EC02B2B13501A8016B /* MyTextView.h */; };
-		59E03FE909CDC73B001280FD /* FinkGlobals.h in Headers */ = {isa = PBXBuildFile; fileRef = F54147C202C18B7301A80165 /* FinkGlobals.h */; };
-		59E03FEA09CDC73B001280FD /* FinkTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5607A9702CE125E01A80164 /* FinkTableView.h */; };
-		59E03FEB09CDC73B001280FD /* FinkInstallationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */; };
-		59E03FEC09CDC73B001280FD /* FinkOutputParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F54BD02702D549F101A80165 /* FinkOutputParser.h */; };
-		59E03FED09CDC73B001280FD /* FinkTextViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */; };
-		59E03FEE09CDC73B001280FD /* FinkUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F553429102E9F45A015ADE4E /* FinkUtilities.h */; };
-		59E03FEF09CDC73B001280FD /* FinkData.h in Headers */ = {isa = PBXBuildFile; fileRef = F55FBB1D02F3B8C901A80164 /* FinkData.h */; };
-		59E03FF009CDC73B001280FD /* FinkSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = F53B4D42031079C801A80164 /* FinkSplitView.h */; };
-		59E03FF109CDC73B001280FD /* AuthorizedExecutable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA550331965D01A80166 /* AuthorizedExecutable.h */; };
-		59E03FF209CDC73B001280FD /* FinkWarningDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = F55407ED035D0C8601A80170 /* FinkWarningDialog.h */; };
-		59E03FF309CDC73B001280FD /* FinkToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = F5019E9903625D4201A80165 /* FinkToolbar.h */; };
-		59E03FF409CDC73B001280FD /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
-		59E03FF509CDC73B001280FD /* SBFileItemTree.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7617039F174E01A80165 /* SBFileItemTree.h */; };
-		59E03FF609CDC73B001280FD /* SBOutlineViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7619039F174E01A80165 /* SBOutlineViewController.h */; };
-		59E03FF709CDC73B001280FD /* SBTreeWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761B039F174E01A80165 /* SBTreeWindowController.h */; };
-		59E03FF809CDC73B001280FD /* SBTreeWindowManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC761D039F174E01A80165 /* SBTreeWindowManager.h */; };
-		59E03FF909CDC73B001280FD /* SBDateColumnController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC765C039F19D801A80165 /* SBDateColumnController.h */; };
-		59E03FFA09CDC73B001280FD /* SBFileItem.h in Headers */ = {isa = PBXBuildFile; fileRef = F50EC36503A0559001A80165 /* SBFileItem.h */; };
-		59E03FFB09CDC73B001280FD /* SBBrowserView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CC7615039F174E01A80165 /* SBBrowserView.h */; };
-		59E03FFC09CDC73B001280FD /* SBBrowserMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = F57E59B403A998D701A80165 /* SBBrowserMatrix.h */; };
-		59E03FFD09CDC73B001280FD /* SBMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FBD2DBD603BAA14500A80165 /* SBMutableAttributedString.h */; };
-		59E03FFE09CDC73B001280FD /* SBUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FBC8654F03BABC0400A80165 /* SBUtilities.h */; };
-		59E03FFF09CDC73B001280FD /* SBOutlineView.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472903C6070000A80164 /* SBOutlineView.h */; };
-		59E0400009CDC73B001280FD /* SBBrowserCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FBCD472B03C6070E00A80164 /* SBBrowserCell.h */; };
 		59E0400209CDC73B001280FD /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
@@ -128,31 +96,6 @@
 		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		4A9504CCFFE6A4B311CA0CBA /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		4A9504CDFFE6A4B311CA0CBA /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
-
 /* Begin PBXContainerItemProxy section */
 		59E0406E09CDC73C001280FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -183,9 +126,17 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		557B5387108D37AC00367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Japanese; path = Japanese.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		557B5389108D37C700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		557B538A108D37D600367D4E /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
+		557B538B108D37EC00367D4E /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Programmatic.strings; sourceTree = "<group>"; };
+		557B5391108D380A00367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = "Japanese.lproj/FinkCommander Help"; sourceTree = "<group>"; };
+		557B53B9108D392700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/Dialogs.nib; sourceTree = "<group>"; };
+		557B53BA108D393500367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		557B53BB108D394100367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/Preferences.nib; sourceTree = "<group>"; };
 		5956660E09CE01660099082A /* FCPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPrefix.pch; sourceTree = "<group>"; };
-		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
-		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
 		C77360DE03E9D23200EE6D09 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = German; path = German.lproj/README.html; sourceTree = "<group>"; };
 		F28A84610843648B00E529E9 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/PackageInfo.nib; sourceTree = "<group>"; };
@@ -209,7 +160,7 @@
 		F52F0AF70319CAFC01A80164 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		F531463F022C801601A80164 /* fpkg_list.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = fpkg_list.pl; sourceTree = "<group>"; };
 		F53369F50218261B01A80165 /* FinkController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkController.h; sourceTree = "<group>"; };
-		F53369F60218261B01A80165 /* FinkController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkController.m; sourceTree = "<group>"; };
+		F53369F60218261B01A80165 /* FinkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinkController.m; sourceTree = "<group>"; };
 		F53649810388930201A80164 /* negemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = negemail.tiff; sourceTree = "<group>"; };
 		F5364A1A0388964301A80164 /* posemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = posemail.tiff; sourceTree = "<group>"; };
 		F536582302A89F0D01A8016A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
@@ -220,8 +171,8 @@
 		F5375A6D0246DE1901A80164 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/Preferences.nib; sourceTree = "<group>"; };
 		F538C3C1023495CF01A80164 /* reverse.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = reverse.tiff; sourceTree = "<group>"; };
 		F538C3C2023495CF01A80164 /* normal.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = normal.tiff; sourceTree = "<group>"; };
-		F53B4CA303100C0E01A80164 /* Toolbar.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Toolbar.plist; path = English.lproj/Toolbar.plist; sourceTree = "<group>"; };
-		F53B4D0803100C5101A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.xml; name = German; path = German.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		F53B4CA303100C0E01A80164 /* Toolbar.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Toolbar.plist; path = English.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		F53B4D0803100C5101A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.xml; name = German; path = German.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		F53B4D0A031033D401A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F53B4D41031079C801A80164 /* FinkSplitView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkSplitView.m; sourceTree = "<group>"; };
 		F53B4D42031079C801A80164 /* FinkSplitView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkSplitView.h; sourceTree = "<group>"; };
@@ -235,7 +186,7 @@
 		F542CFF702C2F03B01A80166 /* FinkPackageInfo.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkPackageInfo.m; sourceTree = "<group>"; };
 		F54436B8027F6AD501A80164 /* FinkConf.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkConf.h; sourceTree = "<group>"; };
 		F54436B9027F6AD501A80164 /* FinkConf.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkConf.m; sourceTree = "<group>"; };
-		F5458DBF0303658001A80164 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
+		F5458DBF0303658001A80164 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
 		F54A669802DA8F3701A80165 /* VERSION_HISTORY.html */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; path = VERSION_HISTORY.html; sourceTree = "<group>"; };
 		F54BD02602D549F101A80165 /* FinkOutputParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkOutputParser.m; sourceTree = "<group>"; };
 		F54BD02702D549F101A80165 /* FinkOutputParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkOutputParser.h; sourceTree = "<group>"; };
@@ -299,7 +250,7 @@
 		F5F99DB803AD5AC401A80165 /* browser.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = browser.tiff; path = SBTreeFiles/browser.tiff; sourceTree = "<group>"; };
 		FB084B8303DBA6EE00A8016C /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/TreeView.nib; sourceTree = "<group>"; };
 		FB7F569003F8C24E00A8016A /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = German; path = German.lproj/TRANSLATION_STEPS.txt; sourceTree = "<group>"; };
-		FB84A70A03C93AF400A80164 /* SBTree.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/English.lproj/SBTree.strings; sourceTree = "<group>"; };
+		FB84A70A03C93AF400A80164 /* SBTree.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/English.lproj/SBTree.strings; sourceTree = "<group>"; };
 		FB84A70F03C93D9C00A80164 /* SBTree.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/German.lproj/SBTree.strings; sourceTree = "<group>"; };
 		FBB8F6D903BFE6D000A8016B /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Programmatic.strings; sourceTree = "<group>"; };
 		FBB8F6DD03BFE6FF00A8016B /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Programmatic.strings; sourceTree = "<group>"; };
@@ -605,45 +556,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		59E03FE109CDC73B001280FD /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				59E03FE209CDC73B001280FD /* FinkController.h in Headers */,
-				59E03FE309CDC73B001280FD /* FinkPackage.h in Headers */,
-				59E03FE409CDC73B001280FD /* FinkPreferences.h in Headers */,
-				59E03FE509CDC73B001280FD /* FinkConf.h in Headers */,
-				59E03FE609CDC73B001280FD /* SBString.h in Headers */,
-				59E03FE709CDC73B001280FD /* FinkPackageInfo.h in Headers */,
-				59E03FE809CDC73B001280FD /* MyTextView.h in Headers */,
-				59E03FE909CDC73B001280FD /* FinkGlobals.h in Headers */,
-				59E03FEA09CDC73B001280FD /* FinkTableView.h in Headers */,
-				59E03FEB09CDC73B001280FD /* FinkInstallationInfo.h in Headers */,
-				59E03FEC09CDC73B001280FD /* FinkOutputParser.h in Headers */,
-				59E03FED09CDC73B001280FD /* FinkTextViewController.h in Headers */,
-				59E03FEE09CDC73B001280FD /* FinkUtilities.h in Headers */,
-				59E03FEF09CDC73B001280FD /* FinkData.h in Headers */,
-				59E03FF009CDC73B001280FD /* FinkSplitView.h in Headers */,
-				59E03FF109CDC73B001280FD /* AuthorizedExecutable.h in Headers */,
-				59E03FF209CDC73B001280FD /* FinkWarningDialog.h in Headers */,
-				59E03FF309CDC73B001280FD /* FinkToolbar.h in Headers */,
-				59E03FF409CDC73B001280FD /* Debugging.h in Headers */,
-				59E03FF509CDC73B001280FD /* SBFileItemTree.h in Headers */,
-				59E03FF609CDC73B001280FD /* SBOutlineViewController.h in Headers */,
-				59E03FF709CDC73B001280FD /* SBTreeWindowController.h in Headers */,
-				59E03FF809CDC73B001280FD /* SBTreeWindowManager.h in Headers */,
-				59E03FF909CDC73B001280FD /* SBDateColumnController.h in Headers */,
-				59E03FFA09CDC73B001280FD /* SBFileItem.h in Headers */,
-				59E03FFB09CDC73B001280FD /* SBBrowserView.h in Headers */,
-				59E03FFC09CDC73B001280FD /* SBBrowserMatrix.h in Headers */,
-				59E03FFD09CDC73B001280FD /* SBMutableAttributedString.h in Headers */,
-				59E03FFE09CDC73B001280FD /* SBUtilities.h in Headers */,
-				59E03FFF09CDC73B001280FD /* SBOutlineView.h in Headers */,
-				59E0400009CDC73B001280FD /* SBBrowserCell.h in Headers */,
-				5956660F09CE01660099082A /* FCPrefix.pch in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		59E0405E09CDC73B001280FD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -660,7 +572,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 59E0405609CDC73B001280FD /* Build configuration list for PBXNativeTarget "FinkCommander" */;
 			buildPhases = (
-				59E03FE109CDC73B001280FD /* Headers */,
 				59E0400109CDC73B001280FD /* Resources */,
 				59E0403009CDC73B001280FD /* Sources */,
 				59E0405009CDC73B001280FD /* Frameworks */,
@@ -668,22 +579,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
 			dependencies = (
 				59E0406F09CDC73C001280FD /* PBXTargetDependency */,
 			);
@@ -704,19 +599,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
 			dependencies = (
 			);
 			name = Launcher;
@@ -731,12 +613,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = F200074F08ED3CB4004A31F7 /* Build configuration list for PBXProject "FinkCommander" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				4A9504CCFFE6A4B311CA0CBA /* Development */,
-				4A9504CDFFE6A4B311CA0CBA /* Deployment */,
-			);
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -747,6 +624,7 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* FinkTable */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				59E03FDE09CDC73B001280FD /* FinkCommander */,
 				59E0405D09CDC73B001280FD /* Launcher */,
@@ -884,6 +762,7 @@
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
 				F53B4D0A031033D401A80164 /* German */,
+				557B5389108D37C700367D4E /* Japanese */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -893,6 +772,7 @@
 			children = (
 				29B97319FDCFA39411CA2CEA /* English */,
 				F5CC37130304F27C01A80164 /* German */,
+				557B53BA108D393500367D4E /* Japanese */,
 			);
 			name = MainMenu.nib;
 			sourceTree = "<group>";
@@ -929,6 +809,7 @@
 			children = (
 				F5375A6D0246DE1901A80164 /* English */,
 				F5CC37160304F2A201A80164 /* German */,
+				557B53BB108D394100367D4E /* Japanese */,
 			);
 			name = Preferences.nib;
 			sourceTree = "<group>";
@@ -938,6 +819,7 @@
 			children = (
 				F53B4CA303100C0E01A80164 /* Toolbar.plist */,
 				F53B4D0803100C5101A80164 /* German */,
+				557B5387108D37AC00367D4E /* Japanese */,
 			);
 			name = Toolbar.plist;
 			sourceTree = "<group>";
@@ -947,6 +829,7 @@
 			children = (
 				F55407F6035D334001A80170 /* English */,
 				F5128EE803665EE101A80166 /* German */,
+				557B53B9108D392700367D4E /* Japanese */,
 			);
 			name = Dialogs.nib;
 			sourceTree = "<group>";
@@ -956,6 +839,7 @@
 			children = (
 				F5C1B062026BFA2501A80164 /* English */,
 				F5DABE8B03359EF601FEFA3F /* German */,
+				557B5391108D380A00367D4E /* Japanese */,
 			);
 			name = "FinkCommander Help";
 			sourceTree = "<group>";
@@ -965,6 +849,7 @@
 			children = (
 				F568C4A302FC9D6101A80164 /* English */,
 				F5D3EE420336DD8B01A80165 /* German */,
+				557B538A108D37D600367D4E /* Japanese */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1008,6 +893,7 @@
 			children = (
 				FBB8F6D903BFE6D000A8016B /* English */,
 				FBB8F6DD03BFE6FF00A8016B /* German */,
+				557B538B108D37EC00367D4E /* Japanese */,
 			);
 			name = Programmatic.strings;
 			sourceTree = "<group>";
@@ -1015,7 +901,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		59E0405709CDC73B001280FD /* Development */ = {
+		59E0405709CDC73B001280FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -1024,6 +910,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications;
@@ -1040,9 +927,9 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
-			name = Development;
+			name = Debug;
 		};
-		59E0405809CDC73B001280FD /* Deployment */ = {
+		59E0405809CDC73B001280FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1064,30 +951,9 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		59E0405909CDC73B001280FD /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = FinkCommander;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
-			name = Default;
-		};
-		59E0406909CDC73B001280FD /* Development */ = {
+		59E0406909CDC73B001280FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -1095,6 +961,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -1108,9 +975,9 @@
 				);
 				ZERO_LINK = YES;
 			};
-			name = Development;
+			name = Debug;
 		};
-		59E0406A09CDC73B001280FD /* Deployment */ = {
+		59E0406A09CDC73B001280FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1128,66 +995,44 @@
 				);
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		59E0406B09CDC73B001280FD /* Default */ = {
+		F200075008ED3CB4004A31F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = Launcher;
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Default;
-		};
-		F200075008ED3CB4004A31F7 /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
+				GCC_VERSION = 4.0;
+				"GCC_VERSION[sdk=macosx10.5]" = 4.2;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.5;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.3;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.4;
+				"SDKROOT[arch=ppc64]" = macosx10.5;
+				"SDKROOT[arch=x86_64]" = macosx10.5;
 			};
-			name = Development;
+			name = Debug;
 		};
-		F200075108ED3CB4004A31F7 /* Deployment */ = {
+		F200075108ED3CB4004A31F7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
+				GCC_VERSION = 4.0;
+				"GCC_VERSION[sdk=macosx10.5]" = 4.2;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.5;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.3;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				SDKROOT = macosx10.4;
+				"SDKROOT[arch=ppc64]" = macosx10.5;
+				"SDKROOT[arch=x86_64]" = macosx10.5;
 			};
-			name = Deployment;
-		};
-		F200075208ED3CB4004A31F7 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = FCPrefix.pch;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.3;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
-			};
-			name = Default;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1195,32 +1040,29 @@
 		59E0405609CDC73B001280FD /* Build configuration list for PBXNativeTarget "FinkCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				59E0405709CDC73B001280FD /* Development */,
-				59E0405809CDC73B001280FD /* Deployment */,
-				59E0405909CDC73B001280FD /* Default */,
+				59E0405709CDC73B001280FD /* Debug */,
+				59E0405809CDC73B001280FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Debug;
 		};
 		59E0406809CDC73B001280FD /* Build configuration list for PBXNativeTarget "Launcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				59E0406909CDC73B001280FD /* Development */,
-				59E0406A09CDC73B001280FD /* Deployment */,
-				59E0406B09CDC73B001280FD /* Default */,
+				59E0406909CDC73B001280FD /* Debug */,
+				59E0406A09CDC73B001280FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Debug;
 		};
 		F200074F08ED3CB4004A31F7 /* Build configuration list for PBXProject "FinkCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F200075008ED3CB4004A31F7 /* Development */,
-				F200075108ED3CB4004A31F7 /* Deployment */,
-				F200075208ED3CB4004A31F7 /* Default */,
+				F200075008ED3CB4004A31F7 /* Debug */,
+				F200075108ED3CB4004A31F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

@@ -32,7 +32,7 @@
 		NSArray *selectedCellCache = [self selectedCells];
 		NSCell *clickedCell;
 		NSPoint clickPoint = [theEvent locationInWindow];
-		int arow, acol;
+		NSInteger arow, acol;
 
 		clickPoint = [self convertPoint:clickPoint fromView:nil];
 		[self getRow:&arow column:&acol forPoint:clickPoint];
@@ -41,7 +41,7 @@
 		if ([selectedCellCache containsObject:clickedCell]){
 			NSEnumerator *e = [selectedCellCache objectEnumerator];
 			NSCell *theCell;
-			int brow, bcol;
+			NSInteger brow, bcol;
 
 			while (nil != (theCell = [e nextObject])){
 				[self getRow:&brow column:&bcol ofCell:theCell];

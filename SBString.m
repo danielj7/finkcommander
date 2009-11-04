@@ -119,7 +119,7 @@
 {
     NSCharacterSet *nonWhitespaceSet = 
 			[[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
-    int start;
+    NSInteger start;
     int length;
 	//find start of nonwhitespace chars in string
     start = [self rangeOfCharacterFromSet:nonWhitespaceSet].location;
