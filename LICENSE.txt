@@ -1,3 +1,13 @@
+FinkCommander is licenced under GNU GPLv2, transcribed below.
+finkcommander.icns and finkcommanderatwork.icns, FinkCommander application
+icons, were created by Augusto Jun Devegili based on a photograph by Michael
+Maggs:
+http://commons.wikimedia.org/wiki/File:Fringilla_coelebs_(chaffinch),_male.jpg
+and are licenced under Creative Commons Attribution ShareAlike 2.5:
+http://creativecommons.org/licenses/by-sa/2.5/
+
+-----
+
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
@@ -278,3 +288,5 @@ PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
 		     END OF TERMS AND CONDITIONS
+
+-----
