@@ -22,7 +22,7 @@ Go to project admin and create new releases
 
 Download and test
 
-Tag cvs with release number
+Tag cvs with release number (cvs tag -R Version_0_5_5_Release)
 
 Upload web site
 

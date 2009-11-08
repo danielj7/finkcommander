@@ -1338,6 +1338,8 @@ enum {
 -(void)launchCommandWithArguments:(NSMutableArray *)args
 {
     NSString *exec = [args objectAtIndex:0];
+	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
+	[envvars setValue:[NSString stringWithUTF8String:getenv("SSH_AUTH_SOCK")] forKey:@"SSH_AUTH_SOCK"];
 
     pendingCommand = NO; 	//no command waiting in line
     toolIsBeingFixed = NO;
@@ -1348,7 +1350,7 @@ enum {
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"finkcommanderatwork"]];
 
     [finkTask setArguments:args];
-    [finkTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+    [finkTask setEnvironment:envvars];
     [finkTask authorizeWithQuery];
     [finkTask start];
 	[textViewController setLimits];
