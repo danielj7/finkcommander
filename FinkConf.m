@@ -325,6 +325,15 @@ File: FinkConf.m
 	[finkConfDict setObject:s forKey: @"RootMethod"];
 }
 
+-(NSString *)distribution
+{
+	NSString *d = [finkConfDict objectForKey: @"Distribution"];
+	if (d != nil) {
+		return d;
+	}
+	return @"";
+}
+
 
 //--------------------------------------------------->Write Changes to Fink.conf
 

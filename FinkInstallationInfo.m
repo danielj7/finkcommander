@@ -64,8 +64,7 @@ File: FinkInstallationInfo.m
 }
 
 //Run CLI tool to get its version information
--(NSString *)versionOutputForExecutable:(NSString *)path
-	usingArgument:(NSString *)arg
+-(NSString *)versionOutputForExecutable:(NSString *)path usingArguments:(NSArray *)args
 {
 	NSTask *versionTask = [[NSTask alloc] init];
 	NSPipe *pipeFromStdout = [NSPipe pipe];
@@ -78,8 +77,8 @@ File: FinkInstallationInfo.m
 	}
 	
 	[versionTask setLaunchPath: path];
-	if (arg){
-		[versionTask setArguments: [NSArray arrayWithObjects:arg, nil]];
+	if (args) {
+		[versionTask setArguments: args];
 	}
 	[versionTask setStandardOutput: pipeFromStdout];
 	[versionTask setEnvironment:[[NSUserDefaults standardUserDefaults]
@@ -91,13 +90,20 @@ File: FinkInstallationInfo.m
 									encoding:NSMacOSRomanStringEncoding] autorelease];
 	NS_HANDLER
 		//Handle NSFileHandleOperationException
-		NSLog(@"Failed to read data stream from %@ %@", path, arg);
+	//		NSLog(@"Failed to read data stream from %@ %@", path, args);
+		NSLog(@"Failed to read data stream from %@", path);
 		return nil;
 	NS_ENDHANDLER
 
 	[versionTask release];
 	[taskStdout closeFile];
 	return result;
+}
+
+-(NSString *)versionOutputForExecutable:(NSString *)path
+						  usingArgument:(NSString *) arg
+{
+	return [self versionOutputForExecutable:path usingArguments:[NSArray arrayWithObjects:arg, nil]];
 }
 
 -(NSString *)versionOutputForExecutable:(NSString *)path
@@ -247,6 +253,30 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	return error;
 }
 
+-(NSString *)distribution
+{
+	NSString *finkConf = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
+							stringByAppendingPathComponent: @"/etc/fink.conf"];
+	NSString *version = [self versionOutputForExecutable:@"/usr/bin/grep"
+										  usingArguments:[NSArray arrayWithObjects:@"^Distribution:", finkConf, nil]];
+	
+	if (! version) return @"Unable to determine the distribution field\n";
+	return version;
+}
+
+-(NSString *)trees
+{
+	NSString *finkConf = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
+						  stringByAppendingPathComponent: @"/etc/fink.conf"];
+	NSString *version = [self versionOutputForExecutable:@"/usr/bin/grep"
+										  usingArguments:[NSArray arrayWithObjects:@"^Trees:", finkConf, nil]];
+	
+	if (! version) return @"Unable to determine the trees field\n";
+	return version;
+}
+
+
+
 //------------------------------>All The Information Combined
 
 //As a string
@@ -257,16 +287,18 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	NSString *gccVersion = [self gccVersion];
 	NSString *devTools;
 	NSString *makeVersion;
+	NSString *distribution = [self distribution];
+	NSString *trees = [self trees];
 	NSString *result;
 
 	if ([gccVersion contains: @"not installed"]){
-		result = [NSString stringWithFormat: @"%@%@\n%@\n", 
-					finkVersion, macOSXVersion, gccVersion];
+		result = [NSString stringWithFormat: @"%@%@\n%@\n%@%@", 
+					finkVersion, macOSXVersion, gccVersion, distribution, trees];
 	}else{
 		devTools = [self developerToolsInfo];
 		makeVersion = [self makeVersion];
-		result = [NSString stringWithFormat: @"%@%@\n%@\n%@\n%@\n", 
-					finkVersion, macOSXVersion, devTools, gccVersion, makeVersion];
+		result = [NSString stringWithFormat: @"%@%@\n%@\n%@\n%@\n%@%@", 
+					finkVersion, macOSXVersion, devTools, gccVersion, makeVersion, distribution, trees];
 	}
 	return result;
 }

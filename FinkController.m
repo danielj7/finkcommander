@@ -745,6 +745,8 @@ enum {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     NSString *sig = [installationInfo formattedEmailSig];
 	NSString *feedbackMessage;
+	NSString *emailTemplate;
+	NSString *emailBody;
     FinkPackage *pkg;
     NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
@@ -752,14 +754,17 @@ enum {
 		packageInfo = [[FinkPackageInfo alloc] init];
     }
 	
+	emailTemplate = @"Hello, there. This is a feedback e-mail with regard to package %@-%@. %@\n"; 
+	
 	if (typeOfFeedback == POSITIVE)
-		feedbackMessage = @"Feedback: works for me";
+		feedbackMessage = @"It works like a charm, thanks!";
 	else if (typeOfFeedback == NEGATIVE)
-		feedbackMessage = @"Feedback: not good";
+		feedbackMessage = @"I am having the following problem(s):\n";
 	else
-		feedbackMessage = @"Feedback: ???";
-
+		feedbackMessage = @"Ooops, FinkCommander doesn't know whether this feedback is positive or negative!";
+	
     [packageInfo setEmailSig:sig];
+	
     while (nil != (pkg = [e nextObject])){
 		if (typeOfFeedback == POSITIVE   &&
 			[[pkg installed] length] > 1 &&
@@ -773,7 +778,8 @@ enum {
 			! [[pkg installed] isEqualToString:[pkg stable]]){
 			[pkgNames addObject:[pkg name]];
 		}
-		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg withBody:feedbackMessage]];
+		emailBody = [NSString stringWithFormat:emailTemplate, [pkg name], [pkg version], feedbackMessage];
+		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg withBody:emailBody]];
     }
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 ? 

@@ -75,6 +75,7 @@ File: FinkConf.h
 -(void)setRootMethod:(NSString *)s;
 -(NSString *)fetchAltDir;
 -(void)setFetchAltDir:(NSString *)s;
+-(NSString *)distribution;
 
 //Set flag that determines whether fink index
 //command should be run

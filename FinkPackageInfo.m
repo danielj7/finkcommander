@@ -68,7 +68,7 @@
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg withBody:(NSString *)body
 { 
 	return [[NSString stringWithFormat: 
-						@"mailto:%@?subject=%@-%@&body=%@\n\n%@", 
+						@"mailto:%@?subject=(Fink) %@-%@&body=%@\n\n%@", 
 						[pkg email], [pkg name], [pkg version], body, emailSig]
 				URLByAddingPercentEscapesToString];
 }
