@@ -145,7 +145,7 @@
 	return YES;
 }
 
--(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+-(BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     return [self validateItem:menuItem];
 }

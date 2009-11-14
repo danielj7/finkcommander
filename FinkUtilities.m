@@ -97,7 +97,7 @@ void fixScript(void)
 			[scriptText replaceCharactersInRange:rangeOfBASEPATH withString:basePath];
 		}
 //		NSLog(@"Writing table update script to %@", wpath);
-		[scriptText writeToFile:wpath atomically:YES];
+		[scriptText writeToFile:wpath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
 		[defaults setBool:NO forKey:FinkBasePathFound];
 	}
 }

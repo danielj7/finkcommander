@@ -382,8 +382,7 @@ File: FinkConf.m
 									forKey:FinkRunProgressIndicator];
 	BOOL success;
 	
-	
-	success = [fconfString writeToFile:tempFile atomically:YES];
+	success = [fconfString writeToFile:tempFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
 	if (! success){
 		NSRunCriticalAlertPanel(LS_ERROR,
 				NSLocalizedString(@"FinkCommander was unable to write changes to fink.conf.", 

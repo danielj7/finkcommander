@@ -1214,7 +1214,7 @@ enum {
 }
 
 //Disable menu items
--(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem
+-(BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     return [self validateItem: menuItem];
 }
