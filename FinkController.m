@@ -1345,7 +1345,11 @@ enum {
 {
     NSString *exec = [args objectAtIndex:0];
 	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
+	NSString *askpass;
 	[envvars setValue:[NSString stringWithUTF8String:getenv("SSH_AUTH_SOCK")] forKey:@"SSH_AUTH_SOCK"];
+	[envvars setValue:@"0" forKey:@"DISPLAY"];
+	askpass = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/SSHAskPass.sh"];
+	[envvars setValue:askpass forKey:@"SSH_ASKPASS"];
 
     pendingCommand = NO; 	//no command waiting in line
     toolIsBeingFixed = NO;

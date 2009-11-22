@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		148C8A6A10B8DA2A0013C39B /* SSHAskPass.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */; };
 		59E0400209CDC73B001280FD /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
@@ -113,6 +114,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				148C8A6A10B8DA2A0013C39B /* SSHAskPass.sh in CopyFiles */,
 				59E0407009CDC73C001280FD /* Launcher in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,6 +124,7 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = SSHAskPass.sh; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -376,6 +379,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */,
 				59E0405A09CDC73B001280FD /* Info.plist */,
 				F2C4F1D5084361C400CA6079 /* PackageInfo.nib */,
 				F55407F5035D334001A80170 /* Dialogs.nib */,
@@ -1022,8 +1026,8 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
-				GCC_VERSION = 4.0;
-				"GCC_VERSION[sdk=macosx10.5]" = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				"GCC_VERSION[sdk=macosx10.5]" = com.apple.compilers.llvmgcc42;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.5;
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.3;
