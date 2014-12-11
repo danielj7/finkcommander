@@ -37,9 +37,8 @@
             sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	e = [columnKeys objectEnumerator];
 	while (nil != (identifier = [e nextObject])){
-		NSTableColumn *newColumn = [[[NSTableColumn alloc]
-										initWithIdentifier:identifier]
-			autorelease];
+		NSTableColumn *newColumn = [[NSTableColumn alloc]
+										initWithIdentifier:identifier];
 		NSString *title = [SB_COLUMNS objectForKey:identifier];
 		title = [[NSBundle mainBundle] localizedStringForKey:title
 										value:title
@@ -55,7 +54,6 @@
 			if ([identifier isEqualToString:@"filename"]){
 				NSBrowserCell *fileNameCell = [[SBBrowserCell alloc] init];
 				[newColumn setDataCell:fileNameCell];
-				[fileNameCell release];
 				[newColumn setWidth:nameWidth];
 				[self setOutlineTableColumn:newColumn];
 			}else{
@@ -98,7 +96,6 @@
 -(void)dealloc
 {
 	Dprintf(@"Deallocating outline view");
-	[super dealloc];
 }
 
 //----------------------------------------------------------

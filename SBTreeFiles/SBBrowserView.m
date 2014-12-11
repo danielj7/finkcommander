@@ -33,8 +33,6 @@
 -(void)dealloc
 {
 	Dprintf(@"Deallocating browser view");
-	[tree release];
-	[super dealloc];
 }
 
 //----------------------------------------------------------
@@ -48,8 +46,6 @@
 
 -(void)setTree:(SBFileItemTree *)newTree
 {
-    [newTree retain];
-    [tree release];
     tree = newTree;
 }
 

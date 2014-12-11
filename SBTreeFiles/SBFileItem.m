@@ -39,16 +39,6 @@ File SBFileItem.m
 	return self;
 }
 
--(void)dealloc
-{
-	//Recursively release all items below this one in the tree
-	if (nil != _sbchildren) [_sbchildren release];
-
-	[_sbpath release];
-	[_sbfilename release];
-	[_sbmdate release];
-	[super dealloc];
-}
 
 
 //----------------------------------------------------------
@@ -59,8 +49,6 @@ File SBFileItem.m
 
 -(void)setChildren:(NSArray *)c
 {
-    [c retain];
-    [_sbchildren release];
     _sbchildren = c;
 }
 
@@ -68,8 +56,6 @@ File SBFileItem.m
 
 -(void)setPath:(NSString *)p
 {
-    [p retain];
-    [_sbpath release];
     _sbpath = p;
 }
 
@@ -77,8 +63,6 @@ File SBFileItem.m
 
 -(void)setFilename:(NSString *)fn
 {
-    [fn retain];
-    [_sbfilename release];
     _sbfilename = fn;
 }
 
@@ -100,8 +84,6 @@ File SBFileItem.m
 -(NSDate *)mdate { return _sbmdate; }
 
 -(void)setMdate:(NSDate *)newMdate{
-	[newMdate retain];
-	[_sbmdate release];
 	_sbmdate = newMdate;
 }
 

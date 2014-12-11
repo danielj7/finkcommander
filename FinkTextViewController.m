@@ -21,20 +21,11 @@ File: FinkTextViewController.m
 	return self;
 }
 
--(void)dealloc
-{
-	[textView release];
-	[scrollView release];
-	
-	[super dealloc];
-}
 
 - (NSTextView *)textView { return textView; }
 
 - (void)setTextView:(NSTextView *)newTextView 
 {
-	[newTextView retain];
-	[textView release];
 	textView = newTextView;
 }
 
@@ -42,8 +33,6 @@ File: FinkTextViewController.m
 
 - (void)setScrollView:(NSScrollView *)newScrollView
 {
-	[newScrollView retain];
-	[scrollView release];
 	scrollView = newScrollView;
 }
 

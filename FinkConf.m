@@ -31,9 +31,7 @@ File: FinkConf.m
 
 -(void)dealloc
 {
-	[finkConfDict release];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[super dealloc];
 }
 
 -(void)readFinkConf

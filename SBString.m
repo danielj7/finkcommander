@@ -138,9 +138,8 @@
 -(NSURL *)URLByAddingPercentEscapesToString
 {
 	NSString *urlString;
-	urlString = [(NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self,
-					NULL, NULL, CFStringConvertNSStringEncodingToEncoding(NSASCIIStringEncoding))
-				autorelease];
+	urlString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self,
+					NULL, NULL, CFStringConvertNSStringEncodingToEncoding(NSASCIIStringEncoding)));
 	return [NSURL URLWithString:urlString];
 }
 

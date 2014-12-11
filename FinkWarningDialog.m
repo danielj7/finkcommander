@@ -19,12 +19,6 @@
     return self;
 }
 
--(void)dealloc
-{
-    [arguments release];
-	
-	[super dealloc];
-}
 
 -(NSMutableArray *)arguments 
 {
@@ -33,8 +27,6 @@
 
 -(void)setArguments:(NSMutableArray *)newArguments 
 {
-    [newArguments retain];
-    [arguments release];
     arguments = newArguments;
 }
 

@@ -93,10 +93,7 @@
 -(void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_sbShortTitle release];
-    [_sbLongTitle release];
 
-    [super dealloc];
 }
 
 //----------------------------------------------------------
@@ -114,8 +111,6 @@
 
 -(void)setShortTitle:(NSString *)newShortTitle
 {
-    [newShortTitle retain];
-    [_sbShortTitle release];
     _sbShortTitle = newShortTitle;
 }
 
@@ -123,8 +118,6 @@
 
 -(void)setLongTitle:(NSString *)newLongTitle
 {
-    [newLongTitle retain];
-    [_sbLongTitle release];
     _sbLongTitle = newLongTitle;
 }
 
@@ -158,7 +151,6 @@
 				allowNaturalLanguage:YES];
 
     [[[self column] dataCell] setFormatter:dateFormatter];
-    [dateFormatter release];
 }
 
 //Use a more descriptive title if it will fit in the column

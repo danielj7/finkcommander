@@ -23,14 +23,6 @@
 	return self;
 }
 
--(void)dealloc
-{
-    [_sbcurrentPackageName release];
-	[_sbWindowControllers release];
-	[_sbWindowTitles release];
-	
-    [super dealloc];
-}
 
 //----------------------------------------------------------
 #pragma mark ACCESSORS
@@ -40,8 +32,6 @@
 
 -(void)setCurrentPackageName:(NSString *)newCurrentPackageName
 {
-    [newCurrentPackageName retain];
-    [_sbcurrentPackageName release];
     _sbcurrentPackageName = newCurrentPackageName;
 }
 
@@ -71,13 +61,12 @@
 	[task setEnvironment: [[NSUserDefaults standardUserDefaults] 									objectForKey:FinkEnvironmentSettings]];
     [task launch];
     d = [cmdStdout readDataToEndOfFile];
-	[task release];
-    s = [[[NSString alloc] initWithData:d
-							encoding:NSMacOSRomanStringEncoding] autorelease];
+    s = [[NSString alloc] initWithData:d
+							encoding:NSMacOSRomanStringEncoding];
 	//dpkg -L didn't work for this package
 	if ([s length] < 3) return nil;
 
-    fileList = [[[s componentsSeparatedByString:@"\n"] mutableCopy] autorelease];
+    fileList = [[s componentsSeparatedByString:@"\n"] mutableCopy];
     [fileList removeObjectAtIndex:0]; /* "/." */
 
     if ( [s contains:@"/usr/X11R6"] || [s containsExpression:@"^/Applications"] ){
@@ -109,7 +98,7 @@
 							initWithFileList:fileList
 							windowName:windowTitle];		//RC == 1
 	[[self windowControllers] addObject:newController];		//RC == 2
-	[newController release];								//RC == 1
+									                        //RC == 1
 }
 
 -(void)closingTreeWindowWithController:(id)sender

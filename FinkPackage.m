@@ -13,23 +13,6 @@ See the header file, FinkPackage.h, for interface and license information.
 #pragma mark BASIC METHODS
 //================================================================================
 
--(void)dealloc
-{
-	[name release];
-	[status release];
-	[version release];
-	[installed release];
-	[binary release];
-	[stable release];
-	[unstable release];
-	[category release];
-	[summary release];
-	[fulldesc release];
-	[weburl release];
-	[maintainer release];
-	[email release];
-	[super dealloc];
-}
 
 
 // String representation of the object in NSLog and debugging
@@ -47,9 +30,9 @@ See the header file, FinkPackage.h, for interface and license information.
 {
 	static NSString *_pathToDists = nil;
 	if (nil == _pathToDists){
-		_pathToDists = [[[[NSUserDefaults standardUserDefaults]
+		_pathToDists = [[[NSUserDefaults standardUserDefaults]
 									objectForKey:@"FinkBasePath"]
-								stringByAppendingPathComponent: @"/fink/dists"] retain];
+								stringByAppendingPathComponent: @"/fink/dists"];
 	}
 	return _pathToDists;
 }
@@ -62,8 +45,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setName:(NSString *)s
 {
-	[s retain];
-	[name release];
 	name = s;
 }
 
@@ -75,8 +56,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setStatus:(NSString *)s
 {
-	[s retain];
-	[status release];
 	status = s;
 }
 
@@ -88,8 +67,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setVersion:(NSString *)s
 {
-	[s retain];
-	[version release];
 	version = s;
 }
 
@@ -101,8 +78,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setInstalled:(NSString *)s
 {
-	[s retain];
-	[installed release];
 	installed = s;
 }
 
@@ -114,8 +89,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setBinary:(NSString *)s;
 {
-	[s retain];
-	[binary release];
 	binary = s;
 }
 
@@ -127,8 +100,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setStable:(NSString *)s
 {
-	[s retain];
-	[stable release];
 	stable = s;
 }
 
@@ -140,8 +111,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setUnstable:(NSString *)s;
 {
-	[s retain];
-	[unstable release];
 	unstable = s;
 }
 
@@ -153,8 +122,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setLocal:(NSString *)s;
 {
-	[s retain];
-	[local release];
 	local = s;
 }
 
@@ -166,8 +133,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setCategory:(NSString *)s
 {
-	[s retain];
-	[category release];
 	category = s;
 }
 
@@ -179,8 +144,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setFilename:(NSString *)s;
 {
-	[s retain];
-	[filename release];
 	filename = s;
 }
 
@@ -192,8 +155,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setSummary:(NSString *)s;
 {
-	[s retain];
-	[summary release];
 	summary = s;
 }
 
@@ -205,8 +166,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setFulldesc:(NSString *)s
 {
-	[s retain];
-	[fulldesc release];
 	fulldesc = s;
 }
 
@@ -218,8 +177,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setWeburl:(NSString *)s
 {
-	[s retain];
-	[weburl release];
 	weburl = s;	
 }
 
@@ -231,8 +188,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setMaintainer:(NSString *)s;
 {
-	[s retain];
-	[maintainer release];
 	maintainer = s;	
 }
 
@@ -244,8 +199,6 @@ See the header file, FinkPackage.h, for interface and license information.
 
 -(void)setEmail:(NSString *)s
 {
-	[s retain];
-	[email release];
 	email = s;	
 }
 
@@ -523,7 +476,7 @@ See the header file, FinkPackage.h, for interface and license information.
 		if (! foundSplitoff && 
 			[fname rangeOfString:@"-"].length > 0 && 
 			! [mgr fileExistsAtPath:thePath]){
-			NSMutableString *mutablePath = [[thePath mutableCopy] autorelease];
+			NSMutableString *mutablePath = [thePath mutableCopy];
 			NSString *mutatedString;
 			NSRange rangeToLastDash = 
 				NSMakeRange(0, [fname rangeOfString:@"-" options:NSBackwardsSearch].location);

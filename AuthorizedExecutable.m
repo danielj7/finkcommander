@@ -26,9 +26,7 @@
     {
         NSMutableArray* args = [[NSMutableArray alloc] init];
         [self setArguments:args];
-        [args release];
         output = [[NSMutableString alloc] init];
-        [output retain];
         [self setAuthExecutable:exe];
         [self setMustBeAuthorized:false];
     }
@@ -44,8 +42,6 @@
     [self setAuthExecutable:nil];
     [self setArguments:nil];
 	[self setEnvironment:nil];
-    [output release];
-	[super dealloc];
 }
 
 
@@ -63,8 +59,6 @@
 
 -(void)setArguments:(NSMutableArray*)args
 {
-    [args retain];
-    [arguments release];
     arguments = args;
 }
 
@@ -75,8 +69,6 @@
 
 -(void)setEnvironment:(NSDictionary *)env
 {
-	[env retain];
-	[environment release];
 	environment = env;
 }
 
@@ -204,8 +196,6 @@
 -(void)setAuthExecutable:(NSString*)exe
 {
     [self unAuthorize];
-    [exe retain];
-    [authExecutable release];
     authExecutable = exe;
 }
 
@@ -223,8 +213,6 @@
 
 -(void)setDelegate:(id)dgate
 {
-    [dgate retain];
-    [delegate release];
     delegate = dgate;
 }
 
@@ -396,9 +384,7 @@
             //stderrPipe = [NSPipe pipe];
 
             stdinHandle = [stdinPipe fileHandleForWriting];
-            [stdinHandle retain];
             stdoutHandle = [stdoutPipe fileHandleForReading];
-            [stdoutHandle retain];
             //stderrHandle = [stderrPipe fileHandleForReading];
             //[stderrHandle retain];
 
@@ -417,7 +403,6 @@
             //[stderrHandle readInBackgroundAndNotify];
 
             task = [[NSTask alloc] init];
-            [task retain];
             [task setStandardOutput:stdoutPipe];
             [task setStandardInput:stdinPipe];
 			//my change:
@@ -468,12 +453,9 @@
 		[task waitUntilExit];
     }
 	status = [task terminationStatus];
-    [task release];
 	[stdinHandle closeFile];
 	[stdoutHandle closeFile];
 	//[stderrHandle closeFile];
-    [stdinHandle release];
-    [stdoutHandle release];
     //[stderrHandle release];
     task = nil;
     stdoutHandle = nil;

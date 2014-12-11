@@ -45,10 +45,6 @@ See the header file, FinkData.h, for interface and license information.
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [array release];
-    [binaryPackages release];
-    [start release];
-    [super dealloc];
 }
 
 // Accessors
@@ -59,22 +55,16 @@ See the header file, FinkData.h, for interface and license information.
 
 -(void)setArray:(NSArray *)a
 {
-    [a retain];
-    [array release];
     array = a;
 }
 
 -(void)setBinaryPackages:(NSDictionary *)d
 {
-    [d retain];
-    [binaryPackages release];
     binaryPackages = d;
 }
 
 -(void)setStart:(NSDate *)d
 {
-    [d retain];
-    [start release];
     start = d;
 }
 
@@ -117,28 +107,27 @@ See the header file, FinkData.h, for interface and license information.
     [listCmd setStandardOutput: pipeIn];
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
-	[listCmd release];
-	output = [[[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding] autorelease];
+	output = [[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding];
     e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
 	while (nil != (pkginfo = [e nextObject])){
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
-		while (nil != (line = [f nextObject])){
-			if ([line contains:@"Package:"]){
-				pname = [line substringWithRange: 
-								NSMakeRange(PACKAGESTART, [line length] - PACKAGESTART)];
-				continue;
+		@autoreleasepool {
+			f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
+			while (nil != (line = [f nextObject])){
+				if ([line contains:@"Package:"]){
+					pname = [line substringWithRange: 
+									NSMakeRange(PACKAGESTART, [line length] - PACKAGESTART)];
+					continue;
+				}
+				if ([line contains:@"Version:"]){
+					pversion = [line substringWithRange:
+										NSMakeRange(VERSIONSTART, [line length] - VERSIONSTART)];
+					break;
+				}
 			}
-			if ([line contains:@"Version:"]){
-				pversion = [line substringWithRange:
-									NSMakeRange(VERSIONSTART, [line length] - VERSIONSTART)];
-				break;
+			if (pname && pversion){
+				[pkgs setObject:pversion forKey:pname];
 			}
 		}
-		if (pname && pversion){
-			[pkgs setObject:pversion forKey:pname];
-		}
-		[pool release];
 	}
 	
 	Dprintf(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
@@ -150,7 +139,7 @@ See the header file, FinkData.h, for interface and license information.
     NSPipe *pipeIn  = [NSPipe pipe];
     NSFileHandle *cmdStdout = [pipeIn fileHandleForReading];
     NSArray *args;
-	NSTask *finkListCommand = [[[NSTask alloc] init] autorelease];
+	NSTask *finkListCommand = [[NSTask alloc] init];
 
 	args = [NSArray arrayWithObjects:
 		[NSHomeDirectory() stringByAppendingPathComponent: 
@@ -246,8 +235,8 @@ See the header file, FinkData.h, for interface and license information.
 	BOOL showRedundantPackages = [defaults boolForKey:FinkShowRedundantPackages];
 	
 	d = [info objectForKey: NSFileHandleNotificationDataItem];
-	output = [[[NSString alloc] initWithData:d
-								encoding:NSMacOSRomanStringEncoding] autorelease];
+	output = [[NSString alloc] initWithData:d
+								encoding:NSMacOSRomanStringEncoding];
 
 	Dprintf(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
@@ -262,7 +251,7 @@ See the header file, FinkData.h, for interface and license information.
 		/* 	Without a separate autorelease pool for this loop,
 			FinkCommander's memory usage increases by several megabytes
 			while the updating process is taking place.  */
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
 		p = [[FinkPackage alloc] init];
 		[p setName:[packageComponents objectAtIndex: 0]];
 		[p setStatus:[packageComponents objectAtIndex: 1]];
@@ -321,8 +310,7 @@ See the header file, FinkData.h, for interface and license information.
 		}
 
 		[collector addObject: p];
-		[p release];
-		[pool release];
+		}
     }
     [self setArray:[NSArray arrayWithArray:collector]]; //make immutable
 	[self setBinaryPackages: nil];

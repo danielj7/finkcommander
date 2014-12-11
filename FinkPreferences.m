@@ -54,12 +54,6 @@ enum {
 	[environmentTableView setAutosaveTableColumns: YES];
 }
 
--(void)dealloc
-{
-	[conf release];
-	[environmentArray release];
-	[super dealloc];
-}
 
 //--------------------------------------------------------------------------------
 #pragma mark GENERAL HELPERS
@@ -124,7 +118,6 @@ enum {
 	}
 	newSettings = [environmentSettings copy];
 	[defaults setObject:newSettings forKey:FinkEnvironmentSettings];
-	[newSettings release];
 }
 
 -(void)validateEnvironmentButtons

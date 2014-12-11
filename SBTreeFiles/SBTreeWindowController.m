@@ -43,8 +43,6 @@ enum {
 
 -(void)setActiveView:(NSString *)newActiveView
 {
-	[newActiveView retain];
-	[_sbActiveView release];
 	_sbActiveView = newActiveView;
 }
 
@@ -67,7 +65,7 @@ enum {
 	outlineView = [[SBOutlineView alloc] 
 					initAsSubstituteForOutlineView:outlineView];  //RC == 1
 	[outlineScrollView setDocumentView:outlineView];              //RC == 2
-	[outlineView release];   									  //RC == 1
+	   									                          //RC == 1
 	[outlineView sizeLastColumnToFit];
 
 	/* Set up the outline view controller */
@@ -90,7 +88,6 @@ enum {
 	[sbBrowser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
 	[oldBrowser removeFromSuperview];
 	[browserSuperview addSubview:sbBrowser];
-    [sbBrowser release];
     [sbBrowser setTree:sbTree];
 	
 	[loadingIndicator setStyle:NSProgressIndicatorSpinningStyle];
@@ -168,11 +165,7 @@ enum {
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
 	
 	[self setActiveView:nil];
-	[mDateColumnController release];
-	[oController release];
-	[sbTree release];
 	
-	[super dealloc];
 }
 
 //----------------------------------------------------------

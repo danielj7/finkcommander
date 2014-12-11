@@ -87,12 +87,8 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 
 -(void)dealloc
 {
-	[_sbrootItem release];
-	[_sbName release];
-	[sbLock release];
 	Dprintf(@"Deallocating %@", [self description]);
 	
-	[super dealloc];
 }
 
 //----------------------------------------------------------
@@ -106,8 +102,6 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 
 -(void)setRootItem:(SBFileItem *)newRootItem
 {
-	[newRootItem retain];
-	[_sbrootItem release];
 	_sbrootItem = newRootItem;
 }
 
@@ -115,8 +109,6 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 
 -(void)setName:(NSString *)newName
 {
-    [newName retain];
-    [_sbName release];
     _sbName = newName;
 }
 
@@ -176,7 +168,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 		return;
     }
 	//There is a gap, we have to add the parent before adding this item
-    pitem = [[[SBFileItem alloc] initWithPath:[item pathToParent]] autorelease];
+    pitem = [[SBFileItem alloc] initWithPath:[item pathToParent]];
     [self addItemToTree:pitem];
     [self addItemToTree:item];
 }
@@ -185,10 +177,10 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 	stalling the whole application */
 -(void)buildTreeFromFileList:(NSMutableArray *)flist
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSEnumerator *e = [flist objectEnumerator];
-    NSString *apath;
-    SBFileItem *item;
+    @autoreleasepool {
+        NSEnumerator *e = [flist objectEnumerator];
+        NSString *apath;
+        SBFileItem *item;
 	
 	while (nil != (apath = [e nextObject]) && [apath length] > 0){
 		[sbLock lock];
@@ -198,9 +190,9 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 			totalSize += [item size];
 			itemCount++;
 		}
-		[item release]; //retain count = 1
+		 //retain count = 1
 		[sbLock unlock];
-    }
+        }
 	/*  If the item list is short enough, the DO notification is posted before the 
 		window controller has a chance to register for it!  This seems like kind
 		of an ugly hack to prevent this from happening, but it's all I can come up 
@@ -214,8 +206,8 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 			postNotificationName:@"SBTreeCompleteNotification"
 			object:[self name]];
 	Dprintf(@"Posted SBTreeCompleteNotification for %@", [self name]);
-    [pool release];
-    return;
+        return;
+    }
 }
 
 //----------------------------------------------------------

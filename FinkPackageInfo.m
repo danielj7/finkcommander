@@ -47,19 +47,12 @@
 	[[textView window] setDelegate:self];
 }
 
--(void)dealloc
-{
-	[emailSig release];
-	[super dealloc];
-}
 
 
 //--------------------------------------------------------------->Email Methods
 
 -(void)setEmailSig:(NSString *)s
 {
-	[s retain];
-	[emailSig release];
 	emailSig = s;
 }
 
@@ -91,11 +84,11 @@
 											NSUnderlineStyleAttributeName,
 									nil];
 	NSMutableAttributedString *description = 	
-			[[[NSMutableAttributedString alloc]
+			[[NSMutableAttributedString alloc]
 					initWithString: @""
 						   attributes: [NSDictionary dictionaryWithObjectsAndKeys:
 							   [NSFont systemFontOfSize:0], NSFontAttributeName,
-							   nil]] autorelease];
+							   nil]];
 	NSString *line;
 	NSString *field;
 	NSString *uri;
@@ -173,32 +166,29 @@
 	NSString *vName;
 	NSString *vNumber;
 	NSMutableAttributedString *description =
-		[[[NSMutableAttributedString alloc]
+		[[NSMutableAttributedString alloc]
 				initWithString: @""
 				attributes: [NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:0]
-										  forKey:NSFontAttributeName]] 
-								autorelease];
+										  forKey:NSFontAttributeName]];
 	
 	while (nil != (vName = [versionNameEnumerator nextObject])){
 		vNumber = [pkg valueForKey:[vName lowercaseString]];
 		if ([vNumber length] < 2) vNumber = @"None";
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];
 		[description appendAttributedString:
-			[[[NSMutableAttributedString alloc]
+			[[NSMutableAttributedString alloc]
 					initWithString: [NSString stringWithFormat: @"\n%@:", vName]
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 									[NSFont systemFontOfSize:0], NSFontAttributeName,
 									HEADINGCOLOR, NSForegroundColorAttributeName,
-									nil]]
-								autorelease]];
+									nil]]];
 		[description appendAttributedString:
-			[[[NSMutableAttributedString alloc]
+			[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @"\t%@", vNumber]
 					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 									[NSFont systemFontOfSize:0], NSFontAttributeName,
 									VERSIONCOLOR, NSForegroundColorAttributeName,
-									nil]] 
-								autorelease]];
+									nil]]];
 	}	
 	return description;
 }
@@ -218,19 +208,19 @@
 		pname = [NSString stringWithFormat:@"%@\n", [pkg name]];
 		psummary = [NSString stringWithFormat:@"%@\n", [pkg summary]];
 		[[textView textStorage] appendAttributedString:
-			[[[NSAttributedString alloc] 
+			[[NSAttributedString alloc] 
 					initWithString: pname
 					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
 										MAINHEADINGFONT, NSFontAttributeName,
 										HEADINGCOLOR, NSForegroundColorAttributeName,
-										nil]] autorelease]];
+										nil]]];
 		[[textView textStorage] appendAttributedString:
-			[[[NSAttributedString alloc]
+			[[NSAttributedString alloc]
 					initWithString: psummary
 						attributes: [NSDictionary dictionaryWithObjectsAndKeys:
 										[NSFont systemFontOfSize:0], NSFontAttributeName,
 										SHORTDESCCOLOR, NSForegroundColorAttributeName,
-										nil]] autorelease]];
+										nil]]];
 		[[textView textStorage] appendAttributedString:
 			[self formattedVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:

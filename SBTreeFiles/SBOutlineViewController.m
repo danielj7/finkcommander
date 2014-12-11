@@ -22,7 +22,7 @@
 		NSEnumerator *e; 
 
 		outlineView = oView;  //retained by superview
-		tree = [aTree retain];
+		tree = aTree;
 		e = [[outlineView tableColumns] objectEnumerator];
 		[self setPreviousColumnIdentifier:@"filename"];
 		
@@ -36,24 +36,14 @@
 			[[aColumn headerCell] setTarget:self];
 			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
 		}
-		columnStateDictionary = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+		columnStateDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 			SBAscendingOrder, @"filename",
 			SBAscendingOrder, @"size",
-			SBAscendingOrder, @"mdate", nil] retain];
+			SBAscendingOrder, @"mdate", nil];
 		[outlineView setHighlightedTableColumn:	
 			[outlineView tableColumnWithIdentifier:@"filename"]];
 	}
 	return self;
-}
-
--(void)dealloc
-{
-	Dprintf(@"Releasing outline view controller");
-    [tree release];
-	[previousColumnIdentifier release];
-    [columnStateDictionary release];
-
-    [super dealloc];
 }
 
 //----------------------------------------------------------
@@ -63,8 +53,6 @@
 -(NSString *)previousColumnIdentifier { return previousColumnIdentifier; }
 
 -(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier{
-	[newPreviousColumnIdentifier retain];
-	[previousColumnIdentifier release];
 	previousColumnIdentifier = newPreviousColumnIdentifier;
 }
 

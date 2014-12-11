@@ -66,8 +66,6 @@
 
 -(void)setCurrentPackage:(NSString *)p
 {
-    [p retain];
-    [currentPackage release];
     currentPackage = p;
 }
 
@@ -80,7 +78,7 @@
         int aPrompt, mPrompt, config, dOutput;  //test regex compilation success
 
         defaults = [NSUserDefaults standardUserDefaults];
-        command = [cmd retain];
+        command = cmd;
         readingPackageList = NO;
         selfRepair = NO;
         installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
@@ -107,18 +105,12 @@
 
 -(void)dealloc
 {
-    [ptracker release];
-    [packageList release];
-    [increments release];
-    [command release];
-    [currentPackage release];
 
     regfree(&configure);
     regfree(&prompt);
     regfree(&manPrompt);
 	regfree (&dynamicOutput);
 
-    [super dealloc];
 }
 
 //------------------------------------------>Set Up Installation Arrays and Dictionary

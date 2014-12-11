@@ -59,24 +59,14 @@ enum {
 		[self setUsesAlternatingRowBackgroundColors:YES];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
-		reverseSortImage = [[NSImage imageNamed: @"reverse"] retain];
-		normalSortImage = [[NSImage imageNamed: @"normal"] retain];
+		reverseSortImage = [NSImage imageNamed: @"reverse"];
+		normalSortImage = [NSImage imageNamed: @"normal"];
 		// dictionary used to record whether table columns are sorted in normal or reverse order
 		columnState = [[defaults objectForKey:FinkColumnStateDictionary] mutableCopy];
 	}
 	return self;
 }
 
--(void)dealloc
-{
-	[displayedPackages release];
-	[lastIdentifier release];
-	[columnState release];
-	[reverseSortImage release];
-	[normalSortImage release];
-	[selectedObjectInfo release];	
-	[super dealloc];
-}
 
 //----------------------------------------------------------
 #pragma mark ACCESSORS
@@ -85,16 +75,12 @@ enum {
 -(NSString *)lastIdentifier {return lastIdentifier;}
 -(void)setLastIdentifier:(NSString *)s
 {
-	[s retain];
-	[lastIdentifier release];
 	lastIdentifier = s;
 }
 
 -(NSArray *)displayedPackages {return displayedPackages;}
 -(void)setDisplayedPackages:(NSArray *)a
 {
-	[a retain];
-	[displayedPackages release];
 	displayedPackages = a;
 }
 
@@ -105,8 +91,6 @@ enum {
 
 -(void)setSelectedObjectInfo:(NSArray *)array
 {
-    [array retain];
-    [selectedObjectInfo release];
     selectedObjectInfo = array;
 }
 
@@ -322,7 +306,7 @@ enum {
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
 {
 	NSTableColumn *newColumn = 
-		[[[NSTableColumn alloc] initWithIdentifier:identifier] autorelease];
+		[[NSTableColumn alloc] initWithIdentifier:identifier];
 	NSString *title = [[NSBundle mainBundle] localizedStringForKey:identifier
 											 value:identifier
 											 table:@"Programmatic"];
@@ -330,13 +314,11 @@ enum {
 	if ([identifier isEqualToString:@"flagged"]){
 		NSImageCell *dataCell = [[NSImageCell alloc] initImageCell:nil];
 		[newColumn setDataCell:dataCell];
-		[dataCell release];
 		[[newColumn headerCell] setImage:[NSImage imageNamed:@"header_flag"]];
 		[newColumn setMaxWidth:MAX_FLAG_WIDTH];
 	}else{
 		NSCell *dataCell = [[NSCell alloc] initTextCell:@""];
 		[newColumn setDataCell:dataCell];
-		[dataCell release];
 		[[newColumn headerCell] setStringValue: title];
 		[[newColumn headerCell] setAlignment: NSLeftTextAlignment];
 		if ([identifier isEqualToString:@"status"]){
@@ -381,7 +363,7 @@ enum {
 -(void)removeColumnWithName:(NSString *)identifier
 {	
 	NSArray *columns = [defaults objectForKey: FinkTableColumnsArray];
-	NSMutableArray *reducedColumns = [[columns mutableCopy] autorelease];
+	NSMutableArray *reducedColumns = [columns mutableCopy];
 	
 	[self removeTableColumn: [self tableColumnWithIdentifier: identifier]];
 	[self sizeLastColumnToFit];
@@ -525,7 +507,7 @@ enum {
 						? @"reverse" : @"normal";
 		//record new state for next click on this column
 		[columnState setObject: direction forKey: identifier];
-		[defaults setObject:[[columnState copy] autorelease]
+		[defaults setObject:[columnState copy]
 				  forKey:FinkColumnStateDictionary];
 		// otherwise, return sort order to previous state for selected column
 	}else{

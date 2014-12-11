@@ -49,7 +49,6 @@
 	//[myTextView setFont:[textView font]];
 
     [scrollView setDocumentView: myTextView];
-    [myTextView release];
 
     return myTextView;
 }

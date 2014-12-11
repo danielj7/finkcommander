@@ -244,19 +244,6 @@ enum {
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [packages release];
-	[installationInfo release];
-    [preferences release];
-	[textViewController release];
-    [parser release];
-    [lastCommand release];
-    [finkTask release];
-    [killTask release];
-    [toolbar release];
-    [packageInfo release];
-    [warningDialog release];
-	[treeManager release];
-    [super dealloc];
 }
 
 //================================================================================
@@ -369,16 +356,11 @@ enum {
     NSSize tableContentSize = [tableScrollView contentSize];
 
     //Substitute FinkScrollView for NSScrollView
-    [tableScrollView retain];  //keep subviews available after the split
-    [outputScrollView retain]; // view is removed from its superview
     [splitView removeFromSuperview];
     splitView = [[FinkSplitView alloc] initWithFrame:[splitView frame]];
     [splitSuperview addSubview:splitView];
-    [splitView release];  						//retained by superview
     [splitView addSubview:tableScrollView];
-	[tableScrollView release];
     [splitView addSubview:outputScrollView];
-    [outputScrollView release];
     [splitView connectSubviews]; //connects instance variables to scroll views
     [splitView adjustSubviews];
 	[splitView setCollapseExpandMenuItem:collapseExpandMenuItem];
@@ -391,7 +373,6 @@ enum {
 		NSMakeRect(0, 0, tableContentSize.width,
 			 tableContentSize.height)];
     [tableScrollView setDocumentView:tableView];
-    [tableView release];
     [tableView setDisplayedPackages:[packages array]];
     [tableView sizeLastColumnToFit];
     [tableView setMenu:tableContextMenu];
@@ -458,15 +439,11 @@ enum {
 -(NSString *)lastCommand {return lastCommand;}
 -(void)setLastCommand:(NSString *)s
 {
-    [s retain];
-    [lastCommand release];
     lastCommand = s;
 }
 
 -(void)setParser:(FinkOutputParser *)p
 {
-    [p retain];
-    [parser release];
     parser = p;
 }
 
@@ -500,7 +477,6 @@ enum {
 			keyEquivalent:@""];
 
 	[windowMenu insertItem:raiseMainWindowItem atIndex:2];
-	[raiseMainWindowItem release];
 	[windowMenu insertItem:[NSMenuItem separatorItem] atIndex:3];
 }
 
@@ -529,42 +505,42 @@ enum {
 //Helper; separated from action method because also called on schedule
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
-		infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-	NSDictionary *latestVersionDict =
-		[NSDictionary dictionaryWithContentsOfURL:
-			[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
-	NSString *latestVersion = [defaults objectForKey: @"FinkAvailableUpdate"];
+	@autoreleasepool {
+		NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
+			infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+		NSDictionary *latestVersionDict =
+			[NSDictionary dictionaryWithContentsOfURL:
+				[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
+		NSString *latestVersion = [defaults objectForKey: @"FinkAvailableUpdate"];
 
-	if ([installedVersion compare: latestVersion] == NSOrderedAscending){
-		int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
-			NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify how frequently to check for updates.", @"Update alert message"),
-			NSLocalizedString(@"Upgrade Now", @"Update alert default"),
-			NSLocalizedString(@"Change Preferences…", @"Update alert alternate"),
-			NSLocalizedString( @"Ask Again Later", @"Update alert other"));
-		switch (answer){
-			case NSAlertDefaultReturn:
-				[[NSWorkspace sharedWorkspace] openURL:
-					[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
-			case NSAlertAlternateReturn:
-				[self showPreferencePanel:nil];
+		if ([installedVersion compare: latestVersion] == NSOrderedAscending){
+			int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
+				NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify how frequently to check for updates.", @"Update alert message"),
+				NSLocalizedString(@"Upgrade Now", @"Update alert default"),
+				NSLocalizedString(@"Change Preferences…", @"Update alert alternate"),
+				NSLocalizedString( @"Ask Again Later", @"Update alert other"));
+			switch (answer){
+				case NSAlertDefaultReturn:
+					[[NSWorkspace sharedWorkspace] openURL:
+						[NSURL URLWithString:@"http://finkcommander.sourceforge.net"]];
+				case NSAlertAlternateReturn:
+					[self showPreferencePanel:nil];
+			}
+		}else if (notifyWhenCurrent && latestVersionDict){
+			NSRunAlertPanel(
+				NSLocalizedString(@"Current", @"Title of update alert panel when the current version of FC is installed"),
+				NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", @"Message of update alert panel when the current version of FC is installed"),
+				LS_OK, nil, nil);
 		}
-	}else if (notifyWhenCurrent && latestVersionDict){
-		NSRunAlertPanel(
-			NSLocalizedString(@"Current", @"Title of update alert panel when the current version of FC is installed"),
-			NSLocalizedString(@"The latest version of FinkCommander is installed on your system.", @"Message of update alert panel when the current version of FC is installed"),
-			LS_OK, nil, nil);
-	}
 
-	if (latestVersionDict){
-		[defaults setObject:[latestVersionDict objectForKey: @"FinkCommander"] forKey: @"FinkAvailableUpdate"];
-	}else if (notifyWhenCurrent){
-		NSRunAlertPanel(LS_ERROR,
-			NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
-			LS_OK, nil, nil);
+		if (latestVersionDict){
+			[defaults setObject:[latestVersionDict objectForKey: @"FinkCommander"] forKey: @"FinkAvailableUpdate"];
+		}else if (notifyWhenCurrent){
+			NSRunAlertPanel(LS_ERROR,
+				NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
+				LS_OK, nil, nil);
+		}
 	}
-	[pool release];
 }
 
 -(void)checkForUpdate:(NSNotification *)aNotification
@@ -648,7 +624,7 @@ enum {
 	int newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
 	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 	FinkPackage *package;
-	NSMutableArray *flagArray = [[[defaults objectForKey:FinkFlaggedColumns] mutableCopy] autorelease];
+	NSMutableArray *flagArray = [[defaults objectForKey:FinkFlaggedColumns] mutableCopy];
 
 	while (nil != (package = [e nextObject])){
 		[package setFlagged:newState];
@@ -658,7 +634,7 @@ enum {
 			[flagArray removeObject:[package name]];
 		}
 	}
-	[defaults setObject:[[flagArray copy] autorelease] forKey:FinkFlaggedColumns];
+	[defaults setObject:[flagArray copy] forKey:FinkFlaggedColumns];
 	[tableView reloadData];
 }
 
@@ -890,9 +866,6 @@ enum {
 		nil];
 	NSAttributedString *credits = [[NSAttributedString alloc] initWithString:finkVersion attributes:attributes];
 	[NSApp orderFrontStandardAboutPanelWithOptions:[NSDictionary dictionaryWithObject:credits forKey:@"Credits"]];
-	[attributes release];
-	[style release];
-	[credits release];
 }
 //Help menu internet access items
 -(IBAction)goToWebsite:(id)sender
@@ -994,7 +967,7 @@ enum {
 		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
 		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
     }
-    return [item autorelease];
+    return item;
 }
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
@@ -1086,7 +1059,7 @@ enum {
 					[subset addObject:pkg];
 				}
 			}
-			[tableView setDisplayedPackages:[[subset copy] autorelease]];
+			[tableView setDisplayedPackages:[subset copy]];
 		}
 		[tableView resortTableAfterFilter];
 
@@ -1310,7 +1283,7 @@ enum {
 			cmd = [NSString stringWithFormat:@"tell application \"iTerm\"\nactivate\ntell the first terminal\nset mysession to (make new session at the end of sessions)\ntell mysession\nset name to \"FinkCommander\"\nexec command \"%@\"\nend tell\nend tell\nend tell", cmd];
 		}
 	}
-	script = [[[NSAppleScript alloc] initWithSource:cmd] autorelease];
+	script = [[NSAppleScript alloc] initWithSource:cmd];
 	descriptor = [script executeAndReturnError:&errord];
 	if (! descriptor){
 		NSLog(@"Apple script failed to execute");
@@ -1531,7 +1504,7 @@ enum {
 
 -(void)processOutput:(NSString *)output
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
     /* Determine how much output is below the scroll view based on
        the following calculation (in vertical pixels):
@@ -1544,16 +1517,16 @@ enum {
 
     This value is used to determine whether the user has scrolled up.
     If so, the output view will not automatically scroll to the bottom. */
-    NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
+        NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
 		abs([[textViewController textView] bounds].size.height 			-
 			[[textViewController textView] visibleRect].origin.y 		-
 			[[textViewController textView] visibleRect].size.height)];
 
-    int signal = [parser parseOutput:output];
+        int signal = [parser parseOutput:output];
 	
-    if (commandTerminated) return;
-    switch(signal)
-    {
+        if (commandTerminated) return;
+        switch(signal)
+        {
 		case NONE:
 			break;
 		case PASSWORD_PROMPT:
@@ -1628,11 +1601,11 @@ enum {
 		}
 	}
 	//According to Moriarity example, we have to put off scrolling until next event loop
-    [self performSelector:@selector(scrollToVisible:)
+        [self performSelector:@selector(scrollToVisible:)
 					 withObject:pixelsBelowView
 					 afterDelay:0.0];
 					 
-	[pool release];
+	}
 }
 
 /*

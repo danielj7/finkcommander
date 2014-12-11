@@ -72,7 +72,6 @@ File: FinkInstallationInfo.m
 	NSString *result;
 
 	if (! [manager fileExistsAtPath:path]){
-		[versionTask release];
 		return nil;
 	}
 	
@@ -86,8 +85,8 @@ File: FinkInstallationInfo.m
 	[versionTask launch];
 
 	NS_DURING
-		result = [[[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
-									encoding:NSMacOSRomanStringEncoding] autorelease];
+		result = [[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
+									encoding:NSMacOSRomanStringEncoding];
 	NS_HANDLER
 		//Handle NSFileHandleOperationException
 	//		NSLog(@"Failed to read data stream from %@ %@", path, args);
@@ -95,7 +94,6 @@ File: FinkInstallationInfo.m
 		return nil;
 	NS_ENDHANDLER
 
-	[versionTask release];
 	[taskStdout closeFile];
 	return result;
 }
