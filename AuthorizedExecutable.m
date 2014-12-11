@@ -309,7 +309,7 @@
 
 -(void)captureStdOut:(NSNotification*)notification
 {
-    NSData *inData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    NSData *inData = [notification userInfo][NSFileHandleNotificationDataItem];
     if (inData == nil || [inData length] == 0)
     {
         [task waitUntilExit];
@@ -327,7 +327,7 @@
 //
 -(void)captureStdErr:(NSNotification*)notification
 {
-    NSData *inData = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    NSData *inData = [notification userInfo][NSFileHandleNotificationDataItem];
     if (inData != nil && [inData length] != 0)
     {
         [self logStdErr:[NSString stringWithCString:[inData bytes]

@@ -52,7 +52,7 @@
     NSString *s;
     NSMutableArray *fileList;
 
-    [task setLaunchPath:[args objectAtIndex:0]];
+    [task setLaunchPath:args[0]];
     if ([args count] > 1){
 		[task setArguments:[args subarrayWithRange:
 			NSMakeRange(1, [args count]-1)]];

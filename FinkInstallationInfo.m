@@ -122,11 +122,11 @@ File: FinkInstallationInfo.m
 	
 	version_lines = [version componentsSeparatedByString:@"\n"];
 	if ([version_lines count] >= 2 &&
-		[[version_lines objectAtIndex:0] containsCI:@"version"] &&
-		[[version_lines objectAtIndex:1] containsCI:@"version"]){
+		[version_lines[0] containsCI:@"version"] &&
+		[version_lines[1] containsCI:@"version"]){
 		version = [NSString stringWithFormat:@"%@\n%@\n", 
-					[version_lines objectAtIndex:0], 
-					[version_lines objectAtIndex:1]];
+					version_lines[0], 
+					version_lines[1]];
 	}else{
 		version = @"Unable to determine fink version; the format changed again!\n"; 
 	}
@@ -146,7 +146,7 @@ File: FinkInstallationInfo.m
 	/* 	dictionaryWithContentsOfFile returns nil for file error or if file is not validly
 		formatted plist */
 	if (nil != sysVerPlistDict){
-		sysVerString = [sysVerPlistDict objectForKey:@"ProductVersion"];
+		sysVerString = sysVerPlistDict[@"ProductVersion"];
 		if (nil != sysVerString){
 			return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
 		}
@@ -158,7 +158,7 @@ File: FinkInstallationInfo.m
 	sysVerString = [self versionOutputForExecutable:@"/usr/bin/sw_vers"
 								usingArgument:nil];
 	if (nil != sysVerString){
-		sysVerString = [[self versionInformationFromString:sysVerString] objectAtIndex:0];
+		sysVerString = [self versionInformationFromString:sysVerString][0];
 		if (nil != sysVerString){
 			return [NSString stringWithFormat: @"Mac OS X version: %@", sysVerString];
 		}
@@ -182,8 +182,8 @@ result = [self versionOutputForExecutable:@"/usr/bin/cc"];
 if (nil == result) return error;
 
 versInfo = [self versionInformationFromString:result];
-result = [versInfo objectAtIndex:0];
-extraInformation = [versInfo objectAtIndex:1];
+result = versInfo[0];
+extraInformation = versInfo[1];
 if (nil == result) return error;
 return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformation];
 }
@@ -208,7 +208,7 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	
 	result = [self versionOutputForExecutable:pathToMake];
 	if (nil == result) return error;
-	result = [[self versionInformationFromString:result] objectAtIndex:0];
+	result = [self versionInformationFromString:result][0];
 	if (nil == result) return error;
 	return [NSString stringWithFormat: @"make version: %@", result];
 }
@@ -222,8 +222,7 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 
     if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH0);
-		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0]
-							objectForKey:@"CFBundleShortVersionString"];
+		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;
 		version = [@"Xcode version: " stringByAppendingString:version];
 		return version;
@@ -231,16 +230,14 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
-		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1]
-							objectForKey:@"DevCDVersion"];
+		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1][@"DevCDVersion"];
 		if (! version  || [version length] < 3) return error;
 		version = [version stringByAppendingString:@" or later"];
 		return version;
 	}
 	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH2);
-		version = [[NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2]
-							objectForKey:@"CFBundleShortVersionString"];
+		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;  //should at least be x.x
 		if ([version compare:MAY_TOOLS_VERSION] == NSOrderedDescending){  // > May 2001
 			return @"December 2001 Developer Tools";

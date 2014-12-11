@@ -34,8 +34,8 @@ File: FinkSplitView.m
 
 -(void)connectSubviews
 {
-	tableScrollView = [[self subviews] objectAtIndex:0];
-	outputScrollView = [[self subviews] objectAtIndex:1];
+	tableScrollView = [self subviews][0];
+	outputScrollView = [self subviews][1];
 }
 
 -(void)setCollapseExpandMenuItem:(NSMenuItem *)item

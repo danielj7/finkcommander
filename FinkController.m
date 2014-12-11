@@ -265,12 +265,12 @@ enum {
 		NSLog(@"Warning: Tag-to-name translation failed; index %d out of bounds", atag);
 		return nil;
     }
-    return [tagNameArray objectAtIndex:atag];
+    return tagNameArray[atag];
 }
 
 -(int)tagFromAttributeName:(NSString *)name
 {
-    return [[NAME_TAG_DICTIONARY objectForKey:name] intValue];
+    return [NAME_TAG_DICTIONARY[name] intValue];
 }
 
 -(void)displayNumberOfPackages
@@ -402,8 +402,7 @@ enum {
 {
     NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
 				    [tableView lastIdentifier]];
-	NSString *direction = [[defaults objectForKey:FinkColumnStateDictionary]
-							objectForKey:[tableView lastIdentifier]];
+	NSString *direction = [defaults objectForKey:FinkColumnStateDictionary][[tableView lastIdentifier]];
     NSString *basePath = [defaults objectForKey:FinkBasePath];
 
     if ([basePath length] <= 1 ){
@@ -506,8 +505,8 @@ enum {
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent
 {
 	@autoreleasepool {
-		NSString *installedVersion = [[[NSBundle bundleForClass:[self class]]
-			infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+		NSString *installedVersion = [[NSBundle bundleForClass:[self class]]
+			infoDictionary][@"CFBundleShortVersionString"];
 		NSDictionary *latestVersionDict =
 			[NSDictionary dictionaryWithContentsOfURL:
 				[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
@@ -534,7 +533,7 @@ enum {
 		}
 
 		if (latestVersionDict){
-			[defaults setObject:[latestVersionDict objectForKey: @"FinkCommander"] forKey: @"FinkAvailableUpdate"];
+			[defaults setObject:latestVersionDict[@"FinkCommander"] forKey: @"FinkAvailableUpdate"];
 		}else if (notifyWhenCurrent){
 			NSRunAlertPanel(LS_ERROR,
 				NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
@@ -794,8 +793,7 @@ enum {
 
 -(IBAction)openPackageFileViewer:(id)sender
 {
-	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
-		[tableView selectedRow]];
+	FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
 	
 	if (! [[pkg status] contains:@"u"]){
 		NSBeep();
@@ -812,8 +810,7 @@ enum {
 
 -(IBAction)openDocumentation:(id)sender
 {
-	FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
-						[tableView selectedRow]];
+	FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
 	NSFileManager *mgr = [NSFileManager defaultManager];
 	NSString *root = [[defaults objectForKey:FinkBasePath] 
 						stringByAppendingPathComponent:@"share/doc"];
@@ -826,7 +823,7 @@ enum {
 	}
 	pathContents = [mgr directoryContentsAtPath:path];
 	if (nil != pathContents && [pathContents count] > 0){
-		path = [path stringByAppendingPathComponent:[pathContents objectAtIndex:0]];
+		path = [path stringByAppendingPathComponent:pathContents[0]];
 	}
 	[[NSWorkspace sharedWorkspace] selectFile:path inFileViewerRootedAtPath:root];
 }
@@ -941,23 +938,23 @@ enum {
     NSToolbarItem *item = [[NSToolbarItem alloc]
 				  initWithItemIdentifier: itemIdentifier];
 
-    itemDict = [d objectForKey: itemIdentifier];
-    if (value = [itemDict objectForKey: @"Label"]){
+    itemDict = d[itemIdentifier];
+    if (value = itemDict[@"Label"]){
 		[item setLabel: value];
 		[item setPaletteLabel: value];
     }
-    if (value = [itemDict objectForKey: @"PaletteLabel"])
+    if (value = itemDict[@"PaletteLabel"])
 		[item setPaletteLabel: value];
-    if (value = [itemDict objectForKey: @"ToolTip"])
+    if (value = itemDict[@"ToolTip"])
 		[item setToolTip: value];
-    if (value = [itemDict objectForKey: @"Image"])
+    if (value = itemDict[@"Image"])
 		[item setImage: [NSImage imageNamed: value]];
-    if (value = [itemDict objectForKey: @"Action"]){
+    if (value = itemDict[@"Action"]){
 		[item setTarget: self];
 		[item setAction: NSSelectorFromString([NSString
 						  stringWithFormat: @"%@:", value])];
     }
-    if (tag = [itemDict objectForKey: @"Tag"]){
+    if (tag = itemDict[@"Tag"]){
 		[item setTag: [tag intValue]];
     }
     if ([itemIdentifier isEqualToString:@"FinkFilterItem"]){
@@ -1116,8 +1113,7 @@ enum {
 		// Disable package file accessors, if the package is not installed
 		if (itemAction == @selector(openDocumentation:) 			||
 			itemAction == @selector(openPackageFileViewer:)){
-			FinkPackage *pkg = [[tableView displayedPackages] objectAtIndex:
-				[tableView selectedRow]];
+			FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
 			if (! [[pkg status] contains:@"u"]){ //current or outdated
 				return NO;
 			}
@@ -1310,7 +1306,7 @@ enum {
 //Helper
 -(void)launchCommandWithArguments:(NSMutableArray *)args
 {
-    NSString *exec = [args objectAtIndex:0];
+    NSString *exec = args[0];
 	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
 	NSString *askpass;
 	[envvars setValue:@(getenv("SSH_AUTH_SOCK")) forKey:@"SSH_AUTH_SOCK"];
@@ -1374,8 +1370,8 @@ enum {
 -(void)runCommandOnNotification:(NSNotification *)note
 {
     NSMutableArray *args = [note object];
-    NSString *cmd = [args objectAtIndex: 0];
-    NSNumber *indicator = [[note userInfo] objectForKey:FinkRunProgressIndicator];
+    NSString *cmd = args[0];
+    NSNumber *indicator = [note userInfo][FinkRunProgressIndicator];
 
 	Dprintf(@"Running command %@ on notification", cmd);
 
@@ -1463,7 +1459,7 @@ enum {
     NSString *pname, *phaseString;
 
     pname = [parser currentPackage];
-    phaseString = [phases objectAtIndex:phaseIndex];
+    phaseString = phases[phaseIndex];
 	phaseString = 
 		[[NSBundle mainBundle] 
 			localizedStringForKey:phaseString

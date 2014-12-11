@@ -181,7 +181,7 @@
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	
 	dragImage = [[NSWorkspace sharedWorkspace]
-			iconForFile:[fileList objectAtIndex:0]];
+			iconForFile:fileList[0]];
 	dragPosition = [self convertPoint:[theEvent locationInWindow]
 											fromView:nil];
 	//Put hot spot at center of icon

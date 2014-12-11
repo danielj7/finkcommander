@@ -125,7 +125,7 @@ See the header file, FinkData.h, for interface and license information.
 				}
 			}
 			if (pname && pversion){
-				[pkgs setObject:pversion forKey:pname];
+				pkgs[pname] = pversion;
 			}
 		}
 	}
@@ -233,7 +233,7 @@ See the header file, FinkData.h, for interface and license information.
 	NSArray *flagArray = [defaults objectForKey:FinkFlaggedColumns];
 	BOOL showRedundantPackages = [defaults boolForKey:FinkShowRedundantPackages];
 	
-	d = [info objectForKey: NSFileHandleNotificationDataItem];
+	d = info[NSFileHandleNotificationDataItem];
 	output = [[NSString alloc] initWithData:d
 								encoding:NSMacOSRomanStringEncoding];
 
@@ -252,17 +252,17 @@ See the header file, FinkData.h, for interface and license information.
 			while the updating process is taking place.  */
 		@autoreleasepool {
 		p = [[FinkPackage alloc] init];
-		[p setName:[packageComponents objectAtIndex: 0]];
-		[p setStatus:[packageComponents objectAtIndex: 1]];
-		[p setVersion:[packageComponents objectAtIndex: 2]];
-		[p setInstalled:[packageComponents objectAtIndex: 3]];
-		[p setStable:[packageComponents objectAtIndex: 4]];
-		[p setUnstable:[packageComponents objectAtIndex: 5]];
-		[p setLocal:[packageComponents objectAtIndex: 6]];
-		[p setCategory:[packageComponents objectAtIndex: 7]];
-		[p setFilename:[packageComponents objectAtIndex: 8]];
-		[p setSummary:[packageComponents objectAtIndex: 9]];
-		[p setFulldesc:[packageComponents objectAtIndex: 10]];
+		[p setName:packageComponents[0]];
+		[p setStatus:packageComponents[1]];
+		[p setVersion:packageComponents[2]];
+		[p setInstalled:packageComponents[3]];
+		[p setStable:packageComponents[4]];
+		[p setUnstable:packageComponents[5]];
+		[p setLocal:packageComponents[6]];
+		[p setCategory:packageComponents[7]];
+		[p setFilename:packageComponents[8]];
+		[p setSummary:packageComponents[9]];
+		[p setFulldesc:packageComponents[10]];
 		
 		/* 	Many package have identical versions in the stable and
 			unstable branches. If unstable is listed first in
@@ -294,11 +294,11 @@ See the header file, FinkData.h, for interface and license information.
 			}
 		}
 		descriptionComponents = [self descriptionComponentsFromString:[p fulldesc]];
-		[p setWeburl: [descriptionComponents objectAtIndex: 0]];
-		[p setMaintainer: [descriptionComponents objectAtIndex: 1]];
-		[p setEmail: [descriptionComponents objectAtIndex: 2]];
+		[p setWeburl: descriptionComponents[0]];
+		[p setMaintainer: descriptionComponents[1]];
+		[p setEmail: descriptionComponents[2]];
 		
-		bversion = [binaryPackages objectForKey:[p name]];
+		bversion = binaryPackages[[p name]];
 		bversion = bversion ? bversion : @" ";
 		[p setBinary:bversion];
 		

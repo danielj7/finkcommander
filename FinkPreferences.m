@@ -71,7 +71,7 @@ enum {
 	[environmentArray removeAllObjects];
 	while (nil != (name = [e nextObject])){
 		setting = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-				name, @"name", [environmentSettings objectForKey:name], @"value", nil];
+				name, @"name", environmentSettings[name], @"value", nil];
 		[environmentArray addObject:setting];
 	}
 }
@@ -87,8 +87,8 @@ enum {
 
 	//Make sure we have no duplicate keys
 	for (i=0; i<limit; i++){
-		setting = [environmentArray objectAtIndex:i];
-		key = [setting objectForKey:@"name"];
+		setting = environmentArray[i];
+		key = setting[@"name"];
 		if ([key isEqualToString:name]){
 			Dprintf(@"Found setting for %@", name);
 			[environmentArray removeObjectAtIndex:i];
@@ -112,9 +112,9 @@ enum {
 	NSString *name, *value;
 	
 	while (nil != (setting = [e nextObject])){
-		name = [setting objectForKey:@"name"];
-		value = [setting objectForKey:@"value"];
-		[environmentSettings setObject:value forKey:name];
+		name = setting[@"name"];
+		value = setting[@"value"];
+		environmentSettings[name] = value;
 	}
 	newSettings = [environmentSettings copy];
 	[defaults setObject:newSettings forKey:FinkEnvironmentSettings];
@@ -481,7 +481,7 @@ enum {
 				   textField:(NSTextField *)textField
 {
 	if (returnCode == NSOKButton){
-		NSString *path = [[openPanel filenames] objectAtIndex:0];
+		NSString *path = [openPanel filenames][0];
 		Dprintf(@"Path chosen: %@", path);
 		[textField setStringValue: path];
 		Dprintf(@"Text field value: %@", [textField stringValue]);
@@ -604,7 +604,7 @@ enum {
 	row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	return [[environmentArray objectAtIndex:rowIndex] objectForKey:identifier];
+	return environmentArray[rowIndex][identifier];
 }
 
 -(void)tableView:(NSTableView *)aTableView 
@@ -613,7 +613,7 @@ enum {
 		row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	[[environmentArray objectAtIndex:rowIndex] setObject:anObject forKey:identifier];
+	environmentArray[rowIndex][identifier] = anObject;
 }
 
 -(IBAction)checkNow:(id)sender

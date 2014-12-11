@@ -39,7 +39,7 @@
 	while (nil != (identifier = [e nextObject])){
 		NSTableColumn *newColumn = [[NSTableColumn alloc]
 										initWithIdentifier:identifier];
-		NSString *title = [SB_COLUMNS objectForKey:identifier];
+		NSString *title = SB_COLUMNS[identifier];
 		title = [[NSBundle mainBundle] localizedStringForKey:title
 										value:title
 										table:@"Programmatic"];

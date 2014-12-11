@@ -128,7 +128,7 @@ File SBFileItem.m
 
 -(SBFileItem *)childAtIndex:(NSUInteger)n
 {
-	return [[self children] objectAtIndex:n];
+	return [self children][n];
 }
 
 //Helper for following methods

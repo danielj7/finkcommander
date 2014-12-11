@@ -154,13 +154,13 @@
 
     //If user clicks same column header twice in a row, change sort order
     if ([identifier isEqualToString:[self previousColumnIdentifier]]){
-		order = [[columnStateDictionary objectForKey:identifier] isEqualToString:SBAscendingOrder]
+		order = [columnStateDictionary[identifier] isEqualToString:SBAscendingOrder]
 			? SBDescendingOrder : SBAscendingOrder;
 		//Record new state for next click on this column
-		[columnStateDictionary setObject:order forKey:identifier];
+		columnStateDictionary[identifier] = order;
 		//Otherwise, return sort order to previous state for selected column
     }else{
-		order = [columnStateDictionary objectForKey:identifier];
+		order = columnStateDictionary[identifier];
     }
     [self setPreviousColumnIdentifier:identifier];
 

@@ -105,7 +105,7 @@ enum {
 
 	while (nil != (anIndex = [e nextObject])){
 		[pkgArray addObject:
-			[[self displayedPackages] objectAtIndex: [anIndex intValue]]];
+			[self displayedPackages][[anIndex intValue]]];
 	}
 	return pkgArray;
 }
@@ -259,7 +259,7 @@ enum {
 	NSFileManager *manager = [NSFileManager defaultManager];
 
 	while (nil != (rowNum = [e nextObject])){
-		pkg = [displayedPackages objectAtIndex:[rowNum intValue]];
+		pkg = displayedPackages[[rowNum intValue]];
 		if ([[pkg unstable] length] > 1){
 			tree = @"unstable";
 		}else{
@@ -386,7 +386,7 @@ enum {
 	row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	FinkPackage *package = [[self displayedPackages] objectAtIndex:rowIndex];
+	FinkPackage *package = [self displayedPackages][rowIndex];
 	if ([identifier isEqualToString:@"status"]){
 		NSString *pkgStatus = [package status];
 		return [[NSBundle mainBundle] localizedStringForKey:pkgStatus
@@ -422,8 +422,7 @@ enum {
 	int offset = selectionIndex - topRowIndex;
 
 	if (selectionIndex >= 0){
-		selectedObject = [[self displayedPackages]
-							objectAtIndex: selectionIndex];
+		selectedObject = [self displayedPackages][selectionIndex];
 		[self setSelectedObjectInfo:
 			@[selectedObject,
 				@(offset)]];
@@ -437,11 +436,11 @@ enum {
 -(void)scrollToSelectedObject
 {
 	if ([self selectedObjectInfo]){
-		FinkPackage *selectedObject = [[self selectedObjectInfo] objectAtIndex: 0];
+		FinkPackage *selectedObject = [self selectedObjectInfo][0];
 		NSInteger selection = [[self displayedPackages] indexOfObject: selectedObject];
 
 		if (selection != NSNotFound){
-			int offset = [[[self selectedObjectInfo] objectAtIndex: 1] intValue];
+			int offset = [[self selectedObjectInfo][1] intValue];
 			NSPoint offsetRowOrigin = [self rectOfRow: selection - offset].origin;
 			id contentView = [self superview];
 			id tableScrollView = [contentView superview];
@@ -478,7 +477,7 @@ enum {
 {
 	NSTableColumn *lastColumn = [self tableColumnWithIdentifier:
 		[self lastIdentifier]];
-	NSString *direction = [columnState objectForKey: [self lastIdentifier]];
+	NSString *direction = columnState[[self lastIdentifier]];
 
 	[self sortTableAtColumn: lastColumn inDirection: direction];
 }
@@ -501,15 +500,15 @@ enum {
 
 	// if user clicks same column header twice in a row, change sort order
 	if ([aTableColumn isEqualTo: lastColumn]){
-		direction = [[columnState objectForKey: identifier] isEqualToString: @"normal"]
+		direction = [columnState[identifier] isEqualToString: @"normal"]
 						? @"reverse" : @"normal";
 		//record new state for next click on this column
-		[columnState setObject: direction forKey: identifier];
+		columnState[identifier] = direction;
 		[defaults setObject:[columnState copy]
 				  forKey:FinkColumnStateDictionary];
 		// otherwise, return sort order to previous state for selected column
 	}else{
-		direction = [columnState objectForKey: identifier];
+		direction = columnState[identifier];
 	}
 
 	// record currently selected column's identifier for next call to method
@@ -539,7 +538,7 @@ enum {
 
 -(BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
 {
-	NSString *pname = [[[self displayedPackages] objectAtIndex: rowIndex] name];
+	NSString *pname = [[self displayedPackages][rowIndex] name];
 	if ([pname contains:@"tcsh"] 				|| 
 		[pname contains:@"term-readkey-pm"]){
 		NSBeginAlertSheet(LS_WARNING,

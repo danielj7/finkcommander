@@ -193,7 +193,7 @@
 
 	[textView setString: @""];
 	for (i = 0; i < count; i++){
-		pkg = [packages objectAtIndex: i];
+		pkg = packages[i];
 		pname = [NSString stringWithFormat:@"%@\n", [pkg name]];
 		psummary = [NSString stringWithFormat:@"%@\n", [pkg summary]];
 		[[textView textStorage] appendAttributedString:
