@@ -55,7 +55,7 @@
     NSTask *task;
 }
 
--(instancetype)initWithExecutable:(NSString*)exe;
+-(instancetype)initWithExecutable:(NSString*)exe NS_DESIGNATED_INITIALIZER;
 
 -(void)dealloc;
 

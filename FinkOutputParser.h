@@ -95,7 +95,7 @@ enum {
 }
 
 -(instancetype)initForCommand:(NSString *)cmd
-	executable:(NSString *)exe;
+	executable:(NSString *)exe NS_DESIGNATED_INITIALIZER;
 
 -(float)increment;
 

@@ -56,7 +56,7 @@
 
 -(instancetype)initWithFileList:(NSMutableArray *)fList;
 -(instancetype)initWithFileList:(NSMutableArray *)fList
-		   windowName:(NSString *)wName;
+		   windowName:(NSString *)wName NS_DESIGNATED_INITIALIZER;
 
 -(IBAction)switchViews:(id)sender;
 

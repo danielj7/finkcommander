@@ -40,7 +40,7 @@ File: FinkTextViewController.h
 }
 
 -(instancetype)initWithView:(NSTextView *)aTextView
-	   forScrollView:(NSScrollView *)aScrollView;
+	   forScrollView:(NSScrollView *)aScrollView NS_DESIGNATED_INITIALIZER;
 -(void)setLimits;
 -(void)appendString:(NSString *)s;
 -(void)replaceLastLineByString:(NSString *)s;

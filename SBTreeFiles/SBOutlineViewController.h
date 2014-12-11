@@ -38,7 +38,7 @@ extern NSString *sbDescending;
 }
 
 -(instancetype)initWithTree:(SBFileItemTree *)aTree
-			 view:(NSOutlineView *)oView;
+			 view:(NSOutlineView *)oView NS_DESIGNATED_INITIALIZER;
 
 -(NSString *)previousColumnIdentifier;
 

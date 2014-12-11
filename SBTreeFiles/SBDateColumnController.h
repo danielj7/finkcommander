@@ -35,7 +35,7 @@
 	/*" The designated initializer "*/
 -(instancetype)initWithColumn:(NSTableColumn *)myColumn
 		 shortTitle:(NSString *)stitle 
-		  longTitle:(NSString *)ltitle;
+		  longTitle:(NSString *)ltitle NS_DESIGNATED_INITIALIZER;
 
 -(NSTableColumn *)column;
 -(void)setColumn:(NSTableColumn *)newColumn;

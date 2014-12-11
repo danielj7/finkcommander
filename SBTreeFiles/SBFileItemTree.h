@@ -46,7 +46,7 @@ extern void alertProblemPaths(NSArray *);
  *	Initialization
  */
 -(instancetype)initWithFileArray:(NSMutableArray *)flist
-				  name:(NSString *)aName;
+				  name:(NSString *)aName NS_DESIGNATED_INITIALIZER;
 
 /*
  *	Accessors
