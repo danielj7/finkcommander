@@ -52,15 +52,12 @@ File: FinkTableView.h
 }
 
 //----------------------------------------------->Accessors
--(NSString *)lastIdentifier;
--(void)setLastIdentifier:(NSString *)s;
--(NSArray *)displayedPackages;
--(void)setDisplayedPackages:(NSArray *)a;
--(NSArray *)selectedObjectInfo;
--(void)setSelectedObjectInfo:(NSArray *)array;
--(NSImage *)normalSortImage;
--(NSImage *)reverseSortImage;
--(NSArray *)selectedPackageArray;
+@property (nonatomic, copy) NSString *lastIdentifier;
+@property (nonatomic, copy) NSArray *displayedPackages;
+@property (nonatomic, copy) NSArray *selectedObjectInfo;
+@property (nonatomic, readonly, copy) NSImage *normalSortImage;
+@property (nonatomic, readonly, copy) NSImage *reverseSortImage;
+@property (nonatomic, readonly, copy) NSArray *selectedPackageArray;
 
 //----------------------------------------------->Column Manipulation
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier;

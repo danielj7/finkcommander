@@ -65,53 +65,37 @@ enum {
  * Accessors
  */
 
--(NSString *)name;
--(void)setName:(NSString *)s;
+@property (nonatomic, copy) NSString *name;
 
--(NSString *)status;
--(void)setStatus:(NSString *)s;
+@property (nonatomic, copy) NSString *status;
 
--(NSString *)version;
--(void)setVersion:(NSString *)s;
+@property (nonatomic, copy) NSString *version;
 
--(NSString *)installed;
--(void)setInstalled:(NSString *)s;
+@property (nonatomic, copy) NSString *installed;
 
--(NSString *)binary;
--(void)setBinary:(NSString *)s;
+@property (nonatomic, copy) NSString *binary;
 
--(NSString *)stable;
--(void)setStable:(NSString *)s;
+@property (nonatomic, copy) NSString *stable;
 
--(NSString *)unstable;
--(void)setUnstable:(NSString *)s;
+@property (nonatomic, copy) NSString *unstable;
 
--(NSString *)local;
--(void)setLocal:(NSString *)s;
+@property (nonatomic, copy) NSString *local;
 
--(NSString *)category;
--(void)setCategory:(NSString *)s;
+@property (nonatomic, copy) NSString *category;
 
--(NSString *)filename;
--(void)setFilename:(NSString *)s;
+@property (nonatomic, copy) NSString *filename;
 
--(NSString *)summary;
--(void)setSummary:(NSString *)s;
+@property (nonatomic, copy) NSString *summary;
 
--(NSString *)fulldesc;
--(void)setFulldesc:(NSString *)s;
+@property (nonatomic, copy) NSString *fulldesc;
 
--(NSString *)weburl;
--(void)setWeburl:(NSString *)s;
+@property (nonatomic, copy) NSString *weburl;
 
--(NSString *)maintainer;
--(void)setMaintainer:(NSString *)s;
+@property (nonatomic, copy) NSString *maintainer;
 
--(NSString *)email;
--(void)setEmail:(NSString *)s;
+@property (nonatomic, copy) NSString *email;
 
--(int)flagged;
--(void)setFlagged:(int)f;
+@property (nonatomic) int flagged;
 
 /*
  * Comparison Methods

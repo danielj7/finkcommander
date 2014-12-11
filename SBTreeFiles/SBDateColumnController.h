@@ -37,14 +37,11 @@
 		 shortTitle:(NSString *)stitle 
 		  longTitle:(NSString *)ltitle NS_DESIGNATED_INITIALIZER;
 
--(NSTableColumn *)column;
--(void)setColumn:(NSTableColumn *)newColumn;
+@property (nonatomic, strong) NSTableColumn *column;
 
--(NSString *)shortTitle;
--(void)setShortTitle:(NSString *)newShortTitle;
+@property (nonatomic, copy) NSString *shortTitle;
 
--(NSString *)longTitle;
--(void)setLongTitle:(NSString *)newLongTitle;
+@property (nonatomic, copy) NSString *longTitle;
 
 -(void)adjustColumnAndHeaderDisplay:(NSNotification *)n;
 

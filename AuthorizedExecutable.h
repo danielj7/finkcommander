@@ -59,26 +59,22 @@
 
 -(void)dealloc;
 
--(bool)authorize;
--(bool)authorizeWithQuery;
+@property (nonatomic, readonly) bool authorize;
+@property (nonatomic, readonly) bool authorizeWithQuery;
 -(bool)checkAuthorizationWithFlags:(AuthorizationFlags) flags;
 
--(bool)isAuthorized;
--(bool)mustBeAuthorized;
--(void)setMustBeAuthorized:(bool)b;
+@property (nonatomic, getter=isAuthorized, readonly) bool authorized;
+@property (nonatomic) bool mustBeAuthorized;
 -(void)unAuthorize;
 
--(NSString*)authExecutable;
--(void)setAuthExecutable:(NSString*)exe;
--(bool)isExecutable;
--(NSDictionary *)environment;
--(void)setEnvironment:(NSDictionary *)env;
-- (NSMutableArray*)arguments;
--(void)setArguments:(NSMutableArray*)args;
+@property (nonatomic, copy) NSString *authExecutable;
+@property (nonatomic, getter=isExecutable, readonly) bool executable;
+@property (nonatomic, copy) NSDictionary *environment;
+@property (nonatomic, copy) NSMutableArray *arguments;
 
 -(void)captureStdOut:(NSNotification*)notification;
 -(void)captureStdErr:(NSNotification*)notification;
-- (bool)isRunning;
+@property (nonatomic, getter=isRunning, readonly) bool running;
 - (void)log:(NSString*)str;
 - (void)logStdOut:(NSString*)str;
 - (void)logStdErr:(NSString*)str;
@@ -87,8 +83,7 @@
 - (void)start;
 - (void)stop;
 
-- (id)delegate;
-- (void)setDelegate:(id)dgate;
+@property (nonatomic, assign) id delegate;
 
 // Delegates available:
 //

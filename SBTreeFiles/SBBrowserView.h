@@ -36,8 +36,7 @@
  * Accessors
  */
  
--(SBFileItemTree *)tree;
--(void)setTree:(SBFileItemTree *)newTree;
+@property (nonatomic, strong) SBFileItemTree *tree;
 
 /*
  *	Browser delegate methods

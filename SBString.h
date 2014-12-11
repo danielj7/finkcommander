@@ -47,10 +47,10 @@ File: SBString.h
 		inRange:(NSRange)range;
 
 //Strip leading and trailing whitespace from string
--(NSString *)strip;
+@property (nonatomic, readonly, copy) NSString *strip;
 
 //Return a URL with properly escaped characters from an ordinary string
--(NSURL *)URLByAddingPercentEscapesToString;
+@property (nonatomic, readonly, copy) NSURL *URLByAddingPercentEscapesToString;
 
 @end
 

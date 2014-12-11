@@ -50,8 +50,7 @@ enum {
 	int command;
 }
 
--(NSMutableArray *)arguments;
--(void)setArguments:(NSMutableArray *)newArguments;
+@property (nonatomic, copy) NSMutableArray *arguments;
 
 -(void)showRemoveWarningForArguments:(NSMutableArray *)args;
 -(void)showTerminateWarning;

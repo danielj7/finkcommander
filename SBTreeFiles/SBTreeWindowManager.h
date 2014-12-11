@@ -31,10 +31,9 @@
 	NSMutableArray *_sbWindowTitles;
 }
 
--(NSString *)currentPackageName;
--(void)setCurrentPackageName:(NSString *)newCurrentPackageName;
--(NSMutableArray *)windowControllers;
--(NSMutableArray *)windowTitles;
+@property (nonatomic, copy) NSString *currentPackageName;
+@property (nonatomic, readonly, copy) NSMutableArray *windowControllers;
+@property (nonatomic, readonly, copy) NSMutableArray *windowTitles;
 -(void)openNewWindowForPackageName:(NSString *)pkgName;
 -(void)closingTreeWindowWithController:(id)sender;
 

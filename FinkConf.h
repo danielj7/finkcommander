@@ -52,30 +52,19 @@ File: FinkConf.h
 -(void)readFinkConf;
 
 //Get and set configuration parameters
--(BOOL)useUnstableMain;
--(void)setUseUnstableMain:(BOOL)shouldUseUnstable;
--(BOOL)useUnstableCrypto;
--(void)setUseUnstableCrypto:(BOOL)shouldUseUnstable;
--(BOOL)extendedVerboseOptions;
--(int)verboseOutput;
--(void)setVerboseOutput:(int)verboseOutput;
--(BOOL)passiveFTP;
--(void)setPassiveFTP:(BOOL)passiveFTP;
--(BOOL)keepBuildDir;
--(void)setKeepBuildDir:(BOOL)passiveFTP;
--(BOOL)keepRootDir;
--(void)setKeepRootDir:(BOOL)passiveFTP;
--(NSString *)useHTTPProxy;
--(void)setUseHTTPProxy:(NSString *)s;
--(NSString *)useFTPProxy;
--(void)setUseFTPProxy:(NSString *)s;
--(NSString *)downloadMethod;
--(void)setDownloadMethod:(NSString *)s;
--(NSString *)rootMethod;
--(void)setRootMethod:(NSString *)s;
--(NSString *)fetchAltDir;
--(void)setFetchAltDir:(NSString *)s;
--(NSString *)distribution;
+@property (nonatomic) BOOL useUnstableMain;
+@property (nonatomic) BOOL useUnstableCrypto;
+@property (nonatomic, readonly) BOOL extendedVerboseOptions;
+@property (nonatomic) int verboseOutput;
+@property (nonatomic) BOOL passiveFTP;
+@property (nonatomic) BOOL keepBuildDir;
+@property (nonatomic) BOOL keepRootDir;
+@property (nonatomic, copy) NSString *useHTTPProxy;
+@property (nonatomic, copy) NSString *useFTPProxy;
+@property (nonatomic, copy) NSString *downloadMethod;
+@property (nonatomic, copy) NSString *rootMethod;
+@property (nonatomic, copy) NSString *fetchAltDir;
+@property (nonatomic, readonly, copy) NSString *distribution;
 
 //Set flag that determines whether fink index
 //command should be run

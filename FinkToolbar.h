@@ -41,8 +41,6 @@
 	NSButton *searchButton;
 	NSTextField *searchField;
 }
--(NSButton *)searchButton;
--(void)setSearchButton:(NSButton *)newSearchButton;
--(NSTextField *)searchField;
--(void)setSearchField:(NSTextField *)newSearchField;
+@property (nonatomic, strong) NSButton *searchButton;
+@property (nonatomic, strong) NSTextField *searchField;
 @end

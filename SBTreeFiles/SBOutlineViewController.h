@@ -40,9 +40,8 @@ extern NSString *sbDescending;
 -(instancetype)initWithTree:(SBFileItemTree *)aTree
 			 view:(NSOutlineView *)oView NS_DESIGNATED_INITIALIZER;
 
--(NSString *)previousColumnIdentifier;
+@property (nonatomic, copy) NSString *previousColumnIdentifier;
 
--(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier;
 	
 
 /* 

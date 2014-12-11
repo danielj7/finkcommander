@@ -43,12 +43,12 @@ File: FinkInstallationInfo.h
 
 +(FinkInstallationInfo *)sharedInfo;
 
--(NSString *)finkVersion;
+@property (nonatomic, readonly, copy) NSString *finkVersion;
 
 //Returns a string with the versions of fink, Mac OS X, gcc, make, and Dev Tools
 //installed on the user's system
--(NSString *)installationInfo;
+@property (nonatomic, readonly, copy) NSString *installationInfo;
 
--(NSString *)formattedEmailSig;
+@property (nonatomic, readonly, copy) NSString *formattedEmailSig;
 
 @end

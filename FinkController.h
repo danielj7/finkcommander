@@ -151,9 +151,8 @@ Contact the author at sburrious@users.sourceforge.net.
 }
 
 //Accessors
--(FinkData *)packages;
--(NSString *)lastCommand;
--(void)setLastCommand:(NSString *)s;
+@property (nonatomic, readonly, strong) FinkData *packages;
+@property (nonatomic, copy) NSString *lastCommand;
 -(void)setParser:(FinkOutputParser *)p;
 
 //Menu and Toolbar Action Methods

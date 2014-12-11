@@ -55,6 +55,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)update;
 
 //Utilities
--(int)installedPackagesCount;
+@property (nonatomic, readonly) int installedPackagesCount;
 
 @end

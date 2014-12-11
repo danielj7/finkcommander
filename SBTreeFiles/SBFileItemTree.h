@@ -53,20 +53,18 @@ extern void alertProblemPaths(NSArray *);
  */
 
 // Total size in bytes of all files in the tree
--(unsigned long)totalSize;
+@property (nonatomic, readonly) unsigned long totalSize;
 //Total number of file items (excluding directories)
--(unsigned long)itemCount;
+@property (nonatomic, readonly) unsigned long itemCount;
 
 // Top level directory
-- (SBFileItem *)rootItem;
-- (void)setRootItem:(SBFileItem *)newRootItem;
+@property (nonatomic, strong) SBFileItem *rootItem;
 
 /*	String used to identify a tree in a Distributed Objects
 	notification (see below).  The string should be unique within an 
 	application to make sure notification receivers correctly
 	identify the tree object.  */
--(NSString *)name;
--(void)setName:(NSString *)newName;
+@property (nonatomic, copy) NSString *name;
 
 
 /*

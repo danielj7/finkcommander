@@ -97,11 +97,11 @@ enum {
 -(instancetype)initForCommand:(NSString *)cmd
 	executable:(NSString *)exe NS_DESIGNATED_INITIALIZER;
 
--(float)increment;
+@property (nonatomic, readonly) float increment;
 
--(int)pgid;
+@property (nonatomic, readonly) int pgid;
 
--(NSString *)currentPackage;
+@property (nonatomic, readonly, copy) NSString *currentPackage;
 
 -(int)parseOutput:(NSString *)output;
 

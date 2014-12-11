@@ -46,27 +46,22 @@
  *
  */
 
--(NSArray *)children;
--(void)setChildren:(NSArray *)c;
+@property (nonatomic, copy) NSArray *children;
 
 //Full path to the file
--(NSString *)path;
--(void)setPath:(NSString *)p;
+@property (nonatomic, copy) NSString *path;
 
 //Name of the file without the path
--(NSString *)filename;
--(void)setFilename:(NSString *)fn;
+@property (nonatomic, copy) NSString *filename;
 
--(unsigned long)size;
--(void)setSize:(unsigned long)n;
+@property (nonatomic) unsigned long size;
 
 /* Not used yet:
 -(NSDate *)cdate;
 -(void)setCdate:(NSDate *)newCdate;
 */
 
-- (NSDate *)mdate;
-- (void)setMdate:(NSDate *)newMdate;
+@property (nonatomic, copy) NSDate *mdate;
 
 /*
  *	Family Ties
@@ -79,7 +74,7 @@
 	be released or autoreleased by the caller.  */
 -(BOOL)addChild:(SBFileItem *)item;
 
--(int)numberOfChildren;
+@property (nonatomic, readonly) int numberOfChildren;
 
 -(BOOL)hasChild:(SBFileItem *)item;
 
@@ -89,6 +84,6 @@
 
 -(SBFileItem *)childWithFileName:(NSString *)fname;
 
--(NSString *)pathToParent;
+@property (nonatomic, readonly, copy) NSString *pathToParent;
 
 @end

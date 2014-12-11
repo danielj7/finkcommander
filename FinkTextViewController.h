@@ -45,10 +45,8 @@ File: FinkTextViewController.h
 -(void)appendString:(NSString *)s;
 -(void)replaceLastLineByString:(NSString *)s;
 
-- (NSTextView *)textView;
-- (void)setTextView:(NSTextView *)newTextView;
-- (NSScrollView *)scrollView;
-- (void)setScrollView:(NSScrollView *)newScrollView;
+@property (nonatomic, strong) NSTextView *textView;
+@property (nonatomic, strong) NSScrollView *scrollView;
 
 
 @end
