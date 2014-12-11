@@ -94,14 +94,14 @@ enum {
 	[loadingIndicator setDisplayedWhenStopped:NO];
 }
 
--(id)initWithFileList:(NSMutableArray *)fList
+-(instancetype)initWithFileList:(NSMutableArray *)fList
 {
     return [self initWithFileList:fList 
 			windowName:@"File Tree Viewer"];
 }
 
 /*	Designated initializer */
--(id)initWithFileList:(NSMutableArray *)fList
+-(instancetype)initWithFileList:(NSMutableArray *)fList
 		   windowName:(NSString *)wName
 {
     self = [super init];

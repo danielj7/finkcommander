@@ -11,7 +11,7 @@ File: FinkConf.m
 
 //--------------------------------------------------->Startup and Shutdown
 
--(id)init
+-(instancetype)init
 {
 	if (self = [super init]){
 		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];

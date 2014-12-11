@@ -71,7 +71,7 @@
 
 //------------------------------------------>Create and Destroy
 
--(id)initForCommand:(NSString *)cmd
+-(instancetype)initForCommand:(NSString *)cmd
 		executable:(NSString *)exe;
 {
     if (self = [super init]){

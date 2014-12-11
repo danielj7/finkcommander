@@ -145,7 +145,7 @@ enum {
 }
 
 //----------------------------------------------->Init
--(id)init
+-(instancetype)init
 {
     if (self = [super init]){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];

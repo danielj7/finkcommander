@@ -31,7 +31,7 @@ enum {
 #pragma mark STARTUP AND SHUTDOWN
 //--------------------------------------------------------------------------------
 
--(id)init
+-(instancetype)init
 {
 	self = [super initWithWindowNibName:@"Preferences"];
 	if (nil != self){

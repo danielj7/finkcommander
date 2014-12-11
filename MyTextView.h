@@ -18,7 +18,7 @@
 
 @interface MyTextView : NSTextView
  
-+ (id) myTextViewToReplace: (NSTextView *) textView
++ (instancetype) myTextViewToReplace: (NSTextView *) textView
 	in: (NSScrollView *) scrollView;
 + (NSCursor *) handCursor;
 - (NSRange) visibleRangeInBounds: (NSRect) bounds;

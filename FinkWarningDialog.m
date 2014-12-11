@@ -9,7 +9,7 @@
 
 @implementation FinkWarningDialog
 
--(id)init
+-(instancetype)init
 {
     self = [super initWithWindowNibName:@"Dialogs"];
     Dprintf(@"Warning window: %@", [self window]);

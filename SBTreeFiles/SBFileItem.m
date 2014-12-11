@@ -13,7 +13,7 @@ File SBFileItem.m
 #pragma mark ITEM CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithPath:(NSString *)p
+-(instancetype)initWithPath:(NSString *)p
 {
 	if (nil != (self = [super init])){
 		NSFileManager *mgr = [NSFileManager defaultManager];

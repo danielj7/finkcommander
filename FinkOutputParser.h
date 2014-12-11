@@ -94,7 +94,7 @@ enum {
     BOOL selfRepair;
 }
 
--(id)initForCommand:(NSString *)cmd
+-(instancetype)initForCommand:(NSString *)cmd
 	executable:(NSString *)exe;
 
 -(float)increment;

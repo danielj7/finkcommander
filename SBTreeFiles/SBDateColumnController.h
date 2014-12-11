@@ -28,12 +28,12 @@
     NSString *_sbLongTitle;
 }
 
--(id)initWithColumn:(NSTableColumn *)myColumn;
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn;
 
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn
 		 shortTitle:(NSString *)stitle;
 	/*" The designated initializer "*/
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn
 		 shortTitle:(NSString *)stitle 
 		  longTitle:(NSString *)ltitle;
 

@@ -27,7 +27,7 @@ File: FinkInstallationInfo.m
 	return myInfo;
 }
 
--(id)init
+-(instancetype)init
 {
 	if (self = [super init]){
 		manager = [NSFileManager defaultManager];  //shared instance, no need to retain

@@ -13,7 +13,7 @@
 #pragma mark OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithTree:(SBFileItemTree *)aTree
+-(instancetype)initWithTree:(SBFileItemTree *)aTree
 			 view:(NSOutlineView *)oView
 {
 	self = [super init];

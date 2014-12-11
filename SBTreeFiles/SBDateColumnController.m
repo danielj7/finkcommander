@@ -39,19 +39,19 @@
 #pragma mark CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)init
+-(instancetype)init
 {
     return [self initWithColumn:nil];
 }
 
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn
 {
     return [self initWithColumn:myColumn 
 				shortTitle:NSLocalizedStringFromTable(@"Date", @"Date",
 								@"Default column title")];
 }
 
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn
 		 shortTitle:(NSString *)stitle
 {
     return [self initWithColumn:myColumn 
@@ -59,7 +59,7 @@
 						 longTitle:nil];
 }
 
--(id)initWithColumn:(NSTableColumn *)myColumn
+-(instancetype)initWithColumn:(NSTableColumn *)myColumn
 		 shortTitle:(NSString *)stitle 
 		  longTitle:(NSString *)ltitle
 {

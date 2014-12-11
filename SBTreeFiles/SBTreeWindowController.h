@@ -54,8 +54,8 @@
 	BOOL treeBuildingThreadIsFinished;
 }
 
--(id)initWithFileList:(NSMutableArray *)fList;
--(id)initWithFileList:(NSMutableArray *)fList
+-(instancetype)initWithFileList:(NSMutableArray *)fList;
+-(instancetype)initWithFileList:(NSMutableArray *)fList
 		   windowName:(NSString *)wName;
 
 -(IBAction)switchViews:(id)sender;

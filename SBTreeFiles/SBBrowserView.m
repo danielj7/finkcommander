@@ -13,7 +13,7 @@
 #pragma mark OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithFrame:(NSRect)frame
+-(instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (nil != self){

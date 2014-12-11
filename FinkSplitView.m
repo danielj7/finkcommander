@@ -9,7 +9,7 @@ File: FinkSplitView.m
 
 @implementation FinkSplitView
 
--(id)initWithFrame:(NSRect)rect
+-(instancetype)initWithFrame:(NSRect)rect
 {
 	if (self = [super initWithFrame:rect]){
 		defaults = [NSUserDefaults standardUserDefaults];

@@ -20,7 +20,7 @@
 // executable will be specified as the first entry in the arguments
 // array.
 //
-- (id)initWithExecutable:(NSString*)exe
+- (instancetype)initWithExecutable:(NSString*)exe
 {
     if (self = [super init])
     {

@@ -28,7 +28,7 @@
 
 @interface SBOutlineView : NSOutlineView
 
--(id)initAsSubstituteForOutlineView:(NSOutlineView *)oldView;
+-(instancetype)initAsSubstituteForOutlineView:(NSOutlineView *)oldView;
 
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal;
 

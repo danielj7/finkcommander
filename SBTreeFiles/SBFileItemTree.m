@@ -67,7 +67,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 #pragma mark CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithFileArray:(NSMutableArray *)flist name:(NSString *)aName
+-(instancetype)initWithFileArray:(NSMutableArray *)flist name:(NSString *)aName
 {
     self = [super init];
     if (nil != self){

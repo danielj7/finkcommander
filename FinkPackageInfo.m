@@ -29,7 +29,7 @@
 
 @implementation FinkPackageInfo
 
--(id)init
+-(instancetype)init
 {
 	self = [super initWithWindowNibName:@"PackageInfo"];
 	if (nil != self){

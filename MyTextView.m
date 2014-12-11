@@ -28,7 +28,7 @@
  * Initialization.
  */
 
-+ (id) myTextViewToReplace: (NSTextView *) textView
++ (instancetype) myTextViewToReplace: (NSTextView *) textView
 	in: (NSScrollView *) scrollView
 {
     MyTextView *myTextView =

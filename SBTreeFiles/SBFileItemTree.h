@@ -45,7 +45,7 @@ extern void alertProblemPaths(NSArray *);
 /*
  *	Initialization
  */
--(id)initWithFileArray:(NSMutableArray *)flist
+-(instancetype)initWithFileArray:(NSMutableArray *)flist
 				  name:(NSString *)aName;
 
 /*

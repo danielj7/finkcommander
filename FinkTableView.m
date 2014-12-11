@@ -36,7 +36,7 @@ enum {
 #pragma mark CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)initWithFrame:(NSRect)rect
+-(instancetype)initWithFrame:(NSRect)rect
 {
 	defaults = [NSUserDefaults standardUserDefaults];
 

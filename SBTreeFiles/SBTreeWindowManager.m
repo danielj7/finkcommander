@@ -13,7 +13,7 @@
 #pragma mark CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
--(id)init
+-(instancetype)init
 {
 	self = [super init];
 	if (nil != self){

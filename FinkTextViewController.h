@@ -39,7 +39,7 @@ File: FinkTextViewController.h
 	int minDelete;
 }
 
--(id)initWithView:(NSTextView *)aTextView
+-(instancetype)initWithView:(NSTextView *)aTextView
 	   forScrollView:(NSScrollView *)aScrollView;
 -(void)setLimits;
 -(void)appendString:(NSString *)s;

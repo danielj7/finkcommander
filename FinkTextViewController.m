@@ -9,7 +9,7 @@ File: FinkTextViewController.m
 
 @implementation FinkTextViewController
 
--(id)initWithView:(NSTextView *)aTextView 
+-(instancetype)initWithView:(NSTextView *)aTextView 
 	 forScrollView:(NSScrollView *)aScrollView
 {
 	if (self = [super init]){

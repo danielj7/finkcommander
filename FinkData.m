@@ -28,7 +28,7 @@ See the header file, FinkData.h, for interface and license information.
     return mySharedData;
 }
 
--(id)init
+-(instancetype)init
 {
     if (self = [super init])
 	{

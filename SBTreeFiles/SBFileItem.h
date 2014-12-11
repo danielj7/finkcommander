@@ -37,7 +37,7 @@
  *	Item Creation 
  */
 
--(id)initWithPath:(NSString *)p;
+-(instancetype)initWithPath:(NSString *)p;
 
 /* 
  *	Accessors 

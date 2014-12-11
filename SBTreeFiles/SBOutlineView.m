@@ -68,7 +68,7 @@
 	return columnArray;
 }
 
--(id)initAsSubstituteForOutlineView:(NSOutlineView *)oldView
+-(instancetype)initAsSubstituteForOutlineView:(NSOutlineView *)oldView
 {
 	self = [super initWithFrame:[oldView frame]];
 	if (self != nil){
