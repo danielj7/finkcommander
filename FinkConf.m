@@ -376,8 +376,7 @@ File: FinkConf.m
 			@"--write_fconf",
 			[defaults objectForKey: FinkBasePath],
 			nil];
-	NSDictionary *d = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:YES]
-									forKey:FinkRunProgressIndicator];
+	NSDictionary *d = @{FinkRunProgressIndicator: [NSNumber numberWithInt:YES]};
 	BOOL success;
 	
 	success = [fconfString writeToFile:tempFile atomically:YES encoding:NSUTF8StringEncoding error:NULL];
@@ -398,8 +397,7 @@ File: FinkConf.m
 	if (finkTreesChanged){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		NSString *basePath = [defaults objectForKey: FinkBasePath];
-		NSDictionary *d = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:YES]
-										forKey:FinkRunProgressIndicator];
+		NSDictionary *d = @{FinkRunProgressIndicator: [NSNumber numberWithInt:YES]};
 		NSMutableArray *indexCommandArray =
 			[NSMutableArray arrayWithObjects:
 				[basePath stringByAppendingPathComponent:@"/bin/fink"],

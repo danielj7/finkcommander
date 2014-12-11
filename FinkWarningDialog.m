@@ -75,9 +75,7 @@
     NSDictionary *d;
     switch (command){
 		case REMOVE:
-			d = [NSDictionary
-			dictionaryWithObject:[NSNumber numberWithInt:YES]
-					   forKey:FinkRunProgressIndicator];
+			d = @{FinkRunProgressIndicator: [NSNumber numberWithInt:YES]};
 			[center postNotificationName:FinkRunCommandNotification
 							   object:[self arguments]
 							 userInfo:d];

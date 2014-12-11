@@ -675,7 +675,7 @@ enum {
 		
 	if (!killTask) 	killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
     [killTask setArguments:
-		[NSArray arrayWithObjects: @"--kill", pgid, nil]];
+		@[@"--kill", pgid]];
     [killTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
     [killTask authorizeWithQuery];
     [killTask start];
@@ -860,12 +860,10 @@ enum {
 	NSString *finkVersion = [NSString stringWithFormat:@"Fink version\n%@",[[FinkInstallationInfo sharedInfo] finkVersion]];
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setAlignment:NSCenterTextAlignment];
-	NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
-		[NSFont systemFontOfSize:[NSFont smallSystemFontSize]],NSFontAttributeName,
-		style,NSParagraphStyleAttributeName,
-		nil];
+	NSDictionary *attributes = @{NSFontAttributeName: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]],
+		NSParagraphStyleAttributeName: style};
 	NSAttributedString *credits = [[NSAttributedString alloc] initWithString:finkVersion attributes:attributes];
-	[NSApp orderFrontStandardAboutPanelWithOptions:[NSDictionary dictionaryWithObject:credits forKey:@"Credits"]];
+	[NSApp orderFrontStandardAboutPanelWithOptions:@{@"Credits": credits}];
 }
 //Help menu internet access items
 -(IBAction)goToWebsite:(id)sender
@@ -972,8 +970,7 @@ enum {
 
 -(NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-	return [NSArray arrayWithObjects:
-				NSToolbarSeparatorItemIdentifier,
+	return @[NSToolbarSeparatorItemIdentifier,
 				NSToolbarSpaceItemIdentifier,
 				NSToolbarFlexibleSpaceItemIdentifier,
 				NSToolbarCustomizeToolbarItemIdentifier,
@@ -995,14 +992,12 @@ enum {
 				@"FinkBrowseItem",
 				@"FinkPositiveEmailItem",
 				@"FinkEmailItem",
-				@"FinkFilterItem",		
-				nil];
+				@"FinkFilterItem"];
 }
 
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
-	return 	[NSArray arrayWithObjects:
-				@"FinkInstallBinaryItem",
+	return 	@[@"FinkInstallBinaryItem",
 				@"FinkInstallSourceItem",
 				@"FinkRemoveSourceItem",
 				@"FinkSelfUpdateRsyncItem",
@@ -1013,8 +1008,7 @@ enum {
 				@"FinkPositiveEmailItem",
 				@"FinkEmailItem",
 				NSToolbarFlexibleSpaceItemIdentifier,
-				@"FinkFilterItem",
-				nil];
+				@"FinkFilterItem"];
 }
 
 //----------------------------------------------->Text Field Delegate
@@ -1319,7 +1313,7 @@ enum {
     NSString *exec = [args objectAtIndex:0];
 	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
 	NSString *askpass;
-	[envvars setValue:[NSString stringWithUTF8String:getenv("SSH_AUTH_SOCK")] forKey:@"SSH_AUTH_SOCK"];
+	[envvars setValue:@(getenv("SSH_AUTH_SOCK")) forKey:@"SSH_AUTH_SOCK"];
 	[envvars setValue:@"0" forKey:@"DISPLAY"];
 	askpass = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/SSHAskPass.sh"];
 	[envvars setValue:askpass forKey:@"SSH_ASKPASS"];
@@ -1463,10 +1457,9 @@ enum {
 
 -(void)setGUIForPhase:(int)phaseIndex
 {
-    NSArray *phases = [NSArray arrayWithObjects:
-		@"", @"Fetching %@", @"Unpacking %@",
+    NSArray *phases = @[@"", @"Fetching %@", @"Unpacking %@",
 		@"Configuring %@", @"Compiling %@",
-		@"Building %@", @"Activating %@", nil];
+		@"Building %@", @"Activating %@"];
     NSString *pname, *phaseString;
 
     pname = [parser currentPackage];

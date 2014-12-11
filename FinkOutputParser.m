@@ -147,13 +147,13 @@
     e = [packageList objectEnumerator];
     if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
     while (nil != (pname = [e nextObject])){
-        [ptracker setObject:[NSNumber numberWithFloat:0.0] forKey:pname];
+        [ptracker setObject:@0.0f forKey:pname];
     }
 
     for (i = 0; i < 7; i++){
         float newincrement = cumulative[i] * perpkg;
 
-        [increments insertObject: [NSNumber numberWithFloat: newincrement]
+        [increments insertObject: @(newincrement)
 					atIndex:i];
         Dprintf(@"increment %d = %f", i, [[increments objectAtIndex:i] floatValue]);
     }
@@ -188,7 +188,7 @@
     Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, currentPackage);
     if (phaseTotal > pkgTotal){
         increment = phaseTotal - pkgTotal;
-        [ptracker setObject:[NSNumber numberWithFloat:phaseTotal] forKey:currentPackage];
+        [ptracker setObject:@(phaseTotal) forKey:currentPackage];
         Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
     }else{
         increment = 0;

@@ -79,7 +79,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 			[self setRootItem: [[SBFileItem alloc]
 				   initWithPath:[flist objectAtIndex:0]]];
 			//in case base path is symlink; standardizing path doesn't seem to work
-			[[self rootItem] setChildren:[NSArray array]]; 
+			[[self rootItem] setChildren:@[]]; 
 		}
     }
     return self;

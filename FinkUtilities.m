@@ -20,11 +20,11 @@ void findFinkBasePath(void)
 	NSString *oldBasePath = [defaults objectForKey:FinkBasePath];
 	
 	//look in some possible install paths
-	e = [[NSArray arrayWithObjects: @"/sw", @"/opt", @"/usr/local", @"/fink", homeDir,
+	e = [@[@"/sw", @"/opt", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
         [homeDir stringByAppendingPathComponent: @"fink"],
         @"/opt/fink", @"/opt/sw", @"/usr/local/sw", @"/usr/local/fink",
-        @"/usr/sw", @"/usr/fink", nil] objectEnumerator];
+        @"/usr/sw", @"/usr/fink"] objectEnumerator];
 
 	while (nil != (path = [e nextObject])){
 		if ([manager isReadableFileAtPath:
@@ -47,13 +47,11 @@ void findPerlPath(void)
 	NSString *pathToPerl = [defaults objectForKey:FinkPerlPath];
 	
 	if (nil == pathToPerl){
-		NSArray *possiblePaths = [NSArray arrayWithObjects: 
-									@"/usr/local/bin/perl", 
+		NSArray *possiblePaths = @[@"/usr/local/bin/perl", 
 									@"/opt/bin/perl", 
 									@"/opt/local/bin/perl", 
 									[NSHomeDirectory() 
-										stringByAppendingPathComponent:@"bin/perl"], 
-									nil];
+										stringByAppendingPathComponent:@"bin/perl"]];
 		NSEnumerator *binPathEnumerator = [possiblePaths objectEnumerator];
 		while (nil != (pathToPerl = [binPathEnumerator nextObject])){
 			if ([manager isExecutableFileAtPath:pathToPerl]){

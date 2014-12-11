@@ -227,8 +227,8 @@ enum {
 		[theData appendString:@"\n"];
 	}
 
-	[pb declareTypes: [NSArray arrayWithObjects:NSTabularTextPboardType, 
-		NSStringPboardType, nil] owner:nil];
+	[pb declareTypes: @[NSTabularTextPboardType, 
+		NSStringPboardType] owner:nil];
 	[pb setString:[NSString stringWithString:theData]
 	    forType:NSStringPboardType];
 	[pb setString:[NSString stringWithString:theData]
@@ -250,7 +250,7 @@ enum {
 	writeRows:(NSArray *)rows
 	toPasteboard:(NSPasteboard *)pboard
 {
-	NSArray *fileList = [NSArray array];
+	NSArray *fileList = @[];
     NSEnumerator *e = [rows objectEnumerator];
 	NSNumber *rowNum;
 	FinkPackage *pkg;
@@ -276,8 +276,8 @@ enum {
 			fileList = [fileList arrayByAddingObject:path];
 		}		
 	}
-	[tview registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
-	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
+	[tview registerForDraggedTypes:@[NSFilenamesPboardType]];
+	[pboard declareTypes:@[NSFilenamesPboardType]
 								  owner:self];
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	return YES;
@@ -425,10 +425,8 @@ enum {
 		selectedObject = [[self displayedPackages]
 							objectAtIndex: selectionIndex];
 		[self setSelectedObjectInfo:
-			[NSArray arrayWithObjects:
-				selectedObject,
-				[NSNumber numberWithInt: offset],
-				nil]];
+			@[selectedObject,
+				@(offset)]];
 		[self deselectAll: nil];
 	}else{
 		[self setSelectedObjectInfo: nil];

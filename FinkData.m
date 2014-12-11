@@ -103,7 +103,7 @@ See the header file, FinkData.h, for interface and license information.
     [listCmd setLaunchPath: 
 		[[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 			stringByAppendingPathComponent: @"/bin/apt-cache"]];
-    [listCmd setArguments: [NSArray arrayWithObjects: @"dumpavail", nil]];
+    [listCmd setArguments: @[@"dumpavail"]];
     [listCmd setStandardOutput: pipeIn];
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
@@ -141,9 +141,8 @@ See the header file, FinkData.h, for interface and license information.
     NSArray *args;
 	NSTask *finkListCommand = [[NSTask alloc] init];
 
-	args = [NSArray arrayWithObjects:
-		[NSHomeDirectory() stringByAppendingPathComponent: 
-			@"Library/Application Support/FinkCommander/FinkCommander.pl"], nil];
+	args = @[[NSHomeDirectory() stringByAppendingPathComponent: 
+			@"Library/Application Support/FinkCommander/FinkCommander.pl"]];
 
 	[finkListCommand setLaunchPath:[defaults objectForKey:FinkPerlPath]];
 	[finkListCommand setArguments:args];
@@ -214,7 +213,7 @@ See the header file, FinkData.h, for interface and license information.
 					fromDescription:line];
 		}
     }
-    return [NSArray arrayWithObjects: web, maint, email, nil];
+    return @[web, maint, email];
 }
 
 -(void)completeUpdate:(NSNotification *)n

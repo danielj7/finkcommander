@@ -467,7 +467,7 @@
 		[[self delegate]
 				performSelector:@selector(executableFinished:withStatus:)
 					 withObject:self
-					 withObject:[NSNumber numberWithInt:status]];
+					 withObject:@(status)];
 	}	
 }
 

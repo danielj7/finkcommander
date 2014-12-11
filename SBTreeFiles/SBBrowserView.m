@@ -163,7 +163,7 @@
     NSImage *dragImage;
 	NSSize imageSize;
     NSPoint dragPosition;
-    NSArray *fileList = [NSArray array];
+    NSArray *fileList = @[];
 	NSBrowserCell *theCell;
     SBFileItem *item;
     NSEnumerator *cellEnum = [[self selectedCells] objectEnumerator];
@@ -175,7 +175,7 @@
 	}
 	
 	//Let the pasteboard know we want a drag to copy file paths
-	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
+	[pboard declareTypes:@[NSFilenamesPboardType]
 			owner:self];
 	//Give the pasteboard a list of the paths to be copied
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];

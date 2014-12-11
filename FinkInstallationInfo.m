@@ -60,7 +60,7 @@ File: FinkInstallationInfo.m
 		return nil;
 	}
 	[versionScanner scanUpToCharactersFromSet:endOfLine intoString:&extraInformation];
-	return [NSArray arrayWithObjects:version, extraInformation, nil];
+	return @[version, extraInformation];
 }
 
 //Run CLI tool to get its version information
@@ -101,7 +101,7 @@ File: FinkInstallationInfo.m
 -(NSString *)versionOutputForExecutable:(NSString *)path
 						  usingArgument:(NSString *) arg
 {
-	return [self versionOutputForExecutable:path usingArguments:[NSArray arrayWithObjects:arg, nil]];
+	return [self versionOutputForExecutable:path usingArguments:@[arg]];
 }
 
 -(NSString *)versionOutputForExecutable:(NSString *)path
@@ -256,7 +256,7 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	NSString *finkConf = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 							stringByAppendingPathComponent: @"/etc/fink.conf"];
 	NSString *version = [self versionOutputForExecutable:@"/usr/bin/grep"
-										  usingArguments:[NSArray arrayWithObjects:@"^Distribution:", finkConf, nil]];
+										  usingArguments:@[@"^Distribution:", finkConf]];
 	
 	if (! version) return @"Unable to determine the distribution field\n";
 	return version;
@@ -267,7 +267,7 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	NSString *finkConf = [[[NSUserDefaults standardUserDefaults] objectForKey: FinkBasePath]
 						  stringByAppendingPathComponent: @"/etc/fink.conf"];
 	NSString *version = [self versionOutputForExecutable:@"/usr/bin/grep"
-										  usingArguments:[NSArray arrayWithObjects:@"^Trees:", finkConf, nil]];
+										  usingArguments:@[@"^Trees:", finkConf]];
 	
 	if (! version) return @"Unable to determine the trees field\n";
 	return version;

@@ -75,20 +75,15 @@
 {
 	NSString *s = [p fulldesc];
 	NSEnumerator *lineEnumerator = [[s componentsSeparatedByString: @"\n"] objectEnumerator];
-	NSEnumerator *fieldEnumerator = [[NSArray arrayWithObjects: @"Summary", @"Description",
-								@"Usage Notes", @"Web site", @"Maintainer", nil] 
+	NSEnumerator *fieldEnumerator = [@[@"Summary", @"Description",
+								@"Usage Notes", @"Web site", @"Maintainer"] 
 							objectEnumerator];
-	NSDictionary *urlAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-									URLCOLOR, NSForegroundColorAttributeName,
-									[NSNumber numberWithInt: NSSingleUnderlineStyle],
-											NSUnderlineStyleAttributeName,
-									nil];
+	NSDictionary *urlAttributes = @{NSForegroundColorAttributeName: URLCOLOR,
+									NSUnderlineStyleAttributeName: @(NSSingleUnderlineStyle)};
 	NSMutableAttributedString *description = 	
 			[[NSMutableAttributedString alloc]
 					initWithString: @""
-						   attributes: [NSDictionary dictionaryWithObjectsAndKeys:
-							   [NSFont systemFontOfSize:0], NSFontAttributeName,
-							   nil]];
+						   attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0]}];
 	NSString *line;
 	NSString *field;
 	NSString *uri;
@@ -160,16 +155,14 @@
 //Add font attributes, spacing and newlines for various versions of package
 -(NSAttributedString *)formattedVersionsForPackage:(FinkPackage *)pkg
 {
-	NSEnumerator *versionNameEnumerator = [[NSArray arrayWithObjects: 
-		@"Installed", @"Unstable", @"Stable",
-		@"Binary", nil] objectEnumerator];
+	NSEnumerator *versionNameEnumerator = [@[@"Installed", @"Unstable", @"Stable",
+		@"Binary"] objectEnumerator];
 	NSString *vName;
 	NSString *vNumber;
 	NSMutableAttributedString *description =
 		[[NSMutableAttributedString alloc]
 				initWithString: @""
-				attributes: [NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:0]
-										  forKey:NSFontAttributeName]];
+				attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0]}];
 	
 	while (nil != (vName = [versionNameEnumerator nextObject])){
 		vNumber = [pkg valueForKey:[vName lowercaseString]];
@@ -178,17 +171,13 @@
 		[description appendAttributedString:
 			[[NSMutableAttributedString alloc]
 					initWithString: [NSString stringWithFormat: @"\n%@:", vName]
-					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
-									[NSFont systemFontOfSize:0], NSFontAttributeName,
-									HEADINGCOLOR, NSForegroundColorAttributeName,
-									nil]]];
+					attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:0],
+									NSForegroundColorAttributeName: HEADINGCOLOR}]];
 		[description appendAttributedString:
 			[[NSMutableAttributedString alloc]
 				initWithString: [NSString stringWithFormat: @"\t%@", vNumber]
-					attributes:[NSDictionary dictionaryWithObjectsAndKeys:
-									[NSFont systemFontOfSize:0], NSFontAttributeName,
-									VERSIONCOLOR, NSForegroundColorAttributeName,
-									nil]]];
+					attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:0],
+									NSForegroundColorAttributeName: VERSIONCOLOR}]];
 	}	
 	return description;
 }
@@ -210,17 +199,13 @@
 		[[textView textStorage] appendAttributedString:
 			[[NSAttributedString alloc] 
 					initWithString: pname
-					attributes: [NSDictionary dictionaryWithObjectsAndKeys: 
-										MAINHEADINGFONT, NSFontAttributeName,
-										HEADINGCOLOR, NSForegroundColorAttributeName,
-										nil]]];
+					attributes: @{NSFontAttributeName: MAINHEADINGFONT,
+										NSForegroundColorAttributeName: HEADINGCOLOR}]];
 		[[textView textStorage] appendAttributedString:
 			[[NSAttributedString alloc]
 					initWithString: psummary
-						attributes: [NSDictionary dictionaryWithObjectsAndKeys:
-										[NSFont systemFontOfSize:0], NSFontAttributeName,
-										SHORTDESCCOLOR, NSForegroundColorAttributeName,
-										nil]]];
+						attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0],
+										NSForegroundColorAttributeName: SHORTDESCCOLOR}]];
 		[[textView textStorage] appendAttributedString:
 			[self formattedVersionsForPackage:pkg]];
 		[[textView textStorage] appendAttributedString:

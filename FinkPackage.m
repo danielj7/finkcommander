@@ -420,7 +420,7 @@ See the header file, FinkPackage.h, for interface and license information.
 -(NSString *)nameWithoutSplitoff:(BOOL *)changed
 {
 	if ([[self name] rangeOfString:@"-"].length > 0){
-		NSEnumerator *e = [[NSArray arrayWithObjects:@"-bin", @"-dev", @"-shlibs", nil]
+		NSEnumerator *e = [@[@"-bin", @"-dev", @"-shlibs"]
 			objectEnumerator];
 		NSString *pkgname = [self name];
 		NSString *splitoff;
@@ -457,19 +457,17 @@ See the header file, FinkPackage.h, for interface and license information.
 					[self unstable] : [self stable];
 	}
 
-	nameVariants = [NSArray arrayWithObjects:   
-						[NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext],
-						[NSString stringWithFormat:@"%@.%@", fname, ext],
-						nil];
+	nameVariants = @[[NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext],
+						[NSString stringWithFormat:@"%@.%@", fname, ext]];
 	theEnum = [nameVariants objectEnumerator];						
 	while(pkgFileName = [theEnum nextObject])
 	{
 		if ([[self category] isEqualToString:@"crypto"]){
-			components = [NSArray arrayWithObjects:distPath, tree, @"crypto",
-				@"finkinfo", pkgFileName, nil];
+			components = @[distPath, tree, @"crypto",
+				@"finkinfo", pkgFileName];
 		}else{
-			components = [NSArray arrayWithObjects:distPath, tree, @"main",
-				@"finkinfo", [self category], pkgFileName, nil];
+			components = @[distPath, tree, @"main",
+				@"finkinfo", [self category], pkgFileName];
 		}
 		thePath = [[NSString pathWithComponents:components] stringByResolvingSymlinksInPath];
 		

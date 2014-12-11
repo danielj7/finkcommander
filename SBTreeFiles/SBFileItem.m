@@ -30,7 +30,7 @@ File SBFileItem.m
 			[self setFilename:[p lastPathComponent]];
 			[self setSize: [fattrs fileSize]];
 			[self setMdate:[fattrs fileModificationDate]];
-			arr = isDir ? [NSArray array] : nil;
+			arr = isDir ? @[] : nil;
 			[self setChildren:arr];
 		}else{
 			self = nil;

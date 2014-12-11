@@ -78,7 +78,7 @@
 -(void)openNewWindowForPackageName:(NSString *)pkgName
 {
     NSMutableArray *fileList = [self fileListFromCommand:
-			[NSArray arrayWithObjects: @"/sw/bin/dpkg", @"-L", pkgName, nil]];
+			@[@"/sw/bin/dpkg", @"-L", pkgName]];
     SBTreeWindowController *newController;
 	NSString *windowTitle = pkgName;
 	int windowNumber = 1;

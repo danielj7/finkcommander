@@ -124,15 +124,15 @@
 	writeItems:(NSArray *)items
 	toPasteboard:(NSPasteboard *)pboard
 {
-    NSArray *fileList = [NSArray array];
+    NSArray *fileList = @[];
     SBFileItem *item;
     NSEnumerator *e = [items objectEnumerator];
 
 	while (nil != (item = [e nextObject])){
 		fileList = [fileList arrayByAddingObject:[item path]];
 	}
-	[ov registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
-	[pboard declareTypes:[NSArray arrayWithObject:NSFilenamesPboardType]
+	[ov registerForDraggedTypes:@[NSFilenamesPboardType]];
+	[pboard declareTypes:@[NSFilenamesPboardType]
 			owner:self];
 	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
 	return YES;
