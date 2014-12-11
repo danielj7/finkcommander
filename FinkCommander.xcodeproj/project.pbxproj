@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,7 +94,7 @@
 		59E0406309CDC73B001280FD /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
 		59E0406509CDC73B001280FD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
 		59E0406609CDC73B001280FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; };
+		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -616,8 +616,12 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
 			buildConfigurationList = F200074F08ED3CB4004A31F7 /* Build configuration list for PBXProject "FinkCommander" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -908,6 +912,7 @@
 		59E0405709CDC73B001280FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -915,6 +920,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications;
@@ -936,9 +942,11 @@
 		59E0405809CDC73B001280FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications;
@@ -966,6 +974,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -986,6 +995,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -1004,37 +1014,31 @@
 		F200075008ED3CB4004A31F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
-				GCC_VERSION = 4.0;
-				"GCC_VERSION[sdk=macosx10.5]" = 4.2;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.5;
-				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.3;
-				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
+				GCC_VERSION = "";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.4;
-				"SDKROOT[arch=ppc64]" = macosx10.5;
-				"SDKROOT[arch=x86_64]" = macosx10.5;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		F200075108ED3CB4004A31F7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				"GCC_VERSION[sdk=macosx10.5]" = com.apple.compilers.llvmgcc42;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				"MACOSX_DEPLOYMENT_TARGET[arch=ppc64]" = 10.5;
-				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.3;
-				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
-				SDKROOT = macosx10.4;
-				"SDKROOT[arch=ppc64]" = macosx10.5;
-				"SDKROOT[arch=x86_64]" = macosx10.5;
+				GCC_VERSION = "";
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
