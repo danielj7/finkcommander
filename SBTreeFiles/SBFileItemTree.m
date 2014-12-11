@@ -19,7 +19,7 @@ NSInteger sortByFilename(id firstItem, id secondItem, void *direction)
 	NSString *firstName = [firstItem filename];
 	NSString *secondName = [secondItem filename];
     NSInteger result = [firstName compare:secondName];
-    NSString *order = (NSString *)direction;
+    NSString *order = (__bridge NSString *)direction;
 
     if ([order isEqualToString:SBAscendingOrder]) return result;
     return (0 - result);
@@ -30,7 +30,7 @@ NSInteger sortByMdate(id firstItem, id secondItem, void *direction)
 	NSDate *itemOne = [firstItem mdate];
 	NSDate *itemTwo = [secondItem mdate];
     NSInteger result = [itemOne compare:itemTwo];
-    NSString *order = (NSString *)direction;
+    NSString *order = (__bridge NSString *)direction;
 
     if (result == NSOrderedSame){
 		NSString *firstName = [firstItem filename];
@@ -48,7 +48,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 	float firstSize = [itemOne size];
 	float secondSize = [itemTwo size];
 	NSInteger result = firstSize - secondSize;
-	NSString *order = (NSString *)direction;
+	NSString *order = (__bridge NSString *)direction;
 	
     if (result == 0){
 		NSString *firstName = [firstItem filename];
@@ -244,7 +244,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
     //Sort children
     newArray = [[pitem children]
 				sortedArrayUsingFunction:sorter
-				context:order
+				context:(__bridge void *)(order)
 				hint:sortHint];
     [pitem setChildren:newArray];
 

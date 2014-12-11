@@ -480,7 +480,7 @@ enum {
 		modalForWindow: [self window]
 		modalDelegate: self
 		didEndSelector: @selector(openPanelDidEnd:returnCode:textField:)
-		contextInfo: pathField];
+		contextInfo: (__bridge void *)(pathField)];
 }
 
 -(void)openPanelDidEnd:(NSOpenPanel *)openPanel
