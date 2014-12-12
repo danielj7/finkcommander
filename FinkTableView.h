@@ -37,7 +37,7 @@ File: FinkTableView.h
 #import "FinkPackage.h"
 
 
-@interface FinkTableView: NSTableView
+@interface FinkTableView: NSTableView <NSTableViewDelegate,NSTableViewDataSource>
 {
 	NSUserDefaults *defaults;
 

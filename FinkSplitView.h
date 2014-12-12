@@ -40,7 +40,7 @@
 #define LS_COLLAPSE 				\
 	NSLocalizedString(@"Hide Command Output", @"Menu title when output is expanded")
 
-@interface FinkSplitView : NSSplitView 
+@interface FinkSplitView : NSSplitView <NSSplitViewDelegate>
 {
 	NSUserDefaults *defaults;
 	NSScrollView *tableScrollView;

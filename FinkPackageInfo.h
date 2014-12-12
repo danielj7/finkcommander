@@ -38,7 +38,7 @@
 #import "MyTextView.h"
 #include <math.h>
 
-@interface FinkPackageInfo : NSWindowController 
+@interface FinkPackageInfo : NSWindowController <NSWindowDelegate>
 {
 	IBOutlet NSTextView *textView;
 	IBOutlet NSScrollView *scrollView;

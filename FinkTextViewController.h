@@ -29,7 +29,7 @@ File: FinkTextViewController.h
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 
-@interface FinkTextViewController : NSObject
+@interface FinkTextViewController : NSObject <NSTextViewDelegate>
 {
 	NSUserDefaults *defaults;
 	int lines;

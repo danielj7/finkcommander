@@ -29,7 +29,7 @@
 extern NSString *sbAscending;
 extern NSString *sbDescending;
 
-@interface SBOutlineViewController: NSObject
+@interface SBOutlineViewController: NSObject <NSOutlineViewDelegate,NSOutlineViewDataSource>
 {
     NSOutlineView *outlineView;
     SBFileItemTree *tree;
