@@ -657,7 +657,7 @@ enum {
 		
 	if (![self killTask]) 	[self setKillTask: [[AuthorizedExecutable alloc] initWithExecutable:launcher]];
     [[self killTask] setArguments:
-		@[@"--kill", pgid]];
+		[@[@"--kill", pgid] mutableCopy]];
     [[self killTask] setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
     [[self killTask] authorizeWithQuery];
     [[self killTask] start];
