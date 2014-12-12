@@ -201,7 +201,7 @@ See the header file, FinkData.h, for interface and license information.
     NSArray *lines = [s componentsSeparatedByString: @"\n"];
     NSEnumerator *e = [lines objectEnumerator];
 
-    line = [e nextObject]; //discard--name-version: short desc
+    [e nextObject]; //discard--name-version: short desc
 
     while (nil != (line = [e nextObject])){
 		line = [line strip];

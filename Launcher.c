@@ -220,8 +220,8 @@ int repair_self()
 	int chownerr = 0;
 	int chmoderr;
     char* path_to_self = getPathToMyself();
-    char path_to_res[BUFSIZE];
-    char* end_of_dir;
+    char __unused path_to_res[BUFSIZE];
+    char* __unused end_of_dir;
 
  /* Don't change ownership of Resource directory during development;
     it causes clean build to fail. */

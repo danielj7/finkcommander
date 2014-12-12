@@ -62,7 +62,7 @@
 		executable:(NSString *)exe;
 {
     if (self = [super init]){
-        int aPrompt, mPrompt, config, dOutput;  //test regex compilation success
+        int aPrompt, mPrompt, __unused config, __unused dOutput;  //test regex compilation success
 
         defaults = [NSUserDefaults standardUserDefaults];
         command = cmd;
@@ -72,10 +72,10 @@
         _pgid = 0;
 
         /* Precompile regular expressions used to parse each line of output */
-        config = compiledExpressionFromString(CONFIG_PAT, &configure);
+        //config = compiledExpressionFromString(CONFIG_PAT, &configure);
         aPrompt = compiledExpressionFromString(PROMPT_PAT, &prompt);
         mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &manPrompt);
-		dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
+        //dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
         if (mPrompt != 0 || aPrompt != 0){
             NSLog(@"Compiling regex failed.");
         }
