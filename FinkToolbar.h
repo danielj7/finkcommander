@@ -38,9 +38,8 @@
 
 @interface FinkToolbar: NSToolbar
 {
-	NSButton *searchButton;
-	NSTextField *searchField;
 }
+
 @property (nonatomic, strong) NSButton *searchButton;
 @property (nonatomic, strong) NSTextField *searchField;
 @end

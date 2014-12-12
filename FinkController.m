@@ -175,21 +175,21 @@ enum {
 		}
 
 		//Initialize package data storage object
-		packages = [FinkData sharedData];
+		_packages = [FinkData sharedData];
 		
 		//Initialize fink installation information object
-		installationInfo = [FinkInstallationInfo sharedInfo];
+		_installationInfo = [FinkInstallationInfo sharedInfo];
 
 		//Set instance variables used to store objects and state information
 		//needed to run fink and apt-get commands
 		launcher = [[NSBundle mainBundle] pathForResource:@"Launcher" ofType:nil];
-		finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
-		[finkTask setDelegate:self];
+		_finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
+		[_finkTask setDelegate:self];
 		commandIsRunning = NO;
 		pendingCommand = NO;
 		
 		//Set the instance variable for the package tree manager
-		treeManager = [[SBTreeWindowManager alloc] init];
+		_treeManager = [[SBTreeWindowManager alloc] init];
 
 		//Set flag indicating user has chosen to terminate a command;
 		//used to stop appending text to output
@@ -279,7 +279,7 @@ enum {
 		[window setTitle: [NSString stringWithFormat:
 			NSLocalizedString(@"Packages: %d Displayed, %d Installed", @"Main window title"),
 			[[tableView displayedPackages] count],
-			[packages installedPackagesCount]]];
+			[[self packages] installedPackagesCount]]];
 		if (! commandIsRunning){
 			[msgText setStringValue: NSLocalizedString(@"Done", @"Status bar message")];
 		}
@@ -288,7 +288,7 @@ enum {
 		[msgText setStringValue: [NSString stringWithFormat:
 			NSLocalizedString(@"%d packages (%d installed)", @"Status bar message"),
 			[[tableView displayedPackages] count],
-			[packages installedPackagesCount]]];
+			[[self packages] installedPackagesCount]]];
     }
 }
 
@@ -340,7 +340,7 @@ enum {
 		[tableView deselectAll: self];
 	}
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
-	[toolbar validateVisibleItems];
+	[[self toolbar] validateVisibleItems];
 }
 
 //================================================================================
@@ -373,14 +373,14 @@ enum {
 		NSMakeRect(0, 0, tableContentSize.width,
 			 tableContentSize.height)];
     [tableScrollView setDocumentView:tableView];
-    [tableView setDisplayedPackages:[packages array]];
+    [tableView setDisplayedPackages:[[self packages] array]];
     [tableView sizeLastColumnToFit];
     [tableView setMenu:tableContextMenu];
 
     //Instantiate FinkTextViewController
-    textViewController = [[FinkTextViewController alloc] 
+    [self setTextViewController: [[FinkTextViewController alloc] 
 								initWithView:textView
-								forScrollView:outputScrollView];
+								forScrollView:outputScrollView]];
 									
 	//Set state of View menu column items
     while (nil != (columnName = [columnNameEnumerator nextObject])){
@@ -430,23 +430,6 @@ enum {
 }
 
 //================================================================================
-#pragma mark ACCESSORS
-//================================================================================
-
--(FinkData *)packages  {return packages;}
-
--(NSString *)lastCommand {return lastCommand;}
--(void)setLastCommand:(NSString *)s
-{
-    lastCommand = s;
-}
-
--(void)setParser:(FinkOutputParser *)p
-{
-    parser = p;
-}
-
-//================================================================================
 #pragma mark APPLICATION AND WINDOW DELEGATES
 //================================================================================
 
@@ -483,7 +466,7 @@ enum {
 -(void)applicationWillTerminate:(NSNotification*)anotification
 {
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
-    [finkTask unAuthorize];
+    [[self finkTask] unAuthorize];
 }
 
 //================================================================================
@@ -495,10 +478,10 @@ enum {
 
 -(IBAction)showPreferencePanel:(id)sender
 {
-    if (!preferences){
-		preferences = [[FinkPreferences alloc] init];
+    if (![self preferences]){
+		[self setPreferences: [[FinkPreferences alloc] init]];
     }
-    [preferences showWindow:self];
+    [[self preferences] showWindow:self];
 }
 
 //Helper; separated from action method because also called on schedule
@@ -557,7 +540,7 @@ enum {
     [msgText setStringValue:NSLocalizedString(@"Updating table data", "Status bar message")];
     commandIsRunning = YES;
 
-    [packages update];
+    [[self packages] update];
 }
 
 -(IBAction)saveOutput:(id)sender
@@ -650,7 +633,7 @@ enum {
     NSString *full = nil;
     NSString *divider = @"____________________________________________________\n\n";
 
-    [[textViewController textView] setString: @""];
+    [[[self textViewController] textView] setString: @""];
 
     while (nil != (pkg = [e nextObject])){
 		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
@@ -658,9 +641,9 @@ enum {
 			[pkg version],
 			[pkg fulldesc]];
 		if (i > 0){
-			[textViewController appendString:divider];
+			[[self textViewController] appendString:divider];
 		}
-		[textViewController appendString:full];
+		[[self textViewController] appendString:full];
 		i++;
     }
 }
@@ -670,24 +653,24 @@ enum {
 
 -(void)runTerminateCommand:(NSNotification *)ignore
 {
-	NSString *pgid = [NSString stringWithFormat:@"%d", [parser pgid]];
+	NSString *pgid = [NSString stringWithFormat:@"%d", [[self parser] pgid]];
 		
-	if (!killTask) 	killTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
-    [killTask setArguments:
+	if (![self killTask]) 	[self setKillTask: [[AuthorizedExecutable alloc] initWithExecutable:launcher]];
+    [[self killTask] setArguments:
 		@[@"--kill", pgid]];
-    [killTask setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
-    [killTask authorizeWithQuery];
-    [killTask start];
+    [[self killTask] setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+    [[self killTask] authorizeWithQuery];
+    [[self killTask] start];
 	commandTerminated = YES;
 }
 
 -(IBAction)terminateCommand:(id)sender
 {
     if ([defaults boolForKey: FinkWarnBeforeTerminating]){
-		if (! warningDialog){
-			warningDialog = [[FinkWarningDialog alloc] init];
+		if (! [self warningDialog]){
+			[self setWarningDialog: [[FinkWarningDialog alloc] init]];
 		}
-		[warningDialog showTerminateWarning];
+		[[self warningDialog] showTerminateWarning];
 		return;
     }
     [self runTerminateCommand:nil];
@@ -696,21 +679,21 @@ enum {
 //show package inspector
 -(IBAction)showPackageInfoPanel:(id)sender
 {
-    NSString *sig = [installationInfo formattedEmailSig];
+    NSString *sig = [[self installationInfo] formattedEmailSig];
 
-    if (!packageInfo){
-		packageInfo = [[FinkPackageInfo alloc] init];
+    if (![self packageInfo]){
+		[self setPackageInfo: [[FinkPackageInfo alloc] init]];
     }
-    [packageInfo setEmailSig: sig];
-    [packageInfo showWindow: self];
-    [packageInfo displayDescriptions: [tableView selectedPackageArray]];
+    [[self packageInfo] setEmailSig: sig];
+    [[self packageInfo] showWindow: self];
+    [[self packageInfo] displayDescriptions: [tableView selectedPackageArray]];
 }
 
 //change inspector content when table selection changes
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
-    if (packageInfo && [[packageInfo window] isVisible]){
-		[packageInfo displayDescriptions: [tableView selectedPackageArray]];
+    if ([self packageInfo] && [[[self packageInfo] window] isVisible]){
+		[[self packageInfo] displayDescriptions: [tableView selectedPackageArray]];
     }
 }
 
@@ -718,15 +701,15 @@ enum {
 -(void)sendEmailWithMessage:(int)typeOfFeedback
 {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-    NSString *sig = [installationInfo formattedEmailSig];
+    NSString *sig = [[self installationInfo] formattedEmailSig];
 	NSString *feedbackMessage;
 	NSString *emailTemplate;
 	NSString *emailBody;
     FinkPackage *pkg;
     NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
-    if (!packageInfo){
-		packageInfo = [[FinkPackageInfo alloc] init];
+    if (![self packageInfo]){
+		[self setPackageInfo: [[FinkPackageInfo alloc] init]];
     }
 	
 	emailTemplate = @"Hello, there. This is a feedback e-mail with regard to package %@-%@. %@\n"; 
@@ -738,7 +721,7 @@ enum {
 	else
 		feedbackMessage = @"Ooops, FinkCommander doesn't know whether this feedback is positive or negative!";
 	
-    [packageInfo setEmailSig:sig];
+    [[self packageInfo] setEmailSig:sig];
 	
     while (nil != (pkg = [e nextObject])){
 		if (typeOfFeedback == POSITIVE   &&
@@ -754,7 +737,7 @@ enum {
 			[pkgNames addObject:[pkg name]];
 		}
 		emailBody = [NSString stringWithFormat:emailTemplate, [pkg name], [pkg version], feedbackMessage];
-		[[NSWorkspace sharedWorkspace] openURL:[packageInfo mailURLForPackage:pkg withBody:emailBody]];
+		[[NSWorkspace sharedWorkspace] openURL:[[self packageInfo] mailURLForPackage:pkg withBody:emailBody]];
     }
 	if (typeOfFeedback == POSITIVE && [pkgNames count] > 0){
 		NSString *msg = [pkgNames count] > 1 ? 
@@ -799,12 +782,12 @@ enum {
 		NSBeep();
 		return;
 	}
-	[treeManager openNewWindowForPackageName:[pkg name]];
+	[[self treeManager] openNewWindowForPackageName:[pkg name]];
 }
 
 -(void)treeWindowWillClose:(id)sender
 {
-	[treeManager closingTreeWindowWithController:sender];
+	[[self treeManager] closingTreeWindowWithController:sender];
 }
 
 
@@ -890,18 +873,18 @@ enum {
 
 -(void)setupToolbar
 {
-	toolbar = [[FinkToolbar alloc] initWithIdentifier: @"mainToolbar"];
-	[toolbar setDelegate: self];
-	[toolbar setAllowsUserCustomization: YES];
-	[toolbar setAutosavesConfiguration: YES];
-	[toolbar setDisplayMode: NSToolbarDisplayModeIconOnly];
-	[toolbar setSearchField:searchTextField];
+	[self setToolbar: [[FinkToolbar alloc] initWithIdentifier: @"mainToolbar"]];
+	[[self toolbar] setDelegate: self];
+	[[self toolbar] setAllowsUserCustomization: YES];
+	[[self toolbar] setAutosavesConfiguration: YES];
+	[[self toolbar] setDisplayMode: NSToolbarDisplayModeIconOnly];
+	[[self toolbar] setSearchField:searchTextField];
 	id searchCell = [searchTextField cell];
 	[searchCell setSearchMenuTemplate: [searchCell searchMenuTemplate]];
 #ifndef OSXVER101
-	[toolbar setSizeMode:NSToolbarSizeModeSmall];
+	[[self toolbar] setSizeMode:NSToolbarSizeModeSmall];
 #endif
-    [window setToolbar: toolbar];
+    [window setToolbar: [self toolbar]];
 }
 
 //reapply filter if search field values have changed
@@ -1023,7 +1006,7 @@ enum {
 		NSString *pkgAttribute;
 		/* 	Used to store the subset of the packages array that matches the filter text */
 		NSMutableArray *subset = [NSMutableArray array];
-		NSEnumerator *e = [[packages array] objectEnumerator];
+		NSEnumerator *e = [[[self packages] array] objectEnumerator];
                 regex_t regex;
 		FinkPackage *pkg;
 
@@ -1037,7 +1020,7 @@ enum {
 		}		
 
 		if ([filterText length] == 0){
-			[tableView setDisplayedPackages: [packages array]];
+			[tableView setDisplayedPackages: [[self packages] array]];
 		}else{
 			while (nil != (pkg = [e nextObject])){
 				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
@@ -1166,7 +1149,7 @@ enum {
 		return YES;
 	}
 	if (itemAction == @selector(toggleToolbarShown:)){
-		if ([toolbar isVisible]){
+		if ([[self toolbar] isVisible]){
 			[theItem setTitle:NSLocalizedString(@"Hide Toolbar", @"Menu title")];
 		}else{
 			[theItem setTitle:NSLocalizedString(@"Show Toolbar", @"Menu title")];
@@ -1322,12 +1305,12 @@ enum {
     [self displayCommand: args];
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"finkcommanderatwork"]];
 
-    [finkTask setArguments:args];
-    [finkTask setEnvironment:envvars];
-    [finkTask authorizeWithQuery];
-    [finkTask start];
-	[textViewController setLimits];
-    [[textViewController textView]
+    [[self finkTask] setArguments:args];
+    [[self finkTask] setEnvironment:envvars];
+    [[self finkTask] authorizeWithQuery];
+    [[self finkTask] start];
+	[[self textViewController] setLimits];
+    [[[self textViewController] textView]
 		replaceCharactersInRange:NSMakeRange(0, [[textView string] length])
 					  withString:@""];
 }
@@ -1338,10 +1321,10 @@ enum {
 
     if ([args containsObject: @"remove"] &&
 		[defaults boolForKey: FinkWarnBeforeRemoving]){
-		if (! warningDialog){
-			warningDialog = [[FinkWarningDialog alloc] init];
+		if (! [self warningDialog]){
+			[self setWarningDialog: [[FinkWarningDialog alloc] init]];
 		}
-		[warningDialog showRemoveWarningForArguments:args];
+		[[self warningDialog] showRemoveWarningForArguments:args];
 		return;
     }
     [self launchCommandWithArguments:args];
@@ -1402,8 +1385,8 @@ enum {
 -(IBAction)raiseInteractionWindow:(id)sender
 {
     [splitView expandOutputToMinimumRatio:0.4];
-    [[textViewController textView] scrollRangeToVisible:
-		NSMakeRange([[[textViewController textView] string] length], 0)];
+    [[[self textViewController] textView] scrollRangeToVisible:
+		NSMakeRange([[[[self textViewController] textView] string] length], 0)];
 
     [NSApp beginSheet: interactionWindow
 		  modalForWindow: window
@@ -1425,12 +1408,12 @@ enum {
 {
     if (returnCode){  // Submit rather than Cancel
 		if ([[interactionMatrix selectedCell] tag] == DEFAULT){
-			[finkTask writeToStdin: @"\n"];
+			[[self finkTask] writeToStdin: @"\n"];
 		}else{
-			[finkTask writeToStdin: [NSString stringWithFormat:@"%@\n",
+			[[self finkTask] writeToStdin: [NSString stringWithFormat:@"%@\n",
 				[interactionField stringValue]]];
 		}
-		[textViewController appendString:@"\n"];
+		[[self textViewController] appendString:@"\n"];
 		if ([defaults boolForKey:FinkAutoExpandOutput]){
 			[splitView collapseOutput:nil];
 		}
@@ -1458,7 +1441,7 @@ enum {
 		@"Building %@", @"Activating %@"];
     NSString *pname, *phaseString;
 
-    pname = [parser currentPackage];
+    pname = [[self parser] currentPackage];
     phaseString = phases[phaseIndex];
 	phaseString = 
 		[[NSBundle mainBundle] 
@@ -1466,7 +1449,7 @@ enum {
 			value:phaseString
 			table:@"Programmatic"];
     [msgText setStringValue:[NSString stringWithFormat:phaseString, pname]];
-    [self incrementProgressIndicator:[parser increment]];
+    [self incrementProgressIndicator:[[self parser] increment]];
 }
 
 -(void)interactIfRequired
@@ -1486,8 +1469,8 @@ enum {
 		there are 0 pixels below the scroll view */
     if ([pixelsBelowView floatValue] <= 100.0 ||
 		[defaults boolForKey: FinkAlwaysScrollToBottom]){
-		[[textViewController textView] scrollRangeToVisible:
-			NSMakeRange([[[textViewController textView] string] length], 0)];
+		[[[self textViewController] textView] scrollRangeToVisible:
+			NSMakeRange([[[[self textViewController] textView] string] length], 0)];
     }
 }
 
@@ -1507,11 +1490,11 @@ enum {
     This value is used to determine whether the user has scrolled up.
     If so, the output view will not automatically scroll to the bottom. */
         NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
-		abs([[textViewController textView] bounds].size.height 			-
-			[[textViewController textView] visibleRect].origin.y 		-
-			[[textViewController textView] visibleRect].size.height)];
+		abs([[[self textViewController] textView] bounds].size.height 			-
+			[[[self textViewController] textView] visibleRect].origin.y 		-
+			[[[self textViewController] textView] visibleRect].size.height)];
 
-        int signal = [parser parseOutput:output];
+        int signal = [[self parser] parseOutput:output];
 	
         if (commandTerminated) return;
         switch(signal)
@@ -1520,7 +1503,7 @@ enum {
 			break;
 		case PASSWORD_PROMPT:
 			output = @"";
-			[finkTask stop];
+			[[self finkTask] stop];
 			break;
 		case PROMPT:
 			[self interactIfRequired];
@@ -1580,13 +1563,13 @@ enum {
 
 	if (signal != DYNAMIC_OUTPUT){
 		outputIsDynamic = NO;
-		[textViewController appendString:output];
+		[[self textViewController] appendString:output];
 	} else {
 		if (!outputIsDynamic) {
 			outputIsDynamic = YES;
-			[textViewController appendString:output];
+			[[self textViewController] appendString:output];
 		}else{
-			[textViewController replaceLastLineByString:output];
+			[[self textViewController] replaceLastLineByString:output];
 		}
 	}
 	//According to Moriarity example, we have to put off scrolling until next event loop
@@ -1609,20 +1592,20 @@ enum {
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
     int status = [number intValue];
-    int outputLength = [[[textViewController textView] string] length];
-    NSString *last2lines = outputLength < 160 ? [[textViewController textView] string] :
-		[[[textViewController textView] string] 
+    int outputLength = [[[[self textViewController] textView] string] length];
+    NSString *last2lines = outputLength < 160 ? [[[self textViewController] textView] string] :
+		[[[[self textViewController] textView] string] 
 			substringWithRange: NSMakeRange(outputLength - 160, 159)];
 
-    Dprintf(@"Finishing command %@ with status %d", lastCommand, status);
+    Dprintf(@"Finishing command %@ with status %d", [self lastCommand], status);
     NSBeep();
 
     /*	Make sure command was successful before updating table.
      	Checking exit status is not sufficient for some fink commands, so check
 		approximately last two lines for "failed." */
-    [tableView setDisplayedPackages:[packages array]];
+    [tableView setDisplayedPackages:[[self packages] array]];
     if (status == 0 && ! [last2lines containsCI:@"failed"]){
-		if (CMD_REQUIRES_UPDATE(lastCommand) && ! commandTerminated){
+		if (CMD_REQUIRES_UPDATE([self lastCommand]) && ! commandTerminated){
 			[self updateTable:nil];   // resetInterface will be called by notification
 		}else{
 			[self resetInterface:nil];

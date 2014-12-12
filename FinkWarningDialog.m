@@ -20,16 +20,6 @@
 }
 
 
--(NSMutableArray *)arguments 
-{
-    return arguments;
-}
-
--(void)setArguments:(NSMutableArray *)newArguments 
-{
-    arguments = newArguments;
-}
-
 -(void)showRemoveWarningForArguments:(NSMutableArray *)args
 {
     int optcount = 0;

@@ -45,7 +45,6 @@ enum {
 	IBOutlet NSButton *confirmButton;
 	IBOutlet NSButton *cancelButton;
 	
-	NSMutableArray *arguments;
 	NSUserDefaults *defaults;
 	int command;
 }

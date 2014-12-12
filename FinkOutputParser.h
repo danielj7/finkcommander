@@ -79,16 +79,13 @@ enum {
     NSMutableArray *packageList;
     NSMutableArray *increments;
     NSString *command;
-    NSString *currentPackage;
 
     regex_t configure;
     regex_t prompt;
     regex_t manPrompt;
 	regex_t dynamicOutput;
 
-    float increment;
     int currentPhase;
-    int pgid;
     BOOL installing;
     BOOL readingPackageList;
     BOOL selfRepair;
@@ -97,11 +94,11 @@ enum {
 -(instancetype)initForCommand:(NSString *)cmd
 	executable:(NSString *)exe NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) float increment;
+@property (nonatomic) float increment;
 
-@property (nonatomic, readonly) int pgid;
+@property (nonatomic) int pgid;
 
-@property (nonatomic, readonly, copy) NSString *currentPackage;
+@property (nonatomic, copy) NSString *currentPackage;
 
 -(int)parseOutput:(NSString *)output;
 

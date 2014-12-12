@@ -122,22 +122,8 @@ Contact the author at sburrious@users.sourceforge.net.
 	IBOutlet id searchView;
 	IBOutlet NSSearchField *searchTextField;
 
-	//FinkCommander objects
-	FinkData *packages;
-	FinkPreferences *preferences;
-	FinkPackageInfo *packageInfo;
-	FinkInstallationInfo *installationInfo;
-	FinkWarningDialog *warningDialog;
-	FinkOutputParser *parser;
-	FinkTextViewController *textViewController;
-	FinkToolbar *toolbar;
-	AuthorizedExecutable *finkTask;
-	AuthorizedExecutable *killTask;
-	SBTreeWindowManager *treeManager;
-
 	//Other objects
 	NSUserDefaults *defaults;
-	NSString *lastCommand;
 	NSString *launcher;
 
 	//Flags
@@ -151,9 +137,18 @@ Contact the author at sburrious@users.sourceforge.net.
 }
 
 //Accessors
+@property (nonatomic) FinkPreferences *preferences;
+@property (nonatomic) FinkPackageInfo *packageInfo;
+@property (nonatomic) FinkInstallationInfo *installationInfo;
+@property (nonatomic) FinkWarningDialog *warningDialog;
+@property (nonatomic) FinkTextViewController *textViewController;
+@property (nonatomic) FinkToolbar *toolbar;
+@property (nonatomic) AuthorizedExecutable *finkTask;
+@property (nonatomic) AuthorizedExecutable *killTask;
+@property (nonatomic) SBTreeWindowManager *treeManager;
 @property (nonatomic, readonly, strong) FinkData *packages;
 @property (nonatomic, copy) NSString *lastCommand;
--(void)setParser:(FinkOutputParser *)p;
+@property (nonatomic) FinkOutputParser *parser;
 
 //Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;

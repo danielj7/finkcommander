@@ -59,8 +59,8 @@ enum {
 		[self setUsesAlternatingRowBackgroundColors:YES];
 
 		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
-		reverseSortImage = [NSImage imageNamed: @"reverse"];
-		normalSortImage = [NSImage imageNamed: @"normal"];
+		_reverseSortImage = [NSImage imageNamed: @"reverse"];
+		_normalSortImage = [NSImage imageNamed: @"normal"];
 		// dictionary used to record whether table columns are sorted in normal or reverse order
 		columnState = [[defaults objectForKey:FinkColumnStateDictionary] mutableCopy];
 	}
@@ -71,31 +71,6 @@ enum {
 //----------------------------------------------------------
 #pragma mark ACCESSORS
 //----------------------------------------------------------
-
--(NSString *)lastIdentifier {return lastIdentifier;}
--(void)setLastIdentifier:(NSString *)s
-{
-	lastIdentifier = s;
-}
-
--(NSArray *)displayedPackages {return displayedPackages;}
--(void)setDisplayedPackages:(NSArray *)a
-{
-	displayedPackages = a;
-}
-
--(NSArray *)selectedObjectInfo
-{
-    return selectedObjectInfo;
-}
-
--(void)setSelectedObjectInfo:(NSArray *)array
-{
-    selectedObjectInfo = array;
-}
-
--(NSImage *)normalSortImage {return normalSortImage;}
--(NSImage *)reverseSortImage {return reverseSortImage;}
 
 -(NSArray *)selectedPackageArray
 {
@@ -259,7 +234,7 @@ enum {
 	NSFileManager *manager = [NSFileManager defaultManager];
 
 	while (nil != (rowNum = [e nextObject])){
-		pkg = displayedPackages[[rowNum intValue]];
+		pkg = [self displayedPackages][[rowNum intValue]];
 		if ([[pkg unstable] length] > 1){
 			tree = @"unstable";
 		}else{
@@ -518,10 +493,10 @@ enum {
 
 	// reset visual indicators
 	if ([direction isEqualToString: @"reverse"]){
-		[self setIndicatorImage: reverseSortImage
+		[self setIndicatorImage: [self reverseSortImage]
 							 inTableColumn: aTableColumn];
 	}else{
-		[self setIndicatorImage: normalSortImage
+		[self setIndicatorImage: [self normalSortImage]
 							 inTableColumn: aTableColumn];
 	}
 	[self setHighlightedTableColumn: aTableColumn];

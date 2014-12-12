@@ -42,23 +42,6 @@ enum {
 
 @interface FinkPackage : NSObject 
 {
-	//Attributes of a fink package
-	NSString *name;
-	NSString *status;
-	NSString *version;
-	NSString *installed;
-	NSString *binary;
-	NSString *stable;
-	NSString *unstable;
-	NSString *local;
-	NSString *category;
-	NSString *filename;
-	NSString *summary;
-	NSString *fulldesc;
-	NSString *weburl;
-	NSString *maintainer;
-	NSString *email;
-	int flagged;
 }
 
 /*

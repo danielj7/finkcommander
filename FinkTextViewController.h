@@ -31,8 +31,6 @@ File: FinkTextViewController.h
 
 @interface FinkTextViewController : NSObject
 {
-	NSTextView *textView;
-	NSScrollView *scrollView;
 	NSUserDefaults *defaults;
 	int lines;
 	int bufferLimit;

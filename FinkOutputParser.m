@@ -56,19 +56,6 @@
 
 @implementation FinkOutputParser
 
-//------------------------------------------>Accessors
-
--(float)increment{ return increment; }
-
--(int)pgid{ return pgid; }
-
--(NSString *)currentPackage { return currentPackage; }
-
--(void)setCurrentPackage:(NSString *)p
-{
-    currentPackage = p;
-}
-
 //------------------------------------------>Create and Destroy
 
 -(instancetype)initForCommand:(NSString *)cmd
@@ -82,7 +69,7 @@
         readingPackageList = NO;
         selfRepair = NO;
         installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
-        pgid = 0;
+        _pgid = 0;
 
         /* Precompile regular expressions used to parse each line of output */
         config = compiledExpressionFromString(CONFIG_PAT, &configure);
@@ -97,7 +84,7 @@
             packageList = [[NSMutableArray alloc] init];
             [packageList addObject:@""];
             increments = [[NSMutableArray alloc] init];
-            [self setCurrentPackage:@""];
+            _currentPackage = @"";
         }
     }
     return self;
@@ -171,27 +158,27 @@
     float phaseTotal;
     float pkgTotal;
 
-    if (!currentPackage || !packageList || [packageList count] < 1 || !ptracker){
+    if (![self currentPackage] || !packageList || [packageList count] < 1 || !ptracker){
         NSLog(@"Data objects for installation tracking were not created");
-        increment = 0;
+        [self setIncrement:0];
         return;
     }
 
     phaseTotal = [increments[currentPhase] floatValue];
-    if ([currentPackage isEqualToString:@"package"]){
-        increment = 0;
+    if ([[self currentPackage] isEqualToString:@"package"]){
+        [self setIncrement:0];
         return;
     }else{
-        pkgTotal = [ptracker[currentPackage] floatValue];
+        pkgTotal = [ptracker[[self currentPackage]] floatValue];
     }
 
-    Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, currentPackage);
+    Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, [self currentPackage]);
     if (phaseTotal > pkgTotal){
-        increment = phaseTotal - pkgTotal;
-        ptracker[currentPackage] = @(phaseTotal);
-        Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, increment);
+        [self setIncrement:phaseTotal - pkgTotal];
+        ptracker[[self currentPackage]] = @(phaseTotal);
+        Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, [self increment]);
     }else{
-        increment = 0;
+        [self setIncrement:0];
         Dprintf(@"Old total increment %f >= new total %f; setting increment to 0",
                 pkgTotal, phaseTotal);
 
@@ -275,8 +262,8 @@
 {
     NSString *sline = [line strip];
     //Read process group id for Launcher
-    if (!pgid && [line contains:@"PGID="]){
-        pgid = [[line substringFromIndex:AFTER_EQUAL_SIGN] intValue];
+    if (![self pgid] && [line contains:@"PGID="]){
+        [self setPgid:[[line substringFromIndex:AFTER_EQUAL_SIGN] intValue]];
         return PGID;
     }
     //Look for package lists
@@ -340,7 +327,7 @@
 			NSString *name = [self packageNameFromLine:line];
 			Dprintf(@"Fetch phase triggered by:\n%@", line);
 			//no action required if retrying failed download
-			if ([name isEqualToString:currentPackage]) return NONE;
+			if ([name isEqualToString:[self currentPackage]]) return NONE;
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:name];
 			currentPhase = FETCH;

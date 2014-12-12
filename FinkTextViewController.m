@@ -15,26 +15,12 @@ File: FinkTextViewController.m
 	if (self = [super init]){
 		[self setTextView:aTextView];
 		[self setScrollView:aScrollView];
-		[textView setDelegate:self];
-		[textView setFont:[NSFont userFixedPitchFontOfSize:0.0]];
+		[_textView setDelegate:self];
+		[_textView setFont:[NSFont userFixedPitchFontOfSize:0.0]];
 	}
 	return self;
 }
 
-
-- (NSTextView *)textView { return textView; }
-
-- (void)setTextView:(NSTextView *)newTextView 
-{
-	textView = newTextView;
-}
-
-- (NSScrollView *)scrollView { return scrollView; }
-
-- (void)setScrollView:(NSScrollView *)newScrollView
-{
-	scrollView = newScrollView;
-}
 
 -(void)setLimits
 {
@@ -51,7 +37,7 @@ File: FinkTextViewController.m
 
 -(NSRange)rangeOfLinesAtTopOfView:(int)numlines
 {
-	NSString *viewString = [textView string];
+	NSString *viewString = [[self textView] string];
 	int i;
 	NSInteger test;
 	int lastReturn = 0;
@@ -70,7 +56,7 @@ File: FinkTextViewController.m
 
 -(void)appendString:(NSString *)s
 {
-	[[textView textStorage] beginEditing];
+	[[[self textView] textStorage] beginEditing];
 
 	if (bufferLimit > 0){
 		int overflow;
@@ -80,14 +66,14 @@ File: FinkTextViewController.m
 		
 		if (overflow > minDelete){
 			NSRange r = [self rangeOfLinesAtTopOfView:overflow];			
-			[textView replaceCharactersInRange:r withString:@""];
+			[[self textView] replaceCharactersInRange:r withString:@""];
 			lines -= overflow;
 		}
 	}
-	[textView replaceCharactersInRange:NSMakeRange([[textView string] length], 0)
+	[[self textView] replaceCharactersInRange:NSMakeRange([[[self textView] string] length], 0)
 		withString:s];
 		
-	[[textView textStorage] endEditing];
+	[[[self textView] textStorage] endEditing];
 }
 
 -(void)replaceLastLineByString:(NSString *)s
@@ -96,10 +82,10 @@ File: FinkTextViewController.m
 	if (([self numberOfLinesInString:s] > 0) || (([[s componentsSeparatedByString:@"\r"] count] - 1) > 1)) {
 		return;
 	}
-	[[textView textStorage] beginEditing];
-	[textView replaceCharactersInRange:NSMakeRange([[textView string] length] - [s length], [s length])
+	[[[self textView] textStorage] beginEditing];
+	[[self textView] replaceCharactersInRange:NSMakeRange([[[self textView] string] length] - [s length], [s length])
 		withString:s];
-	[[textView textStorage] endEditing];
+	[[[self textView] textStorage] endEditing];
 }
 
 @end

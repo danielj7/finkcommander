@@ -42,13 +42,6 @@ File: FinkTableView.h
 	NSUserDefaults *defaults;
 
 	NSMutableDictionary *columnState;
-	NSArray *displayedPackages;
-	NSArray *selectedObjectInfo;
-	
-	NSString *lastIdentifier;
-
-	NSImage *reverseSortImage;
-	NSImage *normalSortImage;	
 }
 
 //----------------------------------------------->Accessors
