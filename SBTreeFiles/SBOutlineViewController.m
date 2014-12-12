@@ -89,7 +89,7 @@
 			[[[tree rootItem] valueForKey:identifier] unsignedLongValue] :
 			[[item valueForKey:identifier] unsignedLongValue];
 		itemSize = itemSize / 1024 + 1;
-		return [NSString stringWithFormat:@"%u KB", itemSize];
+		return [NSString stringWithFormat:@"%lu KB", itemSize];
     }
     return (nil == item) ? 
 		(id)[[tree rootItem] valueForKey:identifier] : 

@@ -93,7 +93,7 @@ File SBFileItem.m
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat: @"<%@ --\n\tpath: %@\n\tsize: %u\n\tmod date: %@\n\tis directory: %@>", [super description], [self path], [self size], [self mdate], 
+    return [NSString stringWithFormat: @"<%@ --\n\tpath: %@\n\tsize: %lu\n\tmod date: %@\n\tis directory: %@>", [super description], [self path], [self size], [self mdate], 
 			(nil != [self children] ? @"YES" : @"NO")];
 }
 
