@@ -922,22 +922,22 @@ enum {
 				  initWithItemIdentifier: itemIdentifier];
 
     itemDict = d[itemIdentifier];
-    if (value = itemDict[@"Label"]){
+    if ((value = itemDict[@"Label"])){
 		[item setLabel: value];
 		[item setPaletteLabel: value];
     }
-    if (value = itemDict[@"PaletteLabel"])
+    if ((value = itemDict[@"PaletteLabel"]))
 		[item setPaletteLabel: value];
-    if (value = itemDict[@"ToolTip"])
+    if ((value = itemDict[@"ToolTip"]))
 		[item setToolTip: value];
-    if (value = itemDict[@"Image"])
+    if ((value = itemDict[@"Image"]))
 		[item setImage: [NSImage imageNamed: value]];
-    if (value = itemDict[@"Action"]){
+    if ((value = itemDict[@"Action"])){
 		[item setTarget: self];
 		[item setAction: NSSelectorFromString([NSString
 						  stringWithFormat: @"%@:", value])];
     }
-    if (tag = itemDict[@"Tag"]){
+    if ((tag = itemDict[@"Tag"])){
 		[item setTag: [tag intValue]];
     }
     if ([itemIdentifier isEqualToString:@"FinkFilterItem"]){
