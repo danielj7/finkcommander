@@ -103,7 +103,11 @@ int perform(const char* cmd, char * const *argv)
     if (pid == 0) {
 		/* If this is the child process, then try to exec cmd */
 
-		setuid(geteuid()); /* set ruid = euid to avoid perl's taint mode */
+		if (setuid(geteuid()) != 0) /* set ruid = euid to avoid perl's taint mode */
+        {
+            fprintf(stderr, "setuid() failed.");
+            exit(1);
+        }
 
 		if (execvp(cmd, argv) == -1){
 			fprintf(stderr, "Execution failed.  errno=%d (%s)\n", errno, strerror(errno));
@@ -352,7 +356,12 @@ main(int argc, char * const *argv)
             /* If the caller isn't authorized to run as root, then reset
 			 * the effective uid before spawning command
 			 */
-            seteuid(getuid());
+            if (seteuid(getuid()) != 0)
+            {
+                fprintf(stderr, "setuid() failed.");
+                exit(1);
+            }
+
         }
 		if (argc == 3 && 0 == strcmp(argv[1], "--kill")){
 			/* Kill command being run by Launcher in another process */
