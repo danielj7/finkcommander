@@ -240,9 +240,11 @@ int repair_self()
 
     if (path_to_self != NULL){
         /* Recover the passed in AuthorizationRef. */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
         if (AuthorizationCopyPrivilegedReference(&auth, kAuthorizationFlagDefaults)
             == errAuthorizationSuccess){
-
+#pragma clang diagnostic pop
             /* Open tool exclusively, so no one can change it while we bless it */
             fd_tool = open(path_to_self, O_NONBLOCK|O_RDONLY|O_EXLOCK, 0);
             if ((fd_tool != -1) && (fstat(fd_tool, &st) == 0)){
@@ -303,10 +305,13 @@ int launch_to_repair_self(AuthorizationRef* auth)
 		fprintf(stderr, "Running self-repair");   /* signal to FinkOutputParser */
 		  /* Set our own stdin and stdout to be the communication channel
 		  with ourself. */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 		  if (AuthorizationExecuteWithPrivileges(*auth, path_to_self, kAuthorizationFlagDefaults,
 										   arguments, &commPipe) == errAuthorizationSuccess)
 		  {
-			  /* Read from stdin and write to commPipe. */
+#pragma clang diagnostic pop
+              /* Read from stdin and write to commPipe. */
 			  fwrite(&extAuth, 1, sizeof(extAuth),commPipe);
 			  /* Flush any remaining output. */
 			  fflush(commPipe);
