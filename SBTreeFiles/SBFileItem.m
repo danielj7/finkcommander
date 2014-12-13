@@ -20,12 +20,13 @@ File SBFileItem.m
 		NSDictionary *fattrs;
 		BOOL isDir, valid;
 		NSArray *arr;
+        NSError *err;
 
-		p = [p stringByStandardizingPath];
+		p = [[p stringByStandardizingPath] stringByResolvingSymlinksInPath];
 		valid = [mgr fileExistsAtPath:p isDirectory:&isDir];
 
 		if (valid){
-			fattrs = [mgr fileAttributesAtPath:p traverseLink:YES];
+			fattrs = [mgr attributesOfItemAtPath:p error:&err];
 			[self setPath:p];
 			[self setFilename:[p lastPathComponent]];
 			[self setSize: [fattrs fileSize]];
