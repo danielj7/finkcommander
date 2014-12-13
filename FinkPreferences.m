@@ -466,37 +466,27 @@ enum {
 	[panel setCanChooseFiles: NO];
 	[panel setAllowsMultipleSelection: NO];
 	[panel setPrompt: NSLocalizedString(@"Choose", @"Title for panel asking user to choose a directory")];
+    [panel setDirectoryURL:[NSURL fileURLWithPath:directory isDirectory:YES]];
+    
+    [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton){
+            NSString *path = [[panel URLs][0] path];
+            Dprintf(@"Path chosen: %@", path);
+            [pathField setStringValue:path];
+            Dprintf(@"Text field value: %@", [pathField stringValue]);
+            
+            //FinkPreferences is registered for this notification to make
+            //sure buttons associated with text fields accurately reflect the
+            //fields' state
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName: NSControlTextDidChangeNotification
+             object: pathField];
+            
+            Dprintf(@"Text field value after notification: %@", [pathField stringValue]);
+        }
+    }];
+}
 	
-	[panel beginSheetForDirectory:directory
-		file: nil
-		types: nil
-		modalForWindow: [self window]
-		modalDelegate: self
-		didEndSelector: @selector(openPanelDidEnd:returnCode:textField:)
-		contextInfo: (__bridge void *)(pathField)];
-}
-
--(void)openPanelDidEnd:(NSOpenPanel *)openPanel
-				  returnCode:(int)returnCode
-				   textField:(NSTextField *)textField
-{
-	if (returnCode == NSOKButton){
-		NSString *path = [openPanel filenames][0];
-		Dprintf(@"Path chosen: %@", path);
-		[textField setStringValue: path];
-		Dprintf(@"Text field value: %@", [textField stringValue]);
-
-		//FinkPreferences is registered for this notification to make
-		//sure buttons associated with text fields accurately reflect the
-		//fields' state
-		[[NSNotificationCenter defaultCenter]
-				postNotificationName: NSControlTextDidChangeNotification
-							  object: textField];
-
-		Dprintf(@"Text field value after notification: %@", [textField stringValue]);
-	}
-}
-
 /*** Environment Tab Buttons ***/
 
 -(IBAction)addEnvironmentSetting:(id)sender

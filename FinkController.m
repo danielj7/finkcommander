@@ -564,23 +564,16 @@ enum {
 					[[NSDate date] descriptionWithCalendarFormat:
 								@"%d%b%Y" timeZone: nil locale: nil]];
 	} 
-    [panel setRequiredFileType: @"txt"];
-    [panel beginSheetForDirectory:savePath
-			file:fileName
-			modalForWindow:window
-			modalDelegate:self
-			didEndSelector:@selector(didEnd:returnCode:contextInfo:)
-			contextInfo:nil];
-}
-
--(void)didEnd:(NSSavePanel *)sheet
-   returnCode:(int)code
-  contextInfo:(void *)contextInfo
-{
-    if (code == NSOKButton){
-		NSData *odata = [[textView string] dataUsingEncoding: NSMacOSRomanStringEncoding];
-		[odata writeToFile: [sheet filename] atomically:YES];
-    }
+    [panel setAllowedFileTypes:@[@"txt"]];
+    [panel setDirectoryURL:[NSURL fileURLWithPath:savePath isDirectory:YES]];
+    [panel setNameFieldStringValue:fileName];
+    
+    [panel beginSheetModalForWindow:window completionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton){
+            NSError *err;
+            [[textView string] writeToURL:[panel URL] atomically:YES encoding:NSUTF8StringEncoding error:&err];
+        }
+    }];
 }
 
 //----------------------------------------------->View Menu

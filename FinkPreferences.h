@@ -111,9 +111,6 @@ File: FinkPreferences.h
 
 //choose directory for text fields ("Browse" button action)
 -(IBAction)selectDirectory:(id)sender;
--(void)openPanelDidEnd:(NSOpenPanel *)openPanel
-		returnCode:(int)returnCode
-		textField:(NSTextField *)textField;
 
 //record whether certain preference items have changed
 -(IBAction)setPathChoiceChanged:(id)sender;

@@ -155,9 +155,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)showPreferencePanel:(id)sender;
 -(IBAction)updateTable:(id)sender;
 -(IBAction)saveOutput:(id)sender;
--(void)didEnd:(NSSavePanel *)sheet
-	  returnCode:(int)code
-	 contextInfo:(void *)contextInfo;
 -(IBAction)showDescription:(id)sender;
 -(IBAction)terminateCommand:(id)sender;
 -(IBAction)showPackageInfoPanel:(id)sender;
