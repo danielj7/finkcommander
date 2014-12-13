@@ -807,12 +807,13 @@ enum {
 						stringByAppendingPathComponent:@"share/doc"];
 	NSString *path = [root stringByAppendingPathComponent:[pkg name]];
 	NSArray *pathContents;
+    NSError *err;
 
 	if (![mgr fileExistsAtPath:path]){
 		NSBeep();
 		return;
 	}
-	pathContents = [mgr directoryContentsAtPath:path];
+	pathContents = [mgr contentsOfDirectoryAtPath:path error:&err];
 	if (nil != pathContents && [pathContents count] > 0){
 		path = [path stringByAppendingPathComponent:pathContents[0]];
 	}
