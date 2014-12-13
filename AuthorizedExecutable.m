@@ -299,7 +299,9 @@
 	NSString *outputString;
 	
 	NS_DURING
-		outputString = [NSString stringWithCString:[data bytes] length:[data length]];
+		outputString = [[NSString alloc] initWithBytes:[data bytes]
+                                                length:[data length]
+                                              encoding:NSUTF8StringEncoding];
 		return outputString;	
 	NS_HANDLER
 		return @"WARNING:  Unable to decode output for display.\n";
@@ -317,8 +319,9 @@
     }
     else
     {
-        [self logStdOut:[NSString stringWithCString:[inData bytes] 
-			    length:[inData length]]];
+        [self logStdOut:[[NSString alloc] initWithBytes:[inData bytes]
+                                                 length:[inData length]
+                                               encoding:NSUTF8StringEncoding]];
         [stdoutHandle readInBackgroundAndNotify];
     }
 }
@@ -330,8 +333,9 @@
     NSData *inData = [notification userInfo][NSFileHandleNotificationDataItem];
     if (inData != nil && [inData length] != 0)
     {
-        [self logStdErr:[NSString stringWithCString:[inData bytes]
-                                             length:[inData length]]];
+        [self logStdErr:[[NSString alloc] initWithBytes:[inData bytes]
+                                                 length:[inData length]
+                                               encoding:NSUTF8StringEncoding]];
         [stderrHandle readInBackgroundAndNotify];
     }
 }
