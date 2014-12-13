@@ -73,15 +73,11 @@ void fixScript(void)
 						@"Library/Application Support"];
 	NSString *fcpath = [aspath stringByAppendingPathComponent: @"FinkCommander"];
 	NSString *wpath = [fcpath stringByAppendingPathComponent:@"FinkCommander.pl"];
+    NSError *err;
 						
-	if (! [manager fileExistsAtPath:aspath]){
-		NSLog(@"Creating ~/Library/Application Support directory");
-		[manager createDirectoryAtPath:aspath attributes:nil];
-	}
-	
 	if (! [manager fileExistsAtPath:fcpath]){
 		NSLog(@"Creating ~/Library/Application Support/FinkCommander directory");
-		[manager createDirectoryAtPath:fcpath attributes:nil];
+		[manager createDirectoryAtPath:fcpath withIntermediateDirectories:YES attributes:nil error:&err];
 	}
 	//Update the FinkCommander.pl every time for now - till we version it
 	if(1){
