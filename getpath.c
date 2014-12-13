@@ -49,24 +49,31 @@
 int
 MyGetExecutablePath(char *execPath, uint32_t *execPathSize)
 {
-	//	return ((NSGetExecutablePathProcPtr) NSAddressOfSymbol(NSLookupAndBindSymbol("__NSGetExecutablePath")))(execPath, execPathSize);
-	return _NSGetExecutablePath(execPath, execPathSize);
+    //	return ((NSGetExecutablePathProcPtr) NSAddressOfSymbol(NSLookupAndBindSymbol("__NSGetExecutablePath")))(execPath, execPathSize);
+    return _NSGetExecutablePath(execPath, execPathSize);
 }
 
 char* getPathToMyself()
 {
-   uint32_t path_size = MAXPATHLEN;
-   char* path = malloc(path_size);
-
-   if (path && MyGetExecutablePath(path, &path_size) == -1)
-   {
-      /* Try again with actual size */
-      path = realloc(path, path_size + 1);
-      if (path && MyGetExecutablePath(path, &path_size) != 0)
-      {
-	 free(path);
-	 path = NULL;
-      }
-   }
-   return path;
+    uint32_t path_size = MAXPATHLEN;
+    char* path = malloc(path_size);
+    char* path2 = NULL;
+    
+    if (path && MyGetExecutablePath(path, &path_size) == -1)
+    {
+        /* Try again with actual size */
+        path2 = realloc(path, path_size + 1);
+        if (!path2)
+        {
+            free(path);
+            path=NULL;
+        }
+        else if (MyGetExecutablePath(path2, &path_size) != 0)
+        {
+            free(path2);
+            path2 = NULL;
+        }
+        path = path2;
+    }
+    return path;
 }
