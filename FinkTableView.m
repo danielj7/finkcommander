@@ -420,7 +420,7 @@ enum {
 
 			[contentView scrollToPoint: target];
 			[tableScrollView reflectScrolledClipView: contentView];
-			[self selectRow: selection byExtendingSelection: NO];
+            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:selection] byExtendingSelection:NO];
 		}
 	}
 }
