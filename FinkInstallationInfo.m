@@ -101,7 +101,7 @@ File: FinkInstallationInfo.m
 -(NSString *)versionOutputForExecutable:(NSString *)path
 						  usingArgument:(NSString *) arg
 {
-	return [self versionOutputForExecutable:path usingArguments:@[arg]];
+	return [self versionOutputForExecutable:path usingArguments:[NSArray arrayWithObjects:arg, nil]];
 }
 
 -(NSString *)versionOutputForExecutable:(NSString *)path
