@@ -501,14 +501,9 @@ enum {
 
 -(IBAction)removeEnvironmentSettings:(id)sender
 {
-	NSEnumerator *e = [environmentTableView selectedRowEnumerator];
-	NSNumber *n;
-	int row;
-	
-	while (nil != (n = [e nextObject])){
-		row = [n intValue];
-		[environmentArray removeObjectAtIndex:row];
-	}
+    [[environmentTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+        [environmentArray removeObjectAtIndex:idx];
+    }];
 	[environmentTableView reloadData];
 	[self validateEnvironmentButtons];
 }

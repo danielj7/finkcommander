@@ -74,14 +74,12 @@ enum {
 
 -(NSArray *)selectedPackageArray
 {
-	NSEnumerator *e = [self selectedRowEnumerator];
-	NSNumber *anIndex;
 	NSMutableArray *pkgArray = [NSMutableArray arrayWithCapacity: 5];
 
-	while (nil != (anIndex = [e nextObject])){
-		[pkgArray addObject:
-			[self displayedPackages][[anIndex intValue]]];
-	}
+    [[self selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+        [pkgArray addObject:
+         [self displayedPackages][idx]];
+    }];
 	return pkgArray;
 }
 
@@ -166,9 +164,7 @@ enum {
 -(void)copySelectedRows
 {
 	NSEnumerator *colEnum = [[self tableColumns] objectEnumerator];
-	NSEnumerator *rowEnum = [self selectedRowEnumerator];
 	NSMutableString	*theData = [NSMutableString string];
-	NSNumber *theRowNum;
 	NSTableColumn *theColumn;
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
 
@@ -179,28 +175,29 @@ enum {
 	}
 	[theData appendString:@"\n"];
 
-	while (nil != (theRowNum = [rowEnum nextObject])){
-		colEnum = [[self tableColumns] objectEnumerator];
-
-		while (nil != (theColumn = [colEnum nextObject])){
-			id columnValue = [self tableView:self objectValueForTableColumn:theColumn
-									row:[theRowNum intValue]];
-			NSString *columnString = @"";
-			if ([columnValue isKindOfClass:[NSImage class]] && nil != columnValue){
-				columnString = @"YES";
-			}else if (nil != columnValue){
-				columnString = [columnValue description];
-			}else{
-				columnString = @"NO";
-			}
-			[theData appendFormat:@"%@\t", columnString];
-		}
-		// delete the last tab.
-		if ([theData length]){
-			[theData deleteCharactersInRange:NSMakeRange([theData length] - 1, 1)];
-		}
-		[theData appendString:@"\n"];
-	}
+    [[self selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+        NSEnumerator *colEnum = [[self tableColumns] objectEnumerator];
+        NSTableColumn *theColumn;
+        
+        while (nil != (theColumn = [colEnum nextObject])){
+            id columnValue = [self tableView:self objectValueForTableColumn:theColumn
+                                         row:idx];
+            NSString *columnString = @"";
+            if ([columnValue isKindOfClass:[NSImage class]] && nil != columnValue){
+                columnString = @"YES";
+            }else if (nil != columnValue){
+                columnString = [columnValue description];
+            }else{
+                columnString = @"NO";
+            }
+            [theData appendFormat:@"%@\t", columnString];
+        }
+        // delete the last tab.
+        if ([theData length]){
+            [theData deleteCharactersInRange:NSMakeRange([theData length] - 1, 1)];
+        }
+        [theData appendString:@"\n"];
+    }];
 
 	[pb declareTypes: @[NSTabularTextPboardType, 
 		NSStringPboardType] owner:nil];

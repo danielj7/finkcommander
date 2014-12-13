@@ -122,19 +122,17 @@
 
 -(IBAction)openSelectedFiles:(id)sender
 {
-    NSEnumerator *e = [self selectedRowEnumerator];
-    NSNumber *rownum;
-    NSString *ipath;
-    BOOL successful;
     NSMutableArray *inaccessiblePathsArray = [NSMutableArray array];
 
-    while (nil != (rownum = [e nextObject])){
-		ipath = [[self itemAtRow:[rownum intValue]] path];
-		successful = openFileAtPath(ipath);
-		if (! successful){
-			[inaccessiblePathsArray addObject:ipath];
-		}
-    }
+    [[self selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+        BOOL successful;
+        NSString *ipath = [[self itemAtRow:idx] path];
+        
+        successful = openFileAtPath(ipath);
+        if (! successful){
+            [inaccessiblePathsArray addObject:ipath];
+        }
+    }];
     alertProblemPaths(inaccessiblePathsArray);
 }
 
