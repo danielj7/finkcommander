@@ -16,6 +16,17 @@
 #define MAX_DATE_WIDTH 280
 #define MAX_SIZE_WIDTH 80
 
+@interface SBOutlineView ()
+
+// These initializers are private and should never be called.
+// They must be overridden, however, since they're designated
+// initializers of the super class.
+
+- (instancetype)initWithFrame:(NSRect)frameRect;
+- (instancetype)initWithCoder:(NSCoder *)coder;
+
+@end
+
 @implementation SBOutlineView
 
 //----------------------------------------------------------
@@ -93,9 +104,16 @@
 	return self;
 }
 
--(void)dealloc
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
-	Dprintf(@"Deallocating outline view");
+    self = [self initAsSubstituteForOutlineView:[[NSOutlineView alloc] initWithFrame:frameRect]];
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [self initAsSubstituteForOutlineView:[[NSOutlineView alloc] initWithCoder:coder]];
+    return self;
 }
 
 //----------------------------------------------------------
