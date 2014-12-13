@@ -415,9 +415,17 @@ enum {
     [self updateTable:nil];
 
     [tableView setHighlightedTableColumn:lastColumn];
-    [tableView setIndicatorImage: [tableView performSelector:
-				NSSelectorFromString([NSString stringWithFormat:@"%@SortImage", direction])]
-		inTableColumn:lastColumn];
+    
+    if ([direction isEqualToString:@"normal"])
+    {
+        [tableView setIndicatorImage: [tableView normalSortImage]
+                       inTableColumn:lastColumn];
+    }
+    else if ([direction isEqualToString:@"reverse"])
+    {
+        [tableView setIndicatorImage: [tableView reverseSortImage]
+                       inTableColumn:lastColumn];
+    }
 
     if ([defaults boolForKey: FinkAutoExpandOutput]){
 		[splitView collapseOutput: nil];
