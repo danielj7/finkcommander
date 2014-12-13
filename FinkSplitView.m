@@ -14,7 +14,6 @@ File: FinkSplitView.m
 	if (self = [super initWithFrame:rect]){
 		defaults = [NSUserDefaults standardUserDefaults];
 		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
-		[self setIsPaneSplitter:YES];
 		[self setDelegate:self];
 		//Register for notification that causes output to collapse when
 		//user selects the auto expand option
