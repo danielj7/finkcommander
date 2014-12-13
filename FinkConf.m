@@ -36,9 +36,14 @@ File: FinkConf.m
 
 -(void)readFinkConf
 {
-	NSString *fconfString = [NSString stringWithContentsOfFile:
-			[[defaults objectForKey: FinkBasePath] stringByAppendingPathComponent: 
-				@"/etc/fink.conf"]];
+    // TODO: check if an error occurred reading fink.conf.
+    NSError *err;
+    // fink.conf should be plain ASCII but use UTF8 since it's a superset.
+    NSString *fconfString = [NSString stringWithContentsOfFile:
+                             [[defaults objectForKey: FinkBasePath]
+                              stringByAppendingPathComponent: @"/etc/fink.conf"]
+                                                      encoding: NSUTF8StringEncoding
+                                                         error: &err];
 	NSEnumerator *e;
 	NSString *line;
 	int split;

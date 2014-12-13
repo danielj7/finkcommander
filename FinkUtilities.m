@@ -87,7 +87,10 @@ void fixScript(void)
 	if(1){
 	// 	if (! [manager fileExistsAtPath:wpath] || [defaults boolForKey:FinkBasePathFound]){
 		NSString *rpath = [[NSBundle mainBundle] pathForResource:@"fpkg_list" ofType:@"pl"];
-		NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath];
+        NSError *err;
+        NSMutableString *scriptText = [NSMutableString stringWithContentsOfFile:rpath
+                                                                       encoding:NSUTF8StringEncoding
+                                                                          error:&err];
 		NSString *basePath = [[NSUserDefaults standardUserDefaults] objectForKey:FinkBasePath];
 		NSRange rangeOfBASEPATH;
 		
