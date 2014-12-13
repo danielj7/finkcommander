@@ -115,7 +115,7 @@ enum {
 									toTarget:sbTree
 								  withObject:fList];		
 
-		[NSBundle loadNibNamed:@"TreeView" owner:self];
+		[[NSBundle mainBundle] loadNibNamed:@"TreeView" owner:self topLevelObjects:nil];
 		
 		Dprintf(@"Window name should be: %@", wName);
 
