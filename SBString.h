@@ -56,7 +56,7 @@ File: SBString.h
 
 //Convenience function for use with CompiledExpression methods.
 //The user must call regfree(&expr) sometime after its use.
-int compiledExpressionFromString(NSString *string, regex_t *expr);
+NSInteger compiledExpressionFromString(NSString *string, regex_t *expr);
 
 
 

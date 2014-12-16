@@ -55,6 +55,6 @@ Contact the author at sburrious@users.sourceforge.net.
 -(void)update;
 
 //Utilities
-@property (nonatomic, readonly) int installedPackagesCount;
+@property (nonatomic, readonly) NSInteger installedPackagesCount;
 
 @end

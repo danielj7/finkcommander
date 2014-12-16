@@ -320,9 +320,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     [progressIndicator startAnimation: nil];
 }
 
--(void)incrementProgressIndicator:(float)inc
+-(void)incrementProgressIndicator:(CGFloat)inc
 {
-    double unused = 100.0 - [progressIndicator doubleValue];
+    CGFloat unused = 100.0 - [progressIndicator doubleValue];
     //failsafe to make sure we don't go beyond 100
     [progressIndicator incrementBy:MIN(inc, unused * 0.85)];
 }
@@ -583,7 +583,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)chooseTableColumn:(id)sender
 {
     NSString *columnIdentifier = [self attributeNameFromTag:[sender tag]];
-    int newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
+    NSInteger newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
     if (newState == NSOnState){
 		[tableView addColumnWithName:columnIdentifier];
@@ -629,7 +629,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)showDescription:(id)sender
 {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-    int i = 0;
+    NSInteger i = 0;
     FinkPackage *pkg;
     NSString *full = nil;
     NSString *divider = @"____________________________________________________\n\n";
@@ -654,7 +654,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)runTerminateCommand:(NSNotification *)ignore
 {
-	NSString *pgid = [NSString stringWithFormat:@"%d", [[self parser] pgid]];
+	NSString *pgid = [NSString stringWithFormat:@"%ld", (long)[[self parser] pgid]];
 		
 	if (![self killTask]) 	[self setKillTask: [[AuthorizedExecutable alloc] initWithExecutable:launcher]];
     [[self killTask] setArguments:
@@ -1594,7 +1594,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
-    int status = [number intValue];
+    NSInteger status = [number integerValue];
     NSUInteger outputLength = [[[[self textViewController] textView] string] length];
     NSString *last2lines = outputLength < 160 ? [[[self textViewController] textView] string] :
 		[[[[self textViewController] textView] string] 
@@ -1614,7 +1614,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			[self resetInterface:nil];
 		}
     }else{
-		NSLog(@"Exit status of process = %d", status);
+		NSLog(@"Exit status of process = %ld", (long)status);
 		if (! commandTerminated && ! 15 == status){
 			[splitView expandOutputToMinimumRatio:0.0];
 			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,

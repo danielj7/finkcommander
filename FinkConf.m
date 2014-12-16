@@ -152,7 +152,7 @@ File: FinkConf.m
 	return NO;
 }
 
--(int)verboseOutput
+-(NSInteger)verboseOutput
 {
 	NSString *verbose = finkConfDict[@"Verbose"];
 	
@@ -165,12 +165,12 @@ File: FinkConf.m
 	return 0;
 }
 
--(void)setVerboseOutput:(int)verboseOutput
+-(void)setVerboseOutput:(NSInteger)verboseOutput
 {
 	NSString *loquacity;
 	
 	if ([self extendedVerboseOptions]){
-		loquacity = [NSString stringWithFormat:@"%d", verboseOutput];
+		loquacity = [NSString stringWithFormat:@"%ld", (long)verboseOutput];
 	}else if (verboseOutput){
 		loquacity = @"true";
 	}else{

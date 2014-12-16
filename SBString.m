@@ -61,7 +61,7 @@
 {
 	NSRange r = NSMakeRange(NSNotFound, 0);
 	regex_t expr;
-	int comperr;
+	NSInteger comperr;
 	
 	comperr = compiledExpressionFromString(pat, &expr);
 	if (comperr) return r;
@@ -146,7 +146,7 @@
 @end
 
 
-int compiledExpressionFromString(NSString *string, regex_t *expr)
+NSInteger compiledExpressionFromString(NSString *string, regex_t *expr)
 {
 	char errmsg[MAXBUF];
 	int comperr;

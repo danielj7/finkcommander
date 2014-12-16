@@ -62,7 +62,7 @@
 		executable:(NSString *)exe;
 {
     if (self = [super init]){
-        int aPrompt, mPrompt, __unused config, __unused dOutput;  //test regex compilation success
+        NSInteger aPrompt, mPrompt, __unused config, __unused dOutput;  //test regex compilation success
 
         defaults = [NSUserDefaults standardUserDefaults];
         command = cmd;
@@ -124,7 +124,7 @@
         0.95,     //BUILD 		+ .05
         1.00};    //ACTIVATE 	+ .05
     CGFloat perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
-    int i;
+    NSInteger i;
 
     if (!packageList){
         NSLog(@"Warning: Empty package list; unable to track installation state");
@@ -155,8 +155,8 @@
 //if a previous phase has been skipped (e.g. b/c pkg was already fetched)
 -(void)setIncrementForLastPhase
 {
-    float phaseTotal;
-    float pkgTotal;
+    CGFloat phaseTotal;
+    CGFloat pkgTotal;
 
     if (![self currentPackage] || !packageList || [packageList count] < 1 || !ptracker){
         NSLog(@"Data objects for installation tracking were not created");
@@ -164,12 +164,12 @@
         return;
     }
 
-    phaseTotal = [increments[currentPhase] floatValue];
+    phaseTotal = [increments[currentPhase] doubleValue];
     if ([[self currentPackage] isEqualToString:@"package"]){
         [self setIncrement:0];
         return;
     }else{
-        pkgTotal = [ptracker[[self currentPackage]] floatValue];
+        pkgTotal = [ptracker[[self currentPackage]] doubleValue];
     }
 
     Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, [self currentPackage]);
@@ -414,7 +414,7 @@
 {
     NSEnumerator *e;
     NSString *line;
-    int signal = NONE;  //false when used as boolean value
+    FinkOutputSignalType signal = NONE;  //false when used as boolean value
 
     e  = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
 

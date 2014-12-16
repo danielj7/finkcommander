@@ -55,7 +55,7 @@ File: FinkConf.h
 @property (nonatomic) BOOL useUnstableMain;
 @property (nonatomic) BOOL useUnstableCrypto;
 @property (nonatomic, readonly) BOOL extendedVerboseOptions;
-@property (nonatomic) int verboseOutput;
+@property (nonatomic) NSInteger verboseOutput;
 @property (nonatomic) BOOL passiveFTP;
 @property (nonatomic) BOOL keepBuildDir;
 @property (nonatomic) BOOL keepRootDir;

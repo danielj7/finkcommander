@@ -94,9 +94,9 @@ typedef NS_ENUM(NSInteger, FinkOutputSignalType) {
 -(instancetype)initForCommand:(NSString *)cmd
 	executable:(NSString *)exe NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) float increment;
+@property (nonatomic) CGFloat increment;
 
-@property (nonatomic) int pgid;
+@property (nonatomic) NSInteger pgid;
 
 @property (nonatomic, copy) NSString *currentPackage;
 

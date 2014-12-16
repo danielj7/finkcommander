@@ -324,9 +324,9 @@ See the header file, FinkData.h, for interface and license information.
 
 //---------------------------------------------------------->Utilities
 
--(int)installedPackagesCount
+-(NSInteger)installedPackagesCount
 {
-    int count = 0;
+    NSInteger count = 0;
     NSEnumerator *e = [[self array] objectEnumerator];
     FinkPackage *pkg;
 

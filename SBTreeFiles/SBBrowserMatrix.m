@@ -16,7 +16,7 @@
 
 -(void)mouseDown:(NSEvent *)theEvent
 {	
-	unsigned int eventMask = [theEvent modifierFlags];
+	NSEventModifierFlags eventMask = [theEvent modifierFlags];
 	if (eventMask & (NSShiftKeyMask | NSControlKeyMask | NSAlternateKeyMask)){
 		[super mouseDown:theEvent];
 		return;

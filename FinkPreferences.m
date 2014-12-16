@@ -366,7 +366,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		//Fink Tab
 		[conf setUseUnstableCrypto: (BOOL)[useUnstableCryptoButton state]];
 		[conf setUseUnstableMain: (BOOL)[useUnstableMainButton state]];
-		[conf setVerboseOutput: (BOOL)[verboseOutputPopupButton indexOfSelectedItem]];
+		[conf setVerboseOutput: [verboseOutputPopupButton indexOfSelectedItem]];
 		[conf setKeepBuildDir: (BOOL)[keepBuildDirectoryButton state]];
 		[conf setKeepRootDir: (BOOL)[keepRootDirectoryButton state]];
 		[self setRootMethod];

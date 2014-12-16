@@ -22,7 +22,7 @@
 
 -(void)showRemoveWarningForArguments:(NSMutableArray *)args
 {
-    int optcount = 0;
+    NSInteger optcount = 0;
 	
 	command = REMOVE;
     [self setArguments:args];
