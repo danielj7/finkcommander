@@ -8,14 +8,14 @@ File: FinkPreferences.m
 #import "FinkPreferences.h"
 
 /* Radio button tags */
-enum {
+typedef NS_ENUM(NSInteger, FinkDownloaderType) {
 	CURL,
 	WGET,
 	AXEL
 };
 
 /* Text field tags */
-enum {
+typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	HTTP_PROXY = 1,
 	FTP_PROXY = 2,
 	FETCH_ALT_DIR = 3,
@@ -277,7 +277,7 @@ enum {
 
 -(void)setDownloadMethod
 {
-	switch ([[downloadMethodMatrix selectedCell] tag]){
+	switch ((FinkDownloaderType)[[downloadMethodMatrix selectedCell] tag]){
 		case CURL: 
 			[conf setDownloadMethod:@"curl"];
 			break;
@@ -530,7 +530,7 @@ enum {
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
 	NSTextField *tField = [aNotification object];
-	int textFieldID = [tField tag];
+	FinkPreferenceFieldType textFieldID = [tField tag];
 	NSString *tfString = [tField stringValue];
 
 	//Select the button that corresponds to the altered text field.

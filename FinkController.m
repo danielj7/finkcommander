@@ -24,7 +24,7 @@ See the header file, FinkController.h, for interface and license information.
  */
 
 #define TAG_NAME_ARRAY 										\
- [NSArray arrayWithObjects: 								\
+@[ 								                            \
 	@"version",           									\
 	@"binary",           									\
 	@"stable",												\
@@ -36,33 +36,33 @@ See the header file, FinkController.h, for interface and license information.
 	@"maintainer",											\
 	@"installed",											\
 	@"name",												\
-	@"flagged",												\
-	nil]
+	@"flagged"												\
+]
 
 #define NAME_TAG_DICTIONARY 								\
-	[NSDictionary dictionaryWithObjectsAndKeys: 			\
-	[NSNumber numberWithInt: VERSION], @"version",          \
-	[NSNumber numberWithInt: BINARY], @"binary",            \
-	[NSNumber numberWithInt: STABLE], @"stable",            \
-	[NSNumber numberWithInt: UNSTABLE], @"unstable",        \
-	[NSNumber numberWithInt: LOCAL], @"local",        \
-	[NSNumber numberWithInt: STATUS], @"status",            \
-	[NSNumber numberWithInt: CATEGORY], @"category",        \
-	[NSNumber numberWithInt: SUMMARY], @"summary",          \
-	[NSNumber numberWithInt: MAINTAINER], @"maintainer",	\
-	[NSNumber numberWithInt: INSTALLED], @"installed",      \
-	[NSNumber numberWithInt: NAME], @"name",                \
-	[NSNumber numberWithInt: FLAGGED], @"flagged",			\
-	nil]
+@{                                                          \
+	@"version":     @(VERSION),                             \
+	@"binary":      @(BINARY),                              \
+	@"stable":      @(STABLE),                              \
+	@"unstable":    @(UNSTABLE),                            \
+	@"local":       @(LOCAL),                               \
+	@"status":      @(STATUS),                              \
+	@"category":    @(CATEGORY),                            \
+	@"summary":     @(SUMMARY),                             \
+	@"maintainer":  @(MAINTAINER),                          \
+	@"installed":   @(INSTALLED),                           \
+	@"name":        @(NAME),                                \
+	@"flagged":     @(FLAGGED)                              \
+}
 	
 /*  Parse menu item title or toolbar item label to determine 
 	the associated fink or apt-get command */
 #define ACTION_ITEM_IDENTIFIER(theSender)                   \
-	[[[([(theSender) isKindOfClass:[NSMenuItem class]] ?    \
+	[[([(theSender) isKindOfClass:[NSMenuItem class]] ?     \
 		[(theSender) title] : 								\
 		[(theSender) label]) 								\
 			componentsSeparatedByString:@" "]          		\
-			objectAtIndex:0] lowercaseString];          	\
+			[0] lowercaseString];                           \
 
 
 /*
@@ -79,12 +79,12 @@ See the header file, FinkController.h, for interface and license information.
 
 /* Constants corresponding to the tag for the identified attribute
 in MainMenu.nib menu items  */
-enum {
+typedef NS_ENUM(NSInteger, FinkAttributeType) {
     VERSION    	= 2000,
     BINARY     	= 2001,
     STABLE     	= 2002,
     UNSTABLE   	= 2003,
-	LOCAL = 2004,
+	LOCAL       = 2004,
     STATUS     	= 2005,
     CATEGORY   	= 2006,
     SUMMARY    	= 2007,
@@ -95,34 +95,34 @@ enum {
 };
 
 /* Identify web site to open based on menu item tag */
-enum {
-    FCWEB 	= 1000,
-    FCBUG 	= 1001,
-    FINKDOC = 1002,
-    FINKBUG	= 1003
+typedef NS_ENUM(NSInteger, FinkWebsiteType) {
+    FCWEB 	   = 1000,
+    FCBUG 	   = 1001,
+    FINKDOC    = 1002,
+    FINKBUG	   = 1003
 };
 
 /* Identify executable based on menu item tag */
-enum{
+typedef NS_ENUM(NSInteger, FinkExecutableType){
     FINK,
     APT_GET,
     DPKG
 };
 
 /* Identify text field changed by item tag */
-enum {
+typedef NS_ENUM(NSInteger, FinkTextFieldType) {
     FILTER,
     INTERACTION
 };
 
 /* Identify matrix selection in interaction sheet by tag */
-enum {
+typedef NS_ENUM(NSInteger, FinkMatrixSelectionType) {
     DEFAULT,
     USER_CHOICE
 };
 
 /* Identify type of feedback email */
-enum {
+typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     POSITIVE,
     NEGATIVE
 };
@@ -699,7 +699,7 @@ enum {
 }
 
 //Helper for feedback commands
--(void)sendEmailWithMessage:(int)typeOfFeedback
+-(void)sendEmailWithMessage:(FinkFeedbackType)typeOfFeedback
 {
     NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
     NSString *sig = [[self installationInfo] formattedEmailSig];
@@ -852,7 +852,7 @@ enum {
 {
     NSString *url = nil;
 
-    switch ([sender tag]){
+    switch ((FinkWebsiteType)[sender tag]){
 		case FCWEB:
 			url = @"http://finkcommander.sourceforge.net/";
 			break;
@@ -1188,7 +1188,7 @@ enum {
     NSMutableArray *args;
     FinkPackage *pkg;
     NSEnumerator *e;
-	int type = [sender tag];
+	FinkExecutableType type = [sender tag];
 
     //Identify executable
     switch (type){

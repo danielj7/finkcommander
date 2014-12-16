@@ -25,7 +25,7 @@ See the header file, FinkTableView.h, for interface and license information.
 	[(id) isEqualToString:@"installed"]
 
 //Tags for "File:Open .info" and "File:Open .patch" items in MainMenu.nib
-enum {
+typedef NS_ENUM(NSInteger, FinkFileType) {
     FINKINFO =  101,
     FINKPATCH = 102
 };
