@@ -8,7 +8,7 @@
 #import "SBTreeWindowController.h"
 
 //Constants matching tags in selection matrix
-enum {
+typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 	SB_BROWSER = 0,
 	SB_OUTLINE = 1
 };
@@ -174,7 +174,7 @@ enum {
 
 -(IBAction)switchViews:(id)sender
 {	
-	NSInteger selection = [[sender selectedCell] tag];
+	FinkTreeViewType selection = [[sender selectedCell] tag];
 	NSString *identifier;
 	switch (selection){
 		case SB_BROWSER:

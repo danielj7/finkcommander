@@ -604,7 +604,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
 	int currentState = [[[tableView selectedPackageArray] lastObject]
 								flagged];
-	int newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
+	FinkFlaggedType newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
 	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
 	FinkPackage *package;
 	NSMutableArray *flagArray = [[defaults objectForKey:FinkFlaggedColumns] mutableCopy];
@@ -1436,7 +1436,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     [self incrementProgressIndicator:STARTING_INCREMENT];
 }
 
--(void)setGUIForPhase:(int)phaseIndex
+-(void)setGUIForPhase:(FinkOutputSignalType)phaseIndex
 {
     NSArray *phases = @[@"", @"Fetching %@", @"Unpacking %@",
 		@"Configuring %@", @"Compiling %@",
@@ -1496,7 +1496,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			[[[self textViewController] textView] visibleRect].origin.y 		-
 			[[[self textViewController] textView] visibleRect].size.height)];
 
-        int signal = [[self parser] parseOutput:output];
+        FinkOutputSignalType signal = [[self parser] parseOutput:output];
 	
         if (commandTerminated) return;
         switch(signal)
@@ -1561,18 +1561,19 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		case PGID:
 			output = @"";
 			break;
+        case DYNAMIC_OUTPUT:
+            if (!outputIsDynamic) {
+                outputIsDynamic = YES;
+                [[self textViewController] appendString:output];
+            }else{
+                [[self textViewController] replaceLastLineByString:output];
+            }
+            break;
 	}
 
 	if (signal != DYNAMIC_OUTPUT){
 		outputIsDynamic = NO;
 		[[self textViewController] appendString:output];
-	} else {
-		if (!outputIsDynamic) {
-			outputIsDynamic = YES;
-			[[self textViewController] appendString:output];
-		}else{
-			[[self textViewController] replaceLastLineByString:output];
-		}
 	}
 	//According to Moriarity example, we have to put off scrolling until next event loop
         [self performSelector:@selector(scrollToVisible:)

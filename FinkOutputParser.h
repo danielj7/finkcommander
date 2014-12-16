@@ -44,7 +44,7 @@ File: FinkOutputParser.h
 #define STARTING_INCREMENT 5.0
 
 /* 	Constants used to signal FinkController that the output requires a GUI event */
-enum {
+typedef NS_ENUM(NSInteger, FinkOutputSignalType) {
     //Used for signals, to track phases, as indices in increments array
     NONE,
     FETCH,
@@ -85,7 +85,7 @@ enum {
     regex_t manPrompt;
 	regex_t dynamicOutput;
 
-    int currentPhase;
+    FinkOutputSignalType currentPhase;
     BOOL installing;
     BOOL readingPackageList;
     BOOL selfRepair;

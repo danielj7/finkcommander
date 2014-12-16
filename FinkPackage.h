@@ -32,7 +32,7 @@ Contact the author at sburrious@users.sourceforge.net.
 
 */
 
-enum {
+typedef NS_ENUM(NSInteger, FinkFlaggedType){
 	NOT_FLAGGED,
 	IS_FLAGGED
 };
@@ -78,7 +78,7 @@ enum {
 
 @property (nonatomic, copy) NSString *email;
 
-@property (nonatomic) int flagged;
+@property (nonatomic) FinkFlaggedType flagged;
 
 /*
  * Comparison Methods

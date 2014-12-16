@@ -33,7 +33,7 @@
 #import <Cocoa/Cocoa.h>
 #import "FinkGlobals.h"
 
-enum {
+typedef NS_ENUM(NSInteger, FinkWarningCommandType) {
     REMOVE,
     TERMINATE
 };
@@ -46,7 +46,7 @@ enum {
 	IBOutlet NSButton *cancelButton;
 	
 	NSUserDefaults *defaults;
-	int command;
+	FinkWarningCommandType command;
 }
 
 @property (nonatomic, copy) NSMutableArray *arguments;

@@ -258,7 +258,7 @@
 
 //------------------------------------------>Parse Output
 
--(int)parseLineOfOutput:(NSString *)line
+-(FinkOutputSignalType)parseLineOfOutput:(NSString *)line
 {
     NSString *sline = [line strip];
     //Read process group id for Launcher
