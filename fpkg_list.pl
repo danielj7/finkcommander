@@ -67,7 +67,7 @@ sub latest_version_for_tree {
 		push(@tree_versions, $version_string);
 	    }
 	}
-    if (! defined(@tree_versions)) { return " " ;}
+    if (! @tree_versions) { return " " ;}
     return &Fink::Services::latest_version(@tree_versions); #latest V in tree
 }
 
