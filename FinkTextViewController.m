@@ -26,21 +26,21 @@ File: FinkTextViewController.m
 {
 	lines = 0;
 	bufferLimit = [[NSUserDefaults standardUserDefaults] integerForKey:FinkBufferLimit];
-	minDelete = bufferLimit * 0.10;
+	minDelete = (NSInteger)(bufferLimit * 0.10);
 	if (minDelete < 10) minDelete = 10;	
 }
 
--(int)numberOfLinesInString:(NSString *)s
+-(NSUInteger)numberOfLinesInString:(NSString *)s
 {
  	return [[s componentsSeparatedByString:@"\n"] count] - 1;
 }
 
--(NSRange)rangeOfLinesAtTopOfView:(int)numlines
+-(NSRange)rangeOfLinesAtTopOfView:(NSInteger)numlines
 {
 	NSString *viewString = [[self textView] string];
-	int i;
+	NSInteger i;
 	NSInteger test;
-	int lastReturn = 0;
+	NSInteger lastReturn = 0;
 	
 	for (i = 0; i < numlines; i++){
 		test = 
@@ -59,7 +59,7 @@ File: FinkTextViewController.m
 	[[[self textView] textStorage] beginEditing];
 
 	if (bufferLimit > 0){
-		int overflow;
+		NSInteger overflow;
 			
 		lines += [self numberOfLinesInString:s];
 		overflow = lines - bufferLimit;

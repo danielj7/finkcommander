@@ -60,7 +60,7 @@
 #pragma mark NSOUTLINEVIEW DATA SOURCE METHODS
 //----------------------------------------------------------
 
--(int)outlineView:(NSOutlineView *)outlineView 
+-(NSInteger)outlineView:(NSOutlineView *)outlineView
 	numberOfChildrenOfItem:(id)item 
 {
     return (nil == item) ? 1 : [item numberOfChildren];

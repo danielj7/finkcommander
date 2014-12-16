@@ -115,7 +115,7 @@
 {
     NSEnumerator *e;
     NSString *pname;
-    float cumulative[] = {
+    CGFloat cumulative[] = {
         0.00,     //NONE
         0.20,     //FETCH 		+ .20
         0.25,     //UNPACK 		+ .05
@@ -123,7 +123,7 @@
         0.90,     //COMPILE 	+ .50
         0.95,     //BUILD 		+ .05
         1.00};    //ACTIVATE 	+ .05
-    float perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
+    CGFloat perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
     int i;
 
     if (!packageList){
@@ -138,7 +138,7 @@
     }
 
     for (i = 0; i < 7; i++){
-        float newincrement = cumulative[i] * perpkg;
+        CGFloat newincrement = cumulative[i] * perpkg;
 
         [increments insertObject: @(newincrement)
 					atIndex:i];

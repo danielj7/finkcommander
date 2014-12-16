@@ -52,7 +52,7 @@ File: FinkSplitView.m
 	NSRect sFrame = [self frame];
 	
 	if (oFrame.size.height > 0.0){
-		[defaults setFloat:(oFrame.size.height / sFrame.size.height)
+		[defaults setFloat:(float)(oFrame.size.height / sFrame.size.height)
 				  forKey:FinkOutputViewRatio];
 		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
 	}else{
@@ -66,7 +66,7 @@ File: FinkSplitView.m
 		NSRect oFrame = [outputScrollView frame];
 		NSRect tFrame = [tableScrollView frame];
 		NSRect sFrame = [self frame];
-		float divwidth = [self dividerThickness];
+		CGFloat divwidth = [self dividerThickness];
 
 		tFrame.size.height = sFrame.size.height - divwidth;
 		oFrame.size.height = 0.0;
@@ -82,13 +82,13 @@ File: FinkSplitView.m
 }
 
 //pass 0.0 as argument to expand output to last height stored in user defaults
--(void)expandOutputToMinimumRatio:(float)r
+-(void)expandOutputToMinimumRatio:(CGFloat)r
 {
 	NSRect oFrame = [outputScrollView frame];
 	NSRect tFrame = [tableScrollView frame];
 	NSRect sFrame = [self frame];
-	float divwidth = [self dividerThickness];
-	float hratio = [defaults floatForKey: FinkOutputViewRatio];
+	CGFloat divwidth = [self dividerThickness];
+	CGFloat hratio = [defaults floatForKey: FinkOutputViewRatio];
 	
 	if (r > 0.0){
 		hratio = MAX(hratio, r);

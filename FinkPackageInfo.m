@@ -184,7 +184,7 @@
 
 -(void)displayDescriptions:(NSArray *)packages
 {
-	int i, count = [packages count];
+	NSUInteger i, count = [packages count];
 	FinkPackage *pkg;
 	NSString *pname;
 	NSString *psummary;
@@ -227,9 +227,9 @@
 -(NSRect)windowWillUseStandardFrame:(NSWindow *)sender
 		 defaultFrame:(NSRect)defaultFrame
 {	
-	float windowOffset = [[self window] frame].size.height 
+	CGFloat windowOffset = [[self window] frame].size.height
 							- [[textView superview] frame].size.height;
-	float newHeight = [textView frame].size.height;	
+	CGFloat newHeight = [textView frame].size.height;
 	NSRect stdFrame = 
 		[NSWindow contentRectForFrameRect:[sender frame] 
 							 styleMask:[sender styleMask]];

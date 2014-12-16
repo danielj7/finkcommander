@@ -256,13 +256,13 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	particular columns makes it possible to localize the column names. 
 */
 
--(NSString *)attributeNameFromTag:(int)atag
+-(NSString *)attributeNameFromTag:(NSInteger)atag
 {
     NSArray *tagNameArray = TAG_NAME_ARRAY;
 
     atag = atag % 2000;
     if (atag < 0 || atag > [tagNameArray count] - 1){
-		NSLog(@"Warning: Tag-to-name translation failed; index %d out of bounds", atag);
+		NSLog(@"Warning: Tag-to-name translation failed; index %ld out of bounds", (long)atag);
 		return nil;
     }
     return tagNameArray[atag];
@@ -433,7 +433,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 	if ([defaults boolForKey:FinkCheckForNewVersion]){
 		NSLog(@"Checking for FinkCommander update");
-		[NSThread detachNewThreadSelector:@selector(checkForLatestVersion:) toTarget:self withObject:NO];
+		[NSThread detachNewThreadSelector:@selector(checkForLatestVersion:) toTarget:self withObject:nil];
 	}
 }
 
@@ -444,7 +444,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //warn before quitting if a command is running
 -(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    int answer;
+    NSInteger answer;
 
     if (commandIsRunning){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(LS_WARNING, 
@@ -504,7 +504,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		NSString *latestVersion = [defaults objectForKey: @"FinkAvailableUpdate"];
 
 		if ([installedVersion compare: latestVersion] == NSOrderedAscending){
-			int answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
+			NSInteger answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
 				NSLocalizedString(@"FinkCommander can automatically check for new and updated versions using its Software Update feature. Select Software Update in FinkCommander Preferences to specify how frequently to check for updates.", @"Update alert message"),
 				NSLocalizedString(@"Upgrade Now", @"Update alert default"),
 				NSLocalizedString(@"Change Preferences…", @"Update alert alternate"),
@@ -1341,7 +1341,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)runForceRemove:(id)sender
 {
     NSMutableArray *args;
-    int answer = 
+    NSInteger answer =
 		NSRunCriticalAlertPanel(LS_WARNING,
 								NSLocalizedString(@"Running Force Remove will remove the selected package even if other packages depend on it\n\nAre you sure you want to proceed?", @"Alert panel message"),
 								LS_REMOVE, LS_CANCEL, nil);
@@ -1372,7 +1372,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		[self setLastCommand:cmd];
 	}
     if (indicator){
-		[self startProgressIndicatorAsIndeterminate:[indicator intValue]];
+		[self startProgressIndicatorAsIndeterminate:(BOOL)[indicator intValue]];
     }
     //Prevent tasks run by consecutive notifications from tripping over each other
     [self performSelector:@selector(launchCommandWithArguments:)
@@ -1399,7 +1399,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(IBAction)endInteractionWindow:(id)sender
 {
-    int returnValue = [sender tag];  // 1 for Submit, 0 for Cancel
+    NSInteger returnValue = [sender tag];  // 1 for Submit, 0 for Cancel
     [interactionWindow orderOut:sender];
     [NSApp endSheet:interactionWindow returnCode:returnValue];
 }
@@ -1491,8 +1491,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
     This value is used to determine whether the user has scrolled up.
     If so, the output view will not automatically scroll to the bottom. */
-        NSNumber *pixelsBelowView = [NSNumber numberWithFloat:
-		abs([[[self textViewController] textView] bounds].size.height 			-
+        NSNumber *pixelsBelowView = [NSNumber numberWithDouble:
+		fabs([[[self textViewController] textView] bounds].size.height 			-
 			[[[self textViewController] textView] visibleRect].origin.y 		-
 			[[[self textViewController] textView] visibleRect].size.height)];
 
@@ -1594,7 +1594,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number
 {
     int status = [number intValue];
-    int outputLength = [[[[self textViewController] textView] string] length];
+    NSUInteger outputLength = [[[[self textViewController] textView] string] length];
     NSString *last2lines = outputLength < 160 ? [[[self textViewController] textView] string] :
 		[[[[self textViewController] textView] string] 
 			substringWithRange: NSMakeRange(outputLength - 160, 159)];

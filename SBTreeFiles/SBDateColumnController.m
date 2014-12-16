@@ -125,7 +125,7 @@
 #pragma mark DISPLAY ADJUSTMENT
 //----------------------------------------------------------
 
--(NSString *)formatForWidth:(float)width
+-(NSString *)formatForWidth:(CGFloat)width
 {
     if (width >= FULL_MONTH_WITH_DAY_AND_TIME_WIDTH)
 		return FULL_MONTH_WITH_DAY_AND_TIME_FORMAT;
@@ -143,7 +143,7 @@
 //Set appropriate format for new column width
 -(void)adjustColumnDisplay
 {
-    float width = [[self column] width];
+    CGFloat width = [[self column] width];
 
     NSString *format = [self formatForWidth:width];
     NSDateFormatter *dateFormatter= [[NSDateFormatter alloc]
@@ -157,7 +157,7 @@
 -(void)adjustHeaderDisplay
 {
     if (nil != [self longTitle]){
-		float width = [[self column] width];
+		CGFloat width = [[self column] width];
 
 		if (width < [[self longTitle] length] * 7.0){  
 			//approximate width per character with system standard font

@@ -105,7 +105,7 @@ static NSCursor *handCursor = nil;
 - (void) updateAnchoredRectsInBounds: (NSRect) bounds
 {
     NSRange range = [self visibleRangeInBounds: bounds];
-    int i;
+    NSUInteger i;
     NSString *link;
     NSRange linkRange;
 

@@ -83,7 +83,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		name, @"name", value, @"value", nil];
 	NSMutableDictionary *setting;
 	NSString *key;
-	int i, limit = [environmentArray count];
+	NSUInteger i, limit = [environmentArray count];
 
 	//Make sure we have no duplicate keys
 	for (i=0; i<limit; i++){
@@ -143,7 +143,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	NSString *downloadMethod;
 	NSString *basePath;
 	NSString *outputPath;
-	int scrollBackLimit;
+	NSInteger scrollBackLimit;
 	
 	Dprintf(@"Resetting preferences");
 	
@@ -183,7 +183,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	scrollBackLimit = [defaults integerForKey:FinkBufferLimit];
 	[scrollBackLimitButton setState: scrollBackLimit];
 	if (scrollBackLimit){
-		[scrollBackLimitTextField setIntValue: scrollBackLimit];
+		[scrollBackLimitTextField setIntegerValue: scrollBackLimit];
 	}
 	
 	/***  Fink Settings in fink.conf ***/
@@ -320,11 +320,11 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	/*** FinkCommander Preferences ***/
 
 	//Commander Tab
-	[defaults setBool: [alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
-	[defaults setBool: [warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
-	[defaults setBool: [warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
-	[defaults setBool: [giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
-	[defaults setBool: [allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
+	[defaults setBool: (BOOL)[alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
+	[defaults setBool: (BOOL)[warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
+	[defaults setBool: (BOOL)[warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
+	[defaults setBool: (BOOL)[giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
+	[defaults setBool: (BOOL)[allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
 
 	//Paths Tab
 	[self setBasePath];
@@ -338,11 +338,11 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	
 	//Display Tab
 	[self setScrollBackLimit];
-	[defaults setBool: [scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
-	[defaults setBool: [scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
-	[defaults setBool: [showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
-	[defaults setBool: [autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
-	[defaults setBool: [showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
+	[defaults setBool: (BOOL)[scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
+	[defaults setBool: (BOOL)[scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
+	[defaults setBool: (BOOL)[showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
+	[defaults setBool: (BOOL)[autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
+	[defaults setBool: (BOOL)[showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
 		//Notify FinkController to collapse output if user chose to
 		//automatically expand and collapse
 	if (autoExpandChanged && [autoExpandOutputButton state]){
@@ -355,7 +355,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	[self writeEnvironmentArrayIntoDefaults];
 
 	//software update tab
-	[defaults setBool: [automaticallyCheckUpdatesButton state] forKey: FinkCheckForNewVersion];
+	[defaults setBool: (BOOL)[automaticallyCheckUpdatesButton state] forKey: FinkCheckForNewVersion];
 
 	/***  Fink Settings in fink.conf ***/
 	
@@ -364,16 +364,16 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		//Downloads tabs
 
 		//Fink Tab
-		[conf setUseUnstableCrypto: [useUnstableCryptoButton state]];
-		[conf setUseUnstableMain: [useUnstableMainButton state]];
-		[conf setVerboseOutput:[verboseOutputPopupButton indexOfSelectedItem]];
-		[conf setKeepBuildDir: [keepBuildDirectoryButton state]];
-		[conf setKeepRootDir: [keepRootDirectoryButton state]];
+		[conf setUseUnstableCrypto: (BOOL)[useUnstableCryptoButton state]];
+		[conf setUseUnstableMain: (BOOL)[useUnstableMainButton state]];
+		[conf setVerboseOutput: (BOOL)[verboseOutputPopupButton indexOfSelectedItem]];
+		[conf setKeepBuildDir: (BOOL)[keepBuildDirectoryButton state]];
+		[conf setKeepRootDir: (BOOL)[keepRootDirectoryButton state]];
 		[self setRootMethod];
 
 		//Download Tab
 		[self setDownloadMethod];
-		[conf setPassiveFTP: [passiveFTPButton state]];
+		[conf setPassiveFTP: (BOOL)[passiveFTPButton state]];
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
 		[self setFetchAltDir];

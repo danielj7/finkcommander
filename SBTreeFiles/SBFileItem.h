@@ -74,7 +74,7 @@
 	be released or autoreleased by the caller.  */
 -(BOOL)addChild:(SBFileItem *)item;
 
-@property (nonatomic, readonly) int numberOfChildren;
+@property (nonatomic, readonly) NSUInteger numberOfChildren;
 
 -(BOOL)hasChild:(SBFileItem *)item;
 

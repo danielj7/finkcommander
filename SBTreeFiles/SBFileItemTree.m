@@ -47,7 +47,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 	SBFileItem *itemTwo = (SBFileItem *)secondItem;
 	float firstSize = [itemOne size];
 	float secondSize = [itemTwo size];
-	NSInteger result = firstSize - secondSize;
+	NSInteger result = (NSInteger)(firstSize - secondSize);
 	NSString *order = (__bridge NSString *)direction;
 	
     if (result == 0){

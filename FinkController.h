@@ -133,7 +133,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	BOOL toolIsBeingFixed;
 	BOOL outputIsDynamic;
 
-	int searchTag;
+	NSInteger searchTag;
 }
 
 //Accessors

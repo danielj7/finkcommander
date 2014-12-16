@@ -174,7 +174,7 @@ enum {
 
 -(IBAction)switchViews:(id)sender
 {	
-	int selection = [[sender selectedCell] tag];
+	NSInteger selection = [[sender selectedCell] tag];
 	NSString *identifier;
 	switch (selection){
 		case SB_BROWSER:

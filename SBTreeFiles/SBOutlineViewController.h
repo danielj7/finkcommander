@@ -48,7 +48,7 @@ extern NSString *sbDescending;
 	Outline view data source methods
 */
 
--(int)outlineView:(NSOutlineView *)outlineView 
+-(NSInteger)outlineView:(NSOutlineView *)outlineView
 		numberOfChildrenOfItem:(id)item;
 
 -(BOOL)outlineView:(NSOutlineView *)outlineView 

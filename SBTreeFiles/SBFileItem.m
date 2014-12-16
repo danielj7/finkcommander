@@ -116,7 +116,7 @@ File SBFileItem.m
     return FALSE;
 }
 
--(int)numberOfChildren
+-(NSUInteger)numberOfChildren
 {
 	return [self children] == nil ? (-1) : [[self children] count];
 }

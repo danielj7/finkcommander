@@ -46,7 +46,7 @@ File: FinkConf.m
                                                          error: &err];
 	NSEnumerator *e;
 	NSString *line;
-	int split;
+	NSUInteger split;
 
 	e = [[fconfString componentsSeparatedByString: @"\n"] objectEnumerator];
 	while(nil != (line = [e nextObject])){

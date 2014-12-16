@@ -52,6 +52,6 @@
 -(void)connectSubviews;
 -(void)setCollapseExpandMenuItem:(NSMenuItem *)item;
 -(void)collapseOutput:(NSNotification *)n;
--(void)expandOutputToMinimumRatio:(float)r;
+-(void)expandOutputToMinimumRatio:(CGFloat)r;
 
 @end

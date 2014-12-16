@@ -69,13 +69,13 @@
 			[center postNotificationName:FinkRunCommandNotification
 							   object:[self arguments]
 							 userInfo:d];
-			[defaults setBool:[removeWarningButton state]
+			[defaults setBool:(BOOL)[removeWarningButton state]
 					forKey:FinkWarnBeforeRemoving];
 			break;
 		case TERMINATE:
 			[center postNotificationName:FinkTerminateNotification
 					object:nil];
-			[defaults setBool:[removeWarningButton state]
+			[defaults setBool:(BOOL)[removeWarningButton state]
 					  forKey:FinkWarnBeforeTerminating];
     }
     [NSApp stopModal];
@@ -87,11 +87,11 @@
 {
     switch (command){
 		case REMOVE:
-			[defaults setBool:[removeWarningButton state] 
+			[defaults setBool:(BOOL)[removeWarningButton state]
 				forKey:FinkWarnBeforeRemoving];
 			break;
 		case TERMINATE:
-			[defaults setBool:[removeWarningButton state] 
+			[defaults setBool:(BOOL)[removeWarningButton state] 
 				forKey:FinkWarnBeforeTerminating];
 			break;
     }

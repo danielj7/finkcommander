@@ -42,8 +42,8 @@
  *	Browser delegate methods
  */
 
--(int)browser:(NSBrowser *)sender 
-		numberOfRowsInColumn:(int)column;
+-(NSInteger)browser:(NSBrowser *)sender
+		numberOfRowsInColumn:(NSInteger)column;
 
 -(void)browser:(NSBrowser *)sender 
 		willDisplayCell:(id)cell 

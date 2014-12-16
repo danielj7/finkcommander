@@ -56,8 +56,8 @@
 /* 	Let the browser know how many rows should be displayed for the
 	next column so it knows how many times to send the next delegate
 	message. */
--(int)browser:(NSBrowser *)sender
-		numberOfRowsInColumn:(int)column
+-(NSInteger)browser:(NSBrowser *)sender
+		numberOfRowsInColumn:(NSInteger)column
 {
 	NSBrowserCell *parentCell;
     SBFileItem *item;

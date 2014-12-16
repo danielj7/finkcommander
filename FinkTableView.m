@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
     NSMutableArray *problemPaths = [NSMutableArray array];
     FinkPackage *pkg;
     NSString *path, *tree;
-    int senderTag = [sender tag];
+    NSInteger senderTag = [sender tag];
     //YES if user double-clicked the package name in the table
 	BOOL shouldOpenBoth = senderTag != FINKINFO && senderTag != FINKPATCH;
     BOOL fileWasOpened;
@@ -388,10 +388,10 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 -(void)storeSelectedObjectInfo
 {
 	FinkPackage *selectedObject;
-    int selectionIndex = [self selectedRow];
-	int topRowIndex =  [self rowAtPoint:
+    NSInteger selectionIndex = [self selectedRow];
+	NSInteger topRowIndex =  [self rowAtPoint:
 		[[self superview] bounds].origin];
-	int offset = selectionIndex - topRowIndex;
+	NSInteger offset = selectionIndex - topRowIndex;
 
 	if (selectionIndex >= 0){
 		selectedObject = [self displayedPackages][selectionIndex];

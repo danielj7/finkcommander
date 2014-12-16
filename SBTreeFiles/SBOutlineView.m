@@ -40,9 +40,9 @@
 	NSMutableArray *columnArray = [NSMutableArray array];
 	NSEnumerator *e;
 	NSString *identifier;
-	float nameWidth = frame.size.width / 2.0;
-	float sizeWidth = nameWidth / 4.0;
-	float mdateWidth = frame.size.width - nameWidth - sizeWidth;
+	CGFloat nameWidth = frame.size.width / 2.0;
+	CGFloat sizeWidth = nameWidth / 4.0;
+	CGFloat mdateWidth = frame.size.width - nameWidth - sizeWidth;
 	
 	columnKeys = [columnKeys
             sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
