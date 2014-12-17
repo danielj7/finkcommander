@@ -27,13 +27,9 @@
 	<key>LSMinimumSystemVersionByArchitecture</key>
 	<dict>
 		<key>i386</key>
-		<string>10.4.0</string>
+		<string>10.8</string>
 		<key>x86_64</key>
-		<string>10.5.0</string>
-		<key>ppc</key>
-		<string>10.3.9</string>
-		<key>ppc64</key>
-		<string>10.5.0</string>
+		<string>10.8</string>
 	</dict>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
