@@ -95,7 +95,7 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "SBTreeWindowManager.h"
 #import "SBMutableAttributedString.h"
 
-@interface FinkController : NSObject <NSFileManagerDelegate,NSToolbarDelegate>
+@interface FinkController : NSObject <NSFileManagerDelegate, NSToolbarDelegate, AuthorizedExecutableDelegate>
 {
 	//Main window outlets
 	IBOutlet NSWindow *window;

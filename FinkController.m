@@ -5,7 +5,9 @@ See the header file, FinkController.h, for interface and license information.
 
 */
 
+#import "AuthorizedExecutable.h"
 #import "FinkController.h"
+
 //================================================================================
 #pragma mark MACROS
 //================================================================================

@@ -10,6 +10,7 @@
 */
 
 #import "AuthorizedExecutable.h"
+#import "FinkController.h"
 #import <Security/AuthorizationTags.h>
 
 @implementation AuthorizedExecutable
@@ -434,7 +435,7 @@
 //
 - (void)stop
 {
-	int status;
+	NSInteger status;
 
     if (stdoutHandle)
     {
