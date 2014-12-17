@@ -32,13 +32,13 @@ Contact the author at sburrious@users.sourceforge.net.
 
 */
 
-typedef NS_ENUM(NSInteger, FinkFlaggedType){
-	NOT_FLAGGED,
-	IS_FLAGGED
-};
-
 #import <Foundation/Foundation.h>
 #import "SBString.h"
+
+typedef NS_ENUM(NSInteger, FinkFlaggedType){
+    NOT_FLAGGED,
+    IS_FLAGGED
+};
 
 @interface FinkPackage : NSObject 
 {

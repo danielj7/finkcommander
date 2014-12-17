@@ -85,15 +85,10 @@
 		59E0404D09CDC73B001280FD /* SBUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FBC8655003BABC0400A80165 /* SBUtilities.m */; };
 		59E0404E09CDC73B001280FD /* SBBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45EF03C5FF3100A80164 /* SBBrowserCell.m */; };
 		59E0404F09CDC73B001280FD /* SBOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCD45F003C5FF3100A80164 /* SBOutlineView.m */; };
-		59E0405109CDC73B001280FD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F536582302A89F0D01A8016A /* CoreFoundation.framework */; };
-		59E0405209CDC73B001280FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		59E0405309CDC73B001280FD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
 		59E0405F09CDC73B001280FD /* Launcher.h in Headers */ = {isa = PBXBuildFile; fileRef = F5F8FA5B033196B301A80166 /* Launcher.h */; };
 		59E0406009CDC73B001280FD /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D01DA703636C2C01A80165 /* Debugging.h */; };
 		59E0406209CDC73B001280FD /* getpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA5D033196BF01A80166 /* getpath.c */; };
 		59E0406309CDC73B001280FD /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
-		59E0406509CDC73B001280FD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F52F0AF70319CAFC01A80164 /* Security.framework */; };
-		59E0406609CDC73B001280FD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -123,12 +118,9 @@
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = SSHAskPass.sh; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		557B5387108D37AC00367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Japanese; path = Japanese.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		557B5389108D37C700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		557B538A108D37D600367D4E /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -137,7 +129,6 @@
 		557B53B9108D392700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/Dialogs.nib; sourceTree = "<group>"; };
 		557B53BA108D393500367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		557B53BB108D394100367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/Preferences.nib; sourceTree = "<group>"; };
-		5956660E09CE01660099082A /* FCPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPrefix.pch; sourceTree = "<group>"; };
 		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,13 +151,11 @@
 		F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkTextViewController.h; sourceTree = "<group>"; };
 		F527284C0221B4E801A80164 /* FinkPackage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPackage.h; sourceTree = "<group>"; };
 		F527284E0221B4E801A80164 /* FinkPackage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkPackage.m; sourceTree = "<group>"; };
-		F52F0AF70319CAFC01A80164 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		F531463F022C801601A80164 /* fpkg_list.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = fpkg_list.pl; sourceTree = "<group>"; };
 		F53369F50218261B01A80165 /* FinkController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkController.h; sourceTree = "<group>"; };
 		F53369F60218261B01A80165 /* FinkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinkController.m; sourceTree = "<group>"; };
 		F53649810388930201A80164 /* negemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = negemail.tiff; sourceTree = "<group>"; };
 		F5364A1A0388964301A80164 /* posemail.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = posemail.tiff; sourceTree = "<group>"; };
-		F536582302A89F0D01A8016A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		F536C03E0280F24501A80164 /* SBString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SBString.h; sourceTree = "<group>"; };
 		F536C03F0280F24501A80164 /* SBString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SBString.m; sourceTree = "<group>"; };
 		F5375A680246DDDC01A80164 /* FinkPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPreferences.h; sourceTree = "<group>"; };
@@ -273,22 +262,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		59E0405009CDC73B001280FD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				59E0405109CDC73B001280FD /* CoreFoundation.framework in Frameworks */,
-				59E0405209CDC73B001280FD /* Cocoa.framework in Frameworks */,
-				59E0405309CDC73B001280FD /* Security.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		59E0406409CDC73B001280FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59E0406509CDC73B001280FD /* Security.framework in Frameworks */,
-				59E0406609CDC73B001280FD /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,25 +292,6 @@
 			name = "FC Classes";
 			sourceTree = "<group>";
 		};
-		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				F52F0AF70319CAFC01A80164 /* Security.framework */,
-			);
-			name = "Linked Frameworks";
-			sourceTree = "<group>";
-		};
-		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F536582302A89F0D01A8016A /* CoreFoundation.framework */,
-				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
-				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,7 +312,6 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				F5BBDFAC023AF87D01A80164 /* Documentation */,
-				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = FinkTable;
@@ -397,15 +354,6 @@
 				F56200A902FC768601A80164 /* FinkCommander Help */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
-				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F538C3C5023496DC01A80164 /* Images */ = {
@@ -470,7 +418,6 @@
 				F5C523D802A326B701A80165 /* FinkPackageInfo.h */,
 				F55FF54B02CFC96301A80164 /* FinkInstallationInfo.h */,
 				F55407ED035D0C8601A80170 /* FinkWarningDialog.h */,
-				5956660E09CE01660099082A /* FCPrefix.pch */,
 			);
 			name = "FC Headers";
 			sourceTree = "<group>";
@@ -578,7 +525,6 @@
 			buildPhases = (
 				59E0400109CDC73B001280FD /* Resources */,
 				59E0403009CDC73B001280FD /* Sources */,
-				59E0405009CDC73B001280FD /* Frameworks */,
 				59E0405409CDC73B001280FD /* CopyFiles */,
 			);
 			buildRules = (
@@ -921,6 +867,8 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -951,6 +899,8 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				HEADER_SEARCH_PATHS = "";
@@ -980,6 +930,8 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGGING;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";
@@ -1003,6 +955,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
