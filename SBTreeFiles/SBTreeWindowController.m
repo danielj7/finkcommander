@@ -6,6 +6,7 @@
  */
 
 #import "SBTreeWindowController.h"
+#import "FinkController.h"
 
 //Constants matching tags in selection matrix
 typedef NS_ENUM(NSInteger, FinkTreeViewType) {
