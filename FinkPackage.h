@@ -111,12 +111,6 @@ typedef NS_ENUM(NSInteger, FinkFlaggedType){
 -(NSComparisonResult)normalCompareBySummary:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareBySummary:(FinkPackage *)pkg;
 
--(NSComparisonResult)normalCompareByBinary:(FinkPackage *)pkg;
--(NSComparisonResult)reverseCompareByBinary:(FinkPackage *)pkg;
-
--(NSComparisonResult)normalCompareByUnstable:(FinkPackage *)pkg;
--(NSComparisonResult)reverseCompareByUnstable:(FinkPackage *)pkg;
-
 -(NSComparisonResult)normalCompareByLocal:(FinkPackage *)pkg;
 -(NSComparisonResult)reverseCompareByLocal:(FinkPackage *)pkg;
 
