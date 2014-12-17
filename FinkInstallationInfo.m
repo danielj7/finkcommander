@@ -9,6 +9,7 @@ File: FinkInstallationInfo.m
 
 //Constants
 #define MAY_TOOLS_VERSION  @"2.0.1"
+#define DEVTOOLS_TEST_PATH @"/Applications/Xcode.app/Contents/version.plist"
 #define DEVTOOLS_TEST_PATH0 @"/Developer/Applications/Xcode.app/Contents/version.plist"
 #define DEVTOOLS_TEST_PATH1 @"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist"
 #define DEVTOOLS_TEST_PATH2 @"/Developer/Applications/Interface Builder.app/Contents/version.plist"
@@ -169,7 +170,7 @@ File: FinkInstallationInfo.m
 
 -(NSString *)gccVersion
 {
-NSString *error = @"Unable to determine gcc version";
+NSString *error = @"Unable to determine compiler version";
 NSArray *versInfo;
 NSString *result;
 NSString *extraInformation;
@@ -185,7 +186,7 @@ versInfo = [self versionInformationFromString:result];
 result = versInfo[0];
 extraInformation = versInfo[1];
 if (nil == result) return error;
-return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformation];
+return [NSString stringWithFormat: @"Compiler version: %@ %@", result, extraInformation];
 }
 
 -(NSString *)makeVersion
@@ -220,22 +221,28 @@ return [NSString stringWithFormat: @"gcc version: %@ %@", result, extraInformati
 	NSString *error = @"Unable to determine Developer Tools version";
 	NSString *version;
 
-    if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
+    if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH]){
+        Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH);
+        version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH][@"CFBundleShortVersionString"];
+        if (! version  || [version length] < 3) return error;
+        version = [@"Xcode version: " stringByAppendingString:version];
+        return version;
+    }
+    else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH0);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;
 		version = [@"Xcode version: " stringByAppendingString:version];
 		return version;
 	}
-
-	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
+	else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1][@"DevCDVersion"];
 		if (! version  || [version length] < 3) return error;
 		version = [version stringByAppendingString:@" or later"];
 		return version;
 	}
-	if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
+	else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH2);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;  //should at least be x.x
