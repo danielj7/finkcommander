@@ -18,12 +18,12 @@
 {
 	self = [super init];
 	if (nil != self){
-		NSTableColumn *aColumn;
-		NSEnumerator *e; 
+//      NSTableColumn *aColumn;
+//		NSEnumerator *e;
 
 		outlineView = oView;  //retained by superview
 		tree = aTree;
-		e = [[outlineView tableColumns] objectEnumerator];
+//		e = [[outlineView tableColumns] objectEnumerator];
 		[self setPreviousColumnIdentifier:@"filename"];
 		
 		[outlineView setDelegate:self];
@@ -32,10 +32,12 @@
 		[outlineView setTarget:outlineView];
 		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
 
-		while (nil != (aColumn = [e nextObject])){
-			[[aColumn headerCell] setTarget:self];
-			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
-		}
+        // FIXME: The sortByColumn: selector isn't defined anywhere.
+        // There is a commented out IBAction in the header file.
+//		while (nil != (aColumn = [e nextObject])){
+//			[[aColumn headerCell] setTarget:self];
+//			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
+//		}
 		columnStateDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 			SBAscendingOrder, @"filename",
 			SBAscendingOrder, @"size",
