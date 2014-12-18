@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 @implementation FinkPreferences
 
 //--------------------------------------------------------------------------------
-#pragma mark STARTUP AND SHUTDOWN
+#pragma mark - STARTUP AND SHUTDOWN
 //--------------------------------------------------------------------------------
 
 -(instancetype)init
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 
 
 //--------------------------------------------------------------------------------
-#pragma mark GENERAL HELPERS
+#pragma mark - GENERAL HELPERS
 //--------------------------------------------------------------------------------
 
 /* 	Transform environment settings in defaults into series of 
@@ -231,7 +231,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 }
 
 //--------------------------------------------------------------------------------
-#pragma mark ACTION HELPERS
+#pragma mark - ACTION HELPERS
 //--------------------------------------------------------------------------------
 
 /*** FinkCommander Settings ***/
@@ -309,7 +309,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 }
 
 //--------------------------------------------------------------------------------
-#pragma mark ACTIONS
+#pragma mark - ACTIONS
 //--------------------------------------------------------------------------------
 
 //Apply button
@@ -515,7 +515,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 }
 
 //--------------------------------------------------------------------------------
-#pragma mark DELEGATE METHODS
+#pragma mark - DELEGATE METHODS
 //--------------------------------------------------------------------------------
 
 -(void)windowDidLoad
@@ -574,7 +574,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 
 
 //--------------------------------------------------------------------------------
-#pragma mark ENVIRONMENT TABLE DATA SOURCE METHODS
+#pragma mark - ENVIRONMENT TABLE DATA SOURCE METHODS
 //--------------------------------------------------------------------------------
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView

@@ -10,7 +10,7 @@
 @implementation SBTreeWindowManager
 
 //----------------------------------------------------------
-#pragma mark CREATION AND DESTRUCTION
+#pragma mark - CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)init
@@ -25,7 +25,7 @@
 
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSString *)currentPackageName { return _sbcurrentPackageName; }
@@ -40,7 +40,7 @@
 -(NSMutableArray *)windowTitles { return _sbWindowTitles; }
 
 //----------------------------------------------------------
-#pragma mark CREATING AND DESTROYING SBTREEWINDOWCONTROLLERS
+#pragma mark - CREATING AND DESTROYING SBTREEWINDOWCONTROLLERS
 //----------------------------------------------------------
 
 -(NSMutableArray *)fileListFromCommand:(NSArray *)args

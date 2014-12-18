@@ -12,7 +12,7 @@
 @implementation NSString ( SBString )
 
 //================================================================================
-#pragma mark STRING AND SHELL PATTERN MATCHING METHODS
+#pragma mark - STRING AND SHELL PATTERN MATCHING METHODS
 //================================================================================
 
 -(BOOL)contains:(NSString *)s
@@ -38,7 +38,7 @@
 }
 
 //================================================================================
-#pragma mark REGULAR EXPRESSION MATCHING METHODS
+#pragma mark - REGULAR EXPRESSION MATCHING METHODS
 //================================================================================
 
 /*
@@ -112,7 +112,7 @@
 }
 
 //================================================================================
-#pragma mark OTHER STRING METHODS
+#pragma mark - OTHER STRING METHODS
 //================================================================================
 
 -(NSString *)strip

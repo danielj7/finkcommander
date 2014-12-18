@@ -11,7 +11,7 @@ NSString *SBAscendingOrder = @"SBAscendingOrder";
 NSString *SBDescendingOrder = @"SBDescendingOrder";
 
 //----------------------------------------------------------
-#pragma mark SORTING FUNCTIONS
+#pragma mark - SORTING FUNCTIONS
 //----------------------------------------------------------
 
 NSInteger sortByFilename(id firstItem, id secondItem, void *direction)
@@ -64,7 +64,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 @implementation SBFileItemTree
 
 //----------------------------------------------------------
-#pragma mark CREATION AND DESTRUCTION
+#pragma mark - CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)initWithFileArray:(NSMutableArray *)flist name:(NSString *)aName
@@ -92,7 +92,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 }
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(unsigned long)totalSize { return totalSize; }
@@ -113,7 +113,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 }
 
 //----------------------------------------------------------
-#pragma mark TREE BUILDING METHODS
+#pragma mark - TREE BUILDING METHODS
 //----------------------------------------------------------
 
 
@@ -211,7 +211,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 }
 
 //----------------------------------------------------------
-#pragma mark SORTING METHODS
+#pragma mark - SORTING METHODS
 //----------------------------------------------------------
 
 /* Recursively sort each file item's children */

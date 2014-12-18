@@ -10,7 +10,7 @@ See the header file, FinkPackage.h, for interface and license information.
 @implementation FinkPackage
 
 //================================================================================
-#pragma mark BASIC METHODS
+#pragma mark - BASIC METHODS
 //================================================================================
 
 
@@ -22,7 +22,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 //================================================================================
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //================================================================================
 
 //String that may be used repeatedly by all instances
@@ -38,7 +38,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 //================================================================================
-#pragma mark COMPARISON
+#pragma mark - COMPARISON
 //================================================================================
 
 -(BOOL)isEqual:(id)anObject
@@ -238,7 +238,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 //================================================================================
-#pragma mark QUERY PACKAGE
+#pragma mark - QUERY PACKAGE
 //================================================================================
 
 -(NSString *)nameWithoutSplitoff:(BOOL *)changed

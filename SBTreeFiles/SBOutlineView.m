@@ -30,7 +30,7 @@
 @implementation SBOutlineView
 
 //----------------------------------------------------------
-#pragma mark CREATION
+#pragma mark - CREATION
 //----------------------------------------------------------
 
 //Helper
@@ -110,7 +110,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark ACTION(S)
+#pragma mark - ACTION(S)
 //----------------------------------------------------------
 
 -(IBAction)openSelectedFiles:(id)sender
@@ -130,7 +130,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark VALIDATION
+#pragma mark - VALIDATION
 //----------------------------------------------------------
 
 -(BOOL)validateItem:(id)theItem
@@ -151,7 +151,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark DRAG AND DROP
+#pragma mark - DRAG AND DROP
 //----------------------------------------------------------
 //Allow dragging items outside outline view
 -(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal

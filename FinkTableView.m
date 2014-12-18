@@ -7,7 +7,7 @@ See the header file, FinkTableView.h, for interface and license information.
 #import "FinkTableView.h"
 
 //----------------------------------------------------------
-#pragma mark MACROS AND CONSTANTS
+#pragma mark - MACROS AND CONSTANTS
 //----------------------------------------------------------
 
 //Column widths
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 @implementation FinkTableView
 
 //----------------------------------------------------------
-#pragma mark CREATION AND DESTRUCTION
+#pragma mark - CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)initWithFrame:(NSRect)rect
@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSArray *)selectedPackageArray
@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark ACTION
+#pragma mark - ACTION
 //----------------------------------------------------------
 
 /* Open the info or patch file or both for selected packages. */
@@ -127,7 +127,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark VALIDATION
+#pragma mark - VALIDATION
 //----------------------------------------------------------
 
 -(BOOL)validateItem:(id)theItem
@@ -149,7 +149,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark COPY
+#pragma mark - COPY
 //----------------------------------------------------------
 
 /* 	Copy the single selected row from the table.  The elements
@@ -205,7 +205,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark FILE DRAG AND DROP
+#pragma mark - FILE DRAG AND DROP
 //----------------------------------------------------------
 
 -(BOOL)tableView:(NSTableView *)tview
@@ -260,7 +260,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark COLUMN MANIPULATION
+#pragma mark - COLUMN MANIPULATION
 //----------------------------------------------------------
 
 -(NSTableColumn *)makeColumnWithName:(NSString *)identifier
@@ -333,7 +333,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark DATA SOURCE METHODS
+#pragma mark - DATA SOURCE METHODS
 //----------------------------------------------------------
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
@@ -362,7 +362,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 }
 
 //----------------------------------------------------------
-#pragma mark SORTING
+#pragma mark - SORTING
 //----------------------------------------------------------
 
 /* 	The following two methods are used to scroll back to the previously selected row
@@ -444,7 +444,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 
 //----------------------------------------------------------
-#pragma mark DELEGATE METHODS
+#pragma mark - DELEGATE METHODS
 //----------------------------------------------------------
 
 -(void)tableView:(NSTableView *)aTableView

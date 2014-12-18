@@ -10,7 +10,7 @@ File SBFileItem.m
 @implementation SBFileItem
 
 //----------------------------------------------------------
-#pragma mark ITEM CREATION AND DESTRUCTION
+#pragma mark - ITEM CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)initWithPath:(NSString *)p
@@ -43,7 +43,7 @@ File SBFileItem.m
 
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSArray *)children { return _sbchildren; }
@@ -89,7 +89,7 @@ File SBFileItem.m
 }
 
 //----------------------------------------------------------
-#pragma mark BASIC OBJECT METHODS
+#pragma mark - BASIC OBJECT METHODS
 //----------------------------------------------------------
 
 -(NSString *)description
@@ -104,7 +104,7 @@ File SBFileItem.m
 }
 
 //----------------------------------------------------------
-#pragma mark PARENTS AND CHILDREN
+#pragma mark - PARENTS AND CHILDREN
 //----------------------------------------------------------
 
 -(BOOL)addChild:(SBFileItem *)item

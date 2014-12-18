@@ -8,7 +8,7 @@
 #import "SBDateColumnController.h"
 
 //----------------------------------------------------------
-#pragma mark FORMAT MACROS
+#pragma mark - FORMAT MACROS
 //----------------------------------------------------------
 
 /* 	Definitions of date formats and the minimum widths that will accomodate
@@ -36,7 +36,7 @@
 @implementation SBDateColumnController
 
 //----------------------------------------------------------
-#pragma mark CREATION AND DESTRUCTION
+#pragma mark - CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)init
@@ -97,7 +97,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSTableColumn *)column { return _sbColumn; }
@@ -122,7 +122,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark DISPLAY ADJUSTMENT
+#pragma mark - DISPLAY ADJUSTMENT
 //----------------------------------------------------------
 
 -(NSString *)formatForWidth:(CGFloat)width

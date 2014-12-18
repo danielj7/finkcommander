@@ -10,7 +10,7 @@
 @implementation SBBrowserView
 
 //----------------------------------------------------------
-#pragma mark OBJECT CREATION AND DESTRUCTION
+#pragma mark - OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)initWithFrame:(NSRect)frame
@@ -36,7 +36,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(SBFileItemTree *)tree
@@ -50,7 +50,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark BROWSER DELEGATE METHODS
+#pragma mark - BROWSER DELEGATE METHODS
 //----------------------------------------------------------
 
 /* 	Let the browser know how many rows should be displayed for the
@@ -106,7 +106,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark ACTION METHOD(S)
+#pragma mark - ACTION METHOD(S)
 //----------------------------------------------------------
 
 -(IBAction)openSelectedFiles:(id)sender
@@ -124,7 +124,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark VALIDATION
+#pragma mark - VALIDATION
 //----------------------------------------------------------
 
 -(BOOL)validateItem:(id)theItem
@@ -146,7 +146,7 @@
 
 
 //----------------------------------------------------------
-#pragma mark FILE DRAG AND DROP
+#pragma mark - FILE DRAG AND DROP
 //----------------------------------------------------------
 
 //Allows drag and drop from the browser to other apps (including finder)

@@ -9,7 +9,7 @@ See the header file, FinkController.h, for interface and license information.
 #import "FinkController.h"
 
 //================================================================================
-#pragma mark MACROS
+#pragma mark - MACROS
 //================================================================================
 
 #define CMD_REQUIRES_UPDATE(x) 								\
@@ -76,7 +76,7 @@ See the header file, FinkController.h, for interface and license information.
 #define LS_UPDATING_TABLE NSLocalizedString(@"Updating table data", "Status bar message")
 
 //================================================================================
-#pragma mark CONSTANTS
+#pragma mark - CONSTANTS
 //================================================================================
 
 /* Constants corresponding to the tag for the identified attribute
@@ -132,7 +132,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 @implementation FinkController
 
 //================================================================================
-#pragma mark INTITIALIZATION
+#pragma mark - INTITIALIZATION
 //================================================================================
 
 //----------------------------------------------->Initialize
@@ -239,7 +239,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark DEALLOCATION
+#pragma mark - DEALLOCATION
 //================================================================================
 
 //----------------------------------------------->Dealloc
@@ -249,7 +249,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark GENERAL HELPERS
+#pragma mark - GENERAL HELPERS
 //================================================================================
 
 /* 	
@@ -346,7 +346,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark POST-INIT STARTUP
+#pragma mark - POST-INIT STARTUP
 //================================================================================
 
 -(void)awakeFromNib
@@ -438,7 +438,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark APPLICATION AND WINDOW DELEGATES
+#pragma mark - APPLICATION AND WINDOW DELEGATES
 //================================================================================
 
 //warn before quitting if a command is running
@@ -478,11 +478,11 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark MAIN MENU
+#pragma mark - MAIN MENU
 //================================================================================
 
 //----------------------------------------------->Application Menu
-#pragma mark Application Menu
+#pragma mark - Application Menu
 
 -(IBAction)showPreferencePanel:(id)sender
 {
@@ -539,7 +539,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->File Menu
-#pragma mark File Menu
+#pragma mark - File Menu
 
 //usually called by other methods after a command runs
 -(IBAction)updateTable:(id)sender
@@ -577,7 +577,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->View Menu
-#pragma mark View Menu
+#pragma mark - View Menu
 
 //remove or add column
 -(IBAction)chooseTableColumn:(id)sender
@@ -621,7 +621,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Source Menu
-#pragma mark Source Menu
+#pragma mark - Source Menu
 
 //faster substitute for fink describe command; preserves original
 //formatting, unlike package inspector
@@ -648,7 +648,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Tools Menu
-#pragma mark Tools Menu
+#pragma mark - Tools Menu
 
 -(void)runTerminateCommand:(NSNotification *)ignore
 {
@@ -811,7 +811,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Window Menu
-#pragma mark Window Menu
+#pragma mark - Window Menu
 
 -(IBAction)bringBackMainWindow:(id)sender
 {
@@ -821,7 +821,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Help and Tools Menu
-#pragma mark Help Menu
+#pragma mark - Help Menu
 
 -(IBAction)openHelpInWebBrowser:(id)sender
 {
@@ -867,7 +867,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark TOOLBAR
+#pragma mark - TOOLBAR
 //================================================================================
 
 -(void)setupToolbar
@@ -901,7 +901,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Toolbar Delegates
-#pragma mark Toolbar Delegates
+#pragma mark - Toolbar Delegates
 
 /* 
  * Use the Toolbar.plist file to populate the toolbar.
@@ -990,7 +990,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //----------------------------------------------->Text Field Delegate
-#pragma mark Text Field Delegate
+#pragma mark - Text Field Delegate
 
 -(void)controlTextDidChange:(NSNotification *)aNotification
 {
@@ -1050,7 +1050,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark VALIDATION
+#pragma mark - VALIDATION
 //================================================================================
 
 // Validation logic for menu and toolbar item validation methods
@@ -1167,7 +1167,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark RUNNING AUTHORIZED COMMANDS
+#pragma mark - RUNNING AUTHORIZED COMMANDS
 //================================================================================
 
 /*
@@ -1372,7 +1372,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark INTERACTION SHEET
+#pragma mark - INTERACTION SHEET
 //================================================================================
 
 -(IBAction)raiseInteractionWindow:(id)sender
@@ -1414,7 +1414,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 //================================================================================
-#pragma mark AUTHORIZED EXECUTABLE DELEGATE METHODS
+#pragma mark - AUTHORIZED EXECUTABLE DELEGATE METHODS
 //================================================================================
 
 /*

@@ -10,7 +10,7 @@
 @implementation SBOutlineViewController
 
 //----------------------------------------------------------
-#pragma mark OBJECT CREATION AND DESTRUCTION
+#pragma mark - OBJECT CREATION AND DESTRUCTION
 //----------------------------------------------------------
 
 -(instancetype)initWithTree:(SBFileItemTree *)aTree
@@ -49,7 +49,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSString *)previousColumnIdentifier { return previousColumnIdentifier; }
@@ -59,7 +59,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark NSOUTLINEVIEW DATA SOURCE METHODS
+#pragma mark - NSOUTLINEVIEW DATA SOURCE METHODS
 //----------------------------------------------------------
 
 -(NSInteger)outlineView:(NSOutlineView *)outlineView
@@ -99,7 +99,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark NSOUTLINEVIEW DELEGATE METHOD(S)
+#pragma mark - NSOUTLINEVIEW DELEGATE METHOD(S)
 //----------------------------------------------------------
 
 - (void)outlineView:(NSOutlineView *)outlineView 
@@ -117,7 +117,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark DRAG AND DROP
+#pragma mark - DRAG AND DROP
 //----------------------------------------------------------
 
 /* 	Create an array of path names for selected items. Copy
@@ -139,7 +139,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark SORTING METHOD
+#pragma mark - SORTING METHOD
 //----------------------------------------------------------
 
 - (BOOL)outlineView:(NSOutlineView *)theOutlineView
@@ -177,7 +177,7 @@
 }
 
 //----------------------------------------------------------
-#pragma mark OUTLINE MANIPULATION
+#pragma mark - OUTLINE MANIPULATION
 //----------------------------------------------------------
 
 // NSOutline collapseItem:collapseChildren: appears not to work

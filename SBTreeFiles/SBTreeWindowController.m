@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 @implementation SBTreeWindowController
 
 //----------------------------------------------------------
-#pragma mark ACCESSORS
+#pragma mark - ACCESSORS
 //----------------------------------------------------------
 
 -(NSString *)activeView { return _sbActiveView; }
@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 -(NSWindow *)window { return sbTreeWindow; }
 
 //----------------------------------------------------------
-#pragma mark OBJECT CREATION
+#pragma mark - OBJECT CREATION
 //----------------------------------------------------------
 
 /*	Helper for designated initializer.  Replaces NSOutlineView and NSBrowser
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 }
 
 //----------------------------------------------------------
-#pragma mark OBJECT DESTRUCTION
+#pragma mark - OBJECT DESTRUCTION
 //----------------------------------------------------------
 
 -(BOOL)windowShouldClose:(id)sender
@@ -170,7 +170,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 }
 
 //----------------------------------------------------------
-#pragma mark ACTIONS
+#pragma mark - ACTIONS
 //----------------------------------------------------------
 
 -(IBAction)switchViews:(id)sender
@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 }
 
 //----------------------------------------------------------
-#pragma mark UI UPDATING
+#pragma mark - UI UPDATING
 //----------------------------------------------------------
 
 -(void)finishedLoading:(NSNotification *)n
@@ -219,7 +219,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 }
 
 //----------------------------------------------------------
-#pragma mark NSWINDOW DELEGATE METHODS
+#pragma mark - NSWINDOW DELEGATE METHODS
 //----------------------------------------------------------
 
 -(void)windowDidResize:(NSNotification *)aNotification
