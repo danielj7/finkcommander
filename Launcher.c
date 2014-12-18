@@ -229,14 +229,14 @@ int repair_self()
 
  /* Don't change ownership of Resource directory during development;
     it causes clean build to fail. */
-#ifndef DEBUGGING
+#ifndef DEBUG
 	resrep = FALSE;
     /* Get path to Resource directory */
     strcpy(path_to_res, path_to_self);
     end_of_dir = strrchr(path_to_res, '/');
     if (end_of_dir == NULL) path_to_res[0] = 0;  /* signal failure */
     else *end_of_dir = 0;  /* terminate string at slash */
-#endif //DEBUGGING
+#endif //DEBUG
 
     if (path_to_self != NULL){
         /* Recover the passed in AuthorizationRef. */
@@ -258,7 +258,7 @@ int repair_self()
 					result = TRUE;
 				}
             }
-#ifndef DEBUGGING
+#ifndef DEBUG
 			/* Set ownership of Resource directory to root and disable group and world
 				writability */
 			if (path_to_res[0] != 0){
@@ -270,7 +270,7 @@ int repair_self()
 					}
 				}
 			}
-#endif //DEBUGGING
+#endif //DEBUG
 		}else{
 			fprintf(stderr, "Authentication as administrator failed.\n");
 		}

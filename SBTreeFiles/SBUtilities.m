@@ -33,7 +33,7 @@ void alertProblemPaths(NSArray *pathArray)
     }
 }
 
-#ifdef DEBUGGING
+#ifdef DEBUG
 void Dprintf(NSString *fmt,...) {
     va_list ap;
     va_start(ap,fmt);

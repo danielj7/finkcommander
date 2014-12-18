@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 #import "SBUtilities.h"
 
-#ifndef DEBUGGING
+#ifdef DEBUG
 #include "Debugging.h"
 #endif
 

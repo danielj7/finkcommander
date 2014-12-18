@@ -37,7 +37,7 @@
 
  */
 
-#ifndef DEBUGGING
+#ifdef DEBUG
 #include "Debugging.h"
 #endif
 
