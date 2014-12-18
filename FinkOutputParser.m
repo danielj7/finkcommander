@@ -62,7 +62,7 @@
 		executable:(NSString *)exe;
 {
     if (self = [super init]){
-        NSInteger aPrompt, mPrompt, __unused config, __unused dOutput;  //test regex compilation success
+        NSInteger aPrompt, mPrompt, config, dOutput;  //test regex compilation success
 
         defaults = [NSUserDefaults standardUserDefaults];
         command = cmd;
@@ -72,11 +72,11 @@
         _pgid = 0;
 
         /* Precompile regular expressions used to parse each line of output */
-        //config = compiledExpressionFromString(CONFIG_PAT, &configure);
+        config = compiledExpressionFromString(CONFIG_PAT, &configure);
         aPrompt = compiledExpressionFromString(PROMPT_PAT, &prompt);
         mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &manPrompt);
-        //dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
-        if (mPrompt != 0 || aPrompt != 0){
+        dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
+        if (mPrompt != 0 || aPrompt != 0 || config != 0 || dOutput != 0){
             NSLog(@"Compiling regex failed.");
         }
 
@@ -256,7 +256,7 @@
     NSString *sline = [line strip];
     //Read process group id for Launcher
     if (![self pgid] && [line contains:@"PGID="]){
-        [self setPgid:[[line substringFromIndex:AFTER_EQUAL_SIGN] intValue]];
+        [self setPgid:[[line substringFromIndex:AFTER_EQUAL_SIGN] integerValue]];
         return PGID;
     }
     //Look for package lists
