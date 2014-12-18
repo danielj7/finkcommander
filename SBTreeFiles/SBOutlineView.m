@@ -38,16 +38,13 @@
 {
 	NSArray *columnKeys = [SB_COLUMNS allKeys];
 	NSMutableArray *columnArray = [NSMutableArray array];
-	NSEnumerator *e;
-	NSString *identifier;
 	CGFloat nameWidth = frame.size.width / 2.0;
 	CGFloat sizeWidth = nameWidth / 4.0;
 	CGFloat mdateWidth = frame.size.width - nameWidth - sizeWidth;
 	
 	columnKeys = [columnKeys
             sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-	e = [columnKeys objectEnumerator];
-	while (nil != (identifier = [e nextObject])){
+	for (NSString *identifier in columnKeys){
 		NSTableColumn *newColumn = [[NSTableColumn alloc]
 										initWithIdentifier:identifier];
 		NSString *title = SB_COLUMNS[identifier];
@@ -83,11 +80,7 @@
 {
 	self = [super initWithFrame:[oldView frame]];
 	if (self != nil){
-		NSEnumerator *e = [[self tableColumnsForFrame:[oldView frame]]
-			objectEnumerator];
-		NSTableColumn *column;
-
-		while (nil != (column = [e nextObject])){
+		for (NSTableColumn *column in [self tableColumnsForFrame:[oldView frame]]){
 			[self addTableColumn:column];
 		}
 		[self moveColumn:2 toColumn:1];

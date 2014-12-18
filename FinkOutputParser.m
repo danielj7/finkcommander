@@ -113,8 +113,6 @@
 //the increment added so far for that package
 -(BOOL)setupInstall
 {
-    NSEnumerator *e;
-    NSString *pname;
     CGFloat cumulative[] = {
         0.00,     //NONE
         0.20,     //FETCH 		+ .20
@@ -131,9 +129,8 @@
         return NO;
     }
 
-    e = [packageList objectEnumerator];
     if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
-    while (nil != (pname = [e nextObject])){
+    for (NSString *pname in packageList){
         ptracker[pname] = @0.0f;
     }
 
@@ -188,18 +185,15 @@
 //find longest name in packageList that matches a string in this line
 -(NSString *)packageNameFromLine:(NSString *)line
 {
-    NSEnumerator *e;
-    NSString *candidate;
     NSString *best = @"";
 
     if (!packageList){
         NSLog(@"Warning: No package list created; unable to determine current package");
         return best;
     }
-    e = [packageList objectEnumerator];
     //first see if the line contains any of the names in the package list;
     //if so, return the longest name that matches
-    while (nil != (candidate = [e nextObject])){
+    for (NSString *candidate in packageList){
         if ([line containsCI:candidate]){
             if ([candidate length] > [best length]){
                 best = candidate;
@@ -236,8 +230,7 @@
         Dprintf(@"Looking for best match for %@ in:\n%@", fname,
                 [packageList componentsJoinedByString:@" "]);
         if ([fname length] > 0){
-            e = [packageList objectEnumerator];
-            while (nil != (candidate = [e nextObject])){
+            for (NSString *candidate in packageList){
                 if ([candidate contains:fname]){  //e.g. wget-ssl contains wget
                     Dprintf(@"Listed package %@ contains %@", candidate, fname);
                     if ([best length] < 1){
@@ -412,13 +405,10 @@
 
 -(int)parseOutput:(NSString *)output
 {
-    NSEnumerator *e;
-    NSString *line;
+    NSArray *lines = [output componentsSeparatedByString: @"\n"];
     FinkOutputSignalType signal = NONE;  //false when used as boolean value
 
-    e  = [[output componentsSeparatedByString: @"\n"] objectEnumerator];
-
-    while (nil != (line = [e nextObject])){
+    for (NSString *line in lines){
         signal = [self parseLineOfOutput:line];
         if (signal) return signal;
     }

@@ -96,8 +96,7 @@ See the header file, FinkData.h, for interface and license information.
     NSString *output;
 	
 	NSMutableDictionary *pkgs = [NSMutableDictionary dictionary];
-    NSEnumerator *e, *f;
-    NSString *pkginfo, *line;
+    NSArray *e, *f;
 	NSString *pname = nil, *pversion = nil;
 
     [listCmd setLaunchPath: 
@@ -108,11 +107,11 @@ See the header file, FinkData.h, for interface and license information.
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
 	output = [[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding];
-    e = [[output componentsSeparatedByString: @"\n\n"] objectEnumerator];
-	while (nil != (pkginfo = [e nextObject])){
+    e = [output componentsSeparatedByString: @"\n\n"];
+	for (NSString *pkginfo in e){
 		@autoreleasepool {
-			f = [[pkginfo componentsSeparatedByString: @"\n"] objectEnumerator];
-			while (nil != (line = [f nextObject])){
+			f = [pkginfo componentsSeparatedByString: @"\n"];
+			for (NSString *line in f){
 				if ([line contains:@"Package:"]){
 					pname = [line substringWithRange: 
 									NSMakeRange(PACKAGESTART, [line length] - PACKAGESTART)];
@@ -327,10 +326,8 @@ See the header file, FinkData.h, for interface and license information.
 -(NSInteger)installedPackagesCount
 {
     NSInteger count = 0;
-    NSEnumerator *e = [[self array] objectEnumerator];
-    FinkPackage *pkg;
 
-    while (nil != (pkg = [e nextObject])){
+    for (FinkPackage *pkg in [self array]){
 		if ([[pkg status] contains: @"t"]){
 			count++;
 		}

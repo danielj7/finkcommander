@@ -106,12 +106,10 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	NSMutableDictionary *environmentSettings = [NSMutableDictionary dictionaryWithCapacity:
 													[environmentArray count]];
-	NSEnumerator *e = [environmentArray objectEnumerator];
-	NSMutableDictionary *setting;
 	NSDictionary *newSettings;
 	NSString *name, *value;
 	
-	while (nil != (setting = [e nextObject])){
+	for (NSMutableDictionary *setting in environmentArray){
 		name = setting[@"name"];
 		value = setting[@"value"];
 		environmentSettings[name] = value;

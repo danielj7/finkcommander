@@ -127,10 +127,8 @@
 	toPasteboard:(NSPasteboard *)pboard
 {
     NSArray *fileList = @[];
-    SBFileItem *item;
-    NSEnumerator *e = [items objectEnumerator];
 
-	while (nil != (item = [e nextObject])){
+	for (SBFileItem *item in items){
 		fileList = [fileList arrayByAddingObject:[item path]];
 	}
 	[ov registerForDraggedTypes:@[NSFilenamesPboardType]];
@@ -186,9 +184,7 @@
 -(void)collapseItemAndChildren:(SBFileItem *)item
 {
 	if (nil != [item children]){
-		SBFileItem *child;
-		NSEnumerator *e = [[item children] objectEnumerator];
-		while (nil != (child = [e nextObject])){
+		for (SBFileItem *child in [item children]){
 			[self collapseItemAndChildren:child];
 		}
 	}

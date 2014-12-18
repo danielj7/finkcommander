@@ -75,9 +75,8 @@
 {
 	NSString *s = [p fulldesc];
 	NSEnumerator *lineEnumerator = [[s componentsSeparatedByString: @"\n"] objectEnumerator];
-	NSEnumerator *fieldEnumerator = [@[@"Summary", @"Description",
-								@"Usage Notes", @"Web site", @"Maintainer"] 
-							objectEnumerator];
+	NSArray *fields = @[@"Summary", @"Description",
+								@"Usage Notes", @"Web site", @"Maintainer"];
 	NSDictionary *urlAttributes = @{NSForegroundColorAttributeName: URLCOLOR,
 									NSUnderlineStyleAttributeName: @(NSSingleUnderlineStyle)};
 	NSMutableAttributedString *description = 	
@@ -85,7 +84,6 @@
 					initWithString: @""
 						   attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0]}];
 	NSString *line;
-	NSString *field;
 	NSString *uri;
 	NSRange r;	      //general purpose range variable
 	
@@ -119,7 +117,7 @@
 	}
 	
 	//apply attributes to field names
-	while (field = [fieldEnumerator nextObject]){
+	for (NSString *field in fields){
 		r = [[description string] rangeOfString: field];
 		if (r.length > 0){
 			[description addAttribute: NSForegroundColorAttributeName 
@@ -155,16 +153,15 @@
 //Add font attributes, spacing and newlines for various versions of package
 -(NSAttributedString *)formattedVersionsForPackage:(FinkPackage *)pkg
 {
-	NSEnumerator *versionNameEnumerator = [@[@"Installed", @"Unstable", @"Stable",
-		@"Binary"] objectEnumerator];
-	NSString *vName;
+	NSArray *versionNames = @[@"Installed", @"Unstable", @"Stable",
+                              @"Binary"];
 	NSString *vNumber;
 	NSMutableAttributedString *description =
 		[[NSMutableAttributedString alloc]
 				initWithString: @""
 				attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0]}];
 	
-	while (nil != (vName = [versionNameEnumerator nextObject])){
+	for (NSString *vName in versionNames){
 		vNumber = [pkg valueForKey:[vName lowercaseString]];
 		if ([vNumber length] < 2) vNumber = @"None";
 		if ([vName length] < 8) vNumber = [NSString stringWithFormat: @"\t%@", vNumber];

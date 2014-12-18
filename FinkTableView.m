@@ -41,10 +41,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 	defaults = [NSUserDefaults standardUserDefaults];
 
 	if (self = [super initWithFrame: rect]){
-		NSString *identifier;
-		NSEnumerator *e = [[defaults objectForKey:FinkTableColumnsArray] objectEnumerator];
-
-		while (nil != (identifier = [e nextObject])){
+		for (NSString *identifier in [defaults objectForKey:FinkTableColumnsArray]){
 			[self addTableColumn:[self makeColumnWithName:identifier]];
 		}
 		[self setDelegate: self];
@@ -90,10 +87,8 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 /* Open the info or patch file or both for selected packages. */
 -(IBAction)openPackageFiles:(id)sender
 {
-    NSEnumerator *e = [[self selectedPackageArray] objectEnumerator];
     //Accumulates paths for files that could not be opened
     NSMutableArray *problemPaths = [NSMutableArray array];
-    FinkPackage *pkg;
     NSString *path, *tree;
     NSInteger senderTag = [sender tag];
     //YES if user double-clicked the package name in the table
@@ -102,7 +97,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 	Dprintf(@"Sender tag in openPackageFiles: %d", senderTag);
 
-    while (nil != (pkg = [e nextObject])){
+    for (FinkPackage *pkg in [self selectedPackageArray]){
 		if ([[pkg unstable] length] > 1) {
 			tree = @"unstable";
 		} else {
@@ -163,23 +158,18 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 -(void)copySelectedRows
 {
-	NSEnumerator *colEnum = [[self tableColumns] objectEnumerator];
 	NSMutableString	*theData = [NSMutableString string];
-	NSTableColumn *theColumn;
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
 
 	// Write the header values
-	while (nil != (theColumn = [colEnum nextObject])){
+    for (NSTableColumn *theColumn in [self tableColumns]){
 		[theData appendString:[theColumn identifier]];
 		[theData appendString:@"\t"];
 	}
 	[theData appendString:@"\n"];
 
     [[self selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
-        NSEnumerator *colEnum = [[self tableColumns] objectEnumerator];
-        NSTableColumn *theColumn;
-        
-        while (nil != (theColumn = [colEnum nextObject])){
+        for (NSTableColumn *theColumn in [self tableColumns]){
             id columnValue = [self tableView:self objectValueForTableColumn:theColumn
                                          row:idx];
             NSString *columnString = @"";
@@ -223,14 +213,12 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 	toPasteboard:(NSPasteboard *)pboard
 {
 	NSArray *fileList = @[];
-    NSEnumerator *e = [rows objectEnumerator];
-	NSNumber *rowNum;
 	FinkPackage *pkg;
 	NSString *tree;
 	NSString *path;
 	NSFileManager *manager = [NSFileManager defaultManager];
 
-	while (nil != (rowNum = [e nextObject])){
+	for (NSNumber *rowNum in rows){
 		pkg = [self displayedPackages][[rowNum intValue]];
 		if ([[pkg unstable] length] > 1){
 			tree = @"unstable";

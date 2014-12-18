@@ -39,11 +39,9 @@
 		clickedCell = [self cellAtRow:arow column:acol];
 		// 	If user clicks in previously selected area, drag selection.
 		if ([selectedCellCache containsObject:clickedCell]){
-			NSEnumerator *e = [selectedCellCache objectEnumerator];
-			NSCell *theCell;
 			NSInteger brow, bcol;
 
-			while (nil != (theCell = [e nextObject])){
+			for (NSCell *theCell in selectedCellCache){
 				[self getRow:&brow column:&bcol ofCell:theCell];
 				[self setSelectionFrom:brow to:brow anchor:brow highlight:YES];
 			}

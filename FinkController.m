@@ -351,9 +351,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)awakeFromNib
 {
-    NSEnumerator *columnNameEnumerator = [[defaults objectForKey:FinkTableColumnsArray]
-		objectEnumerator];
-    NSString *columnName;
+    NSArray *columnNameArray = [defaults objectForKey:FinkTableColumnsArray];
     id splitSuperview = [splitView superview];
     NSSize tableContentSize = [tableScrollView contentSize];
 
@@ -385,7 +383,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 								forScrollView:outputScrollView]];
 									
 	//Set state of View menu column items
-    while (nil != (columnName = [columnNameEnumerator nextObject])){
+    for (NSString *columnName in columnNameArray){
     	int atag = [self tagFromAttributeName:columnName];
 		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
@@ -607,11 +605,10 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	int currentState = [[[tableView selectedPackageArray] lastObject]
 								flagged];
 	FinkFlaggedType newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
-	NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-	FinkPackage *package;
+	NSArray *packageArray = [tableView selectedPackageArray];
 	NSMutableArray *flagArray = [[defaults objectForKey:FinkFlaggedColumns] mutableCopy];
 
-	while (nil != (package = [e nextObject])){
+	for (FinkPackage *package in packageArray){
 		[package setFlagged:newState];
 		if (IS_FLAGGED == newState){
 			[flagArray addObject:[package name]];
@@ -630,15 +627,14 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //formatting, unlike package inspector
 -(IBAction)showDescription:(id)sender
 {
-    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+    NSArray *pkgArray = [tableView selectedPackageArray];
     NSInteger i = 0;
-    FinkPackage *pkg;
     NSString *full = nil;
     NSString *divider = @"____________________________________________________\n\n";
 
     [[[self textViewController] textView] setString: @""];
 
-    while (nil != (pkg = [e nextObject])){
+    for (FinkPackage *pkg in pkgArray){
 		full = [NSString stringWithFormat: @"%@-%@:   %@\n",
 			[pkg name],
 			[pkg version],
@@ -703,12 +699,11 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //Helper for feedback commands
 -(void)sendEmailWithMessage:(FinkFeedbackType)typeOfFeedback
 {
-    NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
+    NSArray *pkgArray = [tableView selectedPackageArray];
     NSString *sig = [[self installationInfo] formattedEmailSig];
 	NSString *feedbackMessage;
 	NSString *emailTemplate;
 	NSString *emailBody;
-    FinkPackage *pkg;
     NSMutableArray *pkgNames = [NSMutableArray arrayWithCapacity:5];
 
     if (![self packageInfo]){
@@ -726,7 +721,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	
     [[self packageInfo] setEmailSig:sig];
 	
-    while (nil != (pkg = [e nextObject])){
+    for (FinkPackage *pkg in pkgArray){
 		if (typeOfFeedback == POSITIVE   &&
 			[[pkg installed] length] > 1 &&
 			[[pkg installed] isEqualToString:[pkg stable]]){
@@ -895,9 +890,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)refilter:(id)sender
 {
 	if ([(sender) isKindOfClass:[NSMenuItem class]]) {
-		NSEnumerator *menuItems = [[[sender menu] itemArray] objectEnumerator];
-		NSMenuItem *menuItem;
-		while (nil != (menuItem = [menuItems nextObject])) {
+		NSArray *menuItems = [[sender menu] itemArray];
+		for (NSMenuItem *menuItem in menuItems) {
 			[menuItem setState:NSOffState];
 		}
 		[sender setState:NSOnState];
@@ -1010,9 +1004,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		NSString *pkgAttribute;
 		/* 	Used to store the subset of the packages array that matches the filter text */
 		NSMutableArray *subset = [NSMutableArray array];
-		NSEnumerator *e = [[[self packages] array] objectEnumerator];
                 regex_t regex;
-		FinkPackage *pkg;
 
 		//Store selected object information before the filter is applied
 		if ([defaults boolForKey: FinkScrollToSelection]){
@@ -1026,7 +1018,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		if ([filterText length] == 0){
 			[tableView setDisplayedPackages: [[self packages] array]];
 		}else{
-			while (nil != (pkg = [e nextObject])){
+			for (FinkPackage *pkg in [[self packages] array]){
 				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
 				/* 	If the value matches the filter term, add it to the subset */
                                 if([defaults boolForKey: FinkAllowRegexFiltering] && 
@@ -1089,9 +1081,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		// Disable apt-get install if there is no binary version
 		NSString *itemName = ACTION_ITEM_IDENTIFIER(theItem);
 		if ([itemName isEqualToString:@"install"] && [theItem tag] == APT_GET){
-			NSEnumerator *e = [[tableView selectedPackageArray] objectEnumerator];
-			FinkPackage *pkg;
-			while (nil != (pkg = [e nextObject])){
+			NSArray *pkgArray = [tableView selectedPackageArray];
+			for (FinkPackage *pkg in pkgArray){
 				if ([[pkg binary] length] < 2){
 					return NO;
 				}
@@ -1188,8 +1179,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
     NSString *cmd, *exe = @"";
     NSMutableArray *args;
-    FinkPackage *pkg;
-    NSEnumerator *e;
+    NSArray *pkgArray = [tableView selectedPackageArray];
 	FinkExecutableType type = [sender tag];
 
     //Identify executable
@@ -1231,8 +1221,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 	//Put package names in argument array, if this is a package-specific command
     if (pkgSpec){
-		e  = [[tableView selectedPackageArray] objectEnumerator];
-		while (nil != (pkg = [e nextObject])){
+		for (FinkPackage *pkg in pkgArray){
 			[args addObject: [pkg name]];
 		}
     }

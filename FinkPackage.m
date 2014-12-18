@@ -244,13 +244,11 @@ See the header file, FinkPackage.h, for interface and license information.
 -(NSString *)nameWithoutSplitoff:(BOOL *)changed
 {
 	if ([[self name] rangeOfString:@"-"].length > 0){
-		NSEnumerator *e = [@[@"-bin", @"-dev", @"-shlibs"]
-			objectEnumerator];
+        NSArray *splitoffs = @[@"-bin", @"-dev", @"-shlibs"];
 		NSString *pkgname = [self name];
-		NSString *splitoff;
 		NSRange r;
 
-		while (nil != (splitoff = [e nextObject])){
+		for (NSString *splitoff in splitoffs){
 			r = [pkgname rangeOfString:splitoff];
 			if (r.length > 0){
 				pkgname = [pkgname substringToIndex:r.location];
@@ -272,9 +270,8 @@ See the header file, FinkPackage.h, for interface and license information.
 	BOOL foundSplitoff = NO;
 	NSString *fname = [self nameWithoutSplitoff:&foundSplitoff];
 	NSString *distPath = [FinkPackage pathToDists];
-    NSString *pkgFileName, *thePath;
+    NSString *thePath;
     NSArray *components, *nameVariants;
-	NSEnumerator 		*theEnum;
 		
 	if (nil == fversion){
 		fversion = [tree isEqualToString:@"unstable"] ?
@@ -283,8 +280,7 @@ See the header file, FinkPackage.h, for interface and license information.
 
 	nameVariants = @[[NSString stringWithFormat:@"%@-%@.%@", fname, fversion, ext],
 						[NSString stringWithFormat:@"%@.%@", fname, ext]];
-	theEnum = [nameVariants objectEnumerator];						
-	while(pkgFileName = [theEnum nextObject])
+	for (NSString *pkgFileName in nameVariants)
 	{
 		if ([[self category] isEqualToString:@"crypto"]){
 			components = @[distPath, tree, @"crypto",

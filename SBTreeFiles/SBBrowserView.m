@@ -111,13 +111,11 @@
 
 -(IBAction)openSelectedFiles:(id)sender
 {
-    NSEnumerator *e = [[self selectedCells] objectEnumerator];
-    NSBrowserCell *bCell;
     NSString *ipath;
     BOOL successful;
     NSMutableArray *inaccessiblePathsArray = [NSMutableArray array];
 
-    while (nil != (bCell = [e nextObject])){
+    for (NSBrowserCell *bCell in [self selectedCells]){
 		ipath = [[bCell representedObject] path];  //SBFileItem represented in cell
 		successful = openFileAtPath(ipath);
 		if (! successful)[inaccessiblePathsArray addObject:ipath];
@@ -164,12 +162,10 @@
 	NSSize imageSize;
     NSPoint dragPosition;
     NSArray *fileList = @[];
-	NSBrowserCell *theCell;
     SBFileItem *item;
-    NSEnumerator *cellEnum = [[self selectedCells] objectEnumerator];
 
 	//Put the path for each selected item in an array
-	while (nil != (theCell = [cellEnum nextObject])){
+	for (NSBrowserCell *theCell in [self selectedCells]){
 		item = [theCell representedObject];
 		fileList = [fileList arrayByAddingObject:[item path]];
 	}

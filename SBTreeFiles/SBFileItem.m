@@ -135,12 +135,8 @@ File SBFileItem.m
 //Helper for following methods
 -(SBFileItem *)childWithAttribute:(NSString *)attr value:(id)val
 {
-	NSEnumerator *e;
-	SBFileItem *item;
-	
 	if (nil == [self children]) return nil;
-	e = [[self children] objectEnumerator];
-	while (nil != (item = [e nextObject])){
+	for (SBFileItem *item in [self children]){
 		if ([[item valueForKey:attr] isEqual:val]){
 			return item;
 		}

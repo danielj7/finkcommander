@@ -221,8 +221,6 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 {
     NSArray *newArray;
     NSData *sortHint = [[pitem children] sortedArrayHint];
-    SBFileItem *citem;
-    NSEnumerator *e;
     NSInteger (*sorter)(id, id, void *); //pointer to sorting function
 
 	if ([element isEqualToString:@"filename"]){
@@ -241,8 +239,7 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
     [pitem setChildren:newArray];
 
     //Sort descendants of children
-    e = [[pitem children] objectEnumerator];
-    while (nil != (citem = [e nextObject])){
+    for (SBFileItem *citem in [pitem children]){
 		if (nil != [citem children]){
 			[self sortChildrenOfItem:citem
 				   byElement:element

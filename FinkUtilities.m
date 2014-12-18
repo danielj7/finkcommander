@@ -12,31 +12,30 @@ File: FinkUtilities.m
 
 void findFinkBasePath(void)
 {
-	NSEnumerator *e;
-	NSString *path;
+	NSArray *paths;
     NSString *homeDir = NSHomeDirectory();
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *oldBasePath = [defaults objectForKey:FinkBasePath];
 	
-	//look in some possible install paths
-	e = [@[@"/sw", @"/opt", @"/usr/local", @"/fink", homeDir,
+	//look i some possible install paths
+	paths = @[@"/sw", @"/opt", @"/usr/local", @"/fink", homeDir,
 		[homeDir stringByAppendingPathComponent: @"sw"],
         [homeDir stringByAppendingPathComponent: @"fink"],
         @"/opt/fink", @"/opt/sw", @"/usr/local/sw", @"/usr/local/fink",
-        @"/usr/sw", @"/usr/fink"] objectEnumerator];
+        @"/usr/sw", @"/usr/fink"];
 
-	while (nil != (path = [e nextObject])){
+	for (NSString *path in paths){
 		if ([manager isReadableFileAtPath:
 			[path stringByAppendingPathComponent: @"/etc/fink.conf"]]){
 			[defaults setObject:path forKey:FinkBasePath];
 			Dprintf(@"Found basepath %@ using array", path);
+            if (! [oldBasePath isEqualToString:path]){
+                NSLog(@"Fink base path has changed from %@ to %@", oldBasePath, path);
+                [defaults setBool:YES forKey:FinkBasePathFound];
+            }
 			break;
 		}
-	}
-	if (! [oldBasePath isEqualToString:path]){
-		NSLog(@"Fink base path has changed from %@ to %@", oldBasePath, path);
-		[defaults setBool:YES forKey:FinkBasePathFound];
 	}
 }
 
@@ -46,15 +45,14 @@ void findPerlPath(void)
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *pathToPerl = [defaults objectForKey:FinkPerlPath];
 	
-	if (nil == pathToPerl){
+	if (! pathToPerl){
 		NSArray *possiblePaths = @[@"/usr/local/bin/perl", 
 									@"/opt/bin/perl", 
 									@"/opt/local/bin/perl", 
 									[NSHomeDirectory() 
 										stringByAppendingPathComponent:@"bin/perl"]];
-		NSEnumerator *binPathEnumerator = [possiblePaths objectEnumerator];
-		while (nil != (pathToPerl = [binPathEnumerator nextObject])){
-			if ([manager isExecutableFileAtPath:pathToPerl]){
+		for (NSString *path in possiblePaths){
+			if ([manager isExecutableFileAtPath:path]){
 				[defaults setObject:pathToPerl forKey:FinkPerlPath];
 				Dprintf(@"Found perl at %@", pathToPerl);
 				return;

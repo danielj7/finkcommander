@@ -44,12 +44,11 @@ File: FinkConf.m
                               stringByAppendingPathComponent: @"/etc/fink.conf"]
                                                       encoding: NSUTF8StringEncoding
                                                          error: &err];
-	NSEnumerator *e;
-	NSString *line;
+	NSArray *fconfArray;
 	NSUInteger split;
 
-	e = [[fconfString componentsSeparatedByString: @"\n"] objectEnumerator];
-	while(nil != (line = [e nextObject])){
+	fconfArray = [fconfString componentsSeparatedByString: @"\n"];
+	for (NSString *line in fconfArray){
 		if ([line contains: @":"]){
 			split = [line rangeOfString: @":"].location;
 			finkConfDict[[line substringToIndex: split]] = [line substringFromIndex: split + 2];
