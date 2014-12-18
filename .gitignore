@@ -45,3 +45,5 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+autorevision.cache
+InfoPlist.h

@@ -523,6 +523,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 59E0405609CDC73B001280FD /* Build configuration list for PBXNativeTarget "FinkCommander" */;
 			buildPhases = (
+				65526E6D1A4290BE002AC34B /* ShellScript */,
 				59E0400109CDC73B001280FD /* Resources */,
 				59E0403009CDC73B001280FD /* Sources */,
 				59E0405409CDC73B001280FD /* CopyFiles */,
@@ -651,6 +652,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		65526E6D1A4290BE002AC34B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./autorevision/autorevision.sh -t xcode -o autorevision.cache >InfoPlist.h\n/usr/bin/perl -pi -e \"s/v(\\d+\\.\\d+\\.\\d+)/\\1/\" InfoPlist.h";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		59E0403009CDC73B001280FD /* Sources */ = {
@@ -889,6 +906,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
@@ -929,6 +948,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
