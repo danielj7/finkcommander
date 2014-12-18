@@ -270,9 +270,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     return tagNameArray[atag];
 }
 
--(int)tagFromAttributeName:(NSString *)name
+-(NSInteger)tagFromAttributeName:(NSString *)name
 {
-    return [NAME_TAG_DICTIONARY[name] intValue];
+    return [NAME_TAG_DICTIONARY[name] integerValue];
 }
 
 -(void)displayNumberOfPackages
@@ -384,7 +384,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 									
 	//Set state of View menu column items
     for (NSString *columnName in columnNameArray){
-    	int atag = [self tagFromAttributeName:columnName];
+    	NSInteger atag = [self tagFromAttributeName:columnName];
 		[[columnsMenu itemWithTag:atag] setState:NSOnState];
     }
 
