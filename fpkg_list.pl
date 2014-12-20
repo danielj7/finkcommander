@@ -93,7 +93,7 @@ if (-f $configpath) {
 }
 
 Fink::Package->require_packages();
-
+Fink::Package->update_db(no_load => 1, no_fastload => 1);
 
 ### Try to cache the results
 my $use_cache = Fink::Package->can('db_valid_since'); # Can we try caching?
@@ -102,6 +102,10 @@ my $cache_file = File::Spec->catfile(dirname($0), "infocache");
 my $cache_ok = 0; # Is the cache valid?
 if ($use_cache) {
 	$cache_ok = -r $cache_file && (stat(_))[9] > Fink::Package->db_valid_since;
+    # The above doesn't seem to work anymore. $cache_ok is ALWAYS true
+    # which means that the table never gets updated after the cache is first
+    # generated so we explicitly disable cacheing here.
+    $cache_ok = 0;
 }
 
 if ($use_cache && !$cache_ok) {
