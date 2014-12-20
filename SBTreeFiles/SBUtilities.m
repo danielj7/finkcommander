@@ -40,5 +40,5 @@ void Dprintf(NSString *fmt,...) {
     NSLogv(fmt,ap);
 }
 #else
-inline void Dprintf(NSString *fmt,...){}
+void Dprintf(NSString *fmt,...){}
 #endif

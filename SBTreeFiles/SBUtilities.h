@@ -23,8 +23,4 @@ extern void alertProblemPaths(NSArray *);
 /*
  * Debugging Log
  */
-#ifdef DEBUG
-void Dprintf(NSString *fmt,...);
-#else
-inline void Dprintf(NSString *fmt,...);
-#endif
+extern void Dprintf(NSString *fmt,...);
