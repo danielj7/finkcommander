@@ -209,17 +209,16 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 //----------------------------------------------------------
 
 -(BOOL)tableView:(NSTableView *)tview
-	writeRows:(NSArray *)rows
+	writeRowsWithIndexes:(NSIndexSet *)rows
 	toPasteboard:(NSPasteboard *)pboard
 {
-	NSArray *fileList = @[];
-	FinkPackage *pkg;
-	NSString *tree;
-	NSString *path;
+	NSArray * __block fileList = @[];
 	NSFileManager *manager = [NSFileManager defaultManager];
 
-	for (NSNumber *rowNum in rows){
-		pkg = [self displayedPackages][[rowNum intValue]];
+	[rows enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
+		FinkPackage *pkg = [self displayedPackages][idx];
+        NSString *tree;
+        NSString *path;
 		if ([[pkg unstable] length] > 1){
 			tree = @"unstable";
 		}else{
@@ -235,7 +234,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 		if ([manager fileExistsAtPath:path]){
 			fileList = [fileList arrayByAddingObject:path];
 		}		
-	}
+    }];
 	[tview registerForDraggedTypes:@[NSFilenamesPboardType]];
 	[pboard declareTypes:@[NSFilenamesPboardType]
 								  owner:self];
@@ -243,20 +242,28 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 	return YES;
 }
 
-- (NSImage *)dragImageForRows:(NSArray*)dragRows 
-			event:(NSEvent*)dragEvent 
-			dragImageOffset:(NSPointPointer)dragImageOffset
+- (NSImage *)dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset
 {
-	NSImage *dragImage = [NSImage imageNamed:@"info"];
-
-	dragImageOffset->y += [dragImage size].height / 3.5;
-	
-	return dragImage;
+    NSImage *dragImage = [NSImage imageNamed:@"info"];
+    
+    dragImageOffset->y += [dragImage size].height / 3.5;
+    
+    return dragImage;
+    
 }
 
--(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+- (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context
 {
-    return NSDragOperationCopy;
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationCopy;
+            break;
+            
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationNone;
+            break;
+    }
 }
 
 //----------------------------------------------------------

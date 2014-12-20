@@ -25,12 +25,6 @@
 
 @interface SBFileItem: NSObject
 {
-    NSArray *_sbchildren;
-    NSString *_sbpath;
-    NSString *_sbfilename;
-    unsigned long long _sbsize;
-    NSDate *_sbcdate;
-    NSDate *_sbmdate;
 }
 
 /* 
@@ -38,6 +32,7 @@
  */
 
 -(instancetype)initWithPath:(NSString *)p NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithURL:(NSURL *)url;
 
 /* 
  *	Accessors 
@@ -49,6 +44,7 @@
 @property (nonatomic, copy) NSArray *children;
 
 //Full path to the file
+@property (nonatomic, copy) NSURL *URL;
 @property (nonatomic, copy) NSString *path;
 
 //Name of the file without the path

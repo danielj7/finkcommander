@@ -26,11 +26,9 @@
 #import "SBFileItem.h"
 #import "SBBrowserCell.h"
 
-@interface SBOutlineView : NSOutlineView
+@interface SBOutlineView : NSOutlineView <NSDraggingSource>
 
 -(instancetype)initAsSubstituteForOutlineView:(NSOutlineView *)oldView NS_DESIGNATED_INITIALIZER;
-
--(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal;
 
 -(IBAction)openSelectedFiles:(id)sender;
 

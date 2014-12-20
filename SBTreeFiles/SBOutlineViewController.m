@@ -126,16 +126,13 @@
 	writeItems:(NSArray *)items
 	toPasteboard:(NSPasteboard *)pboard
 {
-    NSArray *fileList = @[];
+    NSMutableArray *fileList = [[NSMutableArray alloc] init];
 
 	for (SBFileItem *item in items){
-		fileList = [fileList arrayByAddingObject:[item path]];
+		[fileList addObject:[item URL]];
 	}
-	[ov registerForDraggedTypes:@[NSFilenamesPboardType]];
-	[pboard declareTypes:@[NSFilenamesPboardType]
-			owner:self];
-	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
-	return YES;
+    [pboard writeObjects:(NSArray*)fileList];
+    return YES;
 }
 
 //----------------------------------------------------------

@@ -27,7 +27,7 @@
 #import "SBBrowserMatrix.h"
 #import "SBUtilities.h"
 
-@interface SBBrowserView: NSBrowser <NSBrowserDelegate>
+@interface SBBrowserView: NSBrowser <NSBrowserDelegate, NSDraggingSource>
 {
     SBFileItemTree *tree;
 }

@@ -150,50 +150,32 @@
 //----------------------------------------------------------
 
 //Allows drag and drop from the browser to other apps (including finder)
--(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+- (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context
 {
-    return NSDragOperationCopy; 
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationCopy;
+            break;
+            
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationNone;
+            break;
+    }
 }
 
--(void)mouseDragged:(NSEvent *)theEvent
+-(BOOL)browser:(NSBrowser *)browser writeRowsWithIndexes:(NSIndexSet *)rowIndexes inColumn:(NSInteger)column toPasteboard:(NSPasteboard *)pasteboard
 {
-    NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-    NSImage *dragImage;
-	NSSize imageSize;
-    NSPoint dragPosition;
-    NSArray *fileList = @[];
-    SBFileItem *item;
+    NSMutableArray *itemList = [[NSMutableArray alloc] init];
+    SBFileItem *file;
 
-	//Put the path for each selected item in an array
-	for (NSBrowserCell *theCell in [self selectedCells]){
-		item = [theCell representedObject];
-		fileList = [fileList arrayByAddingObject:[item path]];
-	}
-	
-	//Let the pasteboard know we want a drag to copy file paths
-	[pboard declareTypes:@[NSFilenamesPboardType]
-			owner:self];
-	//Give the pasteboard a list of the paths to be copied
-	[pboard setPropertyList:fileList forType:NSFilenamesPboardType];
-	
-	dragImage = [[NSWorkspace sharedWorkspace]
-			iconForFile:fileList[0]];
-	dragPosition = [self convertPoint:[theEvent locationInWindow]
-											fromView:nil];
-	//Put hot spot at center of icon
-	imageSize = [dragImage size];
-	dragPosition.x -= imageSize.width/2.0;
-	dragPosition.y -= imageSize.height/2.0;
-
-	/* 	Start the drag.  It will be up to the receiver, probably Finder or 
-		an application icon, to accept the drop.  */
-	[self dragImage:dragImage
-		  at:dragPosition
-		  offset:NSZeroSize
-		  event:theEvent
-		  pasteboard:pboard
-		  source:self
-		  slideBack:YES];
+    for (NSBrowserCell *theCell in [self selectedCells]){
+        file = [theCell representedObject];
+        [itemList addObject:[file URL]];
+    }
+    
+    [pasteboard writeObjects:(NSArray*)itemList];
+    return YES;
 }
 
 @end

@@ -154,20 +154,27 @@
 #pragma mark - DRAG AND DROP
 //----------------------------------------------------------
 //Allow dragging items outside outline view
--(unsigned int)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+- (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context
 {
-    return NSDragOperationCopy;
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationCopy;
+            break;
+            
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationNone;
+            break;
+    }
 }
 
-- (NSImage *)dragImageForRows:(NSArray *)dragRows
-			event:(NSEvent *)dragEvent
-			dragImageOffset:(NSPointPointer)dragImageOffset
-{
-	SBFileItem *dragItem = [self itemAtRow:[[dragRows lastObject] intValue]];
-	NSImage *dragImage = [[NSWorkspace sharedWorkspace]
-							iconForFile:[dragItem path]];
-	
-	return dragImage;
-}
+//- (NSImage *)dragImageForRowsWithIndexes:(NSIndexSet *)dragRows tableColumns:(NSArray *)tableColumns event:(NSEvent *)dragEvent offset:(NSPointPointer)dragImageOffset
+//{
+//	SBFileItem *dragItem = [self itemAtRow:[dragRows lastIndex]];
+//	NSImage *dragImage = [[NSWorkspace sharedWorkspace]
+//							iconForFile:[dragItem path]];
+//	
+//	return dragImage;
+//}
 
 @end

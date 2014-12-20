@@ -15,7 +15,7 @@ File SBFileItem.m
 
 -(instancetype)initWithPath:(NSString *)p
 {
-	if (nil != (self = [super init])){
+	if ((self = [super init])){
 		NSFileManager *mgr = [NSFileManager defaultManager];
 		NSDictionary *fattrs;
 		BOOL isDir, valid;
@@ -27,12 +27,12 @@ File SBFileItem.m
 
 		if (valid){
 			fattrs = [mgr attributesOfItemAtPath:p error:&err];
-			[self setPath:p];
-			[self setFilename:[p lastPathComponent]];
-			[self setSize: [fattrs fileSize]];
-			[self setMdate:[fattrs fileModificationDate]];
+			_path = p;
+			_filename = [p lastPathComponent];
+			_size = [fattrs fileSize];
+			_mdate = [fattrs fileModificationDate];
 			arr = isDir ? @[] : nil;
-			[self setChildren:arr];
+			_children = arr;
 		}else{
 			self = nil;
 		}
@@ -40,52 +40,23 @@ File SBFileItem.m
 	return self;
 }
 
-
+-(instancetype)initWithURL:(NSURL *)url
+{
+    return [self initWithPath:[url path]];
+}
 
 //----------------------------------------------------------
 #pragma mark - ACCESSORS
 //----------------------------------------------------------
 
--(NSArray *)children { return _sbchildren; }
-
--(void)setChildren:(NSArray *)c
+-(NSURL *)URL
 {
-    _sbchildren = c;
+    return [NSURL fileURLWithPath:[self path]];
 }
 
--(NSString *)path { return _sbpath; }
-
--(void)setPath:(NSString *)p
+-(void)setURL:(NSURL *)url
 {
-    _sbpath = p;
-}
-
--(NSString *)filename { return _sbfilename; }
-
--(void)setFilename:(NSString *)fn
-{
-    _sbfilename = fn;
-}
-
--(unsigned long)size { return _sbsize; }
-
--(void)setSize:(unsigned long)n { _sbsize = n; }
-
-/* Not used yet:
-
-- (NSDate *)cdate { return cdate; }
-
-- (void)setCdate:(NSDate *)newCdate{
-	[newCdate retain];
-	[cdate release];
-	cdate = newCdate;
-}
-*/
-
--(NSDate *)mdate { return _sbmdate; }
-
--(void)setMdate:(NSDate *)newMdate{
-	_sbmdate = newMdate;
+    [self setPath:[url path]];
 }
 
 //----------------------------------------------------------
