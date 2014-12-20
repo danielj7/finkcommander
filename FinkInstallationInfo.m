@@ -87,7 +87,7 @@ File: FinkInstallationInfo.m
 
 	NS_DURING
 		result = [[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
-									encoding:NSMacOSRomanStringEncoding];
+									encoding:NSUTF8StringEncoding];
 	NS_HANDLER
 		//Handle NSFileHandleOperationException
 	//		NSLog(@"Failed to read data stream from %@ %@", path, args);

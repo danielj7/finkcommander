@@ -62,7 +62,7 @@
     [task launch];
     d = [cmdStdout readDataToEndOfFile];
     s = [[NSString alloc] initWithData:d
-							encoding:NSMacOSRomanStringEncoding];
+							encoding:NSUTF8StringEncoding];
 	//dpkg -L didn't work for this package
 	if ([s length] < 3) return nil;
 

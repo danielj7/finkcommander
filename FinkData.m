@@ -106,7 +106,7 @@ See the header file, FinkData.h, for interface and license information.
     [listCmd setStandardOutput: pipeIn];
     [listCmd launch];
 	d = [cmdStdout readDataToEndOfFile];
-	output = [[NSString alloc] initWithData:d encoding:NSMacOSRomanStringEncoding];
+	output = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
     e = [output componentsSeparatedByString: @"\n\n"];
 	for (NSString *pkginfo in e){
 		@autoreleasepool {
@@ -234,7 +234,7 @@ See the header file, FinkData.h, for interface and license information.
 	
 	d = info[NSFileHandleNotificationDataItem];
 	output = [[NSString alloc] initWithData:d
-								encoding:NSMacOSRomanStringEncoding];
+								encoding:NSUTF8StringEncoding];
 
 	Dprintf(@"Read to end of file notification sent after %f seconds",
 	   -[start timeIntervalSinceNow]);
