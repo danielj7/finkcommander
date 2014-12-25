@@ -142,8 +142,8 @@
 		F50C7FBB026BD8BD01A80164 /* delsrc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = delsrc.tiff; sourceTree = "<group>"; };
 		F50C7FBD026BD92B01A80164 /* delbin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = delbin.tiff; sourceTree = "<group>"; };
 		F50DF7770359464F01A8016C /* updateall.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = updateall.tiff; sourceTree = "<group>"; };
-		F50EC0D303A0463201A80165 /* Date.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = Date.strings; path = SBTreeFiles/en.lproj/Date.strings; sourceTree = "<group>"; };
-		F50EC0D703A0465701A80165 /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = German; path = SBTreeFiles/de.lproj/Date.strings; sourceTree = "<group>"; };
+		F50EC0D303A0463201A80165 /* Date.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Date.strings; path = SBTreeFiles/en.lproj/Date.strings; sourceTree = "<group>"; };
+		F50EC0D703A0465701A80165 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = SBTreeFiles/de.lproj/Date.strings; sourceTree = "<group>"; };
 		F50EC36503A0559001A80165 /* SBFileItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBFileItem.h; path = SBTreeFiles/SBFileItem.h; sourceTree = "<group>"; };
 		F50EC36603A0559001A80165 /* SBFileItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SBFileItem.m; path = SBTreeFiles/SBFileItem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		F5128EE803665EE101A80166 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = de.lproj/Dialogs.nib; sourceTree = "<group>"; };
