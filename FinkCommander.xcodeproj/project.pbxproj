@@ -128,11 +128,6 @@
 		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
-		65C250081A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Dialogs.xib; sourceTree = "<group>"; };
-		65C2500A1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		65C2500C1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PackageInfo.xib; sourceTree = "<group>"; };
-		65C2500E1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Preferences.xib; sourceTree = "<group>"; };
-		65C250101A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TreeView.xib; sourceTree = "<group>"; };
 		65C250161A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C250171A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250181A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Preferences.xib; sourceTree = "<group>"; };
@@ -144,6 +139,11 @@
 		65C2501E1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C2501F1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250201A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Preferences.xib; sourceTree = "<group>"; };
+		65C250211A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TreeView.xib; sourceTree = "<group>"; };
+		65C250221A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PackageInfo.xib; sourceTree = "<group>"; };
+		65C250231A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65C250241A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65C250251A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Preferences.xib; sourceTree = "<group>"; };
 		C77360DE03E9D23200EE6D09 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = German; path = de.lproj/README.html; sourceTree = "<group>"; };
 		F5019E9703625D2701A80165 /* FinkToolbar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkToolbar.m; sourceTree = "<group>"; };
 		F5019E9903625D4201A80165 /* FinkToolbar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkToolbar.h; sourceTree = "<group>"; };
@@ -583,6 +583,7 @@
 				de,
 				fr,
 				ja,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* FinkTable */;
 			projectDirPath = "";
@@ -748,10 +749,10 @@
 		65C250071A4C780D00E02437 /* Dialogs.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C250081A4C780D00E02437 /* en */,
 				65C250161A4C783100E02437 /* de */,
 				65C2501A1A4C785500E02437 /* fr */,
 				65C2501E1A4C787300E02437 /* ja */,
+				65C250231A4C7B5900E02437 /* Base */,
 			);
 			name = Dialogs.xib;
 			sourceTree = "<group>";
@@ -759,10 +760,10 @@
 		65C250091A4C780D00E02437 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C2500A1A4C780D00E02437 /* en */,
 				65C250171A4C783100E02437 /* de */,
 				65C2501B1A4C785500E02437 /* fr */,
 				65C2501F1A4C787300E02437 /* ja */,
+				65C250241A4C7B5900E02437 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -770,8 +771,8 @@
 		65C2500B1A4C780D00E02437 /* PackageInfo.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C2500C1A4C780D00E02437 /* en */,
 				65C2501C1A4C785500E02437 /* fr */,
+				65C250221A4C7B5900E02437 /* Base */,
 			);
 			name = PackageInfo.xib;
 			sourceTree = "<group>";
@@ -779,10 +780,10 @@
 		65C2500D1A4C780D00E02437 /* Preferences.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C2500E1A4C780D00E02437 /* en */,
 				65C250181A4C783100E02437 /* de */,
 				65C2501D1A4C785500E02437 /* fr */,
 				65C250201A4C787300E02437 /* ja */,
+				65C250251A4C7B5900E02437 /* Base */,
 			);
 			name = Preferences.xib;
 			sourceTree = "<group>";
@@ -790,8 +791,8 @@
 		65C2500F1A4C780D00E02437 /* TreeView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C250101A4C780D00E02437 /* en */,
 				65C250191A4C783100E02437 /* de */,
+				65C250211A4C7B5900E02437 /* Base */,
 			);
 			name = TreeView.xib;
 			sourceTree = "<group>";
