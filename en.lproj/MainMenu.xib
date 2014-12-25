@@ -1,0 +1,1216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment version="101000" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="FinkCommander" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="21" userLabel="MainWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="61" y="98" width="768" height="530"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <view key="contentView" autoresizesSubviews="NO" id="2">
+                <rect key="frame" x="1" y="9" width="768" height="530"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <splitView id="262">
+                        <rect key="frame" x="0.0" y="27" width="768" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="196">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="204"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                <clipView key="contentView" id="1dC-mU-I4D">
+                                    <rect key="frame" x="1" y="17" width="751" height="186"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <tableView autoresizesSubviews="NO" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="200196" id="197">
+                                            <rect key="frame" x="0.0" y="0.0" width="751" height="186"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <size key="intercellSpacing" width="3" height="2"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="gridColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <tableColumns>
+                                                <tableColumn identifier="installed" width="60" minWidth="20" maxWidth="60" id="195">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Installed">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" id="100195">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="name" width="190" minWidth="80" maxWidth="200" id="208">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="100208">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="version" width="90" minWidth="10" maxWidth="180" id="207">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Stable">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="100207">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="binary" width="70" minWidth="10" maxWidth="1000" id="312">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Binary">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" drawsBackground="YES" id="100312">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="unstable" width="68" minWidth="10" maxWidth="1000" id="509">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Unstable">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" drawsBackground="YES" id="100509">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="category" width="81.999984741210938" minWidth="51.791000366210938" maxWidth="1000" id="209">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Category">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="100209">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                                <tableColumn identifier="description" width="170.08999633789062" minWidth="65.089996337890625" maxWidth="1000" id="264">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
+                                                        <font key="font" metaFont="smallSystem"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="left" drawsBackground="YES" id="100264">
+                                                        <font key="font" metaFont="message" size="12"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                </tableColumn>
+                                            </tableColumns>
+                                            <connections>
+                                                <outlet property="delegate" destination="211" id="214"/>
+                                            </connections>
+                                        </tableView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="100196">
+                                    <rect key="frame" x="-100" y="-100" width="752" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="300196">
+                                    <rect key="frame" x="752" y="17" width="15" height="186"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <tableHeaderView key="headerView" id="200196">
+                                    <rect key="frame" x="0.0" y="0.0" width="751" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableHeaderView>
+                            </scrollView>
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="260">
+                                <rect key="frame" x="0.0" y="213" width="768" height="291"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <clipView key="contentView" id="5hh-rE-49O">
+                                    <rect key="frame" x="1" y="1" width="751" height="289"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textView autoresizesSubviews="NO" editable="NO" importsGraphics="NO" continuousSpellChecking="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" quoteSubstitution="YES" dashSubstitution="YES" textReplacement="YES" smartInsertDelete="YES" id="261">
+                                            <rect key="frame" x="0.0" y="0.0" width="751" height="289"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="751" height="289"/>
+                                            <size key="maxSize" width="845" height="10000000"/>
+                                            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="751" height="289"/>
+                                            <size key="maxSize" width="845" height="10000000"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="100260">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="200260">
+                                    <rect key="frame" x="752" y="1" width="15" height="289"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <holdingPriorities>
+                            <real value="250"/>
+                            <real value="250"/>
+                        </holdingPriorities>
+                        <connections>
+                            <outlet property="delegate" destination="211" id="660"/>
+                        </connections>
+                    </splitView>
+                    <customView autoresizesSubviews="NO" id="575">
+                        <rect key="frame" x="568" y="2" width="180" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                    </customView>
+                    <textField autoresizesSubviews="NO" verticalHuggingPriority="750" id="572">
+                        <rect key="frame" x="6" y="5" width="519" height="14"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Starting up" id="100572">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="211" id="548"/>
+                <outlet property="initialFirstResponder" destination="197" id="835"/>
+            </connections>
+        </window>
+        <menu title="MainMenu" systemMenu="main" autoenablesItems="NO" id="29" userLabel="MainMenu">
+            <items>
+                <menuItem title="FinkCommander" id="56">
+                    <menu key="submenu" title="FinkCommander" systemMenu="apple" id="719">
+                        <items>
+                            <menuItem title="About FinkCommander" id="720">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="showAboutWindow:" target="211" id="1320"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Preferences..." keyEquivalent="," id="723">
+                                <connections>
+                                    <action selector="showPreferencePanel:" target="211" id="730"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="718">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Services" id="721">
+                                <menu key="submenu" title="Services" systemMenu="services" id="724"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="715">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Hide FinkCommander" keyEquivalent="h" id="716">
+                                <connections>
+                                    <action selector="hide:" target="-2" id="729"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Hide Others" id="713">
+                                <connections>
+                                    <action selector="hideOtherApplications:" target="-2" id="727"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show All" id="722">
+                                <connections>
+                                    <action selector="unhideAllApplications:" target="-2" id="726"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="714">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Quit FinkCommander" keyEquivalent="q" id="717">
+                                <connections>
+                                    <action selector="terminate:" target="-2" id="728"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="File" id="475">
+                    <menu key="submenu" title="File" id="1114">
+                        <items>
+                            <menuItem title="Update Table" id="1121">
+                                <connections>
+                                    <action selector="updateTable:" target="211" id="1123"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1113">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Open .info" tag="101" id="1117">
+                                <connections>
+                                    <action selector="openPackageFiles:" target="-1" id="1122"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Open .patch" tag="102" id="1111">
+                                <connections>
+                                    <action selector="openPackageFiles:" target="-1" id="1132"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Open Selected File(s)" id="1129">
+                                <connections>
+                                    <action selector="openSelectedFiles:" target="-1" id="1131"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1116">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Close Window" keyEquivalent="w" id="1118">
+                                <connections>
+                                    <action selector="performClose:" target="-1" id="1124"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Save Output…" keyEquivalent="s" id="1120">
+                                <connections>
+                                    <action selector="saveOutput:" target="211" id="1126"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1112">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Page Setup..." keyEquivalent="P" id="1119">
+                                <connections>
+                                    <action selector="runPageLayout:" target="-1" id="1127"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Print..." keyEquivalent="p" id="1115">
+                                <connections>
+                                    <action selector="print:" target="-1" id="1125"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Edit" id="1189">
+                    <menu key="submenu" title="Edit" id="1185">
+                        <items>
+                            <menuItem title="Cut" keyEquivalent="x" id="1164">
+                                <connections>
+                                    <action selector="cut:" target="-1" id="1196"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Copy" keyEquivalent="c" id="1187">
+                                <connections>
+                                    <action selector="copy:" target="-1" id="1197"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Paste" keyEquivalent="v" id="1167">
+                                <connections>
+                                    <action selector="paste:" target="-1" id="1192"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete" id="1163">
+                                <connections>
+                                    <action selector="delete:" target="-1" id="1195"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Select All" keyEquivalent="a" id="1234">
+                                <connections>
+                                    <action selector="selectAll:" target="-1" id="1235"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1236">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Find" id="1285">
+                                <menu key="submenu" title="Find" id="1283">
+                                    <items>
+                                        <menuItem title="Package Search" keyEquivalent="f" id="1284">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="selectText:" target="1229" id="1321"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="View" id="781">
+                    <menu key="submenu" title="View" id="782">
+                        <items>
+                            <menuItem title="Columns" id="1052">
+                                <menu key="submenu" title="Columns" id="1053">
+                                    <items>
+                                        <menuItem title="Flag" tag="2011" id="1135">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1136"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Status" tag="2005" id="1133">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1134"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Installed" tag="2009" id="1056">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1078"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Latest" tag="2000" id="1055">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1077"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Binary" tag="2001" id="1057">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1079"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stable" tag="2002" id="1058">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1080"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Unstable" tag="2003" id="1059">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1081"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Local" tag="2004" id="1205">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1208"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Category" tag="2006" id="1061">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1083"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Maintainer" tag="2008" id="1063">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1085"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Description" tag="2007" id="1062">
+                                            <connections>
+                                                <action selector="chooseTableColumn:" target="211" id="1084"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Sort By" id="1066">
+                                <menu key="submenu" title="Sort By" id="1067">
+                                    <items>
+                                        <menuItem title="Flag" tag="2011" id="1137">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1145"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Status" tag="2005" id="1071">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1092"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Name" tag="2010" id="1068">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1086"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Installed" tag="2009" id="1073">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1088"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Latest" tag="2000" id="1070">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1087"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Binary" tag="2001" id="1074">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1089"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Stable" tag="2002" id="1072">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1090"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Unstable" tag="2003" id="1075">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1091"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Local" tag="2004" id="1206">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1209"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Category" tag="2006" id="1069">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1093"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Maintainer" tag="2008" id="1102">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1105"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Description" tag="2007" id="1076">
+                                            <connections>
+                                                <action selector="sortByPackageElement:" target="211" id="1094"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1050">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Hide Command Output" id="1064">
+                                <connections>
+                                    <action selector="collapseExpandOutput:" target="-1" id="1202"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1142">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Mark As Flagged" id="1138">
+                                <connections>
+                                    <action selector="toggleFlags:" target="-1" id="1143"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1065">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Hide Toolbar" id="1030">
+                                <connections>
+                                    <action selector="toggleToolbarShown:" target="-1" id="1031"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Customize Toolbar…" id="836">
+                                <connections>
+                                    <action selector="runToolbarCustomizationPalette:" target="21" id="838"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Source" id="415">
+                    <menu key="submenu" title="Source" id="416">
+                        <items>
+                            <menuItem title="Install" keyEquivalent="I" id="417">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="870"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Reinstall" keyEquivalent="E" id="520">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="871"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Build" keyEquivalent="B" id="522">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="872"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Rebuild" keyEquivalent="L" id="428">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="873"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fetch" keyEquivalent="F" id="427">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="874"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove" keyEquivalent="R" id="419">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="875"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="814">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Scanpackages" id="1158">
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="1159"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Selfupdate-rsync" id="1203">
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="1204"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Selfupdate-cvs" keyEquivalent="V" id="820">
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="876"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Selfupdate" keyEquivalent="S" id="821">
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="877"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Update-all" keyEquivalent="A" id="822">
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="878"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="823">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Run in Terminal" id="849">
+                                <menu key="submenu" title="Run in Terminal" id="850">
+                                    <items>
+                                        <menuItem title="Install" id="851">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="898"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Reinstall" id="852">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="961"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Build" id="853">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="902"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Rebuild" id="854">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="903"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Fetch" id="857">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="904"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Remove" id="858">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="905"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="859">
+                                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                                        </menuItem>
+                                        <menuItem title="Selfupdate-cvs" id="855">
+                                            <connections>
+                                                <action selector="runNonSpecificCommandInTerminal:" target="211" id="900"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Selfupdate" id="860">
+                                            <connections>
+                                                <action selector="runNonSpecificCommandInTerminal:" target="211" id="906"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Update-all" id="856">
+                                            <connections>
+                                                <action selector="runNonSpecificCommandInTerminal:" target="211" id="907"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="861">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Utilities" id="735">
+                                <menu key="submenu" title="Utilities" id="736">
+                                    <items>
+                                        <menuItem title="Cleanup" id="737">
+                                            <connections>
+                                                <action selector="runNonSpecificCommand:" target="211" id="880"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Index" id="740">
+                                            <connections>
+                                                <action selector="runNonSpecificCommand:" target="211" id="881"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="744">
+                                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                                        </menuItem>
+                                        <menuItem title="Describe" id="745">
+                                            <connections>
+                                                <action selector="showDescription:" target="211" id="747"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="815">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Force Remove" tag="2" id="807">
+                                <connections>
+                                    <action selector="runForceRemove:" target="211" id="879"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Binary" id="343">
+                    <menu key="submenu" title="Binary" id="344">
+                        <items>
+                            <menuItem title="Install" tag="1" keyEquivalent="i" id="345">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="883"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove" tag="1" keyEquivalent="r" id="512">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="884"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="347">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Update descriptions" tag="1" keyEquivalent="u" id="348">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="885"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dist-Upgrade packages" tag="1" keyEquivalent="g" id="1156">
+                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <connections>
+                                    <action selector="runNonSpecificCommand:" target="211" id="1157"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="862">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Run in Terminal" id="863">
+                                <menu key="submenu" title="Run in Terminal" id="864">
+                                    <items>
+                                        <menuItem title="Install" tag="1" id="865">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="908"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Remove" tag="1" id="866">
+                                            <connections>
+                                                <action selector="runPackageSpecificCommandInTerminal:" target="211" id="909"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="912">
+                                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                                        </menuItem>
+                                        <menuItem title="Update" tag="1" id="867">
+                                            <connections>
+                                                <action selector="runNonSpecificCommandInTerminal:" target="211" id="910"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Upgrade" tag="1" id="868">
+                                            <connections>
+                                                <action selector="runNonSpecificCommandInTerminal:" target="211" id="911"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Tools" id="614">
+                    <menu key="submenu" title="Tools" id="615">
+                        <items>
+                            <menuItem title="Interact with Fink…" id="616">
+                                <connections>
+                                    <action selector="raiseInteractionWindow:" target="211" id="618"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Terminate Command" keyEquivalent="." id="640">
+                                <connections>
+                                    <action selector="terminateCommand:" target="211" id="641"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="662">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Browse Package Files" keyEquivalent="b" id="1103">
+                                <connections>
+                                    <action selector="openPackageFileViewer:" target="211" id="1104"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show Package Info" keyEquivalent="i" id="648">
+                                <connections>
+                                    <action selector="showPackageInfoPanel:" target="211" id="649"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Go to Package Documentation" id="984">
+                                <connections>
+                                    <action selector="openDocumentation:" target="211" id="985"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="965">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Send Positive Feedback" id="966">
+                                <connections>
+                                    <action selector="sendPositiveFeedback:" target="211" id="968"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Send Negative Feedback" id="967">
+                                <connections>
+                                    <action selector="sendNegativeFeedback:" target="211" id="969"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="979">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Submit Fink Bug Report" tag="1003" id="974">
+                                <connections>
+                                    <action selector="goToWebsite:" target="211" id="976"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Submit FinkCommander Bug Report" tag="1001" id="980">
+                                <connections>
+                                    <action selector="goToWebsite:" target="211" id="983"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Window" id="19">
+                    <menu key="submenu" title="Window" systemMenu="window" id="24">
+                        <items>
+                            <menuItem title="Minimize" keyEquivalent="m" id="23">
+                                <connections>
+                                    <action selector="performMiniaturize:" target="-1" id="37"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="657">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Bring All to Front" id="5">
+                                <connections>
+                                    <action selector="arrangeInFront:" target="-1" id="39"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Help" id="103">
+                    <menu key="submenu" title="Help" id="106">
+                        <items>
+                            <menuItem title="FinkCommander Help" keyEquivalent="?" id="111">
+                                <connections>
+                                    <action selector="openHelpInWebBrowser:" target="211" id="1162"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="630">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="FinkCommander Web Site" tag="1000" id="623">
+                                <connections>
+                                    <action selector="goToWebsite:" target="211" id="804"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="632">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Fink Documentation on the Web" tag="1002" id="625">
+                                <connections>
+                                    <action selector="goToWebsite:" target="211" id="806"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+            </items>
+        </menu>
+        <customObject id="211" userLabel="FinkController" customClass="FinkController">
+            <connections>
+                <outlet property="collapseExpandMenuItem" destination="1064" id="1101"/>
+                <outlet property="columnsMenu" destination="1053" id="1100"/>
+                <outlet property="interactionField" destination="533" id="537"/>
+                <outlet property="interactionMatrix" destination="527" id="536"/>
+                <outlet property="interactionWindow" destination="524" id="535"/>
+                <outlet property="msgText" destination="572" id="573"/>
+                <outlet property="outputScrollView" destination="260" id="652"/>
+                <outlet property="progressIndicator" destination="578" id="580"/>
+                <outlet property="progressView" destination="577" id="579"/>
+                <outlet property="progressViewHolder" destination="575" id="576"/>
+                <outlet property="searchTextField" destination="1229" id="1233"/>
+                <outlet property="searchView" destination="553" id="561"/>
+                <outlet property="splitView" destination="262" id="654"/>
+                <outlet property="tableContextMenu" destination="663" id="679"/>
+                <outlet property="tableScrollView" destination="196" id="653"/>
+                <outlet property="tableView" destination="197" id="1150"/>
+                <outlet property="tableViewController" destination="197" id="1095"/>
+                <outlet property="textView" destination="261" id="268"/>
+                <outlet property="window" destination="21" id="516"/>
+                <outlet property="windowMenu" destination="24" id="1149"/>
+            </connections>
+        </customObject>
+        <window title="Interaction" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="524" userLabel="Interaction">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="59" y="468" width="371" height="192"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <view key="contentView" autoresizesSubviews="NO" id="525">
+                <rect key="frame" x="1" y="9" width="371" height="192"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField autoresizesSubviews="NO" verticalHuggingPriority="750" id="526">
+                        <rect key="frame" x="115" y="117" width="239" height="57"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="100526">
+                            <font key="font" metaFont="system"/>
+                            <string key="title">Fink is waiting for a response.  
+Please read the last output message and select an option:</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <matrix autoresizesSubviews="NO" verticalHuggingPriority="750" allowsEmptySelection="NO" autosizesCells="NO" id="527">
+                        <rect key="frame" x="18" y="61" width="175" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="175" height="18"/>
+                        <size key="intercellSpacing" width="4" height="8"/>
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="100527">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="radio" title="Accept default response" imagePosition="left" alignment="left" state="on" toolTip="Usually a good bet" inset="2" id="539">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Enter the following:" imagePosition="left" alignment="left" tag="1" inset="2" id="540">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                        <connections>
+                            <outlet property="nextKeyView" destination="533" id="566"/>
+                        </connections>
+                    </matrix>
+                    <textField autoresizesSubviews="NO" verticalHuggingPriority="750" tag="1" id="533">
+                        <rect key="frame" x="199" y="60" width="152" height="22"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" tag="1" drawsBackground="YES" id="100533">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="211" id="568"/>
+                            <outlet property="nextKeyView" destination="527" id="567"/>
+                        </connections>
+                    </textField>
+                    <imageView autoresizesSubviews="NO" id="544">
+                        <rect key="frame" x="20" y="111" width="69" height="68"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="right" imageScaling="proportionallyDown" id="100544"/>
+                    </imageView>
+                    <button autoresizesSubviews="NO" verticalHuggingPriority="750" tag="1" id="534">
+                        <rect key="frame" x="272" y="12" width="85" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Submit" bezelStyle="rounded" alignment="center" borderStyle="border" tag="1" inset="2" id="100534">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="endInteractionWindow:" target="211" id="538"/>
+                        </connections>
+                    </button>
+                    <button autoresizesSubviews="NO" verticalHuggingPriority="750" id="620">
+                        <rect key="frame" x="188" y="12" width="84" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="100620">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="endInteractionWindow:" target="211" id="621"/>
+                        </connections>
+                    </button>
+                    <imageView autoresizesSubviews="NO" id="778">
+                        <rect key="frame" x="20" y="119" width="72" height="53"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="finkcommander" id="100778"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="211" id="549"/>
+                <outlet property="initialFirstResponder" destination="533" id="689"/>
+            </connections>
+        </window>
+        <customView autoresizesSubviews="NO" id="553" userLabel="FilterView">
+            <rect key="frame" x="0.0" y="0.0" width="205" height="27"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+            <subviews>
+                <searchField autoresizesSubviews="NO" verticalHuggingPriority="750" id="1229">
+                    <rect key="frame" x="20" y="4" width="185" height="22"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                    <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" bezelStyle="round" id="101229">
+                        <font key="font" metaFont="message" size="12"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </searchFieldCell>
+                    <connections>
+                        <action selector="refilter:" target="211" id="1317"/>
+                        <outlet property="menu" destination="1294" id="1304"/>
+                        <outlet property="searchMenuTemplate" destination="1294" id="1305"/>
+                    </connections>
+                </searchField>
+            </subviews>
+        </customView>
+        <customView autoresizesSubviews="NO" id="577" userLabel="ProgressView">
+            <rect key="frame" x="0.0" y="0.0" width="180" height="20"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <progressIndicator autoresizesSubviews="NO" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="bar" id="578">
+                    <rect key="frame" x="0.0" y="0.0" width="180" height="20"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                </progressIndicator>
+            </subviews>
+        </customView>
+        <menu title="Menu" id="663" userLabel="TContextMenu">
+            <items>
+                <menuItem title="Binary" id="666">
+                    <menu key="submenu" title="Binary" id="667">
+                        <items>
+                            <menuItem title="Install" tag="1" id="668">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="887"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove" tag="1" id="669">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="888"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Source" id="671">
+                    <menu key="submenu" title="Source" id="672">
+                        <items>
+                            <menuItem title="Install" id="673">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="889"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Reinstall" id="674">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="890"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Build" id="676">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="891"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Rebuild" id="677">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="892"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fetch" id="675">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="893"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove" id="678">
+                                <connections>
+                                    <action selector="runPackageSpecificCommand:" target="211" id="894"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="In Terminal" id="914">
+                    <menu key="submenu" title="In Terminal" id="915">
+                        <items>
+                            <menuItem title="Install Source" id="993">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1002"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Reinstall Source" id="994">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1003"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Build Source" id="995">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1004"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Rebuild Source" id="996">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1005"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Fetch Source" id="997">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1006"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove Source" id="998">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1007"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1001">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Install Binary" tag="1" id="999">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1008"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove Binary" tag="1" id="1000">
+                                <connections>
+                                    <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1009"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="913">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Browse Package Files" id="990">
+                    <connections>
+                        <action selector="openPackageFileViewer:" target="211" id="991"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Show Package Info" id="690">
+                    <connections>
+                        <action selector="showPackageInfoPanel:" target="211" id="691"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Go to Package Documentation" id="986">
+                    <connections>
+                        <action selector="openDocumentation:" target="211" id="987"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Describe Package" id="963">
+                    <connections>
+                        <action selector="showDescription:" target="211" id="964"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="973">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Send Positive Feedback" tag="1003" id="773">
+                    <connections>
+                        <action selector="sendPositiveFeedback:" target="211" id="971"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Send Negative Feedback" tag="1003" id="970">
+                    <connections>
+                        <action selector="sendNegativeFeedback:" target="211" id="972"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="1140">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Mark As Flagged" id="1139">
+                    <connections>
+                        <action selector="toggleFlags:" target="-1" id="1141"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="978">
+                    <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                </menuItem>
+                <menuItem title="Copy" id="833">
+                    <connections>
+                        <action selector="copy:" target="-1" id="834"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+        <menu id="1294" userLabel="searchMenu">
+            <items>
+                <menuItem title="Name" state="on" tag="2010" id="1295">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1306"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Description" tag="2007" id="1296">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1307"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Category" tag="2006" id="1297">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1308"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Binary" tag="2001" id="1298">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1309"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Stable" tag="2002" id="1299">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1310"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Unstable" tag="2003" id="1300">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1311"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Local" tag="2004" id="1301">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1312"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Status" tag="2005" id="1302">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1313"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Maintainer" tag="2008" id="1303">
+                    <connections>
+                        <action selector="refilter:" target="211" id="1314"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+    </objects>
+    <resources>
+        <image name="finkcommander" width="128" height="128"/>
+    </resources>
+</document>

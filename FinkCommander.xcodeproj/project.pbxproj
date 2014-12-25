@@ -8,12 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		148C8A6A10B8DA2A0013C39B /* SSHAskPass.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */; };
-		59E0400209CDC73B001280FD /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */ = {isa = PBXBuildFile; fileRef = F531463F022C801601A80164 /* fpkg_list.pl */; };
 		59E0400509CDC73B001280FD /* reverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C1023495CF01A80164 /* reverse.tiff */; };
 		59E0400609CDC73B001280FD /* normal.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F538C3C2023495CF01A80164 /* normal.tiff */; };
-		59E0400709CDC73B001280FD /* Preferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5375A6C0246DE1901A80164 /* Preferences.nib */; };
 		59E0400809CDC73B001280FD /* addbin.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F554F1D80266AA4B01A80164 /* addbin.tiff */; };
 		59E0400909CDC73B001280FD /* addsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F59BDD90026817BF01A80164 /* addsrc.tiff */; };
 		59E0400A09CDC73B001280FD /* delsrc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50C7FBB026BD8BD01A80164 /* delsrc.tiff */; };
@@ -35,13 +33,11 @@
 		59E0401A09CDC73B001280FD /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5458DBF0303658001A80164 /* UserDefaults.plist */; };
 		59E0401B09CDC73B001280FD /* Toolbar.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53B4D0503100C3501A80164 /* Toolbar.plist */; };
 		59E0401C09CDC73B001280FD /* updateall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F50DF7770359464F01A8016C /* updateall.tiff */; };
-		59E0401D09CDC73B001280FD /* Dialogs.nib in Resources */ = {isa = PBXBuildFile; fileRef = F55407F5035D334001A80170 /* Dialogs.nib */; };
 		59E0401E09CDC73B001280FD /* termcvs.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAA03636FB201A80165 /* termcvs.tiff */; };
 		59E0401F09CDC73B001280FD /* terminstall.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5D01DAC03636FC001A80165 /* terminstall.tiff */; };
 		59E0402009CDC73B001280FD /* negemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F53649810388930201A80164 /* negemail.tiff */; };
 		59E0402109CDC73B001280FD /* posemail.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5364A1A0388964301A80164 /* posemail.tiff */; };
 		59E0402209CDC73B001280FD /* finkcommanderatwork.icns in Resources */ = {isa = PBXBuildFile; fileRef = F5CA48B00394730301A80164 /* finkcommanderatwork.icns */; };
-		59E0402309CDC73B001280FD /* TreeView.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5C9446D039C6BE201A80164 /* TreeView.nib */; };
 		59E0402409CDC73B001280FD /* Date.strings in Resources */ = {isa = PBXBuildFile; fileRef = F50EC0D503A0464101A80165 /* Date.strings */; };
 		59E0402509CDC73B001280FD /* info.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F57E59C103A9ABBA01A80165 /* info.tiff */; };
 		59E0402609CDC73B001280FD /* outline.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F5F99DB603AD4F4D01A80165 /* outline.tiff */; };
@@ -53,7 +49,6 @@
 		59E0402C09CDC73B001280FD /* browse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47CE03C60D9A00A80164 /* browse.tiff */; };
 		59E0402D09CDC73B001280FD /* doc.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FBCD47D103C60DB000A80164 /* doc.tiff */; };
 		59E0402E09CDC73B001280FD /* SBTree.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB84A70903C93AF400A80164 /* SBTree.strings */; };
-		59E0402F09CDC73B001280FD /* PackageInfo.nib in Resources */ = {isa = PBXBuildFile; fileRef = F2C4F1D5084361C400CA6079 /* PackageInfo.nib */; };
 		59E0403109CDC73B001280FD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		59E0403209CDC73B001280FD /* FinkPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F527284E0221B4E801A80164 /* FinkPackage.m */; };
 		59E0403309CDC73B001280FD /* FinkPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F5375A6A0246DDEB01A80164 /* FinkPreferences.m */; };
@@ -90,6 +85,11 @@
 		59E0406209CDC73B001280FD /* getpath.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA5D033196BF01A80166 /* getpath.c */; };
 		59E0406309CDC73B001280FD /* Launcher.c in Sources */ = {isa = PBXBuildFile; fileRef = F5F8FA59033196AC01A80166 /* Launcher.c */; };
 		59E0407009CDC73C001280FD /* Launcher in CopyFiles */ = {isa = PBXBuildFile; fileRef = 59E0406C09CDC73C001280FD /* Launcher */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		65C250111A4C780D00E02437 /* Dialogs.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C250071A4C780D00E02437 /* Dialogs.xib */; };
+		65C250121A4C780D00E02437 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C250091A4C780D00E02437 /* MainMenu.xib */; };
+		65C250131A4C780D00E02437 /* PackageInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C2500B1A4C780D00E02437 /* PackageInfo.xib */; };
+		65C250141A4C780D00E02437 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C2500D1A4C780D00E02437 /* Preferences.xib */; };
+		65C250151A4C780D00E02437 /* TreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65C2500F1A4C780D00E02437 /* TreeView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,24 +117,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = SSHAskPass.sh; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = en.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		557B5387108D37AC00367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Japanese; path = ja.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		557B5389108D37C700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		557B538A108D37D600367D4E /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		557B538B108D37EC00367D4E /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = ja.lproj/Programmatic.strings; sourceTree = "<group>"; };
 		557B5391108D380A00367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = "ja.lproj/FinkCommander Help"; sourceTree = "<group>"; };
-		557B53B9108D392700367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = ja.lproj/Dialogs.nib; sourceTree = "<group>"; };
-		557B53BA108D393500367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = ja.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		557B53BB108D394100367D4E /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = ja.lproj/Preferences.nib; sourceTree = "<group>"; };
 		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
+		65C250081A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65C2500A1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65C2500C1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PackageInfo.xib; sourceTree = "<group>"; };
+		65C2500E1A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Preferences.xib; sourceTree = "<group>"; };
+		65C250101A4C780D00E02437 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TreeView.xib; sourceTree = "<group>"; };
+		65C250161A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65C250171A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65C250181A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Preferences.xib; sourceTree = "<group>"; };
+		65C250191A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/TreeView.xib; sourceTree = "<group>"; };
+		65C2501A1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65C2501B1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65C2501C1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/PackageInfo.xib; sourceTree = "<group>"; };
+		65C2501D1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Preferences.xib; sourceTree = "<group>"; };
+		65C2501E1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65C2501F1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65C250201A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Preferences.xib; sourceTree = "<group>"; };
 		C77360DE03E9D23200EE6D09 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = German; path = de.lproj/README.html; sourceTree = "<group>"; };
-		F28A84610843648B00E529E9 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = fr.lproj/PackageInfo.nib; sourceTree = "<group>"; };
-		F2C4F1D6084361C400CA6079 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = en.lproj/PackageInfo.nib; sourceTree = "<group>"; };
 		F5019E9703625D2701A80165 /* FinkToolbar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkToolbar.m; sourceTree = "<group>"; };
 		F5019E9903625D4201A80165 /* FinkToolbar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkToolbar.h; sourceTree = "<group>"; };
 		F501F21202FDF20001A80164 /* RELEASE_STEPS.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = RELEASE_STEPS.txt; sourceTree = "<group>"; };
@@ -146,7 +156,6 @@
 		F50EC0D703A0465701A80165 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = SBTreeFiles/de.lproj/Date.strings; sourceTree = "<group>"; };
 		F50EC36503A0559001A80165 /* SBFileItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBFileItem.h; path = SBTreeFiles/SBFileItem.h; sourceTree = "<group>"; };
 		F50EC36603A0559001A80165 /* SBFileItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SBFileItem.m; path = SBTreeFiles/SBFileItem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		F5128EE803665EE101A80166 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = de.lproj/Dialogs.nib; sourceTree = "<group>"; };
 		F512CBEE02E6749301BD3D51 /* FinkTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkTextViewController.m; sourceTree = "<group>"; };
 		F512CBEF02E6749301BD3D51 /* FinkTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkTextViewController.h; sourceTree = "<group>"; };
 		F527284C0221B4E801A80164 /* FinkPackage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPackage.h; sourceTree = "<group>"; };
@@ -160,12 +169,11 @@
 		F536C03F0280F24501A80164 /* SBString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SBString.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		F5375A680246DDDC01A80164 /* FinkPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPreferences.h; sourceTree = "<group>"; };
 		F5375A6A0246DDEB01A80164 /* FinkPreferences.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FinkPreferences.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		F5375A6D0246DE1901A80164 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = en.lproj/Preferences.nib; sourceTree = "<group>"; };
 		F538C3C1023495CF01A80164 /* reverse.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = reverse.tiff; sourceTree = "<group>"; };
 		F538C3C2023495CF01A80164 /* normal.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = normal.tiff; sourceTree = "<group>"; };
 		F53B4CA303100C0E01A80164 /* Toolbar.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Toolbar.plist; path = en.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		F53B4D0803100C5101A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.xml; name = German; path = de.lproj/Toolbar.plist; sourceTree = "<group>"; };
-		F53B4D0A031033D401A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F53B4D0A031033D401A80164 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F53B4D41031079C801A80164 /* FinkSplitView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkSplitView.m; sourceTree = "<group>"; };
 		F53B4D42031079C801A80164 /* FinkSplitView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkSplitView.h; sourceTree = "<group>"; };
 		F53D651D0280296801A80164 /* interact.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = interact.tiff; sourceTree = "<group>"; };
@@ -187,7 +195,6 @@
 		F553429102E9F45A015ADE4E /* FinkUtilities.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkUtilities.h; sourceTree = "<group>"; };
 		F55407ED035D0C8601A80170 /* FinkWarningDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkWarningDialog.h; sourceTree = "<group>"; };
 		F55407EE035D0C8601A80170 /* FinkWarningDialog.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkWarningDialog.m; sourceTree = "<group>"; };
-		F55407F6035D334001A80170 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = en.lproj/Dialogs.nib; sourceTree = "<group>"; };
 		F554F1D80266AA4B01A80164 /* addbin.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = addbin.tiff; sourceTree = "<group>"; };
 		F55FBB1D02F3B8C901A80164 /* FinkData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkData.h; sourceTree = "<group>"; };
 		F55FBB1E02F3B8C901A80164 /* FinkData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkData.m; sourceTree = "<group>"; };
@@ -210,10 +217,7 @@
 		F5BBDFAF023AF89301A80164 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		F5C1B062026BFA2501A80164 /* English */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = folder; name = English; path = "en.lproj/FinkCommander Help"; sourceTree = "<group>"; };
 		F5C523D802A326B701A80165 /* FinkPackageInfo.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkPackageInfo.h; sourceTree = "<group>"; };
-		F5C9446E039C6BE201A80164 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = en.lproj/TreeView.nib; sourceTree = "<group>"; };
 		F5CA48B00394730301A80164 /* finkcommanderatwork.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = finkcommanderatwork.icns; sourceTree = "<group>"; };
-		F5CC37130304F27C01A80164 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = de.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		F5CC37160304F2A201A80164 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = de.lproj/Preferences.nib; sourceTree = "<group>"; };
 		F5CC7615039F174E01A80165 /* SBBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBBrowserView.h; path = SBTreeFiles/SBBrowserView.h; sourceTree = "<group>"; };
 		F5CC7616039F174E01A80165 /* SBBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SBBrowserView.m; path = SBTreeFiles/SBBrowserView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		F5CC7617039F174E01A80165 /* SBFileItemTree.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SBFileItemTree.h; path = SBTreeFiles/SBFileItemTree.h; sourceTree = "<group>"; };
@@ -240,7 +244,6 @@
 		F5F8FA5D033196BF01A80166 /* getpath.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = getpath.c; sourceTree = "<group>"; };
 		F5F99DB603AD4F4D01A80165 /* outline.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = outline.tiff; path = SBTreeFiles/outline.tiff; sourceTree = "<group>"; };
 		F5F99DB803AD5AC401A80165 /* browser.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = browser.tiff; path = SBTreeFiles/browser.tiff; sourceTree = "<group>"; };
-		FB084B8303DBA6EE00A8016C /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = de.lproj/TreeView.nib; sourceTree = "<group>"; };
 		FB7F569003F8C24E00A8016A /* German */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = German; path = de.lproj/TRANSLATION_STEPS.txt; sourceTree = "<group>"; };
 		FB84A70A03C93AF400A80164 /* SBTree.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/en.lproj/SBTree.strings; sourceTree = "<group>"; };
 		FB84A70F03C93D9C00A80164 /* SBTree.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = SBTree.strings; path = SBTreeFiles/de.lproj/SBTree.strings; sourceTree = "<group>"; };
@@ -338,10 +341,10 @@
 			children = (
 				148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */,
 				59E0405A09CDC73B001280FD /* Info.plist */,
-				F2C4F1D5084361C400CA6079 /* PackageInfo.nib */,
-				F55407F5035D334001A80170 /* Dialogs.nib */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				F5375A6C0246DE1901A80164 /* Preferences.nib */,
+				65C2500B1A4C780D00E02437 /* PackageInfo.xib */,
+				65C250071A4C780D00E02437 /* Dialogs.xib */,
+				65C250091A4C780D00E02437 /* MainMenu.xib */,
+				65C2500D1A4C780D00E02437 /* Preferences.xib */,
 				F53B4D0503100C3501A80164 /* Toolbar.plist */,
 				F5458DBF0303658001A80164 /* UserDefaults.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -443,7 +446,7 @@
 				F5CB063C03B03E5E01A80165 /* Other Sources */,
 				F50EC0D503A0464101A80165 /* Date.strings */,
 				FB84A70903C93AF400A80164 /* SBTree.strings */,
-				F5C9446D039C6BE201A80164 /* TreeView.nib */,
+				65C2500F1A4C780D00E02437 /* TreeView.xib */,
 				F5F99DB803AD5AC401A80165 /* browser.tiff */,
 				F5F99DB603AD4F4D01A80165 /* outline.tiff */,
 			);
@@ -576,6 +579,10 @@
 				French,
 				German,
 				Spanish,
+				en,
+				de,
+				fr,
+				ja,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* FinkTable */;
 			projectDirPath = "";
@@ -592,17 +599,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59E0400209CDC73B001280FD /* MainMenu.nib in Resources */,
 				59E0400309CDC73B001280FD /* InfoPlist.strings in Resources */,
 				59E0400409CDC73B001280FD /* fpkg_list.pl in Resources */,
 				59E0400509CDC73B001280FD /* reverse.tiff in Resources */,
 				59E0400609CDC73B001280FD /* normal.tiff in Resources */,
-				59E0400709CDC73B001280FD /* Preferences.nib in Resources */,
 				59E0400809CDC73B001280FD /* addbin.tiff in Resources */,
 				59E0400909CDC73B001280FD /* addsrc.tiff in Resources */,
 				59E0400A09CDC73B001280FD /* delsrc.tiff in Resources */,
 				59E0400B09CDC73B001280FD /* delbin.tiff in Resources */,
 				59E0400C09CDC73B001280FD /* FinkCommander Help in Resources */,
+				65C250111A4C780D00E02437 /* Dialogs.xib in Resources */,
 				59E0400D09CDC73B001280FD /* interact.tiff in Resources */,
 				59E0400E09CDC73B001280FD /* describe.tiff in Resources */,
 				59E0400F09CDC73B001280FD /* cvs.tiff in Resources */,
@@ -614,18 +620,19 @@
 				59E0401509CDC73B001280FD /* title.tiff in Resources */,
 				59E0401609CDC73B001280FD /* Credits.html in Resources */,
 				59E0401709CDC73B001280FD /* email.tiff in Resources */,
+				65C250121A4C780D00E02437 /* MainMenu.xib in Resources */,
 				59E0401809CDC73B001280FD /* finkcommander.icns in Resources */,
 				59E0401909CDC73B001280FD /* Localizable.strings in Resources */,
 				59E0401A09CDC73B001280FD /* UserDefaults.plist in Resources */,
 				59E0401B09CDC73B001280FD /* Toolbar.plist in Resources */,
 				59E0401C09CDC73B001280FD /* updateall.tiff in Resources */,
-				59E0401D09CDC73B001280FD /* Dialogs.nib in Resources */,
 				59E0401E09CDC73B001280FD /* termcvs.tiff in Resources */,
 				59E0401F09CDC73B001280FD /* terminstall.tiff in Resources */,
+				65C250131A4C780D00E02437 /* PackageInfo.xib in Resources */,
+				65C250151A4C780D00E02437 /* TreeView.xib in Resources */,
 				59E0402009CDC73B001280FD /* negemail.tiff in Resources */,
 				59E0402109CDC73B001280FD /* posemail.tiff in Resources */,
 				59E0402209CDC73B001280FD /* finkcommanderatwork.icns in Resources */,
-				59E0402309CDC73B001280FD /* TreeView.nib in Resources */,
 				59E0402409CDC73B001280FD /* Date.strings in Resources */,
 				59E0402509CDC73B001280FD /* info.tiff in Resources */,
 				59E0402609CDC73B001280FD /* outline.tiff in Resources */,
@@ -633,11 +640,11 @@
 				59E0402809CDC73B001280FD /* flag.tiff in Resources */,
 				59E0402909CDC73B001280FD /* header_flag.tiff in Resources */,
 				59E0402A09CDC73B001280FD /* Programmatic.strings in Resources */,
+				65C250141A4C780D00E02437 /* Preferences.xib in Resources */,
 				59E0402B09CDC73B001280FD /* bomb.tiff in Resources */,
 				59E0402C09CDC73B001280FD /* browse.tiff in Resources */,
 				59E0402D09CDC73B001280FD /* doc.tiff in Resources */,
 				59E0402E09CDC73B001280FD /* SBTree.strings in Resources */,
-				59E0402F09CDC73B001280FD /* PackageInfo.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,14 +745,55 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		65C250071A4C780D00E02437 /* Dialogs.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
-				F5CC37130304F27C01A80164 /* German */,
-				557B53BA108D393500367D4E /* Japanese */,
+				65C250081A4C780D00E02437 /* en */,
+				65C250161A4C783100E02437 /* de */,
+				65C2501A1A4C785500E02437 /* fr */,
+				65C2501E1A4C787300E02437 /* ja */,
 			);
-			name = MainMenu.nib;
+			name = Dialogs.xib;
+			sourceTree = "<group>";
+		};
+		65C250091A4C780D00E02437 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65C2500A1A4C780D00E02437 /* en */,
+				65C250171A4C783100E02437 /* de */,
+				65C2501B1A4C785500E02437 /* fr */,
+				65C2501F1A4C787300E02437 /* ja */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		65C2500B1A4C780D00E02437 /* PackageInfo.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65C2500C1A4C780D00E02437 /* en */,
+				65C2501C1A4C785500E02437 /* fr */,
+			);
+			name = PackageInfo.xib;
+			sourceTree = "<group>";
+		};
+		65C2500D1A4C780D00E02437 /* Preferences.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65C2500E1A4C780D00E02437 /* en */,
+				65C250181A4C783100E02437 /* de */,
+				65C2501D1A4C785500E02437 /* fr */,
+				65C250201A4C787300E02437 /* ja */,
+			);
+			name = Preferences.xib;
+			sourceTree = "<group>";
+		};
+		65C2500F1A4C780D00E02437 /* TreeView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65C250101A4C780D00E02437 /* en */,
+				65C250191A4C783100E02437 /* de */,
+			);
+			name = TreeView.xib;
 			sourceTree = "<group>";
 		};
 		C77360DD03E9D21200EE6D09 /* README.html */ = {
@@ -757,15 +805,6 @@
 			name = README.html;
 			sourceTree = "<group>";
 		};
-		F2C4F1D5084361C400CA6079 /* PackageInfo.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F2C4F1D6084361C400CA6079 /* English */,
-				F28A84610843648B00E529E9 /* French */,
-			);
-			name = PackageInfo.nib;
-			sourceTree = "<group>";
-		};
 		F50EC0D503A0464101A80165 /* Date.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -773,16 +812,6 @@
 				F50EC0D703A0465701A80165 /* German */,
 			);
 			name = Date.strings;
-			sourceTree = "<group>";
-		};
-		F5375A6C0246DE1901A80164 /* Preferences.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F5375A6D0246DE1901A80164 /* English */,
-				F5CC37160304F2A201A80164 /* German */,
-				557B53BB108D394100367D4E /* Japanese */,
-			);
-			name = Preferences.nib;
 			sourceTree = "<group>";
 		};
 		F53B4D0503100C3501A80164 /* Toolbar.plist */ = {
@@ -793,16 +822,6 @@
 				557B5387108D37AC00367D4E /* Japanese */,
 			);
 			name = Toolbar.plist;
-			sourceTree = "<group>";
-		};
-		F55407F5035D334001A80170 /* Dialogs.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F55407F6035D334001A80170 /* English */,
-				F5128EE803665EE101A80166 /* German */,
-				557B53B9108D392700367D4E /* Japanese */,
-			);
-			name = Dialogs.nib;
 			sourceTree = "<group>";
 		};
 		F56200A902FC768601A80164 /* FinkCommander Help */ = {
@@ -831,15 +850,6 @@
 				F59FF428032134D901A80175 /* German */,
 			);
 			name = Credits.html;
-			sourceTree = "<group>";
-		};
-		F5C9446D039C6BE201A80164 /* TreeView.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F5C9446E039C6BE201A80164 /* English */,
-				FB084B8303DBA6EE00A8016C /* German */,
-			);
-			name = TreeView.nib;
 			sourceTree = "<group>";
 		};
 		FB7F568F03F8C24E00A8016A /* TRANSLATION_STEPS.txt */ = {
