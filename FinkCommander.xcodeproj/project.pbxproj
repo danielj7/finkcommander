@@ -197,7 +197,6 @@
 		F54436B8027F6AD501A80164 /* FinkConf.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkConf.h; sourceTree = "<group>"; };
 		F54436B9027F6AD501A80164 /* FinkConf.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkConf.m; sourceTree = "<group>"; };
 		F5458DBF0303658001A80164 /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
-		F54A669802DA8F3701A80165 /* VERSION_HISTORY.html */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; path = VERSION_HISTORY.html; sourceTree = "<group>"; };
 		F54BD02602D549F101A80165 /* FinkOutputParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkOutputParser.m; sourceTree = "<group>"; };
 		F54BD02702D549F101A80165 /* FinkOutputParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkOutputParser.h; sourceTree = "<group>"; };
 		F55057270231E5F701A80164 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -439,7 +438,6 @@
 				C77360DD03E9D21200EE6D09 /* README.html */,
 				F501F21202FDF20001A80164 /* RELEASE_STEPS.txt */,
 				F5BBDFAF023AF89301A80164 /* TODO.txt */,
-				F54A669802DA8F3701A80165 /* VERSION_HISTORY.html */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
