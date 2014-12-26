@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="FinkCommander" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" id="21" userLabel="MainWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -26,10 +26,10 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <clipView key="contentView" id="Kub-9q-g0u">
                                     <rect key="frame" x="1" y="17" width="751" height="186"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" headerView="200196" id="197">
-                                            <rect key="frame" x="0.0" y="0.0" width="751" height="186"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="751" height="19"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -113,7 +113,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="description" width="170" minWidth="26" maxWidth="1000" id="264">
+                                                <tableColumn identifier="description" width="185" minWidth="26" maxWidth="1000" id="264">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="説明">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -134,11 +134,11 @@
                                     </subviews>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="100196">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="100196">
                                     <rect key="frame" x="-100" y="-100" width="752" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="300196">
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="300196">
                                     <rect key="frame" x="752" y="17" width="15" height="186"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -152,22 +152,22 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <clipView key="contentView" id="BUS-Ya-4GC">
                                     <rect key="frame" x="1" y="1" width="751" height="289"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" continuousSpellChecking="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" quoteSubstitution="YES" dashSubstitution="YES" textReplacement="YES" smartInsertDelete="YES" id="261">
                                             <rect key="frame" x="0.0" y="0.0" width="751" height="289"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="751" height="289"/>
+                                            <size key="minSize" width="766" height="289"/>
                                             <size key="maxSize" width="845" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="751" height="289"/>
+                                            <size key="minSize" width="766" height="289"/>
                                             <size key="maxSize" width="845" height="10000000"/>
                                         </textView>
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="100260">
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="100260">
                                     <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -524,7 +524,7 @@
                 <menuItem title="ソース" id="415">
                     <menu key="submenu" title="ソース" id="416">
                         <items>
-                            <menuItem title="install" keyEquivalent="I" id="417">
+                            <menuItem title="インストール" keyEquivalent="I" id="417">
                                 <attributedString key="attributedTitle">
                                     <fragment content="インストール">
                                         <attributes>
@@ -536,7 +536,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="870"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="reinstall" keyEquivalent="E" id="520">
+                            <menuItem title="再インストール" keyEquivalent="E" id="520">
                                 <attributedString key="attributedTitle">
                                     <fragment content="再インストール">
                                         <attributes>
@@ -548,7 +548,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="871"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="build" keyEquivalent="B" id="522">
+                            <menuItem title="ビルド" keyEquivalent="B" id="522">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ビルド">
                                         <attributes>
@@ -560,7 +560,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="872"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="rebuild" keyEquivalent="L" id="428">
+                            <menuItem title="再ビルド" keyEquivalent="L" id="428">
                                 <attributedString key="attributedTitle">
                                     <fragment content="再ビルド">
                                         <attributes>
@@ -573,7 +573,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="873"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="fetch" keyEquivalent="F" id="427">
+                            <menuItem title="ダウンロード" keyEquivalent="F" id="427">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ダウンロード">
                                         <attributes>
@@ -586,7 +586,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="874"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" keyEquivalent="R" id="419">
+                            <menuItem title="アンインストール" keyEquivalent="R" id="419">
                                 <attributedString key="attributedTitle">
                                     <fragment content="アンインストール">
                                         <attributes>
@@ -602,7 +602,7 @@
                             <menuItem isSeparatorItem="YES" id="814">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="scanpackages" id="1158">
+                            <menuItem title="パッケージのスキャン" id="1158">
                                 <attributedString key="attributedTitle">
                                     <fragment content="パッケージのスキャン">
                                         <attributes>
@@ -615,7 +615,7 @@
                                     <action selector="runNonSpecificCommand:" target="211" id="1159"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="selfupdate-rsync" id="1203">
+                            <menuItem title="Rsync を用いてデータベースを更新" id="1203">
                                 <attributedString key="attributedTitle">
                                     <fragment content="Rsync ">
                                         <attributes>
@@ -634,7 +634,7 @@
                                     <action selector="runNonSpecificCommand:" target="211" id="1204"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="selfupdate-cvs" keyEquivalent="V" id="820">
+                            <menuItem title="CVS を用いてデータベースを更新" keyEquivalent="V" id="820">
                                 <attributedString key="attributedTitle">
                                     <fragment content="CVS ">
                                         <attributes>
@@ -653,7 +653,7 @@
                                     <action selector="runNonSpecificCommand:" target="211" id="876"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="selfupdate" keyEquivalent="S" id="821">
+                            <menuItem title="データベースを更新" keyEquivalent="S" id="821">
                                 <attributedString key="attributedTitle">
                                     <fragment content="データベースを更新">
                                         <attributes>
@@ -666,7 +666,7 @@
                                     <action selector="runNonSpecificCommand:" target="211" id="877"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="update-all" keyEquivalent="A" id="822">
+                            <menuItem title="パッケージを全てアップグレード" keyEquivalent="A" id="822">
                                 <attributedString key="attributedTitle">
                                     <fragment content="パッケージを全てアップグレード">
                                         <attributes>
@@ -685,7 +685,7 @@
                             <menuItem title="ターミナルで実行" id="849">
                                 <menu key="submenu" title="ターミナルで実行" id="850">
                                     <items>
-                                        <menuItem title="install" id="851">
+                                        <menuItem title="インストール" id="851">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="インストール">
                                                     <attributes>
@@ -698,7 +698,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="898"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="reinstall" id="852">
+                                        <menuItem title="再インストール" id="852">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="再インストール">
                                                     <attributes>
@@ -711,7 +711,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="961"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="build" id="853">
+                                        <menuItem title="ビルド" id="853">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="ビルド">
                                                     <attributes>
@@ -724,7 +724,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="902"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="rebuild" id="854">
+                                        <menuItem title="再ビルド" id="854">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="再ビルド">
                                                     <attributes>
@@ -737,7 +737,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="903"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="fetch" id="857">
+                                        <menuItem title="ダウンロード" id="857">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="ダウンロード">
                                                     <attributes>
@@ -750,7 +750,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="904"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="remove" id="858">
+                                        <menuItem title="アンインストール" id="858">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="アンインストール">
                                                     <attributes>
@@ -766,7 +766,7 @@
                                         <menuItem isSeparatorItem="YES" id="859">
                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="selfupdate-cvs" id="855">
+                                        <menuItem title="selfupdate-cvs を実行" id="855">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="selfupdate-cvs ">
                                                     <attributes>
@@ -785,7 +785,7 @@
                                                 <action selector="runNonSpecificCommandInTerminal:" target="211" id="900"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="selfupdate " id="860">
+                                        <menuItem title="selfupdate を実行" id="860">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="selfupdate ">
                                                     <attributes>
@@ -804,7 +804,7 @@
                                                 <action selector="runNonSpecificCommandInTerminal:" target="211" id="906"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="update-all" id="856">
+                                        <menuItem title="update-all を実行" id="856">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="update-all ">
                                                     <attributes>
@@ -832,7 +832,7 @@
                             <menuItem title="ユーティリティ" id="735">
                                 <menu key="submenu" title="ユーティリティ" id="736">
                                     <items>
-                                        <menuItem title="cleanup" id="737">
+                                        <menuItem title="不要なファイルを削除" id="737">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="不要なファイルを削除">
                                                     <attributes>
@@ -845,7 +845,7 @@
                                                 <action selector="runNonSpecificCommand:" target="211" id="880"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="index" id="740">
+                                        <menuItem title="検索用の索引を作る" id="740">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="検索用の索引を作る">
                                                     <attributes>
@@ -883,7 +883,7 @@
                 <menuItem title="バイナリ" id="343">
                     <menu key="submenu" title="バイナリ" id="344">
                         <items>
-                            <menuItem title="install" tag="1" keyEquivalent="i" id="345">
+                            <menuItem title="インストール" tag="1" keyEquivalent="i" id="345">
                                 <attributedString key="attributedTitle">
                                     <fragment content="インストール">
                                         <attributes>
@@ -897,7 +897,7 @@
                                     <action selector="runPackageSpecificCommand:" target="211" id="883"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" tag="1" keyEquivalent="r" id="512">
+                            <menuItem title="アンインストール" tag="1" keyEquivalent="r" id="512">
                                 <attributedString key="attributedTitle">
                                     <fragment content="アンインストール">
                                         <attributes>
@@ -914,7 +914,7 @@
                             <menuItem isSeparatorItem="YES" id="347">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="update" tag="1" keyEquivalent="u" id="348">
+                            <menuItem title="データベースを更新" tag="1" keyEquivalent="u" id="348">
                                 <attributedString key="attributedTitle">
                                     <fragment content="データベースを更新">
                                         <attributes>
@@ -928,7 +928,7 @@
                                     <action selector="runNonSpecificCommand:" target="211" id="885"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="dist-upgrade" tag="1" keyEquivalent="g" id="1156">
+                            <menuItem title="パッケージを全てアップグレード" tag="1" keyEquivalent="g" id="1156">
                                 <attributedString key="attributedTitle">
                                     <fragment content="パッケージを全てアップグレード">
                                         <attributes>
@@ -948,7 +948,7 @@
                             <menuItem title="ターミナルで実行" id="863">
                                 <menu key="submenu" title="ターミナルで実行" id="864">
                                     <items>
-                                        <menuItem title="install" tag="1" id="865">
+                                        <menuItem title="インストール" tag="1" id="865">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="インストール">
                                                     <attributes>
@@ -961,7 +961,7 @@
                                                 <action selector="runPackageSpecificCommandInTerminal:" target="211" id="908"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="remove" tag="1" id="866">
+                                        <menuItem title="アンインストール" tag="1" id="866">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="アンインストール">
                                                     <attributes>
@@ -977,7 +977,7 @@
                                         <menuItem isSeparatorItem="YES" id="912">
                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="update" tag="1" id="867">
+                                        <menuItem title="データベースを更新" tag="1" id="867">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="データベースを更新">
                                                     <attributes>
@@ -990,7 +990,7 @@
                                                 <action selector="runNonSpecificCommandInTerminal:" target="211" id="910"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="upgrade" tag="1" id="868">
+                                        <menuItem title="アップグレード" tag="1" id="868">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="アップグレード">
                                                     <attributes>
@@ -1277,7 +1277,7 @@ DQ
                 <menuItem title="バイナリ" id="666">
                     <menu key="submenu" title="バイナリ" id="667">
                         <items>
-                            <menuItem title="install" tag="1" id="668">
+                            <menuItem title="インストール" tag="1" id="668">
                                 <attributedString key="attributedTitle">
                                     <fragment content="インストール">
                                         <attributes>
@@ -1290,7 +1290,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="887"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" tag="1" id="669">
+                            <menuItem title="アンインストール" tag="1" id="669">
                                 <attributedString key="attributedTitle">
                                     <fragment content="アンインストール">
                                         <attributes>
@@ -1309,7 +1309,7 @@ DQ
                 <menuItem title="ソース" id="671">
                     <menu key="submenu" title="ソース" id="672">
                         <items>
-                            <menuItem title="install" id="673">
+                            <menuItem title="インストール" id="673">
                                 <attributedString key="attributedTitle">
                                     <fragment content="インストール">
                                         <attributes>
@@ -1322,7 +1322,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="889"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="reinstall" id="674">
+                            <menuItem title="再インストール" id="674">
                                 <attributedString key="attributedTitle">
                                     <fragment content="再インストール">
                                         <attributes>
@@ -1335,7 +1335,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="890"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="build" id="676">
+                            <menuItem title="ビルド" id="676">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ビルド">
                                         <attributes>
@@ -1348,7 +1348,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="891"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="rebuild" id="677">
+                            <menuItem title="再ビルド" id="677">
                                 <attributedString key="attributedTitle">
                                     <fragment content="再ビルド">
                                         <attributes>
@@ -1361,7 +1361,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="892"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="fetch" id="675">
+                            <menuItem title="ダウンロード" id="675">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ダウンロード">
                                         <attributes>
@@ -1374,7 +1374,7 @@ DQ
                                     <action selector="runPackageSpecificCommand:" target="211" id="893"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" id="678">
+                            <menuItem title="アンインストール" id="678">
                                 <attributedString key="attributedTitle">
                                     <fragment content="アンインストール">
                                         <attributes>
@@ -1393,7 +1393,7 @@ DQ
                 <menuItem title="ターミナルで実行" id="914">
                     <menu key="submenu" title="ターミナルで実行" id="915">
                         <items>
-                            <menuItem title="install" id="993">
+                            <menuItem title="ソースからインストール" id="993">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ソースからインストール">
                                         <attributes>
@@ -1406,7 +1406,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1002"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="reinstall" id="994">
+                            <menuItem title="ソースから再インストール" id="994">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ソースから再インストール">
                                         <attributes>
@@ -1419,7 +1419,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1003"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="build" id="995">
+                            <menuItem title="ソースからビルド" id="995">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ソースからビルド">
                                         <attributes>
@@ -1432,7 +1432,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1004"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="rebuild" id="996">
+                            <menuItem title="ソースから再ビルド" id="996">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ソースから再ビルド">
                                         <attributes>
@@ -1445,7 +1445,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1005"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="fetch" id="997">
+                            <menuItem title="ソースをダウンロード" id="997">
                                 <attributedString key="attributedTitle">
                                     <fragment content="ソースをダウンロード">
                                         <attributes>
@@ -1458,7 +1458,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1006"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" id="998">
+                            <menuItem title="fink でアンインストール" id="998">
                                 <attributedString key="attributedTitle">
                                     <fragment content="fink でアンインストール">
                                         <attributes>
@@ -1474,7 +1474,7 @@ DQ
                             <menuItem isSeparatorItem="YES" id="1001">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="install" tag="1" id="999">
+                            <menuItem title="バイナリからインストール" tag="1" id="999">
                                 <attributedString key="attributedTitle">
                                     <fragment content="バイナリからインストール">
                                         <attributes>
@@ -1487,7 +1487,7 @@ DQ
                                     <action selector="runPackageSpecificCommandInTerminal:" target="211" id="1008"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="remove" tag="1" id="1000">
+                            <menuItem title="apt-get でアンインストール" tag="1" id="1000">
                                 <attributedString key="attributedTitle">
                                     <fragment content="apt-get でアンインストール">
                                         <attributes>
@@ -1608,6 +1608,6 @@ DQ
         </menu>
     </objects>
     <resources>
-        <image name="finkcommander" width="128" height="128"/>
+        <image name="finkcommander" width="512" height="512"/>
     </resources>
 </document>

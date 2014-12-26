@@ -1,0 +1,471 @@
+
+/* Class = "NSMenuItem"; title = "Tout ramener au premier plan"; ObjectID = "5"; */
+"5.title" = "Tout ramener au premier plan";
+
+/* Class = "NSMenuItem"; title = "Fenêtre"; ObjectID = "19"; */
+"19.title" = "Fenêtre";
+
+/* Class = "NSWindow"; title = "FinkCommander"; ObjectID = "21"; */
+"21.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Masquer"; ObjectID = "23"; */
+"23.title" = "Masquer";
+
+/* Class = "NSMenu"; title = "Fenêtre"; ObjectID = "24"; */
+"24.title" = "Fenêtre";
+
+/* Class = "NSMenu"; title = "MainMenu"; ObjectID = "29"; */
+"29.title" = "MainMenu";
+
+/* Class = "NSMenuItem"; title = "FinkCommander"; ObjectID = "56"; */
+"56.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Aide"; ObjectID = "103"; */
+"103.title" = "Aide";
+
+/* Class = "NSMenu"; title = "Aide"; ObjectID = "106"; */
+"106.title" = "Aide";
+
+/* Class = "NSMenuItem"; title = "Aide FinkCommander"; ObjectID = "111"; */
+"111.title" = "Aide FinkCommander";
+
+/* Class = "NSTableColumn"; headerCell.title = "Installé"; ObjectID = "195"; */
+"195.headerCell.title" = "Installé";
+
+/* Class = "NSTableColumn"; headerCell.title = "Version"; ObjectID = "207"; */
+"207.headerCell.title" = "Version";
+
+/* Class = "NSTableColumn"; headerCell.title = "Nom"; ObjectID = "208"; */
+"208.headerCell.title" = "Nom";
+
+/* Class = "NSTableColumn"; headerCell.title = "Catégorie"; ObjectID = "209"; */
+"209.headerCell.title" = "Catégorie";
+
+/* Class = "NSTableColumn"; headerCell.title = "Description"; ObjectID = "264"; */
+"264.headerCell.title" = "Description";
+
+/* Class = "NSTableColumn"; headerCell.title = "Binaire"; ObjectID = "312"; */
+"312.headerCell.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "Binaire"; ObjectID = "343"; */
+"343.title" = "Binaire";
+
+/* Class = "NSMenu"; title = "Binaire"; ObjectID = "344"; */
+"344.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "345"; */
+"345.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Update descriptions"; ObjectID = "348"; */
+"348.title" = "Update descriptions";
+
+/* Class = "NSMenuItem"; title = "Upgrade packages"; ObjectID = "349"; */
+"349.title" = "Upgrade packages";
+
+/* Class = "NSMenuItem"; title = "Source"; ObjectID = "415"; */
+"415.title" = "Source";
+
+/* Class = "NSMenu"; title = "Source"; ObjectID = "416"; */
+"416.title" = "Source";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "417"; */
+"417.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "419"; */
+"419.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Fetch"; ObjectID = "427"; */
+"427.title" = "Fetch";
+
+/* Class = "NSMenuItem"; title = "Rebuild"; ObjectID = "428"; */
+"428.title" = "Rebuild";
+
+/* Class = "NSMenuItem"; title = "Édition"; ObjectID = "430"; */
+"430.title" = "Édition";
+
+/* Class = "NSMenuItem"; title = "Copier"; ObjectID = "431"; */
+"431.title" = "Copier";
+
+/* Class = "NSMenu"; title = "Édition"; ObjectID = "432"; */
+"432.title" = "Édition";
+
+/* Class = "NSMenuItem"; title = "Tout Sélectionner"; ObjectID = "433"; */
+"433.title" = "Tout Sélectionner";
+
+/* Class = "NSMenuItem"; title = "Fichier"; ObjectID = "475"; */
+"475.title" = "Fichier";
+
+/* Class = "NSMenuItem"; title = "Format d'impression..."; ObjectID = "477"; */
+"477.title" = "Format d'impression...";
+
+/* Class = "NSMenu"; title = "Fichier"; ObjectID = "478"; */
+"478.title" = "Fichier";
+
+/* Class = "NSMenuItem"; title = "Imprimer..."; ObjectID = "480"; */
+"480.title" = "Imprimer...";
+
+/* Class = "NSMenuItem"; title = "Mettre à jour la table"; ObjectID = "506"; */
+"506.title" = "Mettre à jour la table";
+
+/* Class = "NSTableColumn"; headerCell.title = "Unstable"; ObjectID = "509"; */
+"509.headerCell.title" = "Unstable";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "512"; */
+"512.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Reinstall"; ObjectID = "520"; */
+"520.title" = "Reinstall";
+
+/* Class = "NSMenuItem"; title = "Build"; ObjectID = "522"; */
+"522.title" = "Build";
+
+/* Class = "NSWindow"; title = "Interaction"; ObjectID = "524"; */
+"524.title" = "Interaction";
+
+/* Class = "NSButtonCell"; ibShadowedToolTip = "Usually a good bet"; ObjectID = "539"; */
+"539.ibShadowedToolTip" = "Usually a good bet";
+
+/* Class = "NSButtonCell"; title = "Accepter la réponse par défaut"; ObjectID = "539"; */
+"539.title" = "Accepter la réponse par défaut";
+
+/* Class = "NSButtonCell"; title = "Entrer ceci :"; ObjectID = "540"; */
+"540.title" = "Entrer ceci :";
+
+/* Class = "NSTextField"; ibShadowedToolTip = "Afficher seulement les lignes contenant ce texte dans le champ choisi"; ObjectID = "554"; */
+"554.ibShadowedToolTip" = "Afficher seulement les lignes contenant ce texte dans le champ choisi";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "555"; */
+"555.title" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "Description"; ObjectID = "556"; */
+"556.title" = "Description";
+
+/* Class = "NSPopUpButton"; ibShadowedToolTip = "Appliquer le filtre au nouveau champ de donnée"; ObjectID = "558"; */
+"558.ibShadowedToolTip" = "Appliquer le filtre au nouveau champ de donnée";
+
+/* Class = "NSMenuItem"; title = "Nom"; ObjectID = "559"; */
+"559.title" = "Nom";
+
+/* Class = "NSMenuItem"; title = "Catégorie"; ObjectID = "560"; */
+"560.title" = "Catégorie";
+
+/* Class = "NSMenuItem"; title = "Outils"; ObjectID = "614"; */
+"614.title" = "Outils";
+
+/* Class = "NSMenu"; title = "Outils"; ObjectID = "615"; */
+"615.title" = "Outils";
+
+/* Class = "NSMenuItem"; title = "Interagir avec Fink…"; ObjectID = "616"; */
+"616.title" = "Interagir avec Fink…";
+
+/* Class = "NSMenuItem"; title = "Site Web de FinkCommander"; ObjectID = "623"; */
+"623.title" = "Site Web de FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Documentation de Fink sur le Web"; ObjectID = "625"; */
+"625.title" = "Documentation de Fink sur le Web";
+
+/* Class = "NSMenuItem"; title = "Rapports de Bug pour FinkCommander"; ObjectID = "631"; */
+"631.title" = "Rapports de Bug pour FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Binaire"; ObjectID = "637"; */
+"637.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "Unstable"; ObjectID = "638"; */
+"638.title" = "Unstable";
+
+/* Class = "NSMenuItem"; title = "Statut"; ObjectID = "639"; */
+"639.title" = "Statut";
+
+/* Class = "NSMenuItem"; title = "Terminer la Commande"; ObjectID = "640"; */
+"640.title" = "Terminer la Commande";
+
+/* Class = "NSMenuItem"; title = "Inspecteur de Paquetage"; ObjectID = "648"; */
+"648.title" = "Inspecteur de Paquetage";
+
+/* Class = "NSMenu"; title = "Menu"; ObjectID = "663"; */
+"663.title" = "Menu";
+
+/* Class = "NSMenuItem"; title = "Binaire"; ObjectID = "666"; */
+"666.title" = "Binaire";
+
+/* Class = "NSMenu"; title = "Binaire"; ObjectID = "667"; */
+"667.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "668"; */
+"668.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "669"; */
+"669.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Source"; ObjectID = "671"; */
+"671.title" = "Source";
+
+/* Class = "NSMenu"; title = "Source"; ObjectID = "672"; */
+"672.title" = "Source";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "673"; */
+"673.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Reinstall"; ObjectID = "674"; */
+"674.title" = "Reinstall";
+
+/* Class = "NSMenuItem"; title = "Fetch"; ObjectID = "675"; */
+"675.title" = "Fetch";
+
+/* Class = "NSMenuItem"; title = "Build"; ObjectID = "676"; */
+"676.title" = "Build";
+
+/* Class = "NSMenuItem"; title = "Rebuild"; ObjectID = "677"; */
+"677.title" = "Rebuild";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "678"; */
+"678.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Inspecteur de Paquetage"; ObjectID = "690"; */
+"690.title" = "Inspecteur de Paquetage";
+
+/* Class = "NSMenuItem"; title = "Masquer les autres"; ObjectID = "713"; */
+"713.title" = "Masquer les autres";
+
+/* Class = "NSMenuItem"; title = "Masquer FinkCommander"; ObjectID = "716"; */
+"716.title" = "Masquer FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Quitter FinkCommander"; ObjectID = "717"; */
+"717.title" = "Quitter FinkCommander";
+
+/* Class = "NSMenu"; title = "FinkCommander"; ObjectID = "719"; */
+"719.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "À propos de FinkCommander"; ObjectID = "720"; */
+"720.title" = "À propos de FinkCommander";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "721"; */
+"721.title" = "Services";
+
+/* Class = "NSMenuItem"; title = "Tout afficher"; ObjectID = "722"; */
+"722.title" = "Tout afficher";
+
+/* Class = "NSMenuItem"; title = "Préférences..."; ObjectID = "723"; */
+"723.title" = "Préférences...";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "724"; */
+"724.title" = "Services";
+
+/* Class = "NSMenuItem"; title = "Utilitaires"; ObjectID = "735"; */
+"735.title" = "Utilitaires";
+
+/* Class = "NSMenu"; title = "Utilitaires"; ObjectID = "736"; */
+"736.title" = "Utilitaires";
+
+/* Class = "NSMenuItem"; title = "Cleanup"; ObjectID = "737"; */
+"737.title" = "Cleanup";
+
+/* Class = "NSMenuItem"; title = "Scanpackages"; ObjectID = "739"; */
+"739.title" = "Scanpackages";
+
+/* Class = "NSMenuItem"; title = "Index"; ObjectID = "740"; */
+"740.title" = "Index";
+
+/* Class = "NSMenuItem"; title = "Describe"; ObjectID = "745"; */
+"745.title" = "Describe";
+
+/* Class = "NSMenuItem"; title = "Sauver la Sortie…"; ObjectID = "752"; */
+"752.title" = "Sauver la Sortie…";
+
+/* Class = "NSMenuItem"; title = "Mailer le Mainteneur du Package"; ObjectID = "768"; */
+"768.title" = "Mailer le Mainteneur du Package";
+
+/* Class = "NSMenuItem"; title = "Mailer le Mainteneur"; ObjectID = "773"; */
+"773.title" = "Mailer le Mainteneur";
+
+/* Class = "NSMenuItem"; title = "Vue"; ObjectID = "781"; */
+"781.title" = "Vue";
+
+/* Class = "NSMenu"; title = "Vue"; ObjectID = "782"; */
+"782.title" = "Vue";
+
+/* Class = "NSMenuItem"; title = "Colonne Actuel"; ObjectID = "784"; */
+"784.title" = "Colonne Actuel";
+
+/* Class = "NSMenuItem"; title = "Colonne Binaire"; ObjectID = "785"; */
+"785.title" = "Colonne Binaire";
+
+/* Class = "NSMenuItem"; title = "Colonne Unstable"; ObjectID = "786"; */
+"786.title" = "Colonne Unstable";
+
+/* Class = "NSMenuItem"; title = "Colonne Catégorie"; ObjectID = "788"; */
+"788.title" = "Colonne Catégorie";
+
+/* Class = "NSMenuItem"; title = "Colonne Description"; ObjectID = "789"; */
+"789.title" = "Colonne Description";
+
+/* Class = "NSMenuItem"; title = "Colonne Mainteneur"; ObjectID = "790"; */
+"790.title" = "Colonne Mainteneur";
+
+/* Class = "NSMenuItem"; title = "Colonne Statut"; ObjectID = "791"; */
+"791.title" = "Colonne Statut";
+
+/* Class = "NSMenuItem"; title = "Mainteneur"; ObjectID = "800"; */
+"800.title" = "Mainteneur";
+
+/* Class = "NSMenuItem"; title = "Vérifier les mises-à-jour"; ObjectID = "802"; */
+"802.title" = "Vérifier les mises-à-jour";
+
+/* Class = "NSMenuItem"; title = "Force Remove"; ObjectID = "807"; */
+"807.title" = "Force Remove";
+
+/* Class = "NSMenuItem"; title = "Selfupdate-cvs"; ObjectID = "820"; */
+"820.title" = "Selfupdate-cvs";
+
+/* Class = "NSMenuItem"; title = "Selfupdate"; ObjectID = "821"; */
+"821.title" = "Selfupdate";
+
+/* Class = "NSMenuItem"; title = "Update-all"; ObjectID = "822"; */
+"822.title" = "Update-all";
+
+/* Class = "NSMenuItem"; title = "Colonne Stable"; ObjectID = "827"; */
+"827.title" = "Colonne Stable";
+
+/* Class = "NSMenuItem"; title = "Colonne Installé"; ObjectID = "828"; */
+"828.title" = "Colonne Installé";
+
+/* Class = "NSMenuItem"; title = "Copier"; ObjectID = "833"; */
+"833.title" = "Copier";
+
+/* Class = "NSMenuItem"; title = "Personnaliser la barre d'outils…"; ObjectID = "836"; */
+"836.title" = "Personnaliser la barre d'outils…";
+
+/* Class = "NSMenuItem"; title = "Run in Terminal"; ObjectID = "847"; */
+"847.title" = "Run in Terminal";
+
+/* Class = "NSMenu"; title = "Run in Terminal"; ObjectID = "848"; */
+"848.title" = "Run in Terminal";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "860"; */
+"860.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Reinstall"; ObjectID = "862"; */
+"862.title" = "Reinstall";
+
+/* Class = "NSMenuItem"; title = "Build"; ObjectID = "864"; */
+"864.title" = "Build";
+
+/* Class = "NSMenuItem"; title = "Rebuild"; ObjectID = "865"; */
+"865.title" = "Rebuild";
+
+/* Class = "NSMenuItem"; title = "Fetch"; ObjectID = "866"; */
+"866.title" = "Fetch";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "867"; */
+"867.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Selfupdate-cvs"; ObjectID = "872"; */
+"872.title" = "Selfupdate-cvs";
+
+/* Class = "NSMenuItem"; title = "Selfupdate"; ObjectID = "873"; */
+"873.title" = "Selfupdate";
+
+/* Class = "NSMenuItem"; title = "Update-all"; ObjectID = "874"; */
+"874.title" = "Update-all";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "878"; */
+"878.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Fetch"; ObjectID = "879"; */
+"879.title" = "Fetch";
+
+/* Class = "NSMenuItem"; title = "Reinstall"; ObjectID = "880"; */
+"880.title" = "Reinstall";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "881"; */
+"881.title" = "Remove";
+
+/* Class = "NSMenu"; title = "Binaire"; ObjectID = "882"; */
+"882.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "In Terminal"; ObjectID = "883"; */
+"883.title" = "In Terminal";
+
+/* Class = "NSMenu"; title = "Source"; ObjectID = "884"; */
+"884.title" = "Source";
+
+/* Class = "NSMenuItem"; title = "Rebuild"; ObjectID = "885"; */
+"885.title" = "Rebuild";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "886"; */
+"886.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Binaire"; ObjectID = "887"; */
+"887.title" = "Binaire";
+
+/* Class = "NSMenuItem"; title = "Source"; ObjectID = "888"; */
+"888.title" = "Source";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "889"; */
+"889.title" = "Install";
+
+/* Class = "NSMenuItem"; title = "Build"; ObjectID = "890"; */
+"890.title" = "Build";
+
+/* Class = "NSMenu"; title = "In Terminal"; ObjectID = "891"; */
+"891.title" = "In Terminal";
+
+/* Class = "NSMenuItem"; title = "Remove"; ObjectID = "895"; */
+"895.title" = "Remove";
+
+/* Class = "NSMenuItem"; title = "Upgrade"; ObjectID = "896"; */
+"896.title" = "Upgrade";
+
+/* Class = "NSMenuItem"; title = "Run in Terminal"; ObjectID = "897"; */
+"897.title" = "Run in Terminal";
+
+/* Class = "NSMenuItem"; title = "Install"; ObjectID = "898"; */
+"898.title" = "Install";
+
+/* Class = "NSMenu"; title = "Run in Terminal"; ObjectID = "899"; */
+"899.title" = "Run in Terminal";
+
+/* Class = "NSMenuItem"; title = "Update"; ObjectID = "900"; */
+"900.title" = "Update";
+
+/* Class = "NSMenuItem"; title = "Stable"; ObjectID = "940"; */
+"940.title" = "Stable";
+
+/* Class = "NSMenuItem"; title = "Describe"; ObjectID = "941"; */
+"941.title" = "Describe";
+
+/* Class = "NSTextFieldCell"; title = "9"; ObjectID = "100195"; */
+"100195.title" = "9";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100207"; */
+"100207.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100208"; */
+"100208.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100209"; */
+"100209.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100264"; */
+"100264.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100312"; */
+"100312.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Redwood City"; ObjectID = "100509"; */
+"100509.title" = "Redwood City";
+
+/* Class = "NSTextFieldCell"; title = "Fink attend une réponse.  \nLisez le dernier message ci-dessous et sélectionnez une option:"; ObjectID = "100526"; */
+"100526.title" = "Fink attend une réponse.  \nLisez le dernier message ci-dessous et sélectionnez une option:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100527"; */
+"100527.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Soumettre"; ObjectID = "100534"; */
+"100534.title" = "Soumettre";
+
+/* Class = "NSTextFieldCell"; title = "Démarrage\n"; ObjectID = "100572"; */
+"100572.title" = "Démarrage\n";
+
+/* Class = "NSButtonCell"; title = "Annuler"; ObjectID = "100620"; */
+"100620.title" = "Annuler";
