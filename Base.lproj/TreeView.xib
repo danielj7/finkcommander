@@ -59,7 +59,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView autoresizesSubviews="NO" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" autosaveColumns="NO" headerView="200044" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="41" id="42">
-                                                        <rect key="frame" x="0.0" y="0.0" width="553" height="19"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="568" height="19"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

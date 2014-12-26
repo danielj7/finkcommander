@@ -1,0 +1,18 @@
+
+/* Class = "NSPanel"; title = "Caution"; ObjectID = "9"; */
+"9.title" = "Caution";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "100006"; */
+"100006.title" = "Cancel";
+
+/* Class = "NSButtonCell"; title = "Terminate"; ObjectID = "100007"; */
+"100007.title" = "Terminate";
+
+/* Class = "NSButtonCell"; title = "Another placeholder, but the following text is constant:"; ObjectID = "100010"; */
+"100010.title" = "Another placeholder, but the following text is constant:";
+
+/* Class = "NSTextFieldCell"; title = "This is a placeholder message.  The button titles\nare set programatically."; ObjectID = "100011"; */
+"100011.title" = "This is a placeholder message.  The button titles\nare set programatically.";
+
+/* Class = "NSTextFieldCell"; title = "To turn this warning back on, go to the Commander tab in the Preferences pane."; ObjectID = "100012"; */
+"100012.title" = "To turn this warning back on, go to the Commander tab in the Preferences pane.";

@@ -138,13 +138,14 @@
 		65B31CA91A4D9A44002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PackageInfo.strings; sourceTree = "<group>"; };
 		65B31CAB1A4D9D7E002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TreeView.strings; sourceTree = "<group>"; };
 		65B31CAC1A4D9D92002ED341 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TreeView.strings; sourceTree = "<group>"; };
-		65C250161A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Dialogs.xib; sourceTree = "<group>"; };
+		65B31CAE1A4DD16C002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Dialogs.strings; sourceTree = "<group>"; };
+		65B31CAF1A4DD1B0002ED341 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Dialogs.strings; sourceTree = "<group>"; };
+		65B31CB01A4DD1B6002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Dialogs.strings; sourceTree = "<group>"; };
+		65B31CB11A4DD1BB002ED341 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Dialogs.strings; sourceTree = "<group>"; };
 		65C250171A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250181A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Preferences.xib; sourceTree = "<group>"; };
-		65C2501A1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C2501B1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C2501D1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Preferences.xib; sourceTree = "<group>"; };
-		65C2501E1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C2501F1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250201A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/Preferences.xib; sourceTree = "<group>"; };
 		65C250211A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TreeView.xib; sourceTree = "<group>"; };
@@ -748,10 +749,11 @@
 		65C250071A4C780D00E02437 /* Dialogs.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C250161A4C783100E02437 /* de */,
-				65C2501A1A4C785500E02437 /* fr */,
-				65C2501E1A4C787300E02437 /* ja */,
 				65C250231A4C7B5900E02437 /* Base */,
+				65B31CAE1A4DD16C002ED341 /* en */,
+				65B31CAF1A4DD1B0002ED341 /* de */,
+				65B31CB01A4DD1B6002ED341 /* fr */,
+				65B31CB11A4DD1BB002ED341 /* ja */,
 			);
 			name = Dialogs.xib;
 			sourceTree = "<group>";

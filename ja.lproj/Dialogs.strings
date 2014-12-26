@@ -1,0 +1,18 @@
+
+/* Class = "NSWindow"; title = "警告"; ObjectID = "9"; */
+"9.title" = "警告";
+
+/* Class = "NSButtonCell"; title = "キャンセル"; ObjectID = "100006"; */
+"100006.title" = "キャンセル";
+
+/* Class = "NSButtonCell"; title = "中止"; ObjectID = "100007"; */
+"100007.title" = "中止";
+
+/* Class = "NSButtonCell"; title = "Another placeholder, but the following text is constant:"; ObjectID = "100010"; */
+"100010.title" = "Another placeholder, but the following text is constant:";
+
+/* Class = "NSTextFieldCell"; title = "This is a placeholder message.  The button titles\nare set programatically."; ObjectID = "100011"; */
+"100011.title" = "This is a placeholder message.  The button titles\nare set programatically.";
+
+/* Class = "NSTextFieldCell"; title = "この警告を元に戻すには、環境設定パネルのコマンドタブに行ってください。"; ObjectID = "100012"; */
+"100012.title" = "この警告を元に戻すには、環境設定パネルのコマンドタブに行ってください。";

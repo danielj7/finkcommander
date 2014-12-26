@@ -1,0 +1,21 @@
+
+/* Class = "NSPanel"; title = "Caution"; ObjectID = "9"; */
+"9.title" = "Caution";
+
+/* Class = "NSButtonCell"; title = "No"; ObjectID = "100006"; */
+"100006.title" = "No";
+
+/* Class = "NSButtonCell"; title = "Yes"; ObjectID = "100007"; */
+"100007.title" = "Yes";
+
+/* Class = "NSButtonCell"; title = "Show an alert before"; ObjectID = "100010"; */
+"100010.title" = "Show an alert before";
+
+/* Class = "NSTextFieldCell"; title = "Are you certain you want to remove the selected package?"; ObjectID = "100011"; */
+"100011.title" = "Are you certain you want to remove the selected package?";
+
+/* Class = "NSTextFieldCell"; title = "Diese Option kann jederzeit im Menü Einstellungen, Feld 'Commander', wieder angewählt werden."; ObjectID = "100012"; */
+"100012.title" = "Diese Option kann jederzeit im Menü Einstellungen, Feld 'Commander', wieder angewählt werden.";
+
+/* Class = "NSTextFieldCell"; title = "removing packages"; ObjectID = "100028"; */
+"100028.title" = "removing packages";
