@@ -1,0 +1,39 @@
+
+/* Class = "NSWindow"; title = "Package File Viewer"; ObjectID = "5"; */
+"5.title" = "Package File Viewer";
+
+/* Class = "NSTableColumn"; headerCell.title = "Name"; ObjectID = "41"; */
+"41.headerCell.title" = "Name";
+
+/* Class = "NSTableColumn"; headerCell.title = "Size"; ObjectID = "43"; */
+"43.headerCell.title" = "Size";
+
+/* Class = "NSTableColumn"; headerCell.title = "Date Modified"; ObjectID = "47"; */
+"47.headerCell.title" = "Date Modified";
+
+/* Class = "NSTabViewItem"; label = "Outline"; ObjectID = "50"; */
+"50.label" = "Outline";
+
+/* Class = "NSTabViewItem"; label = "Browser"; ObjectID = "51"; */
+"51.label" = "Browser";
+
+/* Class = "NSMenu"; title = "Menu"; ObjectID = "90"; */
+"90.title" = "Menu";
+
+/* Class = "NSMenuItem"; title = "Open"; ObjectID = "91"; */
+"91.title" = "Open";
+
+/* Class = "NSMenuItem"; title = "Item2"; ObjectID = "92"; */
+"92.title" = "Item2";
+
+/* Class = "NSTextFieldCell"; title = "kg"; ObjectID = "100041"; */
+"100041.title" = "kg";
+
+/* Class = "NSTextFieldCell"; title = "Kilogram"; ObjectID = "100043"; */
+"100043.title" = "Kilogram";
+
+/* Class = "NSTextFieldCell"; title = "Kilogram"; ObjectID = "100047"; */
+"100047.title" = "Kilogram";
+
+/* Class = "NSTextFieldCell"; title = "Building package tree . . .          "; ObjectID = "100060"; */
+"100060.title" = "Building package tree . . .          ";

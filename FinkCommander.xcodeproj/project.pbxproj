@@ -136,10 +136,11 @@
 		65B31CA61A4D9830002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en; path = "en.lproj/FinkCommander Help"; sourceTree = "<group>"; };
 		65B31CA81A4D9A15002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageInfo.strings; sourceTree = "<group>"; };
 		65B31CA91A4D9A44002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PackageInfo.strings; sourceTree = "<group>"; };
+		65B31CAB1A4D9D7E002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TreeView.strings; sourceTree = "<group>"; };
+		65B31CAC1A4D9D92002ED341 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/TreeView.strings; sourceTree = "<group>"; };
 		65C250161A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C250171A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250181A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Preferences.xib; sourceTree = "<group>"; };
-		65C250191A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/TreeView.xib; sourceTree = "<group>"; };
 		65C2501A1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C2501B1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C2501D1A4C785500E02437 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/Preferences.xib; sourceTree = "<group>"; };
@@ -790,8 +791,9 @@
 		65C2500F1A4C780D00E02437 /* TreeView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C250191A4C783100E02437 /* de */,
 				65C250211A4C7B5900E02437 /* Base */,
+				65B31CAB1A4D9D7E002ED341 /* en */,
+				65B31CAC1A4D9D92002ED341 /* de */,
 			);
 			name = TreeView.xib;
 			sourceTree = "<group>";
