@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="FinkPreferences">
             <connections>
-                <outlet property="FinkCheckForNewVersion" destination="256" id="318"/>
                 <outlet property="addEnvironmentSettingButton" destination="467" id="518"/>
                 <outlet property="allowRegexFilterButton" destination="591" id="593"/>
                 <outlet property="alwaysChooseDefaultsButton" destination="419" id="436"/>
@@ -880,7 +879,7 @@ fink.conf file:</string>
                             <tabViewItem label="Software Update" identifier="" id="604">
                                 <view key="view" autoresizesSubviews="NO" id="603">
                                     <rect key="frame" x="10" y="33" width="605" height="379"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField autoresizesSubviews="NO" verticalHuggingPriority="750" id="612">
                                             <rect key="frame" x="17" y="342" width="571" height="17"/>

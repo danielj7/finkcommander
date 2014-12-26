@@ -14,7 +14,6 @@
                 <outlet property="outlineView" destination="42" id="89"/>
                 <outlet property="sbTreeWindow" destination="5" id="126"/>
                 <outlet property="tabView" destination="49" id="56"/>
-                <outlet property="window" destination="5" id="13"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>

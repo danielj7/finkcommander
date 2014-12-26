@@ -100,6 +100,7 @@ Contact the author at sburrious@users.sourceforge.net.
 	//Main window outlets
 	IBOutlet NSWindow *window;
 	IBOutlet id tableView;
+    IBOutlet id tableViewController;
 	IBOutlet NSScrollView *tableScrollView;
 	IBOutlet NSScrollView *outputScrollView;
 	IBOutlet id splitView;
