@@ -128,10 +128,12 @@
 		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
-		655B06EF1A4D18020079F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Toolbar.plist; sourceTree = "<group>"; };
-		655B06F01A4D18420079F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		655B06F11A4D18550079F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		655B06F21A4D18660079F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Programmatic.strings; sourceTree = "<group>"; };
+		65B31CA11A4D9774002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		65B31CA21A4D978B002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		65B31CA31A4D97D8002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		65B31CA41A4D97F4002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Programmatic.strings; sourceTree = "<group>"; };
+		65B31CA51A4D9820002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/README.html; sourceTree = "<group>"; };
+		65B31CA61A4D9830002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en; path = "en.lproj/FinkCommander Help"; sourceTree = "<group>"; };
 		65C250161A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C250171A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250181A4C783100E02437 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Preferences.xib; sourceTree = "<group>"; };
@@ -148,8 +150,6 @@
 		65C250231A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Dialogs.xib; sourceTree = "<group>"; };
 		65C250241A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250251A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Preferences.xib; sourceTree = "<group>"; };
-		65E051821A4D1918006B40D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/README.html; sourceTree = "<group>"; };
-		65E051A81A4D1A1B006B40D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Base; path = "Base.lproj/FinkCommander Help"; sourceTree = "<group>"; };
 		C77360DE03E9D23200EE6D09 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = de.lproj/README.html; sourceTree = "<group>"; };
 		F5019E9703625D2701A80165 /* FinkToolbar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FinkToolbar.m; sourceTree = "<group>"; };
 		F5019E9903625D4201A80165 /* FinkToolbar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FinkToolbar.h; sourceTree = "<group>"; };
@@ -738,7 +738,7 @@
 			children = (
 				F53B4D0A031033D401A80164 /* de */,
 				557B5389108D37C700367D4E /* Japanese */,
-				655B06F01A4D18420079F44E /* Base */,
+				65B31CA21A4D978B002ED341 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -798,7 +798,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				C77360DE03E9D23200EE6D09 /* de */,
-				65E051821A4D1918006B40D3 /* Base */,
+				65B31CA51A4D9820002ED341 /* en */,
 			);
 			name = README.html;
 			sourceTree = "<group>";
@@ -817,7 +817,7 @@
 			children = (
 				F53B4D0803100C5101A80164 /* de */,
 				557B5387108D37AC00367D4E /* Japanese */,
-				655B06EF1A4D18020079F44E /* Base */,
+				65B31CA31A4D97D8002ED341 /* en */,
 			);
 			name = Toolbar.plist;
 			sourceTree = "<group>";
@@ -827,7 +827,7 @@
 			children = (
 				F5DABE8B03359EF601FEFA3F /* de */,
 				557B5391108D380A00367D4E /* Japanese */,
-				65E051A81A4D1A1B006B40D3 /* Base */,
+				65B31CA61A4D9830002ED341 /* en */,
 			);
 			name = "FinkCommander Help";
 			sourceTree = "<group>";
@@ -837,7 +837,7 @@
 			children = (
 				F5D3EE420336DD8B01A80165 /* de */,
 				557B538A108D37D600367D4E /* Japanese */,
-				655B06F11A4D18550079F44E /* Base */,
+				65B31CA11A4D9774002ED341 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -872,7 +872,7 @@
 			children = (
 				FBB8F6DD03BFE6FF00A8016B /* de */,
 				557B538B108D37EC00367D4E /* Japanese */,
-				655B06F21A4D18660079F44E /* Base */,
+				65B31CA41A4D97F4002ED341 /* en */,
 			);
 			name = Programmatic.strings;
 			sourceTree = "<group>";
