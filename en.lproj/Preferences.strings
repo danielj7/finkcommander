@@ -1,0 +1,273 @@
+
+/* Class = "NSWindow"; title = "FinkCommander Preferences"; ObjectID = "5"; */
+"5.title" = "FinkCommander Preferences";
+
+/* Class = "NSTabViewItem"; label = "Commander"; ObjectID = "11"; */
+"11.label" = "Commander";
+
+/* Class = "NSTabViewItem"; label = "Fink"; ObjectID = "115"; */
+"115.label" = "Fink";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Help Fink by testing the latest Unix software"; ObjectID = "120"; */
+"120.ibShadowedToolTip" = "Help Fink by testing the latest Unix software";
+
+/* Class = "NSTabViewItem"; label = "Download"; ObjectID = "242"; */
+"242.label" = "Download";
+
+/* Class = "NSTabViewItem"; label = "Paths"; ObjectID = "248"; */
+"248.label" = "Paths";
+
+/* Class = "NSTabViewItem"; label = "Display"; ObjectID = "252"; */
+"252.label" = "Display";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Hides the output, except when you really need it"; ObjectID = "256"; */
+"256.ibShadowedToolTip" = "Hides the output, except when you really need it";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Allows use of apt-get from behind a firewall"; ObjectID = "267"; */
+"267.ibShadowedToolTip" = "Allows use of apt-get from behind a firewall";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Allows use of apt-get from behind a firewall"; ObjectID = "272"; */
+"272.ibShadowedToolTip" = "Allows use of apt-get from behind a firewall";
+
+/* Class = "NSButtonCell"; title = "sudo"; ObjectID = "292"; */
+"292.title" = "sudo";
+
+/* Class = "NSButtonCell"; title = "su"; ObjectID = "293"; */
+"293.title" = "su";
+
+/* Class = "NSMatrix"; ibShadowedToolTip = "Sets path to fink files.  Use this only if FinkCommander could not find the path."; ObjectID = "345"; */
+"345.ibShadowedToolTip" = "Sets path to fink files.  Use this only if FinkCommander could not find the path.";
+
+/* Class = "NSButtonCell"; title = "Use default (/sw)"; ObjectID = "346"; */
+"346.title" = "Use default (/sw)";
+
+/* Class = "NSButtonCell"; title = "Use this path:"; ObjectID = "347"; */
+"347.title" = "Use this path:";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Come on; it's just one more line"; ObjectID = "399"; */
+"399.ibShadowedToolTip" = "Come on; it's just one more line";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Let fink decide"; ObjectID = "419"; */
+"419.ibShadowedToolTip" = "Let fink decide";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Limit the memory used by the output view"; ObjectID = "433"; */
+"433.ibShadowedToolTip" = "Limit the memory used by the output view";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Jump to the end for new input no matter where you have scrolled to"; ObjectID = "441"; */
+"441.ibShadowedToolTip" = "Jump to the end for new input no matter where you have scrolled to";
+
+/* Class = "NSButton"; ibShadowedToolTip = "The way Mail does it"; ObjectID = "447"; */
+"447.ibShadowedToolTip" = "The way Mail does it";
+
+/* Class = "NSTabViewItem"; label = "Environment"; ObjectID = "455"; */
+"455.label" = "Environment";
+
+/* Class = "NSTableColumn"; headerCell.title = "Value"; ObjectID = "457"; */
+"457.headerCell.title" = "Value";
+
+/* Class = "NSTableColumn"; headerCell.title = "Key"; ObjectID = "459"; */
+"459.headerCell.title" = "Key";
+
+/* Class = "NSButtonCell"; title = "curl"; ObjectID = "491"; */
+"491.title" = "curl";
+
+/* Class = "NSButtonCell"; title = "wget"; ObjectID = "492"; */
+"492.title" = "wget";
+
+/* Class = "NSButtonCell"; title = "axel"; ObjectID = "493"; */
+"493.title" = "axel";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Restore to default settings"; ObjectID = "496"; */
+"496.ibShadowedToolTip" = "Restore to default settings";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "532"; */
+"532.title" = "None";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "533"; */
+"533.title" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "High"; ObjectID = "534"; */
+"534.title" = "High";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Show unstable version even when identical to stable"; ObjectID = "551"; */
+"551.ibShadowedToolTip" = "Show unstable version even when identical to stable";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "579"; */
+"579.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "581"; */
+"581.title" = "Box";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Support regular expressions in filter"; ObjectID = "591"; */
+"591.ibShadowedToolTip" = "Support regular expressions in filter";
+
+/* Class = "NSTabViewItem"; label = "Software Update"; ObjectID = "604"; */
+"604.label" = "Software Update";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "100012"; */
+"100012.title" = "OK";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "100047"; */
+"100047.title" = "Cancel";
+
+/* Class = "NSButtonCell"; title = "Use unstable packages"; ObjectID = "100120"; */
+"100120.title" = "Use unstable packages";
+
+/* Class = "NSButtonCell"; title = "Use unstable cryptography packages*"; ObjectID = "100123"; */
+"100123.title" = "Use unstable cryptography packages*";
+
+/* Class = "NSTextFieldCell"; title = "Change configuration settings in the fink.conf file:\n\nfink.conf file:"; ObjectID = "100138"; */
+"100138.title" = "Change configuration settings in the fink.conf file:\n\nfink.conf file:";
+
+/* Class = "NSButtonCell"; title = "Apply"; ObjectID = "100177"; */
+"100177.title" = "Apply";
+
+/* Class = "NSTextFieldCell"; title = "Running Commands:\n"; ObjectID = "100190"; */
+"100190.title" = "Running Commands:\n";
+
+/* Class = "NSButtonCell"; title = "Keep the build directory after installation"; ObjectID = "100192"; */
+"100192.title" = "Keep the build directory after installation";
+
+/* Class = "NSButtonCell"; title = "Keep the root directory after installation"; ObjectID = "100193"; */
+"100193.title" = "Keep the root directory after installation";
+
+/* Class = "NSTextFieldCell"; title = "*Select only if allowed by US export laws."; ObjectID = "100240"; */
+"100240.title" = "*Select only if allowed by US export laws.";
+
+/* Class = "NSButtonCell"; title = "Automatically expand and collapse output"; ObjectID = "100256"; */
+"100256.title" = "Automatically expand and collapse output";
+
+/* Class = "NSButtonCell"; title = "Browse…"; ObjectID = "100266"; */
+"100266.title" = "Browse…";
+
+/* Class = "NSButtonCell"; title = "Use this HTTP proxy when downloading:"; ObjectID = "100267"; */
+"100267.title" = "Use this HTTP proxy when downloading:";
+
+/* Class = "NSButtonCell"; title = "Look for downloads in this directory:"; ObjectID = "100268"; */
+"100268.title" = "Look for downloads in this directory:";
+
+/* Class = "NSButtonCell"; title = "Use this FTP proxy when downloading:"; ObjectID = "100272"; */
+"100272.title" = "Use this FTP proxy when downloading:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100287"; */
+"100287.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "Acquire root privileges with:"; ObjectID = "100290"; */
+"100290.title" = "Acquire root privileges with:";
+
+/* Class = "NSTextFieldCell"; title = "Change configuration settings in the fink.conf file:\n\nfink.conf file:"; ObjectID = "100294"; */
+"100294.title" = "Change configuration settings in the fink.conf file:\n\nfink.conf file:";
+
+/* Class = "NSButtonCell"; title = "Use passive mode FTP"; ObjectID = "100326"; */
+"100326.title" = "Use passive mode FTP";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100345"; */
+"100345.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Browse…"; ObjectID = "100354"; */
+"100354.title" = "Browse…";
+
+/* Class = "NSTextFieldCell"; title = "Path to fink files:"; ObjectID = "100355"; */
+"100355.title" = "Path to fink files:";
+
+/* Class = "NSButtonCell"; title = "Browse…"; ObjectID = "100358"; */
+"100358.title" = "Browse…";
+
+/* Class = "NSButtonCell"; title = "Save output logs here:"; ObjectID = "100367"; */
+"100367.title" = "Save output logs here:";
+
+/* Class = "NSTextFieldCell"; title = "System Font Text"; ObjectID = "100398"; */
+"100398.title" = "System Font Text";
+
+/* Class = "NSButtonCell"; title = "Give FinkCommander credit in emails"; ObjectID = "100399"; */
+"100399.title" = "Give FinkCommander credit in emails";
+
+/* Class = "NSTextFieldCell"; title = "Feedback:\n"; ObjectID = "100401"; */
+"100401.title" = "Feedback:\n";
+
+/* Class = "NSButtonCell"; title = "Always choose the default response to prompts"; ObjectID = "100419"; */
+"100419.title" = "Always choose the default response to prompts";
+
+/* Class = "NSButtonCell"; title = "Warn me before removing a package"; ObjectID = "100421"; */
+"100421.title" = "Warn me before removing a package";
+
+/* Class = "NSButtonCell"; title = "Show the number of packages in the window title"; ObjectID = "100424"; */
+"100424.title" = "Show the number of packages in the window title";
+
+/* Class = "NSButtonCell"; title = "Limit output scrollback to "; ObjectID = "100433"; */
+"100433.title" = "Limit output scrollback to ";
+
+/* Class = "NSTextFieldCell"; title = "lines\n"; ObjectID = "100435"; */
+"100435.title" = "lines\n";
+
+/* Class = "NSButtonCell"; title = "Scroll to the bottom when input is received"; ObjectID = "100441"; */
+"100441.title" = "Scroll to the bottom when input is received";
+
+/* Class = "NSTextFieldCell"; title = "Output:"; ObjectID = "100445"; */
+"100445.title" = "Output:";
+
+/* Class = "NSButtonCell"; title = "Scroll to the last selection after sorting the table"; ObjectID = "100447"; */
+"100447.title" = "Scroll to the last selection after sorting the table";
+
+/* Class = "NSTextFieldCell"; title = "Table:"; ObjectID = "100448"; */
+"100448.title" = "Table:";
+
+/* Class = "NSTextFieldCell"; title = "Environment Settings:"; ObjectID = "100461"; */
+"100461.title" = "Environment Settings:";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "100462"; */
+"100462.title" = "Name:";
+
+/* Class = "NSTextFieldCell"; title = "Value:"; ObjectID = "100463"; */
+"100463.title" = "Value:";
+
+/* Class = "NSButtonCell"; title = "Delete"; ObjectID = "100466"; */
+"100466.title" = "Delete";
+
+/* Class = "NSButtonCell"; title = "Add"; ObjectID = "100467"; */
+"100467.title" = "Add";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100487"; */
+"100487.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "Download with:"; ObjectID = "100494"; */
+"100494.title" = "Download with:";
+
+/* Class = "NSButtonCell"; title = "Restore"; ObjectID = "100496"; */
+"100496.title" = "Restore";
+
+/* Class = "NSTextFieldCell"; title = "Verbosity:"; ObjectID = "100535"; */
+"100535.title" = "Verbosity:";
+
+/* Class = "NSButtonCell"; title = "Show redundant unstable package versions"; ObjectID = "100551"; */
+"100551.title" = "Show redundant unstable package versions";
+
+/* Class = "NSTextFieldCell"; title = "This change will take effect the next time the table is updated."; ObjectID = "100557"; */
+"100557.title" = "This change will take effect the next time the table is updated.";
+
+/* Class = "NSTextFieldCell"; title = "This change will take effect the next time the table is updated."; ObjectID = "100558"; */
+"100558.title" = "This change will take effect the next time the table is updated.";
+
+/* Class = "NSTextFieldCell"; title = "Window Title:"; ObjectID = "100573"; */
+"100573.title" = "Window Title:";
+
+/* Class = "NSButtonCell"; title = "Warn me before terminating a command"; ObjectID = "100574"; */
+"100574.title" = "Warn me before terminating a command";
+
+/* Class = "NSButtonCell"; title = "Browse..."; ObjectID = "100577"; */
+"100577.title" = "Browse...";
+
+/* Class = "NSTextFieldCell"; title = "Path to perl:"; ObjectID = "100578"; */
+"100578.title" = "Path to perl:";
+
+/* Class = "NSButtonCell"; title = "Support regular expressions in filter"; ObjectID = "100591"; */
+"100591.title" = "Support regular expressions in filter";
+
+/* Class = "NSTextFieldCell"; title = "Software Update checks for new and updated versions of FinkCommander."; ObjectID = "100612"; */
+"100612.title" = "Software Update checks for new and updated versions of FinkCommander.";
+
+/* Class = "NSButtonCell"; title = "Automatically check for updates"; ObjectID = "100614"; */
+"100614.title" = "Automatically check for updates";
+
+/* Class = "NSButtonCell"; title = "Check Now"; ObjectID = "100615"; */
+"100615.title" = "Check Now";

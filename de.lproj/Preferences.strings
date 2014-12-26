@@ -1,0 +1,237 @@
+
+/* Class = "NSWindow"; title = "FinkCommander Einstellungen"; ObjectID = "5"; */
+"5.title" = "FinkCommander Einstellungen";
+
+/* Class = "NSTabViewItem"; label = "Commander"; ObjectID = "11"; */
+"11.label" = "Commander";
+
+/* Class = "NSTabViewItem"; label = "Fink"; ObjectID = "115"; */
+"115.label" = "Fink";
+
+/* Class = "NSTabViewItem"; label = "Download"; ObjectID = "242"; */
+"242.label" = "Download";
+
+/* Class = "NSTabViewItem"; label = "Verzeichnisse"; ObjectID = "248"; */
+"248.label" = "Verzeichnisse";
+
+/* Class = "NSTabViewItem"; label = "Darstellung"; ObjectID = "252"; */
+"252.label" = "Darstellung";
+
+/* Class = "NSButtonCell"; title = "sudo"; ObjectID = "292"; */
+"292.title" = "sudo";
+
+/* Class = "NSButtonCell"; title = "su"; ObjectID = "293"; */
+"293.title" = "su";
+
+/* Class = "NSMatrix"; ibShadowedToolTip = "Sie brauchen das Verzeichnis hier zu bezeichnen nur wenn FinkCommander es nicht finden könnte"; ObjectID = "345"; */
+"345.ibShadowedToolTip" = "Sie brauchen das Verzeichnis hier zu bezeichnen nur wenn FinkCommander es nicht finden könnte";
+
+/* Class = "NSButtonCell"; title = "Standardverzeichnis (/sw) verwenden"; ObjectID = "346"; */
+"346.title" = "Standardverzeichnis (/sw) verwenden";
+
+/* Class = "NSButtonCell"; title = "Dieses Verzeichnis verwenden:"; ObjectID = "347"; */
+"347.title" = "Dieses Verzeichnis verwenden:";
+
+/* Class = "NSTabViewItem"; label = "Umgebung"; ObjectID = "455"; */
+"455.label" = "Umgebung";
+
+/* Class = "NSTableColumn"; headerCell.title = "Wert"; ObjectID = "457"; */
+"457.headerCell.title" = "Wert";
+
+/* Class = "NSTableColumn"; headerCell.title = "Name"; ObjectID = "459"; */
+"459.headerCell.title" = "Name";
+
+/* Class = "NSButtonCell"; title = "curl"; ObjectID = "491"; */
+"491.title" = "curl";
+
+/* Class = "NSButtonCell"; title = "wget"; ObjectID = "492"; */
+"492.title" = "wget";
+
+/* Class = "NSButtonCell"; title = "axel"; ObjectID = "493"; */
+"493.title" = "axel";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Standardeinstellungen"; ObjectID = "496"; */
+"496.ibShadowedToolTip" = "Standardeinstellungen";
+
+/* Class = "NSMenuItem"; title = "Keiner"; ObjectID = "532"; */
+"532.title" = "Keiner";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "533"; */
+"533.title" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "Hoch"; ObjectID = "534"; */
+"534.title" = "Hoch";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "572"; */
+"572.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "578"; */
+"578.title" = "Box";
+
+/* Class = "NSTabViewItem"; label = "Software-Aktualisierung"; ObjectID = "589"; */
+"589.label" = "Software-Aktualisierung";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "100012"; */
+"100012.title" = "OK";
+
+/* Class = "NSButtonCell"; title = "Abbrechen"; ObjectID = "100047"; */
+"100047.title" = "Abbrechen";
+
+/* Class = "NSButtonCell"; title = "Pakete aus Unstable verwenden"; ObjectID = "100120"; */
+"100120.title" = "Pakete aus Unstable verwenden";
+
+/* Class = "NSButtonCell"; title = "Crypto-Pakete aus Unstable verwenden*"; ObjectID = "100123"; */
+"100123.title" = "Crypto-Pakete aus Unstable verwenden*";
+
+/* Class = "NSTextFieldCell"; title = "Einstellungen in fink.conf verändern:\n\nfink.conf file:"; ObjectID = "100138"; */
+"100138.title" = "Einstellungen in fink.conf verändern:\n\nfink.conf file:";
+
+/* Class = "NSButtonCell"; title = "Anwenden"; ObjectID = "100177"; */
+"100177.title" = "Anwenden";
+
+/* Class = "NSTextFieldCell"; title = "Befehle:\n"; ObjectID = "100190"; */
+"100190.title" = "Befehle:\n";
+
+/* Class = "NSButtonCell"; title = "Das Build-Verzeichnis nach der Installation behalten "; ObjectID = "100192"; */
+"100192.title" = "Das Build-Verzeichnis nach der Installation behalten ";
+
+/* Class = "NSButtonCell"; title = "Das Root-Verzeichnis nach der Installation behalten"; ObjectID = "100193"; */
+"100193.title" = "Das Root-Verzeichnis nach der Installation behalten";
+
+/* Class = "NSTextFieldCell"; title = "*Nur auswählen wenn U.S. Exportgesetze dies erlauben"; ObjectID = "100240"; */
+"100240.title" = "*Nur auswählen wenn U.S. Exportgesetze dies erlauben";
+
+/* Class = "NSButtonCell"; title = "Ausgabe automatisch auf- und zuklappen"; ObjectID = "100256"; */
+"100256.title" = "Ausgabe automatisch auf- und zuklappen";
+
+/* Class = "NSButtonCell"; title = "Auswählen…"; ObjectID = "100266"; */
+"100266.title" = "Auswählen…";
+
+/* Class = "NSButtonCell"; title = "Diesen HTTP Proxy beim Download verwenden:"; ObjectID = "100267"; */
+"100267.title" = "Diesen HTTP Proxy beim Download verwenden:";
+
+/* Class = "NSButtonCell"; title = "In diesem Verzeichnis nach Downloads suchen:"; ObjectID = "100268"; */
+"100268.title" = "In diesem Verzeichnis nach Downloads suchen:";
+
+/* Class = "NSButtonCell"; title = "Diesen FTP Proxy beim Download verwenden:"; ObjectID = "100272"; */
+"100272.title" = "Diesen FTP Proxy beim Download verwenden:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100287"; */
+"100287.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "root Berechtigung erlangen mit:"; ObjectID = "100290"; */
+"100290.title" = "root Berechtigung erlangen mit:";
+
+/* Class = "NSButtonCell"; title = "FTP im Passiv-Modus benutzen"; ObjectID = "100326"; */
+"100326.title" = "FTP im Passiv-Modus benutzen";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100345"; */
+"100345.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Auswählen…"; ObjectID = "100354"; */
+"100354.title" = "Auswählen…";
+
+/* Class = "NSTextFieldCell"; title = "Verzeichnis für fink:"; ObjectID = "100355"; */
+"100355.title" = "Verzeichnis für fink:";
+
+/* Class = "NSButtonCell"; title = "Auswählen…"; ObjectID = "100358"; */
+"100358.title" = "Auswählen…";
+
+/* Class = "NSButtonCell"; title = "Inhalt des Ausgabe-Fensters in diesem Verzeichnis sichern:"; ObjectID = "100367"; */
+"100367.title" = "Inhalt des Ausgabe-Fensters in diesem Verzeichnis sichern:";
+
+/* Class = "NSTextFieldCell"; title = "System Font Text"; ObjectID = "100398"; */
+"100398.title" = "System Font Text";
+
+/* Class = "NSButtonCell"; title = "FinkCommander in E-mails erwähnen "; ObjectID = "100399"; */
+"100399.title" = "FinkCommander in E-mails erwähnen ";
+
+/* Class = "NSTextFieldCell"; title = "Kommunikation mit Maintainer:\n"; ObjectID = "100401"; */
+"100401.title" = "Kommunikation mit Maintainer:\n";
+
+/* Class = "NSButtonCell"; title = "Bei Fragen immer Vorschlag von Fink als Antwort verwenden"; ObjectID = "100419"; */
+"100419.title" = "Bei Fragen immer Vorschlag von Fink als Antwort verwenden";
+
+/* Class = "NSButtonCell"; title = "Warnen bevor ein Paket gelöscht wird"; ObjectID = "100420"; */
+"100420.title" = "Warnen bevor ein Paket gelöscht wird";
+
+/* Class = "NSButtonCell"; title = "Warnen bevor ein Befehl beendet wird"; ObjectID = "100421"; */
+"100421.title" = "Warnen bevor ein Befehl beendet wird";
+
+/* Class = "NSButtonCell"; title = "Anzahl Pakete im Fenstertitel anzeigen"; ObjectID = "100424"; */
+"100424.title" = "Anzahl Pakete im Fenstertitel anzeigen";
+
+/* Class = "NSButtonCell"; title = "Puffergrösse auf"; ObjectID = "100433"; */
+"100433.title" = "Puffergrösse auf";
+
+/* Class = "NSTextFieldCell"; title = "Zeilen begrenzen"; ObjectID = "100435"; */
+"100435.title" = "Zeilen begrenzen";
+
+/* Class = "NSButtonCell"; title = "Ans Ende springen wenn neue Ausgabe empfangen wird"; ObjectID = "100441"; */
+"100441.title" = "Ans Ende springen wenn neue Ausgabe empfangen wird";
+
+/* Class = "NSTextFieldCell"; title = "Ausgabe-Fenster:"; ObjectID = "100445"; */
+"100445.title" = "Ausgabe-Fenster:";
+
+/* Class = "NSButtonCell"; title = "Versionsnummer für Pakete aus Unstable immer anzeigen"; ObjectID = "100446"; */
+"100446.title" = "Versionsnummer für Pakete aus Unstable immer anzeigen";
+
+/* Class = "NSButtonCell"; title = "Zuletzt ausgewählte Zeile nach Sortierung anzeigen"; ObjectID = "100447"; */
+"100447.title" = "Zuletzt ausgewählte Zeile nach Sortierung anzeigen";
+
+/* Class = "NSTextFieldCell"; title = "Paketdaten:"; ObjectID = "100448"; */
+"100448.title" = "Paketdaten:";
+
+/* Class = "NSTextFieldCell"; title = "Umgebung bestimmen: "; ObjectID = "100461"; */
+"100461.title" = "Umgebung bestimmen: ";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "100462"; */
+"100462.title" = "Name:";
+
+/* Class = "NSTextFieldCell"; title = "Wert:"; ObjectID = "100463"; */
+"100463.title" = "Wert:";
+
+/* Class = "NSButtonCell"; title = "Entfernen"; ObjectID = "100466"; */
+"100466.title" = "Entfernen";
+
+/* Class = "NSButtonCell"; title = "Hinzufügen"; ObjectID = "100467"; */
+"100467.title" = "Hinzufügen";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100487"; */
+"100487.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "Download mit:"; ObjectID = "100494"; */
+"100494.title" = "Download mit:";
+
+/* Class = "NSButtonCell"; title = "Wiederherstellen"; ObjectID = "100496"; */
+"100496.title" = "Wiederherstellen";
+
+/* Class = "NSTextFieldCell"; title = "Detailgrad:"; ObjectID = "100535"; */
+"100535.title" = "Detailgrad:";
+
+/* Class = "NSTextFieldCell"; title = "Einstellungen in fink.conf verändern:\n\nfink.conf file:"; ObjectID = "100555"; */
+"100555.title" = "Einstellungen in fink.conf verändern:\n\nfink.conf file:";
+
+/* Class = "NSTextFieldCell"; title = "Diese Änderung wird erst nach dem nächsten Aktualisieren wirksam"; ObjectID = "100569"; */
+"100569.title" = "Diese Änderung wird erst nach dem nächsten Aktualisieren wirksam";
+
+/* Class = "NSTextFieldCell"; title = "Fenstertitel:"; ObjectID = "100574"; */
+"100574.title" = "Fenstertitel:";
+
+/* Class = "NSTextFieldCell"; title = "Diese Änderung wird erst nach dem nächsten Aktualisieren wirksam"; ObjectID = "100575"; */
+"100575.title" = "Diese Änderung wird erst nach dem nächsten Aktualisieren wirksam";
+
+/* Class = "NSButtonCell"; title = "Auswählen…"; ObjectID = "100581"; */
+"100581.title" = "Auswählen…";
+
+/* Class = "NSTextFieldCell"; title = "Verzeichnis für perl:"; ObjectID = "100582"; */
+"100582.title" = "Verzeichnis für perl:";
+
+/* Class = "NSButtonCell"; title = "Jetzt Suchen"; ObjectID = "100585"; */
+"100585.title" = "Jetzt Suchen";
+
+/* Class = "NSButtonCell"; title = "Automatisch nach neuen Versionen suchen"; ObjectID = "100586"; */
+"100586.title" = "Automatisch nach neuen Versionen suchen";
+
+/* Class = "NSTextFieldCell"; title = "Software-Aktualisierung sucht nach neuen und aktuellen Versionen von FinkCommander."; ObjectID = "100587"; */
+"100587.title" = "Software-Aktualisierung sucht nach neuen und aktuellen Versionen von FinkCommander.";

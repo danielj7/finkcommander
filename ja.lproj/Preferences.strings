@@ -1,0 +1,273 @@
+
+/* Class = "NSWindow"; title = "FinkCommander 環境設定"; ObjectID = "5"; */
+"5.title" = "FinkCommander 環境設定";
+
+/* Class = "NSTabViewItem"; label = "コマンド"; ObjectID = "11"; */
+"11.label" = "コマンド";
+
+/* Class = "NSTabViewItem"; label = "Fink"; ObjectID = "115"; */
+"115.label" = "Fink";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Help Fink by testing the latest Unix software"; ObjectID = "120"; */
+"120.ibShadowedToolTip" = "Help Fink by testing the latest Unix software";
+
+/* Class = "NSTabViewItem"; label = "ダウンロード"; ObjectID = "242"; */
+"242.label" = "ダウンロード";
+
+/* Class = "NSTabViewItem"; label = "パス"; ObjectID = "248"; */
+"248.label" = "パス";
+
+/* Class = "NSTabViewItem"; label = "表示"; ObjectID = "252"; */
+"252.label" = "表示";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Hides the output, except when you really need it"; ObjectID = "256"; */
+"256.ibShadowedToolTip" = "Hides the output, except when you really need it";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Allows use of apt-get from behind a firewall"; ObjectID = "267"; */
+"267.ibShadowedToolTip" = "Allows use of apt-get from behind a firewall";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Allows use of apt-get from behind a firewall"; ObjectID = "272"; */
+"272.ibShadowedToolTip" = "Allows use of apt-get from behind a firewall";
+
+/* Class = "NSButtonCell"; title = "sudo"; ObjectID = "292"; */
+"292.title" = "sudo";
+
+/* Class = "NSButtonCell"; title = "su"; ObjectID = "293"; */
+"293.title" = "su";
+
+/* Class = "NSMatrix"; ibShadowedToolTip = "Sets path to fink files.  Use this only if FinkCommander could not find the path."; ObjectID = "345"; */
+"345.ibShadowedToolTip" = "Sets path to fink files.  Use this only if FinkCommander could not find the path.";
+
+/* Class = "NSButtonCell"; title = "デフォルト (/sw) を使う"; ObjectID = "346"; */
+"346.title" = "デフォルト (/sw) を使う";
+
+/* Class = "NSButtonCell"; title = "このパスを使う:"; ObjectID = "347"; */
+"347.title" = "このパスを使う:";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Come on; it's just one more line"; ObjectID = "399"; */
+"399.ibShadowedToolTip" = "Come on; it's just one more line";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Let fink decide"; ObjectID = "419"; */
+"419.ibShadowedToolTip" = "Let fink decide";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Limit the memory used by the output view"; ObjectID = "433"; */
+"433.ibShadowedToolTip" = "Limit the memory used by the output view";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Jump to the end for new input no matter where you have scrolled to"; ObjectID = "441"; */
+"441.ibShadowedToolTip" = "Jump to the end for new input no matter where you have scrolled to";
+
+/* Class = "NSButton"; ibShadowedToolTip = "The way Mail does it"; ObjectID = "447"; */
+"447.ibShadowedToolTip" = "The way Mail does it";
+
+/* Class = "NSTabViewItem"; label = "環境"; ObjectID = "455"; */
+"455.label" = "環境";
+
+/* Class = "NSTableColumn"; headerCell.title = "値"; ObjectID = "457"; */
+"457.headerCell.title" = "値";
+
+/* Class = "NSTableColumn"; headerCell.title = "キー"; ObjectID = "459"; */
+"459.headerCell.title" = "キー";
+
+/* Class = "NSButtonCell"; title = "curl"; ObjectID = "491"; */
+"491.title" = "curl";
+
+/* Class = "NSButtonCell"; title = "wget"; ObjectID = "492"; */
+"492.title" = "wget";
+
+/* Class = "NSButtonCell"; title = "axel"; ObjectID = "493"; */
+"493.title" = "axel";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Restore to default settings"; ObjectID = "496"; */
+"496.ibShadowedToolTip" = "Restore to default settings";
+
+/* Class = "NSMenuItem"; title = "なし"; ObjectID = "532"; */
+"532.title" = "なし";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "533"; */
+"533.title" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "全部"; ObjectID = "534"; */
+"534.title" = "全部";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Show unstable version even when identical to stable"; ObjectID = "551"; */
+"551.ibShadowedToolTip" = "Show unstable version even when identical to stable";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "579"; */
+"579.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "581"; */
+"581.title" = "Box";
+
+/* Class = "NSButton"; ibShadowedToolTip = "Support regular expressions in filter"; ObjectID = "591"; */
+"591.ibShadowedToolTip" = "Support regular expressions in filter";
+
+/* Class = "NSTabViewItem"; label = "ソフトウェア・アップデート"; ObjectID = "604"; */
+"604.label" = "ソフトウェア・アップデート";
+
+/* Class = "NSButtonCell"; title = "OK"; ObjectID = "100012"; */
+"100012.title" = "OK";
+
+/* Class = "NSButtonCell"; title = "キャンセル"; ObjectID = "100047"; */
+"100047.title" = "キャンセル";
+
+/* Class = "NSButtonCell"; title = "不安定版(unstable)パッケージを使う"; ObjectID = "100120"; */
+"100120.title" = "不安定版(unstable)パッケージを使う";
+
+/* Class = "NSButtonCell"; title = "暗号化技術を含むパッケージを使う*"; ObjectID = "100123"; */
+"100123.title" = "暗号化技術を含むパッケージを使う*";
+
+/* Class = "NSTextFieldCell"; title = "fink.conf ファイルにある環境設定を変更する:\n\nfink.conf file:"; ObjectID = "100138"; */
+"100138.title" = "fink.conf ファイルにある環境設定を変更する:\n\nfink.conf file:";
+
+/* Class = "NSButtonCell"; title = "適用"; ObjectID = "100177"; */
+"100177.title" = "適用";
+
+/* Class = "NSTextFieldCell"; title = "コマンド実行:\n\n\n:\n"; ObjectID = "100190"; */
+"100190.title" = "コマンド実行:\n\n\n:\n";
+
+/* Class = "NSButtonCell"; title = "インストールのあとも build ディレクトリを残す"; ObjectID = "100192"; */
+"100192.title" = "インストールのあとも build ディレクトリを残す";
+
+/* Class = "NSButtonCell"; title = "インストールのあとも root ディレクトリを残す"; ObjectID = "100193"; */
+"100193.title" = "インストールのあとも root ディレクトリを残す";
+
+/* Class = "NSTextFieldCell"; title = "*アメリカ輸出法によって許可されている場合だけ選択してください\n"; ObjectID = "100240"; */
+"100240.title" = "*アメリカ輸出法によって許可されている場合だけ選択してください\n";
+
+/* Class = "NSButtonCell"; title = "自動で出力を開いたり閉じたりする"; ObjectID = "100256"; */
+"100256.title" = "自動で出力を開いたり閉じたりする";
+
+/* Class = "NSButtonCell"; title = "ブラウズ…"; ObjectID = "100266"; */
+"100266.title" = "ブラウズ…";
+
+/* Class = "NSButtonCell"; title = "ダウンロードにこの HTTP プロキシを使う:"; ObjectID = "100267"; */
+"100267.title" = "ダウンロードにこの HTTP プロキシを使う:";
+
+/* Class = "NSButtonCell"; title = "このディレクトリにダウンロードを探しに行く:"; ObjectID = "100268"; */
+"100268.title" = "このディレクトリにダウンロードを探しに行く:";
+
+/* Class = "NSButtonCell"; title = "ダウンロードにこの FTP プロキシを使う:"; ObjectID = "100272"; */
+"100272.title" = "ダウンロードにこの FTP プロキシを使う:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100287"; */
+"100287.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "root 権限取得に使うコマンド:\n"; ObjectID = "100290"; */
+"100290.title" = "root 権限取得に使うコマンド:\n";
+
+/* Class = "NSTextFieldCell"; title = "fink.conf ファイルにある設定を変える:\n\n\n\n設定を変える:\n\nfink.conf file:"; ObjectID = "100294"; */
+"100294.title" = "fink.conf ファイルにある設定を変える:\n\n\n\n設定を変える:\n\nfink.conf file:";
+
+/* Class = "NSButtonCell"; title = "FTP のパッシブモードを使う"; ObjectID = "100326"; */
+"100326.title" = "FTP のパッシブモードを使う";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100345"; */
+"100345.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "ブラウズ…"; ObjectID = "100354"; */
+"100354.title" = "ブラウズ…";
+
+/* Class = "NSTextFieldCell"; title = "fink ファイルのパス:"; ObjectID = "100355"; */
+"100355.title" = "fink ファイルのパス:";
+
+/* Class = "NSButtonCell"; title = "ブラウズ…"; ObjectID = "100358"; */
+"100358.title" = "ブラウズ…";
+
+/* Class = "NSButtonCell"; title = "出力のログをここに保存する:"; ObjectID = "100367"; */
+"100367.title" = "出力のログをここに保存する:";
+
+/* Class = "NSTextFieldCell"; title = "System Font Text"; ObjectID = "100398"; */
+"100398.title" = "System Font Text";
+
+/* Class = "NSButtonCell"; title = "メールで FinkCommander に動作報告を送る"; ObjectID = "100399"; */
+"100399.title" = "メールで FinkCommander に動作報告を送る";
+
+/* Class = "NSTextFieldCell"; title = "フィードバック:\n:\n"; ObjectID = "100401"; */
+"100401.title" = "フィードバック:\n:\n";
+
+/* Class = "NSButtonCell"; title = "入力を求められたら常にデフォルトの選択肢を選ぶ"; ObjectID = "100419"; */
+"100419.title" = "入力を求められたら常にデフォルトの選択肢を選ぶ";
+
+/* Class = "NSButtonCell"; title = "パッケージの削除の前に警告する"; ObjectID = "100421"; */
+"100421.title" = "パッケージの削除の前に警告する";
+
+/* Class = "NSButtonCell"; title = "ウィンドウタイトルにパッケージ数を表示する"; ObjectID = "100424"; */
+"100424.title" = "ウィンドウタイトルにパッケージ数を表示する";
+
+/* Class = "NSButtonCell"; title = "出力のスクロールバックを"; ObjectID = "100433"; */
+"100433.title" = "出力のスクロールバックを";
+
+/* Class = "NSTextFieldCell"; title = "行に制限する"; ObjectID = "100435"; */
+"100435.title" = "行に制限する";
+
+/* Class = "NSButtonCell"; title = "出力があったときはいつでも一番下までスクロールする"; ObjectID = "100441"; */
+"100441.title" = "出力があったときはいつでも一番下までスクロールする";
+
+/* Class = "NSTextFieldCell"; title = "出力:"; ObjectID = "100445"; */
+"100445.title" = "出力:";
+
+/* Class = "NSButtonCell"; title = "表をソートしたあと最後に選択していた場所にスクロール"; ObjectID = "100447"; */
+"100447.title" = "表をソートしたあと最後に選択していた場所にスクロール";
+
+/* Class = "NSTextFieldCell"; title = "表:\n\n\n:"; ObjectID = "100448"; */
+"100448.title" = "表:\n\n\n:";
+
+/* Class = "NSTextFieldCell"; title = "環境変数\n\n:"; ObjectID = "100461"; */
+"100461.title" = "環境変数\n\n:";
+
+/* Class = "NSTextFieldCell"; title = "名前:"; ObjectID = "100462"; */
+"100462.title" = "名前:";
+
+/* Class = "NSTextFieldCell"; title = "値:\n\n\n::"; ObjectID = "100463"; */
+"100463.title" = "値:\n\n\n::";
+
+/* Class = "NSButtonCell"; title = "削除"; ObjectID = "100466"; */
+"100466.title" = "削除";
+
+/* Class = "NSButtonCell"; title = "追加"; ObjectID = "100467"; */
+"100467.title" = "追加";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100487"; */
+"100487.title" = "Radio";
+
+/* Class = "NSTextFieldCell"; title = "ダウンロードに使うコマンド:"; ObjectID = "100494"; */
+"100494.title" = "ダウンロードに使うコマンド:";
+
+/* Class = "NSButtonCell"; title = "もどす"; ObjectID = "100496"; */
+"100496.title" = "もどす";
+
+/* Class = "NSTextFieldCell"; title = "詳細:\n\n\n:"; ObjectID = "100535"; */
+"100535.title" = "詳細:\n\n\n:";
+
+/* Class = "NSButtonCell"; title = "重複している不安定版のバージョンも表示"; ObjectID = "100551"; */
+"100551.title" = "重複している不安定版のバージョンも表示";
+
+/* Class = "NSTextFieldCell"; title = "この変更は次に表が更新されたときに有効になります\n"; ObjectID = "100557"; */
+"100557.title" = "この変更は次に表が更新されたときに有効になります\n";
+
+/* Class = "NSTextFieldCell"; title = "この変更は次の表が更新されたときに有効になります\n"; ObjectID = "100558"; */
+"100558.title" = "この変更は次の表が更新されたときに有効になります\n";
+
+/* Class = "NSTextFieldCell"; title = "ウィンドウタイトル:\n\n\n:"; ObjectID = "100573"; */
+"100573.title" = "ウィンドウタイトル:\n\n\n:";
+
+/* Class = "NSButtonCell"; title = "コマンドの中止の前に警告する"; ObjectID = "100574"; */
+"100574.title" = "コマンドの中止の前に警告する";
+
+/* Class = "NSButtonCell"; title = "ブラウズ..."; ObjectID = "100577"; */
+"100577.title" = "ブラウズ...";
+
+/* Class = "NSTextFieldCell"; title = "Perl のパス:"; ObjectID = "100578"; */
+"100578.title" = "Perl のパス:";
+
+/* Class = "NSButtonCell"; title = "フィルタで正規表現をサポートする"; ObjectID = "100591"; */
+"100591.title" = "フィルタで正規表現をサポートする";
+
+/* Class = "NSTextFieldCell"; title = "ソフトウェア・アップデートで FinkCommander の新しいバージョンを調べられます。\n"; ObjectID = "100612"; */
+"100612.title" = "ソフトウェア・アップデートで FinkCommander の新しいバージョンを調べられます。\n";
+
+/* Class = "NSButtonCell"; title = "更新を自動的に調べる"; ObjectID = "100614"; */
+"100614.title" = "更新を自動的に調べる";
+
+/* Class = "NSButtonCell"; title = "いますぐ更新"; ObjectID = "100615"; */
+"100615.title" = "いますぐ更新";

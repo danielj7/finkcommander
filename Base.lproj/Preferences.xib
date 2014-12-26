@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment version="101000" identifier="macosx"/>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
@@ -52,7 +52,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="FinkCommander Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Panel">
             <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -62,7 +62,7 @@
                 <rect key="frame" x="1" y="1" width="648" height="474"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <tabView autoresizesSubviews="NO" id="7">
+                    <tabView id="7">
                         <rect key="frame" x="10" y="39" width="625" height="425"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="system"/>
@@ -70,7 +70,7 @@
                             <tabViewItem label="Commander" identifier="1" id="11">
                                 <view key="view" autoresizesSubviews="NO" id="8">
                                     <rect key="frame" x="10" y="33" width="605" height="379"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField autoresizesSubviews="NO" verticalHuggingPriority="750" id="190">
                                             <rect key="frame" x="75" y="324" width="151" height="17"/>
@@ -239,7 +239,7 @@ fink.conf file:</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <popUpButtonCell key="cell" type="push" title="High" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="534" id="100530">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="menu"/>
                                                 <menu key="menu" title="OtherViews" id="533">
                                                     <items>
                                                         <menuItem title="None" tag="1" id="532"/>
@@ -734,7 +734,7 @@ fink.conf file:</string>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <subviews>
                                                     <tableView autoresizesSubviews="NO" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" autosaveColumns="NO" headerView="200460" floatsGroupRows="NO" id="458">
-                                                        <rect key="frame" x="0.0" y="0.0" width="424" height="177"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="424" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -779,7 +779,7 @@ fink.conf file:</string>
                                                 <rect key="frame" x="1" y="194" width="424" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="300460">
+                                            <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="300460">
                                                 <rect key="frame" x="425" y="17" width="15" height="177"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -960,6 +960,6 @@ DQ
         </window>
     </objects>
     <resources>
-        <image name="number" width="128" height="128"/>
+        <image name="number" width="384" height="30"/>
     </resources>
 </document>
