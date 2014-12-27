@@ -47,7 +47,7 @@
 
 -(void)browser:(NSBrowser *)sender 
 		willDisplayCell:(id)cell 
-		atRow:(int)row 
-		column:(int)column;
+		atRow:(NSInteger)row
+		column:(NSInteger)column;
 
 @end

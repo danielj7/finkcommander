@@ -55,7 +55,7 @@ extern NSString *sbDescending;
 		isItemExpandable:(id)item;
 
 -(id)outlineView:(NSOutlineView *)outlineView 
-		child:(int)index 
+		child:(NSInteger)index
 		ofItem:(id)item;
 
 -(id)outlineView:(NSOutlineView *)outlineView 

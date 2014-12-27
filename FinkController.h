@@ -186,7 +186,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)raiseInteractionWindow:(id)sender;
 -(IBAction)endInteractionWindow:(id)sender;
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
-			returnCode:(int)returnCode
+			returnCode:(NSInteger)returnCode
 			contextInfo:(void *)contextInfo;
 //  running the command
 -(IBAction)runPackageSpecificCommand:(id)sender;

@@ -43,7 +43,7 @@ bool readAuthorization(AuthorizationRef *auth)
 
     if (read(0, &extAuth, sizeof(extAuth)) == sizeof(extAuth))
     {
-        int err;
+        OSStatus err;
         err = AuthorizationCreateFromExternalForm(&extAuth, auth);
         result = err == errAuthorizationSuccess;
     }
@@ -97,7 +97,7 @@ int perform(const char* cmd, char * const *argv)
 {
     int status;
     int result = 1;
-    int pid;
+    pid_t pid;
 
     pid = fork();
     if (pid == 0) {
@@ -377,8 +377,8 @@ main(int argc, char * const *argv)
 			/* Write changes to fink.conf */
 			result = write_fconf(argv[2]);
 		}else{
-			int pgid;
-			pgid = (int)getpgrp();
+			pid_t pgid;
+			pgid = getpgrp();
 			fprintf(stderr, "PGID=%d", pgid);
 			switch (isauthorizedcmd(argv, argc)){
 				case cmdAuthorized:

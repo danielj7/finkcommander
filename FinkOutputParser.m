@@ -403,7 +403,7 @@
     return NONE;
 }
 
--(int)parseOutput:(NSString *)output
+-(FinkOutputSignalType)parseOutput:(NSString *)output
 {
     NSArray *lines = [output componentsSeparatedByString: @"\n"];
     FinkOutputSignalType signal = NONE;  //false when used as boolean value

@@ -100,6 +100,6 @@ typedef NS_ENUM(NSInteger, FinkOutputSignalType) {
 
 @property (nonatomic, copy) NSString *currentPackage;
 
--(int)parseOutput:(NSString *)output;
+-(FinkOutputSignalType)parseOutput:(NSString *)output;
 
 @end

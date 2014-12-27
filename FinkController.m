@@ -1396,7 +1396,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 }
 
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
-				   returnCode:(int)returnCode
+				   returnCode:(NSInteger)returnCode
 				  contextInfo:(void *)contextInfo
 {
     if (returnCode){  // Submit rather than Cancel
