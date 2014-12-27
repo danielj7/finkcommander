@@ -1,0 +1,549 @@
+
+/* Class = "NSMenuItem"; title = "すべてを手前に移動"; ObjectID = "5"; */
+"5.title" = "すべてを手前に移動";
+
+/* Class = "NSMenuItem"; title = "ウィンドウ"; ObjectID = "19"; */
+"19.title" = "ウィンドウ";
+
+/* Class = "NSWindow"; title = "FinkCommander"; ObjectID = "21"; */
+"21.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "しまう"; ObjectID = "23"; */
+"23.title" = "しまう";
+
+/* Class = "NSMenu"; title = "ウィンドウ"; ObjectID = "24"; */
+"24.title" = "ウィンドウ";
+
+/* Class = "NSMenu"; title = "MainMenu"; ObjectID = "29"; */
+"29.title" = "MainMenu";
+
+/* Class = "NSMenuItem"; title = "FinkCommander"; ObjectID = "56"; */
+"56.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "ヘルプ"; ObjectID = "103"; */
+"103.title" = "ヘルプ";
+
+/* Class = "NSMenu"; title = "ヘルプ"; ObjectID = "106"; */
+"106.title" = "ヘルプ";
+
+/* Class = "NSMenuItem"; title = "FinkCommander ヘルプ"; ObjectID = "111"; */
+"111.title" = "FinkCommander ヘルプ";
+
+/* Class = "NSTableColumn"; headerCell.title = "番号"; ObjectID = "195"; */
+"195.headerCell.title" = "番号";
+
+/* Class = "NSTableColumn"; headerCell.title = "安定版"; ObjectID = "207"; */
+"207.headerCell.title" = "安定版";
+
+/* Class = "NSTableColumn"; headerCell.title = "名前"; ObjectID = "208"; */
+"208.headerCell.title" = "名前";
+
+/* Class = "NSTableColumn"; headerCell.title = "カテゴリ"; ObjectID = "209"; */
+"209.headerCell.title" = "カテゴリ";
+
+/* Class = "NSTableColumn"; headerCell.title = "説明"; ObjectID = "264"; */
+"264.headerCell.title" = "説明";
+
+/* Class = "NSTableColumn"; headerCell.title = "バイナリ"; ObjectID = "312"; */
+"312.headerCell.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "バイナリ"; ObjectID = "343"; */
+"343.title" = "バイナリ";
+
+/* Class = "NSMenu"; title = "バイナリ"; ObjectID = "344"; */
+"344.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "345"; */
+"345.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "データベースを更新"; ObjectID = "348"; */
+"348.title" = "データベースを更新";
+
+/* Class = "NSMenuItem"; title = "ソース"; ObjectID = "415"; */
+"415.title" = "ソース";
+
+/* Class = "NSMenu"; title = "ソース"; ObjectID = "416"; */
+"416.title" = "ソース";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "417"; */
+"417.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "419"; */
+"419.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "ダウンロード"; ObjectID = "427"; */
+"427.title" = "ダウンロード";
+
+/* Class = "NSMenuItem"; title = "再ビルド"; ObjectID = "428"; */
+"428.title" = "再ビルド";
+
+/* Class = "NSMenuItem"; title = "ファイル"; ObjectID = "475"; */
+"475.title" = "ファイル";
+
+/* Class = "NSTableColumn"; headerCell.title = "不安定版"; ObjectID = "509"; */
+"509.headerCell.title" = "不安定版";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "512"; */
+"512.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "再インストール"; ObjectID = "520"; */
+"520.title" = "再インストール";
+
+/* Class = "NSMenuItem"; title = "ビルド"; ObjectID = "522"; */
+"522.title" = "ビルド";
+
+/* Class = "NSWindow"; title = "Interaction"; ObjectID = "524"; */
+"524.title" = "Interaction";
+
+/* Class = "NSButtonCell"; ibShadowedToolTip = "Usually a good bet"; ObjectID = "539"; */
+"539.ibShadowedToolTip" = "Usually a good bet";
+
+/* Class = "NSButtonCell"; title = "デフォルトを選ぶ"; ObjectID = "539"; */
+"539.title" = "デフォルトを選ぶ";
+
+/* Class = "NSButtonCell"; title = "次の入力を送る:"; ObjectID = "540"; */
+"540.title" = "次の入力を送る:";
+
+/* Class = "NSMenuItem"; title = "ツール"; ObjectID = "614"; */
+"614.title" = "ツール";
+
+/* Class = "NSMenu"; title = "ツール"; ObjectID = "615"; */
+"615.title" = "ツール";
+
+/* Class = "NSMenuItem"; title = "Fink を直接操作…"; ObjectID = "616"; */
+"616.title" = "Fink を直接操作…";
+
+/* Class = "NSMenuItem"; title = "FinkCommander の Web サイト"; ObjectID = "623"; */
+"623.title" = "FinkCommander の Web サイト";
+
+/* Class = "NSMenuItem"; title = "Web 上の Fink ドキュメント"; ObjectID = "625"; */
+"625.title" = "Web 上の Fink ドキュメント";
+
+/* Class = "NSMenuItem"; title = "コマンドを中止"; ObjectID = "640"; */
+"640.title" = "コマンドを中止";
+
+/* Class = "NSMenuItem"; title = "バッケージ情報を表示"; ObjectID = "648"; */
+"648.title" = "バッケージ情報を表示";
+
+/* Class = "NSMenu"; title = "Menu"; ObjectID = "663"; */
+"663.title" = "Menu";
+
+/* Class = "NSMenuItem"; title = "バイナリ"; ObjectID = "666"; */
+"666.title" = "バイナリ";
+
+/* Class = "NSMenu"; title = "バイナリ"; ObjectID = "667"; */
+"667.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "668"; */
+"668.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "669"; */
+"669.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "ソース"; ObjectID = "671"; */
+"671.title" = "ソース";
+
+/* Class = "NSMenu"; title = "ソース"; ObjectID = "672"; */
+"672.title" = "ソース";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "673"; */
+"673.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "再インストール"; ObjectID = "674"; */
+"674.title" = "再インストール";
+
+/* Class = "NSMenuItem"; title = "ダウンロード"; ObjectID = "675"; */
+"675.title" = "ダウンロード";
+
+/* Class = "NSMenuItem"; title = "ビルド"; ObjectID = "676"; */
+"676.title" = "ビルド";
+
+/* Class = "NSMenuItem"; title = "再ビルド"; ObjectID = "677"; */
+"677.title" = "再ビルド";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "678"; */
+"678.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "パッケージ情報を表示"; ObjectID = "690"; */
+"690.title" = "パッケージ情報を表示";
+
+/* Class = "NSMenuItem"; title = "ほかを隠す"; ObjectID = "713"; */
+"713.title" = "ほかを隠す";
+
+/* Class = "NSMenuItem"; title = "FinkCommander を隠す"; ObjectID = "716"; */
+"716.title" = "FinkCommander を隠す";
+
+/* Class = "NSMenuItem"; title = "FinkCommander を終了"; ObjectID = "717"; */
+"717.title" = "FinkCommander を終了";
+
+/* Class = "NSMenu"; title = "FinkCommander"; ObjectID = "719"; */
+"719.title" = "FinkCommander";
+
+/* Class = "NSMenuItem"; title = "FinkCommander について"; ObjectID = "720"; */
+"720.title" = "FinkCommander について";
+
+/* Class = "NSMenuItem"; title = "サービス"; ObjectID = "721"; */
+"721.title" = "サービス";
+
+/* Class = "NSMenuItem"; title = "全てを表示"; ObjectID = "722"; */
+"722.title" = "全てを表示";
+
+/* Class = "NSMenuItem"; title = "環境設定..."; ObjectID = "723"; */
+"723.title" = "環境設定...";
+
+/* Class = "NSMenu"; title = "サービス"; ObjectID = "724"; */
+"724.title" = "サービス";
+
+/* Class = "NSMenuItem"; title = "ユーティリティ"; ObjectID = "735"; */
+"735.title" = "ユーティリティ";
+
+/* Class = "NSMenu"; title = "ユーティリティ"; ObjectID = "736"; */
+"736.title" = "ユーティリティ";
+
+/* Class = "NSMenuItem"; title = "不要なファイルを削除"; ObjectID = "737"; */
+"737.title" = "不要なファイルを削除";
+
+/* Class = "NSMenuItem"; title = "検索用の索引を作る"; ObjectID = "740"; */
+"740.title" = "検索用の索引を作る";
+
+/* Class = "NSMenuItem"; title = "説明を見る"; ObjectID = "745"; */
+"745.title" = "説明を見る";
+
+/* Class = "NSMenuItem"; title = "ポジティブフィードバックを送る"; ObjectID = "773"; */
+"773.title" = "ポジティブフィードバックを送る";
+
+/* Class = "NSMenuItem"; title = "表示"; ObjectID = "781"; */
+"781.title" = "表示";
+
+/* Class = "NSMenu"; title = "表示"; ObjectID = "782"; */
+"782.title" = "表示";
+
+/* Class = "NSMenuItem"; title = "強制アンインストール"; ObjectID = "807"; */
+"807.title" = "強制アンインストール";
+
+/* Class = "NSMenuItem"; title = "CVS を用いてデータベースを更新"; ObjectID = "820"; */
+"820.title" = "CVS を用いてデータベースを更新";
+
+/* Class = "NSMenuItem"; title = "データベースを更新"; ObjectID = "821"; */
+"821.title" = "データベースを更新";
+
+/* Class = "NSMenuItem"; title = "パッケージを全てアップグレード"; ObjectID = "822"; */
+"822.title" = "パッケージを全てアップグレード";
+
+/* Class = "NSMenuItem"; title = "コピー"; ObjectID = "833"; */
+"833.title" = "コピー";
+
+/* Class = "NSMenuItem"; title = "ツールバーをカスタマイズ…"; ObjectID = "836"; */
+"836.title" = "ツールバーをカスタマイズ…";
+
+/* Class = "NSMenuItem"; title = "ターミナルで実行"; ObjectID = "849"; */
+"849.title" = "ターミナルで実行";
+
+/* Class = "NSMenu"; title = "ターミナルで実行"; ObjectID = "850"; */
+"850.title" = "ターミナルで実行";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "851"; */
+"851.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "再インストール"; ObjectID = "852"; */
+"852.title" = "再インストール";
+
+/* Class = "NSMenuItem"; title = "ビルド"; ObjectID = "853"; */
+"853.title" = "ビルド";
+
+/* Class = "NSMenuItem"; title = "再ビルド"; ObjectID = "854"; */
+"854.title" = "再ビルド";
+
+/* Class = "NSMenuItem"; title = "selfupdate-cvs を実行"; ObjectID = "855"; */
+"855.title" = "selfupdate-cvs を実行";
+
+/* Class = "NSMenuItem"; title = "update-all を実行"; ObjectID = "856"; */
+"856.title" = "update-all を実行";
+
+/* Class = "NSMenuItem"; title = "ダウンロード"; ObjectID = "857"; */
+"857.title" = "ダウンロード";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "858"; */
+"858.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "selfupdate を実行"; ObjectID = "860"; */
+"860.title" = "selfupdate を実行";
+
+/* Class = "NSMenuItem"; title = "ターミナルで実行"; ObjectID = "863"; */
+"863.title" = "ターミナルで実行";
+
+/* Class = "NSMenu"; title = "ターミナルで実行"; ObjectID = "864"; */
+"864.title" = "ターミナルで実行";
+
+/* Class = "NSMenuItem"; title = "インストール"; ObjectID = "865"; */
+"865.title" = "インストール";
+
+/* Class = "NSMenuItem"; title = "アンインストール"; ObjectID = "866"; */
+"866.title" = "アンインストール";
+
+/* Class = "NSMenuItem"; title = "データベースを更新"; ObjectID = "867"; */
+"867.title" = "データベースを更新";
+
+/* Class = "NSMenuItem"; title = "アップグレード"; ObjectID = "868"; */
+"868.title" = "アップグレード";
+
+/* Class = "NSMenuItem"; title = "ターミナルで実行"; ObjectID = "914"; */
+"914.title" = "ターミナルで実行";
+
+/* Class = "NSMenu"; title = "ターミナルで実行"; ObjectID = "915"; */
+"915.title" = "ターミナルで実行";
+
+/* Class = "NSMenuItem"; title = "パッケージの説明を見る"; ObjectID = "963"; */
+"963.title" = "パッケージの説明を見る";
+
+/* Class = "NSMenuItem"; title = "ポジティブフィードバックを送る"; ObjectID = "966"; */
+"966.title" = "ポジティブフィードバックを送る";
+
+/* Class = "NSMenuItem"; title = "ネガティブフィードバックを送る"; ObjectID = "967"; */
+"967.title" = "ネガティブフィードバックを送る";
+
+/* Class = "NSMenuItem"; title = "ネガティブフィードバックを送る"; ObjectID = "970"; */
+"970.title" = "ネガティブフィードバックを送る";
+
+/* Class = "NSMenuItem"; title = "Fink のバグ報告を送る"; ObjectID = "974"; */
+"974.title" = "Fink のバグ報告を送る";
+
+/* Class = "NSMenuItem"; title = "FinkCommander のバグ報告を送る"; ObjectID = "980"; */
+"980.title" = "FinkCommander のバグ報告を送る";
+
+/* Class = "NSMenuItem"; title = "パッケージのドキュメントに行く"; ObjectID = "984"; */
+"984.title" = "パッケージのドキュメントに行く";
+
+/* Class = "NSMenuItem"; title = "バッケージのドキュメントに行く"; ObjectID = "986"; */
+"986.title" = "バッケージのドキュメントに行く";
+
+/* Class = "NSMenuItem"; title = "パッケージファイルをブラウズ"; ObjectID = "990"; */
+"990.title" = "パッケージファイルをブラウズ";
+
+/* Class = "NSMenuItem"; title = "ソースからインストール"; ObjectID = "993"; */
+"993.title" = "ソースからインストール";
+
+/* Class = "NSMenuItem"; title = "ソースから再インストール"; ObjectID = "994"; */
+"994.title" = "ソースから再インストール";
+
+/* Class = "NSMenuItem"; title = "ソースからビルド"; ObjectID = "995"; */
+"995.title" = "ソースからビルド";
+
+/* Class = "NSMenuItem"; title = "ソースから再ビルド"; ObjectID = "996"; */
+"996.title" = "ソースから再ビルド";
+
+/* Class = "NSMenuItem"; title = "ソースをダウンロード"; ObjectID = "997"; */
+"997.title" = "ソースをダウンロード";
+
+/* Class = "NSMenuItem"; title = "fink でアンインストール"; ObjectID = "998"; */
+"998.title" = "fink でアンインストール";
+
+/* Class = "NSMenuItem"; title = "バイナリからインストール"; ObjectID = "999"; */
+"999.title" = "バイナリからインストール";
+
+/* Class = "NSMenuItem"; title = "apt-get でアンインストール"; ObjectID = "1000"; */
+"1000.title" = "apt-get でアンインストール";
+
+/* Class = "NSMenuItem"; title = "ツールバーを隠す"; ObjectID = "1030"; */
+"1030.title" = "ツールバーを隠す";
+
+/* Class = "NSMenuItem"; title = "列"; ObjectID = "1052"; */
+"1052.title" = "列";
+
+/* Class = "NSMenu"; title = "列"; ObjectID = "1053"; */
+"1053.title" = "列";
+
+/* Class = "NSMenuItem"; title = "最新"; ObjectID = "1055"; */
+"1055.title" = "最新";
+
+/* Class = "NSMenuItem"; title = "インストール済み"; ObjectID = "1056"; */
+"1056.title" = "インストール済み";
+
+/* Class = "NSMenuItem"; title = "バイナリ"; ObjectID = "1057"; */
+"1057.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "安定版"; ObjectID = "1058"; */
+"1058.title" = "安定版";
+
+/* Class = "NSMenuItem"; title = "不安定版"; ObjectID = "1059"; */
+"1059.title" = "不安定版";
+
+/* Class = "NSMenuItem"; title = "カテゴリ"; ObjectID = "1061"; */
+"1061.title" = "カテゴリ";
+
+/* Class = "NSMenuItem"; title = "説明"; ObjectID = "1062"; */
+"1062.title" = "説明";
+
+/* Class = "NSMenuItem"; title = "メンテナ"; ObjectID = "1063"; */
+"1063.title" = "メンテナ";
+
+/* Class = "NSMenuItem"; title = "コマンドの出力を隠す"; ObjectID = "1064"; */
+"1064.title" = "コマンドの出力を隠す";
+
+/* Class = "NSMenuItem"; title = "ソート"; ObjectID = "1066"; */
+"1066.title" = "ソート";
+
+/* Class = "NSMenu"; title = "ソート"; ObjectID = "1067"; */
+"1067.title" = "ソート";
+
+/* Class = "NSMenuItem"; title = "名前"; ObjectID = "1068"; */
+"1068.title" = "名前";
+
+/* Class = "NSMenuItem"; title = "カテゴリ"; ObjectID = "1069"; */
+"1069.title" = "カテゴリ";
+
+/* Class = "NSMenuItem"; title = "最新"; ObjectID = "1070"; */
+"1070.title" = "最新";
+
+/* Class = "NSMenuItem"; title = "状態"; ObjectID = "1071"; */
+"1071.title" = "状態";
+
+/* Class = "NSMenuItem"; title = "安定版"; ObjectID = "1072"; */
+"1072.title" = "安定版";
+
+/* Class = "NSMenuItem"; title = "インストール済み"; ObjectID = "1073"; */
+"1073.title" = "インストール済み";
+
+/* Class = "NSMenuItem"; title = "バイナリ"; ObjectID = "1074"; */
+"1074.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "不安定版"; ObjectID = "1075"; */
+"1075.title" = "不安定版";
+
+/* Class = "NSMenuItem"; title = "説明"; ObjectID = "1076"; */
+"1076.title" = "説明";
+
+/* Class = "NSMenuItem"; title = "メンテナ"; ObjectID = "1102"; */
+"1102.title" = "メンテナ";
+
+/* Class = "NSMenuItem"; title = "パッケージファイルをブラウズ"; ObjectID = "1103"; */
+"1103.title" = "パッケージファイルをブラウズ";
+
+/* Class = "NSMenuItem"; title = ".patch を開く"; ObjectID = "1111"; */
+"1111.title" = ".patch を開く";
+
+/* Class = "NSMenu"; title = "ファイル"; ObjectID = "1114"; */
+"1114.title" = "ファイル";
+
+/* Class = "NSMenuItem"; title = "プリント..."; ObjectID = "1115"; */
+"1115.title" = "プリント...";
+
+/* Class = "NSMenuItem"; title = ".info を開く"; ObjectID = "1117"; */
+"1117.title" = ".info を開く";
+
+/* Class = "NSMenuItem"; title = "ウインドウを閉じる"; ObjectID = "1118"; */
+"1118.title" = "ウインドウを閉じる";
+
+/* Class = "NSMenuItem"; title = "ページ設定..."; ObjectID = "1119"; */
+"1119.title" = "ページ設定...";
+
+/* Class = "NSMenuItem"; title = "保存…"; ObjectID = "1120"; */
+"1120.title" = "保存…";
+
+/* Class = "NSMenuItem"; title = "表を更新"; ObjectID = "1121"; */
+"1121.title" = "表を更新";
+
+/* Class = "NSMenuItem"; title = "選択したファイルを開く"; ObjectID = "1129"; */
+"1129.title" = "選択したファイルを開く";
+
+/* Class = "NSMenuItem"; title = "状態"; ObjectID = "1133"; */
+"1133.title" = "状態";
+
+/* Class = "NSMenuItem"; title = "フラグ"; ObjectID = "1135"; */
+"1135.title" = "フラグ";
+
+/* Class = "NSMenuItem"; title = "フラグ"; ObjectID = "1137"; */
+"1137.title" = "フラグ";
+
+/* Class = "NSMenuItem"; title = "フラグをつける"; ObjectID = "1138"; */
+"1138.title" = "フラグをつける";
+
+/* Class = "NSMenuItem"; title = "フラグをつける"; ObjectID = "1139"; */
+"1139.title" = "フラグをつける";
+
+/* Class = "NSMenuItem"; title = "パッケージを全てアップグレード"; ObjectID = "1156"; */
+"1156.title" = "パッケージを全てアップグレード";
+
+/* Class = "NSMenuItem"; title = "パッケージのスキャン"; ObjectID = "1158"; */
+"1158.title" = "パッケージのスキャン";
+
+/* Class = "NSMenuItem"; title = "削除"; ObjectID = "1163"; */
+"1163.title" = "削除";
+
+/* Class = "NSMenuItem"; title = "カット"; ObjectID = "1164"; */
+"1164.title" = "カット";
+
+/* Class = "NSMenuItem"; title = "ペースト"; ObjectID = "1167"; */
+"1167.title" = "ペースト";
+
+/* Class = "NSMenu"; title = "編集"; ObjectID = "1185"; */
+"1185.title" = "編集";
+
+/* Class = "NSMenuItem"; title = "コピー"; ObjectID = "1187"; */
+"1187.title" = "コピー";
+
+/* Class = "NSMenuItem"; title = "編集"; ObjectID = "1189"; */
+"1189.title" = "編集";
+
+/* Class = "NSMenuItem"; title = "Rsync を用いてデータベースを更新"; ObjectID = "1203"; */
+"1203.title" = "Rsync を用いてデータベースを更新";
+
+/* Class = "NSMenuItem"; title = "ローカル"; ObjectID = "1205"; */
+"1205.title" = "ローカル";
+
+/* Class = "NSMenuItem"; title = "ローカル"; ObjectID = "1206"; */
+"1206.title" = "ローカル";
+
+/* Class = "NSMenuItem"; title = "すべてを選択"; ObjectID = "1234"; */
+"1234.title" = "すべてを選択";
+
+/* Class = "NSMenu"; title = "検索"; ObjectID = "1283"; */
+"1283.title" = "検索";
+
+/* Class = "NSMenuItem"; title = "パッケージ検索"; ObjectID = "1284"; */
+"1284.title" = "パッケージ検索";
+
+/* Class = "NSMenuItem"; title = "検索"; ObjectID = "1285"; */
+"1285.title" = "検索";
+
+/* Class = "NSMenuItem"; title = "名前"; ObjectID = "1295"; */
+"1295.title" = "名前";
+
+/* Class = "NSMenuItem"; title = "説明"; ObjectID = "1296"; */
+"1296.title" = "説明";
+
+/* Class = "NSMenuItem"; title = "カテゴリ"; ObjectID = "1297"; */
+"1297.title" = "カテゴリ";
+
+/* Class = "NSMenuItem"; title = "バイナリ"; ObjectID = "1298"; */
+"1298.title" = "バイナリ";
+
+/* Class = "NSMenuItem"; title = "安定版"; ObjectID = "1299"; */
+"1299.title" = "安定版";
+
+/* Class = "NSMenuItem"; title = "不安定版"; ObjectID = "1300"; */
+"1300.title" = "不安定版";
+
+/* Class = "NSMenuItem"; title = "ローカル"; ObjectID = "1301"; */
+"1301.title" = "ローカル";
+
+/* Class = "NSMenuItem"; title = "状態"; ObjectID = "1302"; */
+"1302.title" = "状態";
+
+/* Class = "NSMenuItem"; title = "メンテナ"; ObjectID = "1303"; */
+"1303.title" = "メンテナ";
+
+/* Class = "NSTextFieldCell"; title = "Fink は応答を待っています。  \n最後の出力メッセージを読んで、選択肢を選んでください:"; ObjectID = "100526"; */
+"100526.title" = "Fink は応答を待っています。  \n最後の出力メッセージを読んで、選択肢を選んでください:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "100527"; */
+"100527.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "実行"; ObjectID = "100534"; */
+"100534.title" = "実行";
+
+/* Class = "NSTextFieldCell"; title = "スタートアップ\n"; ObjectID = "100572"; */
+"100572.title" = "スタートアップ\n";
+
+/* Class = "NSButtonCell"; title = "キャンセル"; ObjectID = "100620"; */
+"100620.title" = "キャンセル";

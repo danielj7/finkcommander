@@ -154,7 +154,7 @@
 		65B31CBD1A4E4DE7002ED341 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		65B31CBE1A4E4E0B002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = fr; path = fr.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		65B31CBF1A4E4E89002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fr; path = "fr.lproj/FinkCommander Help"; sourceTree = "<group>"; };
-		65C2501F1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		65B31CC01A4EEC58002ED341 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		65C250211A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TreeView.xib; sourceTree = "<group>"; };
 		65C250221A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PackageInfo.xib; sourceTree = "<group>"; };
 		65C250231A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Dialogs.xib; sourceTree = "<group>"; };
@@ -767,11 +767,11 @@
 		65C250091A4C780D00E02437 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				65C2501F1A4C787300E02437 /* ja */,
 				65C250241A4C7B5900E02437 /* Base */,
 				65B31CB31A4DD237002ED341 /* en */,
 				65B31CB41A4DD283002ED341 /* de */,
 				65B31CB51A4DD289002ED341 /* fr */,
+				65B31CC01A4EEC58002ED341 /* ja */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
