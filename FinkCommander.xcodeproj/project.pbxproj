@@ -150,7 +150,7 @@
 		65B31CB91A4E19C4002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Preferences.strings; sourceTree = "<group>"; };
 		65B31CBA1A4E19CB002ED341 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Preferences.strings; sourceTree = "<group>"; };
 		65B31CBB1A4E4DA1002ED341 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		65B31CBC1A4E4DC4002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
+		65B31CBC1A4E4DC4002ED341 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
 		65B31CBD1A4E4DE7002ED341 /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		65B31CBE1A4E4E0B002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = fr; path = fr.lproj/Toolbar.plist; sourceTree = "<group>"; };
 		65B31CBF1A4E4E89002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fr; path = "fr.lproj/FinkCommander Help"; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 		F57E59C103A9ABBA01A80165 /* info.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = info.tiff; sourceTree = "<group>"; };
 		F5897AAA02C6E37B01A80166 /* email.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = email.tiff; sourceTree = "<group>"; };
 		F59BDD90026817BF01A80164 /* addsrc.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = addsrc.tiff; sourceTree = "<group>"; };
-		F59FF428032134D901A80175 /* de */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = de; path = de.lproj/Credits.html; sourceTree = "<group>"; };
+		F59FF428032134D901A80175 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; name = de; path = de.lproj/Credits.html; sourceTree = "<group>"; };
 		F5B9D9E402B1D61C01A8016B /* MyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MyTextView.m; sourceTree = "<group>"; };
 		F5B9D9EA02B232D501A8016B /* hand.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hand.tiff; sourceTree = "<group>"; };
 		F5B9D9EC02B2B13501A8016B /* MyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MyTextView.h; sourceTree = "<group>"; };
