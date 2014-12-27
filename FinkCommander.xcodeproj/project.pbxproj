@@ -149,6 +149,11 @@
 		65B31CB81A4E19B5002ED341 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Preferences.strings; sourceTree = "<group>"; };
 		65B31CB91A4E19C4002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Preferences.strings; sourceTree = "<group>"; };
 		65B31CBA1A4E19CB002ED341 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Preferences.strings; sourceTree = "<group>"; };
+		65B31CBB1A4E4DA1002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		65B31CBC1A4E4DC4002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
+		65B31CBD1A4E4DE7002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		65B31CBE1A4E4E0B002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = fr; path = fr.lproj/Toolbar.plist; sourceTree = "<group>"; };
+		65B31CBF1A4E4E89002ED341 /* fr */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fr; path = "fr.lproj/FinkCommander Help"; sourceTree = "<group>"; };
 		65C2501F1A4C787300E02437 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		65C250211A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TreeView.xib; sourceTree = "<group>"; };
 		65C250221A4C7B5900E02437 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PackageInfo.xib; sourceTree = "<group>"; };
@@ -742,6 +747,7 @@
 				F53B4D0A031033D401A80164 /* de */,
 				557B5389108D37C700367D4E /* Japanese */,
 				65B31CA21A4D978B002ED341 /* en */,
+				65B31CBD1A4E4DE7002ED341 /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -826,6 +832,7 @@
 				F53B4D0803100C5101A80164 /* de */,
 				557B5387108D37AC00367D4E /* Japanese */,
 				65B31CA31A4D97D8002ED341 /* en */,
+				65B31CBE1A4E4E0B002ED341 /* fr */,
 			);
 			name = Toolbar.plist;
 			sourceTree = "<group>";
@@ -836,6 +843,7 @@
 				F5DABE8B03359EF601FEFA3F /* de */,
 				557B5391108D380A00367D4E /* Japanese */,
 				65B31CA61A4D9830002ED341 /* en */,
+				65B31CBF1A4E4E89002ED341 /* fr */,
 			);
 			name = "FinkCommander Help";
 			sourceTree = "<group>";
@@ -846,6 +854,7 @@
 				F5D3EE420336DD8B01A80165 /* de */,
 				557B538A108D37D600367D4E /* Japanese */,
 				65B31CA11A4D9774002ED341 /* en */,
+				65B31CBB1A4E4DA1002ED341 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -854,6 +863,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				F59FF428032134D901A80175 /* de */,
+				65B31CBC1A4E4DC4002ED341 /* fr */,
 			);
 			name = Credits.html;
 			sourceTree = "<group>";
