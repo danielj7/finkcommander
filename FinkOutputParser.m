@@ -54,6 +54,31 @@
 
 #define AFTER_EQUAL_SIGN 5
 
+@interface FinkOutputParser ()
+{
+    regex_t _configure;
+    regex_t _prompt;
+    regex_t _manPrompt;
+    regex_t _dynamicOutput;
+}
+
+@property (nonatomic) NSUserDefaults *defaults;
+@property (nonatomic) NSMutableDictionary *ptracker;
+@property (nonatomic) NSMutableArray *packageList;
+@property (nonatomic) NSMutableArray *increments;
+@property (nonatomic) NSString *command;
+
+@property (nonatomic) FinkOutputSignalType currentPhase;
+@property (nonatomic, getter=isInstalling) BOOL installing;
+@property (nonatomic, getter=isReadingPackageList) BOOL readingPackageList;
+@property (nonatomic, getter=isSelfRepair) BOOL selfRepair;
+
+@property (nonatomic) CGFloat increment;
+@property (nonatomic) NSInteger pgid;
+@property (nonatomic, copy) NSString *currentPackage;
+
+@end
+
 @implementation FinkOutputParser
 
 //------------------------------------------>Create and Destroy
@@ -64,26 +89,26 @@
     if (self = [super init]){
         NSInteger aPrompt, mPrompt, config, dOutput;  //test regex compilation success
 
-        defaults = [NSUserDefaults standardUserDefaults];
-        command = cmd;
-        readingPackageList = NO;
-        selfRepair = NO;
-        installing = IS_INSTALL_CMD(command) && [exe contains:@"fink"];
+        _defaults = [NSUserDefaults standardUserDefaults];
+        _command = cmd;
+        _readingPackageList = NO;
+        _selfRepair = NO;
+        _installing = IS_INSTALL_CMD(_command) && [exe contains:@"fink"];
         _pgid = 0;
 
         /* Precompile regular expressions used to parse each line of output */
-        config = compiledExpressionFromString(CONFIG_PAT, &configure);
-        aPrompt = compiledExpressionFromString(PROMPT_PAT, &prompt);
-        mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &manPrompt);
-        dOutput = compiledExpressionFromString(DYNAMIC_PAT, &dynamicOutput);
+        config = compiledExpressionFromString(CONFIG_PAT, &_configure);
+        aPrompt = compiledExpressionFromString(PROMPT_PAT, &_prompt);
+        mPrompt = compiledExpressionFromString(MANPROMPT_PAT, &_manPrompt);
+        dOutput = compiledExpressionFromString(DYNAMIC_PAT, &_dynamicOutput);
         if (mPrompt != 0 || aPrompt != 0 || config != 0 || dOutput != 0){
             NSLog(@"Compiling regex failed.");
         }
 
-        if (installing){
-            packageList = [[NSMutableArray alloc] init];
-            [packageList addObject:@""];
-            increments = [[NSMutableArray alloc] init];
+        if (_installing){
+            _packageList = [[NSMutableArray alloc] init];
+            [_packageList addObject:@""];
+            _increments = [[NSMutableArray alloc] init];
             _currentPackage = @"";
         }
     }
@@ -93,10 +118,10 @@
 -(void)dealloc
 {
 
-    regfree(&configure);
-    regfree(&prompt);
-    regfree(&manPrompt);
-	regfree (&dynamicOutput);
+    regfree(&_configure);
+    regfree(&_prompt);
+    regfree(&_manPrompt);
+	regfree(&_dynamicOutput);
 
 }
 
@@ -105,8 +130,8 @@
 //create array of packages to be installed
 -(void)addPackagesFromLine:(NSString *)line
 {
-    [packageList addObjectsFromArray:[[line strip] componentsSeparatedByString:@" "]];
-    Dprintf(@"Package list: %@", packageList);
+    [[self packageList] addObjectsFromArray:[[line strip] componentsSeparatedByString:@" "]];
+    Dprintf(@"Package list: %@", [self packageList]);
 }
 
 //set up array of increments and dictionary of package names matched with
@@ -121,27 +146,27 @@
         0.90,     //COMPILE 	+ .50
         0.95,     //BUILD 		+ .05
         1.00};    //ACTIVATE 	+ .05
-    CGFloat perpkg = (100.0 - STARTING_INCREMENT) / (float)([packageList count]-1);
+    CGFloat perpkg = (100.0 - STARTING_INCREMENT) / (float)([[self packageList] count]-1);
     NSInteger i;
 
-    if (!packageList){
+    if (![self packageList]){
         NSLog(@"Warning: Empty package list; unable to track installation state");
         return NO;
     }
 
-    if (! ptracker) ptracker = [[NSMutableDictionary alloc] init];
-    for (NSString *pname in packageList){
-        ptracker[pname] = @0.0f;
+    if (! [self ptracker]) [self setPtracker: [[NSMutableDictionary alloc] init]];
+    for (NSString *pname in [self packageList]){
+        [self ptracker][pname] = @0.0f;
     }
 
     for (i = 0; i < 7; i++){
         CGFloat newincrement = cumulative[i] * perpkg;
 
-        [increments insertObject: @(newincrement)
+        [[self increments] insertObject: @(newincrement)
 					atIndex:i];
-        Dprintf(@"increment %d = %f", i, [increments[i] floatValue]);
+        Dprintf(@"increment %d = %f", i, [[self increments][i] floatValue]);
     }
-    currentPhase = NONE;
+    [self setCurrentPhase: NONE];
     return YES;
 }
 
@@ -155,24 +180,24 @@
     CGFloat phaseTotal;
     CGFloat pkgTotal;
 
-    if (![self currentPackage] || !packageList || [packageList count] < 1 || !ptracker){
+    if (![self currentPackage] || ![self packageList] || [[self packageList] count] < 1 || ![self ptracker]){
         NSLog(@"Data objects for installation tracking were not created");
         [self setIncrement:0];
         return;
     }
 
-    phaseTotal = [increments[currentPhase] doubleValue];
+    phaseTotal = [[self increments][[self currentPhase]] doubleValue];
     if ([[self currentPackage] isEqualToString:@"package"]){
         [self setIncrement:0];
         return;
     }else{
-        pkgTotal = [ptracker[[self currentPackage]] doubleValue];
+        pkgTotal = [[self ptracker][[self currentPackage]] doubleValue];
     }
 
-    Dprintf(@"Incrementing for prior phase = %d, package = %@", currentPhase, [self currentPackage]);
+    Dprintf(@"Incrementing for prior phase = %d, package = %@", [self currentPhase], [self currentPackage]);
     if (phaseTotal > pkgTotal){
         [self setIncrement:phaseTotal - pkgTotal];
-        ptracker[[self currentPackage]] = @(phaseTotal);
+        [self ptracker][[self currentPackage]] = @(phaseTotal);
         Dprintf(@"Adding increment: %f - %f = %f", phaseTotal, pkgTotal, [self increment]);
     }else{
         [self setIncrement:0];
@@ -187,13 +212,13 @@
 {
     NSString *best = @"";
 
-    if (!packageList){
+    if (![self packageList]){
         NSLog(@"Warning: No package list created; unable to determine current package");
         return best;
     }
     //first see if the line contains any of the names in the package list;
     //if so, return the longest name that matches
-    for (NSString *candidate in packageList){
+    for (NSString *candidate in [self packageList]){
         if ([line containsCI:candidate]){
             if ([candidate length] > [best length]){
                 best = candidate;
@@ -228,9 +253,9 @@
             [fname appendString:@"-"];
         }
         Dprintf(@"Looking for best match for %@ in:\n%@", fname,
-                [packageList componentsJoinedByString:@" "]);
+                [[self packageList] componentsJoinedByString:@" "]);
         if ([fname length] > 0){
-            for (NSString *candidate in packageList){
+            for (NSString *candidate in [self packageList]){
                 if ([candidate contains:fname]){  //e.g. wget-ssl contains wget
                     Dprintf(@"Listed package %@ contains %@", candidate, fname);
                     if ([best length] < 1){
@@ -260,7 +285,7 @@
         return PGID;
     }
     //Look for package lists
-    if (installing && readingPackageList){
+    if ([self isInstalling] && [self isReadingPackageList]){
         //lines listing pkgs to be installed start with a space
         if ([line hasPrefix:@" "]){
             [self addPackagesFromLine:line];
@@ -273,13 +298,13 @@
             return NONE;
         }
         //not blank, list or intro; done looking for package names
-        readingPackageList = NO;
+        [self setReadingPackageList: NO];
         //If we were unable to create a package list, setupInstall returns NO, so that
         //we skip any blocks conditioned on the installing flag
-        installing = [self setupInstall];
+        [self setInstalling: [self setupInstall]];
         //look for prompt or installation event immediately after pkg list
-        if ([line containsCompiledExpression:&prompt]){
-            if (installing){
+        if ([line containsCompiledExpression:&_prompt]){
+            if ([self isInstalling]){
                 return PROMPT_AND_START;
             }
             return PROMPT;
@@ -288,31 +313,31 @@
             Dprintf(@"Fetch phase triggered by:\n%@", line);
             [self setIncrementForLastPhase];
             [self setCurrentPackage:[self packageNameFromLine:line]];
-            currentPhase = FETCH;
+            [self setCurrentPhase: FETCH];
             return START_AND_FETCH;
         }
         if (UNPACKTRIGGER(sline)){
             Dprintf(@"Unpack phase triggered by:\n%@", line);
             [self setIncrementForLastPhase];
             [self setCurrentPackage:[self packageNameFromLine:line]];
-            currentPhase = UNPACK;
+            [self setCurrentPhase: UNPACK];
             return START_AND_UNPACK;
         }
         if ([line contains: @"dpkg -i"]){
             Dprintf(@"Activate phase triggered by:\n%@", line);
             [self setIncrementForLastPhase];
             [self setCurrentPackage:[self packageNameFromLine:line]];
-            currentPhase = ACTIVATE;
+            [self setCurrentPhase: ACTIVATE];
             return START_AND_ACTIVATE;
         }
         //signal FinkController to start deteriminate PI
         return START_INSTALL;
     }
-	if (installing){
+	if ([self isInstalling]){
 		//Look for introduction to package lists
 		if (INSTALLTRIGGER(line)){
 			Dprintf(@"Package scan triggered by:\n%@", line);
-			readingPackageList = YES;
+			[self setReadingPackageList: YES];
 			return NONE;
 		}
 		//Look for installation events
@@ -323,43 +348,43 @@
 			if ([name isEqualToString:[self currentPackage]]) return NONE;
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:name];
-			currentPhase = FETCH;
+			[self setCurrentPhase: FETCH];
 			return FETCH;
 		}
-		if (currentPhase != UNPACK && UNPACKTRIGGER(sline)){
+		if ([self currentPhase] != UNPACK && UNPACKTRIGGER(sline)){
 			Dprintf(@"Unpack phase triggered by:\n%@", line);
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
-			currentPhase = UNPACK;
+			[self setCurrentPhase: UNPACK];
 			return UNPACK;
 		}
-		if (currentPhase == UNPACK && [sline containsCompiledExpression:&configure]){
+		if ([self currentPhase] == UNPACK && [sline containsCompiledExpression:&_configure]){
 			Dprintf(@"Configure phase triggered by:\n%@", line);
 			[self setIncrementForLastPhase];
-			currentPhase = CONFIGURE;
+			[self setCurrentPhase: CONFIGURE];
 			return CONFIGURE;
 		}
-		if (currentPhase != COMPILE && COMPILETRIGGER(sline)){
+		if ([self currentPhase] != COMPILE && COMPILETRIGGER(sline)){
 			Dprintf(@"Compile phase triggered by:\n%@", line);
 			[self setIncrementForLastPhase];
-			currentPhase = COMPILE;
+			[self setCurrentPhase: COMPILE];
 			return COMPILE;
 		}
 		if ([line contains: @"dpkg-deb -b"]){
 			Dprintf(@"Build phase triggered by:\n%@", line);
 			//make sure we catch up if this file is archived
-			if (currentPhase < 1) currentPhase = COMPILE;
+			if ([self currentPhase] < 1) [self setCurrentPhase: COMPILE];
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
-			currentPhase = BUILD;
+			[self setCurrentPhase: BUILD];
 			return BUILD;
 		}
 		if ([line contains: @"dpkg -i"]){
 			Dprintf(@"Activate phase triggered by:\n%@", line);
-			if (currentPhase < 1) currentPhase = COMPILE;
+			if ([self currentPhase] < 1) [self setCurrentPhase: COMPILE];
 			[self setIncrementForLastPhase];
 			[self setCurrentPackage:[self packageNameFromLine:line]];
-			currentPhase = ACTIVATE;
+			[self setCurrentPhase: ACTIVATE];
 			return ACTIVATE;
 		}
 	}
@@ -368,35 +393,35 @@
     if ([line contains: @"Password:"]){
         return PASSWORD_PROMPT;
     }
-    if ([line containsCompiledExpression:&manPrompt]){
+    if ([line containsCompiledExpression:&_manPrompt]){
         return MANDATORY_PROMPT;
     }
-    if ([line containsCompiledExpression:&prompt] &&
-        ! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+    if ([line containsCompiledExpression:&_prompt] &&
+        ! [[self defaults] boolForKey:FinkAlwaysChooseDefaults]){
         Dprintf(@"Found prompt: %@", line);
         return PROMPT;
     }
-	if ([line containsCompiledExpression:&dynamicOutput]){
+	if ([line containsCompiledExpression:&_dynamicOutput]){
 		return DYNAMIC_OUTPUT;
 	}
 
     //Look for self-repair messages
 	//NB:  Find a way to avoid looking for this in every line
 	if ([line contains:@"Running self-repair"]){
-		selfRepair = YES;
+		[self setSelfRepair: YES];
 		return RUNNING_SELF_REPAIR;
 	}
-	if (selfRepair){		
+	if ([self isSelfRepair]){		
 		if ([line contains:@"Self-repair succeeded"]){
-			selfRepair = NO;
+			[self setSelfRepair: NO];
 			return SELF_REPAIR_COMPLETE;
 		}
 		if ([line contains:@"Unable to modify Resource directory\n"]){
-			selfRepair = NO;
+			[self setSelfRepair: NO];
 			return RESOURCE_DIR_ERROR;
 		}
 		if ([line contains:@"Self-repair failed\n"]){
-			selfRepair = NO;
+			[self setSelfRepair: NO];
 			return SELF_REPAIR_FAILED;
 		}
 	}

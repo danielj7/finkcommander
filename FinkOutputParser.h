@@ -73,32 +73,14 @@ typedef NS_ENUM(NSInteger, FinkOutputSignalType) {
 
 @interface FinkOutputParser: NSObject
 {
-    NSUserDefaults *defaults;
-
-    NSMutableDictionary *ptracker;
-    NSMutableArray *packageList;
-    NSMutableArray *increments;
-    NSString *command;
-
-    regex_t configure;
-    regex_t prompt;
-    regex_t manPrompt;
-	regex_t dynamicOutput;
-
-    FinkOutputSignalType currentPhase;
-    BOOL installing;
-    BOOL readingPackageList;
-    BOOL selfRepair;
 }
 
 -(instancetype)initForCommand:(NSString *)cmd
 	executable:(NSString *)exe NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) CGFloat increment;
-
-@property (nonatomic) NSInteger pgid;
-
-@property (nonatomic, copy) NSString *currentPackage;
+@property (nonatomic, readonly) CGFloat increment;
+@property (nonatomic, readonly) NSInteger pgid;
+@property (nonatomic, copy, readonly) NSString *currentPackage;
 
 -(FinkOutputSignalType)parseOutput:(NSString *)output;
 
