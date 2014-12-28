@@ -127,18 +127,12 @@ Contact the author at sburrious@users.sourceforge.net.
 @property (nonatomic, weak) IBOutlet NSView *searchView;
 @property (nonatomic, unsafe_unretained) IBOutlet NSSearchField *searchTextField;
 
-#pragma mark - Other objects
-@property (nonatomic) NSUserDefaults *defaults;
-@property (nonatomic, copy) NSString *launcher;
-
 #pragma mark - Flags
-@property (nonatomic, getter=isCommandRunning) BOOL commandRunning;
-@property (nonatomic, getter=isCommandTerminated) BOOL commandTerminated;
-@property (nonatomic, getter=isPendingCommand) BOOL pendingCommand;
-@property (nonatomic, getter=isToolBeingFixed) BOOL toolBeingFixed;
-@property (nonatomic, getter=isOutputDynamic) BOOL outputDynamic;
-
-@property (nonatomic) NSInteger searchTag;
+@property (nonatomic, readonly, getter=isCommandRunning) BOOL commandRunning;
+@property (nonatomic, readonly, getter=isCommandTerminated) BOOL commandTerminated;
+@property (nonatomic, readonly, getter=isPendingCommand) BOOL pendingCommand;
+@property (nonatomic, readonly, getter=isToolBeingFixed) BOOL toolBeingFixed;
+@property (nonatomic, readonly, getter=isOutputDynamic) BOOL outputDynamic;
 
 #pragma mark - Accessors
 @property (nonatomic) FinkPreferences *preferences;

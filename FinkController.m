@@ -129,6 +129,19 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     NEGATIVE
 };
 
+@interface FinkController ()
+@property (nonatomic) NSUserDefaults *defaults;
+@property (nonatomic, copy) NSString *launcher;
+
+@property (nonatomic, getter=isCommandRunning) BOOL commandRunning;
+@property (nonatomic, getter=isCommandTerminated) BOOL commandTerminated;
+@property (nonatomic, getter=isPendingCommand) BOOL pendingCommand;
+@property (nonatomic, getter=isToolBeingFixed) BOOL toolBeingFixed;
+@property (nonatomic, getter=isOutputDynamic) BOOL outputDynamic;
+
+@property (nonatomic) NSInteger searchTag;
+@end
+
 @implementation FinkController
 
 //================================================================================
