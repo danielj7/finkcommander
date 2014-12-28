@@ -38,10 +38,6 @@ Contact the author at sburrious@users.sourceforge.net.
 
 @interface FinkData : NSObject
 {
-	NSUserDefaults *defaults;
-	NSArray *array;
-	NSDictionary *binaryPackages;
-	NSDate *start;
 }
 
 /* 	Singleton class method 
@@ -49,7 +45,7 @@ Contact the author at sburrious@users.sourceforge.net.
 +(FinkData *)sharedData;
 
 /* Public accessor -- an array of FinkPackage instances */
--(NSArray *)array;
+@property (nonatomic, readonly) NSArray *array;
 
 /* Update the array to reflect latest package information. */
 -(void)update;

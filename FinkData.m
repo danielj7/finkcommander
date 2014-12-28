@@ -15,6 +15,13 @@ See the header file, FinkData.h, for interface and license information.
 #define PACKAGESTART 9
 #define VERSIONSTART 9
 
+@interface FinkData ()
+@property (nonatomic) NSArray *array;
+@property (nonatomic) NSDictionary *binaryPackages;
+@property (nonatomic) NSDate *start;
+@property (nonatomic) NSUserDefaults *defaults;
+@end
+
 @implementation FinkData
 
 //---------------------------------------------------------->The Usual
@@ -32,7 +39,7 @@ See the header file, FinkData.h, for interface and license information.
 {
     if (self = [super init])
 	{
-		defaults = [NSUserDefaults standardUserDefaults];
+		[self setDefaults: [NSUserDefaults standardUserDefaults]];
 		[[NSNotificationCenter defaultCenter] 
 			addObserver: self
 			selector: @selector(completeUpdate:)
@@ -45,27 +52,6 @@ See the header file, FinkData.h, for interface and license information.
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-}
-
-// Accessors
--(NSArray *)array
-{
-    return array;
-}
-
--(void)setArray:(NSArray *)a
-{
-    array = a;
-}
-
--(void)setBinaryPackages:(NSDictionary *)d
-{
-    binaryPackages = d;
-}
-
--(void)setStart:(NSDate *)d
-{
-    start = d;
 }
 
 //---------------------------------------------------------->Fink Tools
@@ -129,7 +115,7 @@ See the header file, FinkData.h, for interface and license information.
 		}
 	}
 	
-	Dprintf(@"Completed binary dictionary after %f seconds", -[start timeIntervalSinceNow]);
+	Dprintf(@"Completed binary dictionary after %f seconds", -[[self start] timeIntervalSinceNow]);
 	return pkgs;
 }
 
@@ -143,9 +129,9 @@ See the header file, FinkData.h, for interface and license information.
 	args = @[[NSHomeDirectory() stringByAppendingPathComponent: 
 			@"Library/Application Support/FinkCommander/FinkCommander.pl"]];
 
-	[finkListCommand setLaunchPath:[defaults objectForKey:FinkPerlPath]];
+	[finkListCommand setLaunchPath:[[self defaults] objectForKey:FinkPerlPath]];
 	[finkListCommand setArguments:args];
-	[finkListCommand setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+	[finkListCommand setEnvironment:[[self defaults] objectForKey:FinkEnvironmentSettings]];
     [finkListCommand setStandardOutput:pipeIn];
 
     [self setStart:[NSDate date]];
@@ -229,15 +215,15 @@ See the header file, FinkData.h, for interface and license information.
 	NSFileManager *manager = [NSFileManager defaultManager];
 	NSString *path;
 	NSString *bversion;
-	NSArray *flagArray = [defaults objectForKey:FinkFlaggedColumns];
-	BOOL showRedundantPackages = [defaults boolForKey:FinkShowRedundantPackages];
+	NSArray *flagArray = [[self defaults] objectForKey:FinkFlaggedColumns];
+	BOOL showRedundantPackages = [[self defaults] boolForKey:FinkShowRedundantPackages];
 	
 	d = info[NSFileHandleNotificationDataItem];
 	output = [[NSString alloc] initWithData:d
 								encoding:NSUTF8StringEncoding];
 
 	Dprintf(@"Read to end of file notification sent after %f seconds",
-	   -[start timeIntervalSinceNow]);
+	   -[[self start] timeIntervalSinceNow]);
 
 
     outputComponents = [NSMutableArray arrayWithArray:
@@ -297,7 +283,7 @@ See the header file, FinkData.h, for interface and license information.
 		[p setMaintainer: descriptionComponents[1]];
 		[p setEmail: descriptionComponents[2]];
 		
-		bversion = binaryPackages[[p name]];
+		bversion = [self binaryPackages][[p name]];
 		bversion = bversion ? bversion : @" ";
 		[p setBinary:bversion];
 		
@@ -314,7 +300,7 @@ See the header file, FinkData.h, for interface and license information.
 	[self setBinaryPackages: nil];
 	
 	Dprintf(@"Fink package array completed after %f seconds",
-	   -[start timeIntervalSinceNow]);
+	   -[[self start] timeIntervalSinceNow]);
 	   
     //notify FinkController that table needs to be updated
     [[NSNotificationCenter defaultCenter] postNotificationName: FinkPackageArrayIsFinished
