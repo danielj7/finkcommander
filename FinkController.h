@@ -95,49 +95,52 @@ Contact the author at sburrious@users.sourceforge.net.
 #import "SBTreeWindowManager.h"
 #import "SBMutableAttributedString.h"
 
-@interface FinkController : NSObject <NSFileManagerDelegate, NSToolbarDelegate, AuthorizedExecutableDelegate>
+@interface FinkController : NSObject <NSFileManagerDelegate, NSToolbarDelegate, NSTextFieldDelegate, AuthorizedExecutableDelegate>
 {
-	//Main window outlets
-	IBOutlet NSWindow *window;
-	IBOutlet id tableView;
-    IBOutlet id tableViewController;
-	IBOutlet NSScrollView *tableScrollView;
-	IBOutlet NSScrollView *outputScrollView;
-	IBOutlet id splitView;
-	IBOutlet NSTextView *textView;
-	IBOutlet id msgText;
-	IBOutlet NSView *progressViewHolder;
-	IBOutlet NSView *progressView;
-	IBOutlet NSProgressIndicator *progressIndicator;
-	IBOutlet NSMenu *columnsMenu;
-	IBOutlet NSMenuItem *collapseExpandMenuItem;
-	IBOutlet NSMenu *tableContextMenu;
-	IBOutlet NSMenu *windowMenu;
-	
-	//Interaction window outlets
-	IBOutlet NSWindow *interactionWindow;
-	IBOutlet NSMatrix *interactionMatrix;
-	IBOutlet NSTextField *interactionField;
-		
-	//Search view outlets
-	IBOutlet id searchView;
-	IBOutlet NSSearchField *searchTextField;
-
-	//Other objects
-	NSUserDefaults *defaults;
-	NSString *launcher;
-
-	//Flags
-	BOOL commandIsRunning;
-	BOOL commandTerminated;
-	BOOL pendingCommand;
-	BOOL toolIsBeingFixed;
-	BOOL outputIsDynamic;
-
-	NSInteger searchTag;
 }
 
-//Accessors
+#pragma mark - Main window outlets
+// Top level outlets should be strong, all else weak.
+// NSTextView can't be weak, however, and has to be unsafe_unretained.
+@property (nonatomic, strong) IBOutlet NSWindow *window;
+@property (nonatomic, weak) IBOutlet FinkTableView *tableView;
+@property (nonatomic, weak) IBOutlet id tableViewController;
+@property (nonatomic, weak) IBOutlet NSScrollView *tableScrollView;
+@property (nonatomic, weak) IBOutlet NSScrollView *outputScrollView;
+@property (nonatomic, weak) IBOutlet FinkSplitView *splitView;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextView *textView;
+@property (nonatomic, weak) IBOutlet NSCell *msgText;
+@property (nonatomic, weak) IBOutlet NSView *progressViewHolder;
+@property (nonatomic, weak) IBOutlet NSView *progressView;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator *progressIndicator;
+@property (nonatomic, weak) IBOutlet NSMenu *columnsMenu;
+@property (nonatomic, weak) IBOutlet NSMenuItem *collapseExpandMenuItem;
+@property (nonatomic, weak) IBOutlet NSMenu *tableContextMenu;
+@property (nonatomic, weak) IBOutlet NSMenu *windowMenu;
+
+#pragma mark - Interaction window outlets
+@property (nonatomic, strong) IBOutlet NSWindow *interactionWindow;
+@property (nonatomic, weak) IBOutlet NSMatrix *interactionMatrix;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *interactionField;
+
+#pragma mark - Search view outlets
+@property (nonatomic, weak) IBOutlet NSView *searchView;
+@property (nonatomic, unsafe_unretained) IBOutlet NSSearchField *searchTextField;
+
+#pragma mark - Other objects
+@property (nonatomic) NSUserDefaults *defaults;
+@property (nonatomic, copy) NSString *launcher;
+
+#pragma mark - Flags
+@property (nonatomic, getter=isCommandRunning) BOOL commandRunning;
+@property (nonatomic, getter=isCommandTerminated) BOOL commandTerminated;
+@property (nonatomic, getter=isPendingCommand) BOOL pendingCommand;
+@property (nonatomic, getter=isToolBeingFixed) BOOL toolBeingFixed;
+@property (nonatomic, getter=isOutputDynamic) BOOL outputDynamic;
+
+@property (nonatomic) NSInteger searchTag;
+
+#pragma mark - Accessors
 @property (nonatomic) FinkPreferences *preferences;
 @property (nonatomic) FinkPackageInfo *packageInfo;
 @property (nonatomic) FinkInstallationInfo *installationInfo;
@@ -147,11 +150,11 @@ Contact the author at sburrious@users.sourceforge.net.
 @property (nonatomic) AuthorizedExecutable *finkTask;
 @property (nonatomic) AuthorizedExecutable *killTask;
 @property (nonatomic) SBTreeWindowManager *treeManager;
-@property (nonatomic, readonly, strong) FinkData *packages;
+@property (nonatomic, readonly) FinkData *packages;
 @property (nonatomic, copy) NSString *lastCommand;
 @property (nonatomic) FinkOutputParser *parser;
 
-//Menu and Toolbar Action Methods
+#pragma mark - Menu and Toolbar Action Methods
 -(void)checkForLatestVersion:(BOOL)notifyWhenCurrent;
 -(IBAction)showPreferencePanel:(id)sender;
 -(IBAction)updateTable:(id)sender;
@@ -172,7 +175,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)showAboutWindow:(id)sender;
 -(void)treeWindowWillClose:(id)sender;
 
-//Toolbar Methods
+#pragma mark - Toolbar Methods
 -(void)setupToolbar;
 -(NSToolbarItem *)toolbar:(NSToolbar *)toolbar
 	itemForItemIdentifier:(NSString *)itemIdentifier
@@ -181,7 +184,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar;
 -(IBAction)refilter:(id)sender;
 
-//Process Control Methods
+#pragma mark - Process Control Methods
 //  sheet methods for interaction window
 -(IBAction)raiseInteractionWindow:(id)sender;
 -(IBAction)endInteractionWindow:(id)sender;
@@ -197,7 +200,7 @@ Contact the author at sburrious@users.sourceforge.net.
 -(IBAction)runNonSpecificCommandInTerminal:(id)sender;
 #endif
 
-//AuthorizedExecutable delegate methods
+#pragma mark - AuthorizedExecutable delegate methods
 -(void)scrollToVisible:(NSNumber *)n;  //helper method used by captureOutput
 -(void)captureOutput:(NSString *)output forExecutable:(id)ignore;
 -(void)executableFinished:(id)ignore withStatus:(NSNumber *)number;

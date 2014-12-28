@@ -151,13 +151,13 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
     if (self = [super init]){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		defaults = [NSUserDefaults standardUserDefaults];
+		_defaults = [NSUserDefaults standardUserDefaults];
 
 		[NSApp setDelegate: self];
 
 		//Check whether this is the initial startup of 0.4.0 or later for this user;
 		//if so, remove existing preferences relating to table columns
-		if (![[defaults objectForKey:FinkUsersArray] containsObject:NSUserName()]){
+		if (![[_defaults objectForKey:FinkUsersArray] containsObject:NSUserName()]){
 			NSLog(@"Fixing preferences for first run of version 0.4 or later");
 			fixPreferences();
 		}
@@ -171,9 +171,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 		//Set environment variables for use in authorized commands, if
 		//necessary
-		if (! [defaults boolForKey:FinkInitialEnvironmentHasBeenSet]){
+		if (! [_defaults boolForKey:FinkInitialEnvironmentHasBeenSet]){
 			setInitialEnvironmentVariables();
-			[defaults setBool:YES forKey:FinkInitialEnvironmentHasBeenSet];
+			[_defaults setBool:YES forKey:FinkInitialEnvironmentHasBeenSet];
 		}
 
 		//Initialize package data storage object
@@ -184,18 +184,18 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 		//Set instance variables used to store objects and state information
 		//needed to run fink and apt-get commands
-		launcher = [[NSBundle mainBundle] pathForResource:@"Launcher" ofType:nil];
-		_finkTask = [[AuthorizedExecutable alloc] initWithExecutable:launcher];
+		_launcher = [[NSBundle mainBundle] pathForResource:@"Launcher" ofType:nil];
+		_finkTask = [[AuthorizedExecutable alloc] initWithExecutable: _launcher];
 		[_finkTask setDelegate:self];
-		commandIsRunning = NO;
-		pendingCommand = NO;
+		_commandRunning = NO;
+		_pendingCommand = NO;
 		
 		//Set the instance variable for the package tree manager
 		_treeManager = [[SBTreeWindowManager alloc] init];
 
 		//Set flag indicating user has chosen to terminate a command;
 		//used to stop appending text to output
-		commandTerminated = NO;
+		_commandTerminated = NO;
 
 		//Register for notification that causes table to update
 		//and resume normal state
@@ -232,8 +232,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			name: CheckForUpdate
 			object: nil];
 
-		searchTag = 2010;
-		outputIsDynamic = NO;
+		_searchTag = 2010;
+		_outputDynamic = NO;
     }
     return self;
 }
@@ -277,19 +277,19 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)displayNumberOfPackages
 {
-    if ([defaults boolForKey: FinkPackagesInTitleBar]){
-		[window setTitle: [NSString stringWithFormat:
+    if ([[self defaults] boolForKey: FinkPackagesInTitleBar]){
+		[[self window] setTitle: [NSString stringWithFormat:
 			NSLocalizedString(@"Packages: %d Displayed, %d Installed", @"Main window title"),
-			[[tableView displayedPackages] count],
+			[[[self tableView] displayedPackages] count],
 			[[self packages] installedPackagesCount]]];
-		if (! commandIsRunning){
-			[msgText setStringValue: NSLocalizedString(@"Done", @"Status bar message")];
+		if (! [self isCommandRunning]){
+			[[self msgText] setStringValue: NSLocalizedString(@"Done", @"Status bar message")];
 		}
-    }else if (! commandIsRunning){
-		[window setTitle: @"FinkCommander"];
-		[msgText setStringValue: [NSString stringWithFormat:
+    }else if (! [self isCommandRunning]){
+		[[self window] setTitle: @"FinkCommander"];
+		[[self msgText] setStringValue: [NSString stringWithFormat:
 			NSLocalizedString(@"%d packages (%d installed)", @"Status bar message"),
-			[[tableView displayedPackages] count],
+			[[[self tableView] displayedPackages] count],
 			[[self packages] installedPackagesCount]]];
     }
 }
@@ -297,7 +297,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //Display running command below the table
 -(void)displayCommand:(NSArray *)params
 {
-    [msgText setStringValue: 
+    [[self msgText] setStringValue: 
 		[NSString stringWithFormat: NSLocalizedString(@"Running %@", 
 			@"Status bar message indicating a command is running"),
 		[params componentsJoinedByString: @" "]]];
@@ -305,28 +305,28 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)stopProgressIndicator
 {
-    if ([progressView isDescendantOf: progressViewHolder]){
-		[progressIndicator stopAnimation: nil];
-		[progressView removeFromSuperview];
+    if ([[self progressView] isDescendantOf: [self progressViewHolder]]){
+		[[self progressIndicator] stopAnimation: nil];
+		[[self progressView] removeFromSuperview];
     }
 }
 
 -(void)startProgressIndicatorAsIndeterminate:(BOOL)b
 {
-    if (! [progressView isDescendantOf: progressViewHolder]){
-		[progressViewHolder addSubview: progressView];
+    if (! [[self progressView] isDescendantOf: [self progressViewHolder]]){
+		[[self progressViewHolder] addSubview: [self progressView]];
     }
-    [progressIndicator setIndeterminate:b];
-    [progressIndicator setDoubleValue:0.0];
-    [progressIndicator setUsesThreadedAnimation:YES];
-    [progressIndicator startAnimation: nil];
+    [[self progressIndicator] setIndeterminate:b];
+    [[self progressIndicator] setDoubleValue:0.0];
+    [[self progressIndicator] setUsesThreadedAnimation:YES];
+    [[self progressIndicator] startAnimation: nil];
 }
 
 -(void)incrementProgressIndicator:(CGFloat)inc
 {
-    CGFloat unused = 100.0 - [progressIndicator doubleValue];
+    CGFloat unused = 100.0 - [[self progressIndicator] doubleValue];
     //failsafe to make sure we don't go beyond 100
-    [progressIndicator incrementBy:MIN(inc, unused * 0.85)];
+    [[self progressIndicator] incrementBy:MIN(inc, unused * 0.85)];
 }
 
 /*	Reset the interface--stop and remove progress indicator, revalidate
@@ -337,9 +337,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	[NSApp setApplicationIconImage:[NSImage imageNamed:@"NSApplicationIcon"]];
 	[self stopProgressIndicator];
 	[self displayNumberOfPackages];
-	commandIsRunning = NO;
+	[self setCommandRunning: NO];
 	if (![[ignore name] isEqualToString: @"FinkError"]){
-		[tableView deselectAll: self];
+		[[self tableView] deselectAll: self];
 	}
 	[self controlTextDidChange: nil]; //reapplies filter, which re-sorts table
 	[[self toolbar] validateVisibleItems];
@@ -351,48 +351,48 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)awakeFromNib
 {
-    NSArray *columnNameArray = [defaults objectForKey:FinkTableColumnsArray];
-    id splitSuperview = [splitView superview];
-    NSSize tableContentSize = [tableScrollView contentSize];
+    NSArray *columnNameArray = [[self defaults] objectForKey:FinkTableColumnsArray];
+    NSView *splitSuperview = [[self splitView] superview];
+    NSSize tableContentSize = [[self tableScrollView] contentSize];
 
     //Substitute FinkScrollView for NSScrollView
-    [splitView removeFromSuperview];
-    splitView = [[FinkSplitView alloc] initWithFrame:[splitView frame]];
-    [splitSuperview addSubview:splitView];
-    [splitView addSubview:tableScrollView];
-    [splitView addSubview:outputScrollView];
-    [splitView connectSubviews]; //connects instance variables to scroll views
-    [splitView adjustSubviews];
-	[splitView setCollapseExpandMenuItem:collapseExpandMenuItem];
+    [[self splitView] removeFromSuperview];
+    [self setSplitView: [[FinkSplitView alloc] initWithFrame:[[self splitView] frame]]];
+    [splitSuperview addSubview:[self splitView]];
+    [[self splitView] addSubview:[self tableScrollView]];
+    [[self splitView] addSubview:[self outputScrollView]];
+    [[self splitView] connectSubviews]; //connects instance variables to scroll views
+    [[self splitView] adjustSubviews];
+	[[self splitView] setCollapseExpandMenuItem:[self collapseExpandMenuItem]];
 	
-	[tableScrollView setBorderType:NSNoBorder];
-	[outputScrollView setBorderType:NSNoBorder];
+	[[self tableScrollView] setBorderType:NSNoBorder];
+	[[self outputScrollView] setBorderType:NSNoBorder];
 
     //Substitute FinkTableView for NSTableView
-    tableView = [[FinkTableView alloc] initWithFrame:
+    [self setTableView: [[FinkTableView alloc] initWithFrame:
 		NSMakeRect(0, 0, tableContentSize.width,
-			 tableContentSize.height)];
-    [tableScrollView setDocumentView:tableView];
-    [tableView setDisplayedPackages:[[self packages] array]];
-    [tableView sizeLastColumnToFit];
-    [tableView setMenu:tableContextMenu];
+			 tableContentSize.height)]];
+    [[self tableScrollView] setDocumentView:[self tableView]];
+    [[self tableView] setDisplayedPackages:[[self packages] array]];
+    [[self tableView] sizeLastColumnToFit];
+    [[self tableView] setMenu:[self tableContextMenu]];
 
     //Instantiate FinkTextViewController
     [self setTextViewController: [[FinkTextViewController alloc] 
-								initWithView:textView
-								forScrollView:outputScrollView]];
+								initWithView:[self textView]
+								forScrollView:[self outputScrollView]]];
 									
 	//Set state of View menu column items
     for (NSString *columnName in columnNameArray){
     	NSInteger atag = [self tagFromAttributeName:columnName];
-		[[columnsMenu itemWithTag:atag] setState:NSOnState];
+		[[[self columnsMenu] itemWithTag:atag] setState:NSOnState];
     }
 
-	if ([outputScrollView bounds].size.height < 1.0){
-		[collapseExpandMenuItem setTitle:LS_EXPAND];
+	if ([[self outputScrollView] bounds].size.height < 1.0){
+		[[self collapseExpandMenuItem] setTitle:LS_EXPAND];
 	}else{
-		[splitView expandOutputToMinimumRatio:0.0];
-		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
+		[[self splitView] expandOutputToMinimumRatio:0.0];
+		[[self collapseExpandMenuItem] setTitle:LS_COLLAPSE];
 	}
 	
     [self setupToolbar];
@@ -400,38 +400,38 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSTableColumn *lastColumn = [tableView tableColumnWithIdentifier:
-				    [tableView lastIdentifier]];
-	NSString *direction = [defaults objectForKey:FinkColumnStateDictionary][[tableView lastIdentifier]];
-    NSString *basePath = [defaults objectForKey:FinkBasePath];
+    NSTableColumn *lastColumn = [[self tableView] tableColumnWithIdentifier:
+				    [[self tableView] lastIdentifier]];
+	NSString *direction = [[self defaults] objectForKey:FinkColumnStateDictionary][[[self tableView] lastIdentifier]];
+    NSString *basePath = [[self defaults] objectForKey:FinkBasePath];
 
     if ([basePath length] <= 1 ){
 		NSBeginAlertSheet(NSLocalizedString(@"Fink could not be located.", @"Alert sheet title"),
 					LS_OK, nil,	nil, //title, buttons
-					window, self, NULL,	NULL, nil, //window, delegate, selectors, c info
+					[self window], self, NULL,	NULL, nil, //window, delegate, selectors, c info
 					NSLocalizedString(@"Please make sure Fink is installed before using FinkCommander. If you've already installed Fink, try setting the path to Fink manually in Preferences.", 
 										@"Alert sheet message"), nil);
     }
     [self updateTable:nil];
 
-    [tableView setHighlightedTableColumn:lastColumn];
+    [[self tableView] setHighlightedTableColumn:lastColumn];
     
     if ([direction isEqualToString:@"normal"])
     {
-        [tableView setIndicatorImage: [tableView normalSortImage]
+        [[self tableView] setIndicatorImage: [[self tableView] normalSortImage]
                        inTableColumn:lastColumn];
     }
     else if ([direction isEqualToString:@"reverse"])
     {
-        [tableView setIndicatorImage: [tableView reverseSortImage]
+        [[self tableView] setIndicatorImage: [[self tableView] reverseSortImage]
                        inTableColumn:lastColumn];
     }
 
-    if ([defaults boolForKey: FinkAutoExpandOutput]){
-		[splitView collapseOutput: nil];
+    if ([[self defaults] boolForKey: FinkAutoExpandOutput]){
+		[[self splitView] collapseOutput: nil];
     }
 
-	if ([defaults boolForKey:FinkCheckForNewVersion]){
+	if ([[self defaults] boolForKey:FinkCheckForNewVersion]){
 		NSLog(@"Checking for FinkCommander update");
 		[NSThread detachNewThreadSelector:@selector(checkForLatestVersion:) toTarget:self withObject:nil];
 	}
@@ -446,7 +446,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
     NSInteger answer;
 
-    if (commandIsRunning){ //see windowShouldClose: method
+    if ([self isCommandRunning]){ //see windowShouldClose: method
 		answer = NSRunCriticalAlertPanel(LS_WARNING, 
 						NSLocalizedString(@"Quitting now will interrupt a Fink process.", 
 									@"Alert panel message"),
@@ -466,8 +466,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			action:@selector(bringBackMainWindow:)
 			keyEquivalent:@""];
 
-	[windowMenu insertItem:raiseMainWindowItem atIndex:2];
-	[windowMenu insertItem:[NSMenuItem separatorItem] atIndex:3];
+	[[self windowMenu] insertItem:raiseMainWindowItem atIndex:2];
+	[[self windowMenu] insertItem:[NSMenuItem separatorItem] atIndex:3];
 }
 
 //make sure the authorization terminates at the end of each FC session
@@ -501,7 +501,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		NSDictionary *latestVersionDict =
 			[NSDictionary dictionaryWithContentsOfURL:
 				[NSURL URLWithString:@"http://finkcommander.sourceforge.net/pages/version.xml"]];
-		NSString *latestVersion = [defaults objectForKey: @"FinkAvailableUpdate"];
+		NSString *latestVersion = [[self defaults] objectForKey: @"FinkAvailableUpdate"];
 
 		if ([installedVersion compare: latestVersion] == NSOrderedAscending){
 			NSInteger answer = NSRunCriticalAlertPanel(NSLocalizedString(@"A new version of FinkCommander is available from SourceForge.\nDo you want to upgrade your copy?",@"Update alert title"),
@@ -524,7 +524,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		}
 
 		if (latestVersionDict){
-			[defaults setObject:latestVersionDict[@"FinkCommander"] forKey: @"FinkAvailableUpdate"];
+			[[self defaults] setObject:latestVersionDict[@"FinkCommander"] forKey: @"FinkAvailableUpdate"];
 		}else if (notifyWhenCurrent){
 			NSRunAlertPanel(LS_ERROR,
 				NSLocalizedString(@"FinkCommander was unable to locate online update information.\n\nTry visiting the FinkCommander web site (available under the Help menu) to check for a more recent version of FinkCommander.", @"Alert message"),
@@ -545,8 +545,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)updateTable:(id)sender
 {
     [self startProgressIndicatorAsIndeterminate:YES];
-    [msgText setStringValue:NSLocalizedString(@"Updating table data", "Status bar message")];
-    commandIsRunning = YES;
+    [[self msgText] setStringValue:NSLocalizedString(@"Updating table data", "Status bar message")];
+    [self setCommandRunning: YES];
 
     [[self packages] update];
 }
@@ -554,7 +554,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)saveOutput:(id)sender
 {
     NSSavePanel *panel = [NSSavePanel savePanel];
-    NSString *defaultPath = [defaults objectForKey: FinkOutputPath];
+    NSString *defaultPath = [[self defaults] objectForKey: FinkOutputPath];
     NSString *savePath = ([defaultPath length] > 0) ? defaultPath : NSHomeDirectory();
     NSString *fileName = @"Untitled";
 	
@@ -568,10 +568,10 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     [panel setDirectoryURL:[NSURL fileURLWithPath:savePath isDirectory:YES]];
     [panel setNameFieldStringValue:fileName];
     
-    [panel beginSheetModalForWindow:window completionHandler:^(NSInteger result){
+    [panel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result){
         if (result == NSFileHandlingPanelOKButton){
             NSError *err;
-            [[textView string] writeToURL:[panel URL] atomically:YES encoding:NSUTF8StringEncoding error:&err];
+            [[[self textView] string] writeToURL:[panel URL] atomically:YES encoding:NSUTF8StringEncoding error:&err];
         }
     }];
 }
@@ -586,9 +586,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     NSInteger newState = ([sender state] == NSOnState ? NSOffState : NSOnState);
 
     if (newState == NSOnState){
-		[tableView addColumnWithName:columnIdentifier];
+		[[self tableView] addColumnWithName:columnIdentifier];
     }else{
-		[tableView removeColumnWithName:columnIdentifier];
+		[[self tableView] removeColumnWithName:columnIdentifier];
     }
     [sender setState:newState];
 }
@@ -596,17 +596,17 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)sortByPackageElement:(id)sender
 {
 	NSString *identifier = [self attributeNameFromTag:[sender tag]];
-	NSTableColumn *column = [tableView tableColumnWithIdentifier:identifier];
-	[tableView tableView:tableView didClickTableColumn:column];
+	NSTableColumn *column = [[self tableView] tableColumnWithIdentifier:identifier];
+	[[self tableView] tableView:[self tableView] didClickTableColumn:column];
 }
 
 -(IBAction)toggleFlags:(id)sender
 {
-	int currentState = [[[tableView selectedPackageArray] lastObject]
+	int currentState = [[[[self tableView] selectedPackageArray] lastObject]
 								flagged];
 	FinkFlaggedType newState = (NOT_FLAGGED == currentState) ? IS_FLAGGED : NOT_FLAGGED;
-	NSArray *packageArray = [tableView selectedPackageArray];
-	NSMutableArray *flagArray = [[defaults objectForKey:FinkFlaggedColumns] mutableCopy];
+	NSArray *packageArray = [[self tableView] selectedPackageArray];
+	NSMutableArray *flagArray = [[[self defaults] objectForKey:FinkFlaggedColumns] mutableCopy];
 
 	for (FinkPackage *package in packageArray){
 		[package setFlagged:newState];
@@ -616,8 +616,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			[flagArray removeObject:[package name]];
 		}
 	}
-	[defaults setObject:[flagArray copy] forKey:FinkFlaggedColumns];
-	[tableView reloadData];
+	[[self defaults] setObject:[flagArray copy] forKey:FinkFlaggedColumns];
+	[[self tableView] reloadData];
 }
 
 //----------------------------------------------->Source Menu
@@ -627,7 +627,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //formatting, unlike package inspector
 -(IBAction)showDescription:(id)sender
 {
-    NSArray *pkgArray = [tableView selectedPackageArray];
+    NSArray *pkgArray = [[self tableView] selectedPackageArray];
     NSInteger i = 0;
     NSString *full = nil;
     NSString *divider = @"____________________________________________________\n\n";
@@ -654,18 +654,18 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
 	NSString *pgid = [NSString stringWithFormat:@"%ld", (long)[[self parser] pgid]];
 		
-	if (![self killTask]) 	[self setKillTask: [[AuthorizedExecutable alloc] initWithExecutable:launcher]];
+	if (![self killTask]) 	[self setKillTask: [[AuthorizedExecutable alloc] initWithExecutable:[self launcher]]];
     [[self killTask] setArguments:
 		[@[@"--kill", pgid] mutableCopy]];
-    [[self killTask] setEnvironment:[defaults objectForKey:FinkEnvironmentSettings]];
+    [[self killTask] setEnvironment:[[self defaults] objectForKey:FinkEnvironmentSettings]];
     [[self killTask] authorizeWithQuery];
     [[self killTask] start];
-	commandTerminated = YES;
+	[self setCommandTerminated: YES];
 }
 
 -(IBAction)terminateCommand:(id)sender
 {
-    if ([defaults boolForKey: FinkWarnBeforeTerminating]){
+    if ([[self defaults] boolForKey: FinkWarnBeforeTerminating]){
 		if (! [self warningDialog]){
 			[self setWarningDialog: [[FinkWarningDialog alloc] init]];
 		}
@@ -685,21 +685,21 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     }
     [[self packageInfo] setEmailSig: sig];
     [[self packageInfo] showWindow: self];
-    [[self packageInfo] displayDescriptions: [tableView selectedPackageArray]];
+    [[self packageInfo] displayDescriptions: [[self tableView] selectedPackageArray]];
 }
 
 //change inspector content when table selection changes
 -(void)tableViewSelectionDidChange:(NSNotification *)aNotification
 {
     if ([self packageInfo] && [[[self packageInfo] window] isVisible]){
-		[[self packageInfo] displayDescriptions: [tableView selectedPackageArray]];
+		[[self packageInfo] displayDescriptions: [[self tableView] selectedPackageArray]];
     }
 }
 
 //Helper for feedback commands
 -(void)sendEmailWithMessage:(FinkFeedbackType)typeOfFeedback
 {
-    NSArray *pkgArray = [tableView selectedPackageArray];
+    NSArray *pkgArray = [[self tableView] selectedPackageArray];
     NSString *sig = [[self installationInfo] formattedEmailSig];
 	NSString *feedbackMessage;
 	NSString *emailTemplate;
@@ -745,7 +745,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 								@"Alert message, singular version");
 		NSBeginAlertSheet(LS_ERROR,
 					LS_OK, nil, nil,
-					window, self, NULL, NULL, nil,
+					[self window], self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, [pkgNames componentsJoinedByString:@", "]],
 					nil);
 	}
@@ -755,7 +755,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 				NSLocalizedString(@"You do not have the latest version of the following package:\n\n\t%@\n\nUnless the problem you want to report is that you cannot install the latest version, you should install and try it before sending negative feedback.", @"Alert message, singular version");
  		NSBeginAlertSheet(LS_WARNING,
  					LS_OK, nil, nil,
- 					window, self, NULL, NULL, nil,
+ 					[self window], self, NULL, NULL, nil,
 					[NSString stringWithFormat: msg, 
 						[pkgNames componentsJoinedByString:@", "]],
 					nil);
@@ -774,7 +774,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(IBAction)openPackageFileViewer:(id)sender
 {
-	FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
+	FinkPackage *pkg = [[self tableView] displayedPackages][[[self tableView] selectedRow]];
 	
 	if (! [[pkg status] contains:@"u"]){
 		NSBeep();
@@ -791,9 +791,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(IBAction)openDocumentation:(id)sender
 {
-	FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
+	FinkPackage *pkg = [[self tableView] displayedPackages][[[self tableView] selectedRow]];
 	NSFileManager *mgr = [NSFileManager defaultManager];
-	NSString *root = [[defaults objectForKey:FinkBasePath] 
+	NSString *root = [[[self defaults] objectForKey:FinkBasePath] 
 						stringByAppendingPathComponent:@"share/doc"];
 	NSString *path = [root stringByAppendingPathComponent:[pkg name]];
 	NSArray *pathContents;
@@ -815,9 +815,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(IBAction)bringBackMainWindow:(id)sender
 {
-	[window makeKeyAndOrderFront:sender];
-	[windowMenu removeItemAtIndex:2];
-	[windowMenu removeItemAtIndex:2];
+	[[self window] makeKeyAndOrderFront:sender];
+	[[self windowMenu] removeItemAtIndex:2];
+	[[self windowMenu] removeItemAtIndex:2];
 }
 
 //----------------------------------------------->Help and Tools Menu
@@ -877,13 +877,13 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	[[self toolbar] setAllowsUserCustomization: YES];
 	[[self toolbar] setAutosavesConfiguration: YES];
 	[[self toolbar] setDisplayMode: NSToolbarDisplayModeIconOnly];
-	[[self toolbar] setSearchField:searchTextField];
-	id searchCell = [searchTextField cell];
+	[[self toolbar] setSearchField:[self searchTextField]];
+	id searchCell = [[self searchTextField] cell];
 	[searchCell setSearchMenuTemplate: [searchCell searchMenuTemplate]];
 #ifndef OSXVER101
 	[[self toolbar] setSizeMode:NSToolbarSizeModeSmall];
 #endif
-    [window setToolbar: [self toolbar]];
+    [[self window] setToolbar: [self toolbar]];
 }
 
 //reapply filter if search field values have changed
@@ -895,7 +895,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			[menuItem setState:NSOffState];
 		}
 		[sender setState:NSOnState];
-		searchTag = [sender tag];
+		[self setSearchTag: [sender tag]];
 	}
 	[self controlTextDidChange: nil];
 }
@@ -939,9 +939,9 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		[item setTag: [tag intValue]];
     }
     if ([itemIdentifier isEqualToString:@"FinkFilterItem"]){
-		[item setView: searchView];
-		[item setMinSize:NSMakeSize(204, NSHeight([searchView frame]))];
-		[item setMaxSize:NSMakeSize(400, NSHeight([searchView frame]))];
+		[item setView: [self searchView]];
+		[item setMinSize:NSMakeSize(204, NSHeight([[self searchView] frame]))];
+		[item setMaxSize:NSMakeSize(400, NSHeight([[self searchView] frame]))];
     }
     return item;
 }
@@ -999,29 +999,29 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     if ([[aNotification object] tag] == FILTER){
 		/* 	Translate the tag for the selected menu in the popup button into a string
 			corresponding to a fink package attribute */
-		NSString *field = [self attributeNameFromTag: searchTag];
-		NSString *filterText = [[searchTextField stringValue] lowercaseString];
+		NSString *field = [self attributeNameFromTag: [self searchTag]];
+		NSString *filterText = [[[self searchTextField] stringValue] lowercaseString];
 		NSString *pkgAttribute;
 		/* 	Used to store the subset of the packages array that matches the filter text */
 		NSMutableArray *subset = [NSMutableArray array];
                 regex_t regex;
 
 		//Store selected object information before the filter is applied
-		if ([defaults boolForKey: FinkScrollToSelection]){
-			[tableView storeSelectedObjectInfo];
+		if ([[self defaults] boolForKey: FinkScrollToSelection]){
+			[[self tableView] storeSelectedObjectInfo];
 		} 
-                if ([defaults boolForKey: FinkAllowRegexFiltering]){                    
+                if ([[self defaults] boolForKey: FinkAllowRegexFiltering]){                    
                     regcomp(&regex, [filterText UTF8String], REG_EXTENDED);
                     // If regex construction fails it is no big deal really, probably in the middle of typing one like "Ben|"
 		}		
 
 		if ([filterText length] == 0){
-			[tableView setDisplayedPackages: [[self packages] array]];
+			[[self tableView] setDisplayedPackages: [[self packages] array]];
 		}else{
 			for (FinkPackage *pkg in [[self packages] array]){
 				pkgAttribute = [[pkg valueForKey:field] lowercaseString];
 				/* 	If the value matches the filter term, add it to the subset */
-                                if([defaults boolForKey: FinkAllowRegexFiltering] && 
+                                if([[self defaults] boolForKey: FinkAllowRegexFiltering] && 
                                     !regexec(&regex, [pkgAttribute UTF8String], 0, 0, 0)){
                                     [subset addObject: pkg];
 				} else 
@@ -1029,22 +1029,22 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 					[subset addObject:pkg];
 				}
 			}
-			[tableView setDisplayedPackages:[subset copy]];
+			[[self tableView] setDisplayedPackages:[subset copy]];
 		}
-		[tableView resortTableAfterFilter];
+		[[self tableView] resortTableAfterFilter];
 
 		//Restore the selection and scroll back to it after the table is sorted
-		if ([defaults boolForKey: FinkScrollToSelection]){
-			[tableView scrollToSelectedObject];
+		if ([[self defaults] boolForKey: FinkScrollToSelection]){
+			[[self tableView] scrollToSelectedObject];
 		}
 		[self displayNumberOfPackages];
 	/* 	When the notification is received from the interaction dialog, automatically 
 		select the radio button appropriate for the state of the text entry field  */
     }else if ([[aNotification object] tag] == INTERACTION){
-		if ([[interactionField stringValue] length] > 0){
-			[interactionMatrix selectCellWithTag:USER_CHOICE];
+		if ([[[self interactionField] stringValue] length] > 0){
+			[[self interactionMatrix] selectCellWithTag:USER_CHOICE];
 		}else{
-			[interactionMatrix selectCellWithTag:DEFAULT];
+			[[self interactionMatrix] selectCellWithTag:DEFAULT];
 		}
     }
 }
@@ -1063,7 +1063,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	 */
 
     // If no row is selected, disable commands that operate on packages
-    if ([tableView selectedRow] == -1){
+    if ([[self tableView] selectedRow] == -1){
 		if (itemAction == @selector(runPackageSpecificCommand:) 	||
 			itemAction == @selector(runForceRemove:)	           	||
 			itemAction == @selector(showDescription:)           	||
@@ -1081,7 +1081,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		// Disable apt-get install if there is no binary version
 		NSString *itemName = ACTION_ITEM_IDENTIFIER(theItem);
 		if ([itemName isEqualToString:@"install"] && [theItem tag] == APT_GET){
-			NSArray *pkgArray = [tableView selectedPackageArray];
+			NSArray *pkgArray = [[self tableView] selectedPackageArray];
 			for (FinkPackage *pkg in pkgArray){
 				if ([[pkg binary] length] < 2){
 					return NO;
@@ -1091,7 +1091,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		// Disable package file accessors, if the package is not installed
 		if (itemAction == @selector(openDocumentation:) 			||
 			itemAction == @selector(openPackageFileViewer:)){
-			FinkPackage *pkg = [tableView displayedPackages][[tableView selectedRow]];
+			FinkPackage *pkg = [[self tableView] displayedPackages][[[self tableView] selectedRow]];
 			if (! [[pkg status] contains:@"u"]){ //current or outdated
 				return NO;
 			}
@@ -1100,7 +1100,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 	/* 	If a command is running, disable fink, apt-get and dpkg commands,
 		table update and save output */
-	if (commandIsRunning){
+	if ([self isCommandRunning]){
 		if (itemAction == @selector(runPackageSpecificCommand:)  	||
 			itemAction == @selector(runNonSpecificCommand:)      	||
 			itemAction == @selector(runForceRemove:)	       		||
@@ -1119,13 +1119,13 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 	// Disable sorting for columns not in the table
 	if (itemAction == @selector(sortByPackageElement:) &&
-		! [[defaults objectForKey:FinkTableColumnsArray] containsObject:
+		! [[[self defaults] objectForKey:FinkTableColumnsArray] containsObject:
 				[self attributeNameFromTag:[theItem tag]]]){
 		return NO;
 	}
 
 	// Disable save output if there's nothing in the text view
-	if ([[textView string] length] < 1 && [theItem action] == @selector(saveOutput:)){
+	if ([[[self textView] string] length] < 1 && [theItem action] == @selector(saveOutput:)){
 		return NO;
 	}
 
@@ -1134,7 +1134,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	 */
 
 	if (itemAction == @selector(toggleFlags:)){
-		if ([[[tableView selectedPackageArray] lastObject] flagged] == 0){
+		if ([[[[self tableView] selectedPackageArray] lastObject] flagged] == 0){
 			[theItem setTitle:NSLocalizedString(@"Mark As Flagged",
 									   @"Menu title: Put flag image in table column")];
 		}else{
@@ -1179,7 +1179,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 {
     NSString *cmd, *exe = @"";
     NSMutableArray *args;
-    NSArray *pkgArray = [tableView selectedPackageArray];
+    NSArray *pkgArray = [[self tableView] selectedPackageArray];
 	FinkExecutableType type = [sender tag];
 
     //Identify executable
@@ -1194,7 +1194,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			exe = @"dpkg";
 			break;
     }
-    exe = [[defaults objectForKey:FinkBasePath] stringByAppendingPathComponent:
+    exe = [[[self defaults] objectForKey:FinkBasePath] stringByAppendingPathComponent:
 				[NSString stringWithFormat:@"/bin/%@", exe]];
 
 	//Put executable, command name and options in argument array
@@ -1202,7 +1202,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 		cmd = ACTION_ITEM_IDENTIFIER(sender);
 		[self setLastCommand:cmd];
 		args = [NSMutableArray arrayWithObjects: exe, cmd, nil];
-		if ([defaults boolForKey: FinkAlwaysChooseDefaults]){
+		if ([[self defaults] boolForKey: FinkAlwaysChooseDefaults]){
 			[args insertObject: @"-y" atIndex: 1];
 		}
 		if (type == APT_GET){
@@ -1240,7 +1240,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	NSAppleScript *script;
 	NSAppleEventDescriptor *descriptor;
 	NSDictionary *errord;
-	NSString *terminal = [[defaults objectForKey: @"FinkEnvironmentSettings"] valueForKey:@"TERM_PROGRAM"];
+	NSString *terminal = [[[self defaults] objectForKey: @"FinkEnvironmentSettings"] valueForKey:@"TERM_PROGRAM"];
 
 	if ([terminal isEqualToString: @"Apple_Terminal"]){
 		cmd = [NSString stringWithFormat:@"tell application \"Terminal\"\nactivate\ndo script \"%@\"\n end tell", cmd];
@@ -1283,16 +1283,16 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(void)launchCommandWithArguments:(NSMutableArray *)args
 {
     NSString *exec = args[0];
-	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [defaults objectForKey:FinkEnvironmentSettings]];
+	NSMutableDictionary *envvars = [NSMutableDictionary dictionaryWithDictionary: [[self defaults] objectForKey:FinkEnvironmentSettings]];
 	NSString *askpass;
 	[envvars setValue:@(getenv("SSH_AUTH_SOCK")) forKey:@"SSH_AUTH_SOCK"];
 	[envvars setValue:@"0" forKey:@"DISPLAY"];
 	askpass = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/SSHAskPass.sh"];
 	[envvars setValue:askpass forKey:@"SSH_ASKPASS"];
 
-    pendingCommand = NO; 	//no command waiting in line
-    toolIsBeingFixed = NO;
-    commandIsRunning = YES;
+    [self setPendingCommand: NO]; 	//no command waiting in line
+    [self setToolBeingFixed: NO];
+    [self setCommandRunning: YES];
     [self setParser:[[FinkOutputParser alloc] initForCommand:[self lastCommand]
 											  executable:exec]];
     [self displayCommand: args];
@@ -1304,7 +1304,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     [[self finkTask] start];
 	[[self textViewController] setLimits];
     [[[self textViewController] textView]
-		replaceCharactersInRange:NSMakeRange(0, [[textView string] length])
+		replaceCharactersInRange:NSMakeRange(0, [[[self textView] string] length])
 					  withString:@""];
 }
 
@@ -1313,7 +1313,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     NSMutableArray *args = [self argumentListForCommand:sender packageSpecific:YES];
 
     if ([args containsObject: @"remove"] &&
-		[defaults boolForKey: FinkWarnBeforeRemoving]){
+		[[self defaults] boolForKey: FinkWarnBeforeRemoving]){
 		if (! [self warningDialog]){
 			[self setWarningDialog: [[FinkWarningDialog alloc] init]];
 		}
@@ -1351,7 +1351,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 	Dprintf(@"Running command %@ on notification", cmd);
 
-    if (commandIsRunning && !toolIsBeingFixed){
+    if ([self isCommandRunning] && ![self isToolBeingFixed]){
 		NSRunAlertPanel(LS_SORRY,
 				  NSLocalizedString(@"You must wait until the current process is complete before taking that action.\nTry again when the number of packages or the word \"Done\" appears below the output view.", @"Alert panel message"),
 				  LS_OK, nil, nil);
@@ -1377,12 +1377,12 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
 -(IBAction)raiseInteractionWindow:(id)sender
 {
-    [splitView expandOutputToMinimumRatio:0.4];
+    [[self splitView] expandOutputToMinimumRatio:0.4];
     [[[self textViewController] textView] scrollRangeToVisible:
 		NSMakeRange([[[[self textViewController] textView] string] length], 0)];
 
-    [NSApp beginSheet: interactionWindow
-		  modalForWindow: window
+    [NSApp beginSheet: [self interactionWindow]
+		  modalForWindow: [self window]
 		   modalDelegate: self
 		  didEndSelector: @selector(interactionSheetDidEnd:returnCode:contextInfo:)
 			 contextInfo: nil];
@@ -1391,8 +1391,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 -(IBAction)endInteractionWindow:(id)sender
 {
     NSInteger returnValue = [sender tag];  // 1 for Submit, 0 for Cancel
-    [interactionWindow orderOut:sender];
-    [NSApp endSheet:interactionWindow returnCode:returnValue];
+    [[self interactionWindow] orderOut:sender];
+    [NSApp endSheet:[self interactionWindow] returnCode:returnValue];
 }
 
 -(void)interactionSheetDidEnd:(NSWindow *)sheet
@@ -1400,15 +1400,15 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 				  contextInfo:(void *)contextInfo
 {
     if (returnCode){  // Submit rather than Cancel
-		if ([[interactionMatrix selectedCell] tag] == DEFAULT){
+		if ([[[self interactionMatrix] selectedCell] tag] == DEFAULT){
 			[[self finkTask] writeToStdin: @"\n"];
 		}else{
 			[[self finkTask] writeToStdin: [NSString stringWithFormat:@"%@\n",
-				[interactionField stringValue]]];
+				[[self interactionField] stringValue]]];
 		}
 		[[self textViewController] appendString:@"\n"];
-		if ([defaults boolForKey:FinkAutoExpandOutput]){
-			[splitView collapseOutput:nil];
+		if ([[self defaults] boolForKey:FinkAutoExpandOutput]){
+			[[self splitView] collapseOutput:nil];
 		}
     }
 }
@@ -1441,13 +1441,13 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			localizedStringForKey:phaseString
 			value:phaseString
 			table:@"Programmatic"];
-    [msgText setStringValue:[NSString stringWithFormat:phaseString, pname]];
+    [[self msgText] setStringValue:[NSString stringWithFormat:phaseString, pname]];
     [self incrementProgressIndicator:[[self parser] increment]];
 }
 
 -(void)interactIfRequired
 {
-    if (! [defaults boolForKey:FinkAlwaysChooseDefaults]){
+    if (! [[self defaults] boolForKey:FinkAlwaysChooseDefaults]){
 		NSBeep();
 		[self raiseInteractionWindow:self];
     }
@@ -1461,7 +1461,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     	the scroll thumb and the bottom, so the test shouldn't be whether
 		there are 0 pixels below the scroll view */
     if ([pixelsBelowView floatValue] <= 100.0 ||
-		[defaults boolForKey: FinkAlwaysScrollToBottom]){
+		[[self defaults] boolForKey: FinkAlwaysScrollToBottom]){
 		[[[self textViewController] textView] scrollRangeToVisible:
 			NSMakeRange([[[[self textViewController] textView] string] length], 0)];
     }
@@ -1489,7 +1489,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 
         FinkOutputSignalType signal = [[self parser] parseOutput:output];
 	
-        if (commandTerminated) return;
+        if ([self isCommandTerminated]) return;
         switch(signal)
         {
 		case NONE:
@@ -1541,7 +1541,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			break;
 		case SELF_REPAIR_COMPLETE:
 			output = NSLocalizedString(@"\nSelf-repair succeeded.  Please re-try your command.\n", @"Text displayed in output view");
-			commandTerminated = YES;
+			[self setCommandTerminated: YES];
 			break;
 		case RESOURCE_DIR_ERROR:
 			output = NSLocalizedString(@"\nSelf-repair succeeded, but FinkCommander was unable to change the permissions of the FinkCommander.app/Contents/Resources directory.\nPlease see the README.html file, available at http://finkcommander.sourceforge.net, for instructions on changing the permissions manually.\n", @"Error message that may be displayed in output view");
@@ -1553,8 +1553,8 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			output = @"";
 			break;
         case DYNAMIC_OUTPUT:
-            if (!outputIsDynamic) {
-                outputIsDynamic = YES;
+            if (![self isOutputDynamic]) {
+                [self setOutputDynamic: YES];
                 [[self textViewController] appendString:output];
             }else{
                 [[self textViewController] replaceLastLineByString:output];
@@ -1563,7 +1563,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 	}
 
 	if (signal != DYNAMIC_OUTPUT){
-		outputIsDynamic = NO;
+		[self setOutputDynamic: NO];
 		[[self textViewController] appendString:output];
 	}
 	//According to Moriarity example, we have to put off scrolling until next event loop
@@ -1597,26 +1597,26 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     /*	Make sure command was successful before updating table.
      	Checking exit status is not sufficient for some fink commands, so check
 		approximately last two lines for "failed." */
-    [tableView setDisplayedPackages:[[self packages] array]];
+    [[self tableView] setDisplayedPackages:[[self packages] array]];
     if (status == 0 && ! [last2lines containsCI:@"failed"]){
-		if (CMD_REQUIRES_UPDATE([self lastCommand]) && ! commandTerminated){
+		if (CMD_REQUIRES_UPDATE([self lastCommand]) && ! [self isCommandTerminated]){
 			[self updateTable:nil];   // resetInterface will be called by notification
 		}else{
 			[self resetInterface:nil];
 		}
     }else{
 		NSLog(@"Exit status of process = %ld", (long)status);
-		if (! commandTerminated && ! 15 == status){
-			[splitView expandOutputToMinimumRatio:0.0];
+		if (! [self isCommandTerminated] && ! 15 == status){
+			[[self splitView] expandOutputToMinimumRatio:0.0];
 			NSBeginAlertSheet(LS_ERROR, LS_OK, nil, nil,
-					 window, self, NULL, NULL, nil,
+					 [self window], self, NULL, NULL, nil,
 					 NSLocalizedString(@"FinkCommander detected a possible failure message.\nCheck the output window for problems.", @"Alert sheet message"),
 					 nil);
 		}
 		[self resetInterface:[NSNotification notificationWithName:@"FinkError" object:nil]];
 	}
 	
-    commandTerminated = NO;
+    [self setCommandTerminated: NO];
 
     [[NSNotificationCenter defaultCenter]
 		postNotificationName:FinkCommandCompleted
