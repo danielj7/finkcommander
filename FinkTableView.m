@@ -30,6 +30,13 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
     FINKPATCH = 102
 };
 
+@interface FinkTableView ()
+
+@property (nonatomic) NSUserDefaults *defaults;
+@property (nonatomic) NSMutableDictionary *columnState;
+
+@end
+
 @implementation FinkTableView
 
 //----------------------------------------------------------
@@ -38,10 +45,10 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 -(instancetype)initWithFrame:(NSRect)rect
 {
-	defaults = [NSUserDefaults standardUserDefaults];
+	_defaults = [NSUserDefaults standardUserDefaults];
 
 	if (self = [super initWithFrame: rect]){
-		for (NSString *identifier in [defaults objectForKey:FinkTableColumnsArray]){
+		for (NSString *identifier in [_defaults objectForKey:FinkTableColumnsArray]){
 			[self addTableColumn:[self makeColumnWithName:identifier]];
 		}
 		[self setDelegate: self];
@@ -55,11 +62,11 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 		[self setDoubleAction:@selector(openPackageFiles:)];
 		[self setUsesAlternatingRowBackgroundColors:YES];
 
-		[self setLastIdentifier: [defaults objectForKey: FinkSelectedColumnIdentifier]];
+		[self setLastIdentifier: [_defaults objectForKey: FinkSelectedColumnIdentifier]];
 		_reverseSortImage = [NSImage imageNamed: @"reverse"];
 		_normalSortImage = [NSImage imageNamed: @"normal"];
 		// dictionary used to record whether table columns are sorted in normal or reverse order
-		columnState = [[defaults objectForKey:FinkColumnStateDictionary] mutableCopy];
+		_columnState = [[_defaults objectForKey:FinkColumnStateDictionary] mutableCopy];
 	}
 	return self;
 }
@@ -308,7 +315,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 //Sent by View menu action method
 -(void)addColumnWithName:(NSString *)identifier
 {
-	NSArray *columnNames = [defaults objectForKey: FinkTableColumnsArray];
+	NSArray *columnNames = [[self defaults] objectForKey: FinkTableColumnsArray];
 	NSTableColumn *newColumn = [self makeColumnWithName: identifier];
 	NSTableColumn *lastColumn = [[self tableColumns] lastObject];
 	NSRect oldFrame = [[self window] frame];
@@ -324,19 +331,19 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 	[self sizeLastColumnToFit];
 
 	columnNames = [columnNames arrayByAddingObject: identifier];
-	[defaults setObject: columnNames forKey: FinkTableColumnsArray];
+	[[self defaults] setObject: columnNames forKey: FinkTableColumnsArray];
 }
 
 -(void)removeColumnWithName:(NSString *)identifier
 {	
-	NSArray *columns = [defaults objectForKey: FinkTableColumnsArray];
+	NSArray *columns = [[self defaults] objectForKey: FinkTableColumnsArray];
 	NSMutableArray *reducedColumns = [columns mutableCopy];
 	
 	[self removeTableColumn: [self tableColumnWithIdentifier: identifier]];
 	[self sizeLastColumnToFit];
 	[reducedColumns removeObject: identifier];
 	columns = reducedColumns;
-	[defaults setObject:columns forKey:FinkTableColumnsArray];
+	[[self defaults] setObject:columns forKey:FinkTableColumnsArray];
 }
 
 //----------------------------------------------------------
@@ -444,7 +451,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 {
 	NSTableColumn *lastColumn = [self tableColumnWithIdentifier:
 		[self lastIdentifier]];
-	NSString *direction = columnState[[self lastIdentifier]];
+	NSString *direction = [self columnState][[self lastIdentifier]];
 
 	[self sortTableAtColumn: lastColumn inDirection: direction];
 }
@@ -467,21 +474,21 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 
 	// if user clicks same column header twice in a row, change sort order
 	if ([aTableColumn isEqualTo: lastColumn]){
-		direction = [columnState[identifier] isEqualToString: @"normal"]
+		direction = [[self columnState][identifier] isEqualToString: @"normal"]
 						? @"reverse" : @"normal";
 		//record new state for next click on this column
-		columnState[identifier] = direction;
-		[defaults setObject:[columnState copy]
+		[self columnState][identifier] = direction;
+		[[self defaults] setObject:[[self columnState] copy]
 				  forKey:FinkColumnStateDictionary];
 		// otherwise, return sort order to previous state for selected column
 	}else{
-		direction = columnState[identifier];
+		direction = [self columnState][identifier];
 	}
 
 	// record currently selected column's identifier for next call to method
 	// and for future sessions
 	[self setLastIdentifier: identifier];
-	[defaults setObject: identifier forKey: FinkSelectedColumnIdentifier];
+	[[self defaults] setObject: identifier forKey: FinkSelectedColumnIdentifier];
 
 	// reset visual indicators
 	if ([direction isEqualToString: @"reverse"]){
@@ -494,11 +501,11 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 	[self setHighlightedTableColumn: aTableColumn];
 
 	// sort the table contents
-	if ([defaults boolForKey: FinkScrollToSelection]){
+	if ([[self defaults] boolForKey: FinkScrollToSelection]){
 		[self storeSelectedObjectInfo];
 	}
 	[self sortTableAtColumn: aTableColumn inDirection: direction];
-	if ([defaults boolForKey: FinkScrollToSelection]){
+	if ([[self defaults] boolForKey: FinkScrollToSelection]){
 		[self scrollToSelectedObject];
 	}
 }

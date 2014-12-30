@@ -39,9 +39,6 @@ File: FinkTableView.h
 
 @interface FinkTableView: NSTableView <NSTableViewDelegate,NSTableViewDataSource>
 {
-	NSUserDefaults *defaults;
-
-	NSMutableDictionary *columnState;
 }
 
 //----------------------------------------------->Accessors
