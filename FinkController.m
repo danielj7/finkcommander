@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 @property (nonatomic, getter=isToolBeingFixed) BOOL toolBeingFixed;
 @property (nonatomic, getter=isOutputDynamic) BOOL outputDynamic;
 
-@property (nonatomic) NSInteger searchTag;
+@property (nonatomic) FinkAttributeType searchTag;
 @end
 
 @implementation FinkController
@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 			name: CheckForUpdate
 			object: nil];
 
-		_searchTag = 2010;
+		_searchTag = NAME;
 		_outputDynamic = NO;
     }
     return self;
