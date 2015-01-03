@@ -938,7 +938,17 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-auto-import",
+					"-Wno-direct-ivar-access",
+					"-Wno-objc-interface-ivars",
+					"-Wno-gnu-statement-expression",
+					"-Wno-covered-switch-default",
+					"-Wno-format-nonliteral",
+					"-Wno-assign-enum",
+				);
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -981,7 +991,17 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = FinkCommander;
 				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "";
+				WARNING_CFLAGS = (
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-auto-import",
+					"-Wno-direct-ivar-access",
+					"-Wno-objc-interface-ivars",
+					"-Wno-gnu-statement-expression",
+					"-Wno-covered-switch-default",
+					"-Wno-format-nonliteral",
+					"-Wno-assign-enum",
+				);
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -1044,7 +1064,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
 				GCC_VERSION = "";
 				MACH_O_TYPE = mh_execute;
@@ -1052,6 +1072,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "";
 			};
 			name = Debug;
 		};
@@ -1060,13 +1081,14 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = FCPrefix.pch;
 				GCC_VERSION = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "";
 			};
 			name = Release;
 		};
