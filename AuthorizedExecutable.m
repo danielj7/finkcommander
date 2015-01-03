@@ -212,7 +212,7 @@
     }
 }
 
--(void)setDelegate:(id)dgate
+-(void)setDelegate:(id <AuthorizedExecutableDelegate>)dgate
 {
     delegate = dgate;
 }
