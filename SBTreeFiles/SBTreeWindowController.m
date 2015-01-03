@@ -181,6 +181,8 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 		case SB_BROWSER:
 			identifier = @"browser";
 			break;
+
+        case SB_OUTLINE:
 		default:
 			identifier = @"outline";
 			break;

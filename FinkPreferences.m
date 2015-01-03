@@ -560,6 +560,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		case ENVIRONMENT_SETTING:
 			[self validateEnvironmentButtons];
 			break;
+        case PERL_PATH:
 		default:
 			break;
 	}
