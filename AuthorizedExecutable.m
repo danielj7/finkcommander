@@ -299,15 +299,15 @@
 {
 	NSString *outputString;
 	
-	NS_DURING
+    @try {
 		outputString = [[NSString alloc] initWithBytes:[data bytes]
                                                 length:[data length]
                                               encoding:NSUTF8StringEncoding];
 		return outputString;	
-	NS_HANDLER
+    }
+    @catch (NSException __unused *localException) {
 		return @"WARNING:  Unable to decode output for display.\n";
-	NS_ENDHANDLER
-	;
+    }
 }
 
 -(void)captureStdOut:(NSNotification*)notification
@@ -383,7 +383,7 @@
             return;
         }
 
-        NS_DURING
+        @try {
             stdoutPipe = [NSPipe pipe];
             stdinPipe = [NSPipe pipe];
             //stderrPipe = [NSPipe pipe];
@@ -422,11 +422,11 @@
             [self writeData:[NSData dataWithBytes:&extAuth 
 				  length:sizeof(AuthorizationExternalForm)]];
 
-        NS_HANDLER
+        }
+        @catch (NSException __unused *localException) {
             [self log:[NSString stringWithFormat:@"Failed while trying to launch helper program"]];
             [self stop];
-        NS_ENDHANDLER
-        ;
+        }
     }
 }
 

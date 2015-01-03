@@ -85,15 +85,16 @@ File: FinkInstallationInfo.m
 		objectForKey:FinkEnvironmentSettings]];
 	[versionTask launch];
 
-	NS_DURING
+    @try {
 		result = [[NSString alloc] initWithData:[taskStdout readDataToEndOfFile]
 									encoding:NSUTF8StringEncoding];
-	NS_HANDLER
+    }
+    @catch (NSException __unused *localException) {
 		//Handle NSFileHandleOperationException
 	//		NSLog(@"Failed to read data stream from %@ %@", path, args);
 		NSLog(@"Failed to read data stream from %@", path);
 		return nil;
-	NS_ENDHANDLER
+    }
 
 	[taskStdout closeFile];
 	return result;
