@@ -156,8 +156,8 @@ See the header file, FinkData.h, for interface and license information.
     return [s substringWithRange: r];
 }
 
--(void)getMaintainerName:(NSString **)name
-	emailAddress:(NSString **)address
+-(void)getMaintainerName:(NSString *__autoreleasing *)name
+	emailAddress:(NSString *__autoreleasing *)address
 	fromDescription:(NSString *)s
 {
 	NSInteger emailstart = [s rangeOfString: @"<"].location;
