@@ -155,12 +155,10 @@
     switch (context) {
         case NSDraggingContextOutsideApplication:
             return NSDragOperationCopy;
-            break;
             
         case NSDraggingContextWithinApplication:
         default:
             return NSDragOperationNone;
-            break;
     }
 }
 
