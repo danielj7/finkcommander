@@ -31,7 +31,6 @@ File: FinkTextViewController.h
 
 @interface FinkTextViewController : NSObject <NSTextViewDelegate>
 {
-	NSUserDefaults *defaults;
 	NSInteger lines;
 	NSInteger bufferLimit;
 	NSInteger minDelete;
