@@ -276,7 +276,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     NSArray *tagNameArray = TAG_NAME_ARRAY;
 
     atag = atag % 2000;
-    if (atag < 0 || atag > [tagNameArray count] - 1){
+    if (atag < 0 || atag > (NSInteger)[tagNameArray count] - 1){
 		NSLog(@"Warning: Tag-to-name translation failed; index %ld out of bounds", (long)atag);
 		return nil;
     }
