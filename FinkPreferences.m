@@ -500,7 +500,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(IBAction)removeEnvironmentSettings:(id)sender
 {
     [[environmentTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
-        [environmentArray removeObjectAtIndex:idx];
+        [self->environmentArray removeObjectAtIndex:idx];
     }];
 	[environmentTableView reloadData];
 	[self validateEnvironmentButtons];
