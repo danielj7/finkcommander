@@ -14,7 +14,7 @@ See the header file, FinkTableView.h, for interface and license information.
 #define MAX_FLAG_WIDTH 30.0
 #define MAX_STATUS_WIDTH 90.0
 #define MAX_CATEGORY_WIDTH 90.0
-#define MAX_NAME_WIDTH 200.0
+// #define MAX_NAME_WIDTH 200.0
 #define MAX_VERSION_WIDTH 130.0
 
 #define IS_VERSION_IDENTIFIER(id) 							\

@@ -72,8 +72,8 @@ See the header file, FinkController.h, for interface and license information.
  */
 
 #define LS_QUIT NSLocalizedString(@"Quit", "Quit button title")
-#define LS_DOWNLOAD NSLocalizedString(@"Download", "Download button title")
-#define LS_UPDATING_TABLE NSLocalizedString(@"Updating table data", "Status bar message")
+// #define LS_DOWNLOAD NSLocalizedString(@"Download", "Download button title")
+// #define LS_UPDATING_TABLE NSLocalizedString(@"Updating table data", "Status bar message")
 
 //================================================================================
 #pragma mark - CONSTANTS
