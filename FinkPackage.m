@@ -69,7 +69,7 @@ See the header file, FinkPackage.h, for interface and license information.
 }
 
 //Name
--(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg;
+-(NSComparisonResult)normalCompareByName:(FinkPackage *)pkg
 {
 	return [[self name] caseInsensitiveCompare: [pkg name]];
 }

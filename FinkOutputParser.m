@@ -84,9 +84,9 @@
 //------------------------------------------>Create and Destroy
 
 -(instancetype)initForCommand:(NSString *)cmd
-		executable:(NSString *)exe;
+		executable:(NSString *)exe
 {
-    if (self = [super init]){
+    if ((self = [super init])){
         NSInteger aPrompt, mPrompt, config, dOutput;  //test regex compilation success
 
         _defaults = [NSUserDefaults standardUserDefaults];

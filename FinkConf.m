@@ -13,7 +13,7 @@ File: FinkConf.m
 
 -(instancetype)init
 {
-	if (self = [super init]){
+	if ((self = [super init])){
 		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
 		defaults = [NSUserDefaults standardUserDefaults];
 		
@@ -352,7 +352,7 @@ File: FinkConf.m
 
 	//get string from dictionary of fink.conf values
     e = [finkConfDict keyEnumerator];
-    while (k = [e nextObject]){
+    while ((k = [e nextObject])){
 		v = finkConfDict[k];
 		[fconfString appendString: 
 		   [NSString stringWithFormat: @"%@: %@\n", k, v]];

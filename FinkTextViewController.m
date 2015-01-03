@@ -12,7 +12,7 @@ File: FinkTextViewController.m
 -(instancetype)initWithView:(NSTextView *)aTextView 
 	 forScrollView:(NSScrollView *)aScrollView
 {
-	if (self = [super init]){
+	if ((self = [super init])){
 		[self setTextView:aTextView];
 		[self setScrollView:aScrollView];
 		[_textView setDelegate:self];

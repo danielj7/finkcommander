@@ -37,7 +37,7 @@ See the header file, FinkData.h, for interface and license information.
 
 -(instancetype)init
 {
-    if (self = [super init])
+    if ((self = [super init]))
 	{
 		[self setDefaults: [NSUserDefaults standardUserDefaults]];
 		[[NSNotificationCenter defaultCenter] 

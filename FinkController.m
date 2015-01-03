@@ -162,7 +162,7 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
 //----------------------------------------------->Init
 -(instancetype)init
 {
-    if (self = [super init]){
+    if ((self = [super init])){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		_defaults = [NSUserDefaults standardUserDefaults];
 

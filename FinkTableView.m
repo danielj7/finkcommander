@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, FinkFileType) {
 {
 	_defaults = [NSUserDefaults standardUserDefaults];
 
-	if (self = [super initWithFrame: rect]){
+	if ((self = [super initWithFrame: rect])){
 		for (NSString *identifier in [_defaults objectForKey:FinkTableColumnsArray]){
 			[self addTableColumn:[self makeColumnWithName:identifier]];
 		}

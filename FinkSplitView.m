@@ -11,7 +11,7 @@ File: FinkSplitView.m
 
 -(instancetype)initWithFrame:(NSRect)rect
 {
-	if (self = [super initWithFrame:rect]){
+	if ((self = [super initWithFrame:rect])){
 		defaults = [NSUserDefaults standardUserDefaults];
 		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
 		[self setDelegate:self];

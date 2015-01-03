@@ -30,7 +30,7 @@ File: FinkInstallationInfo.m
 
 -(instancetype)init
 {
-	if (self = [super init]){
+	if ((self = [super init])){
 		manager = [NSFileManager defaultManager];  //shared instance, no need to retain
 	}
 	return self;

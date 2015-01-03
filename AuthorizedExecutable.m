@@ -23,7 +23,7 @@
 //
 - (instancetype)initWithExecutable:(NSString*)exe
 {
-    if (self = [super init])
+    if ((self = [super init]))
     {
         NSMutableArray* args = [[NSMutableArray alloc] init];
         [self setArguments:args];
