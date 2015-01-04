@@ -31,9 +31,6 @@ File: FinkTextViewController.h
 
 @interface FinkTextViewController : NSObject <NSTextViewDelegate>
 {
-	NSInteger lines;
-	NSInteger bufferLimit;
-	NSInteger minDelete;
 }
 
 -(instancetype)initWithView:(NSTextView *)aTextView
@@ -44,6 +41,5 @@ File: FinkTextViewController.h
 
 @property (nonatomic, strong) NSTextView *textView;
 @property (nonatomic, strong) NSScrollView *scrollView;
-
 
 @end

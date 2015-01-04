@@ -7,6 +7,14 @@ File: FinkTextViewController.m
 
 #import "FinkTextViewController.h"
 
+@interface FinkTextViewController ()
+
+@property (nonatomic) NSInteger lines;
+@property (nonatomic) NSInteger bufferLimit;
+@property (nonatomic) NSInteger minDelete;
+
+@end
+
 @implementation FinkTextViewController
 
 -(instancetype)initWithView:(NSTextView *)aTextView 
@@ -24,10 +32,10 @@ File: FinkTextViewController.m
 
 -(void)setLimits
 {
-	lines = 0;
-	bufferLimit = [[NSUserDefaults standardUserDefaults] integerForKey:FinkBufferLimit];
-	minDelete = (NSInteger)(bufferLimit * 0.10);
-	if (minDelete < 10) minDelete = 10;	
+	[self setLines: 0];
+	[self setBufferLimit: [[NSUserDefaults standardUserDefaults] integerForKey:FinkBufferLimit]];
+	[self setMinDelete: (NSInteger)([self bufferLimit] * 0.10)];
+	if ([self minDelete] < 10) [self setMinDelete: 10];	
 }
 
 -(NSUInteger)numberOfLinesInString:(NSString *)s
@@ -58,16 +66,16 @@ File: FinkTextViewController.m
 {
 	[[[self textView] textStorage] beginEditing];
 
-	if (bufferLimit > 0){
+	if ([self bufferLimit] > 0){
 		NSInteger overflow;
 			
-		lines += [self numberOfLinesInString:s];
-		overflow = lines - bufferLimit;
+        [self setLines: [self lines] + [self numberOfLinesInString:s]];
+		overflow = [self lines] - [self bufferLimit];
 		
-		if (overflow > minDelete){
+		if (overflow > [self minDelete]){
 			NSRange r = [self rangeOfLinesAtTopOfView:overflow];			
 			[[self textView] replaceCharactersInRange:r withString:@""];
-			lines -= overflow;
+            [self setLines: [self lines] - overflow];
 		}
 	}
 	[[self textView] replaceCharactersInRange:NSMakeRange([[[self textView] string] length], 0)
