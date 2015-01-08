@@ -7,12 +7,20 @@ File: FinkSplitView.m
 
 #import "FinkSplitView.h"
 
+@interface FinkSplitView ()
+
+@property (nonatomic) NSUserDefaults *defaults;
+@property (nonatomic) NSScrollView *tableScrollView;
+@property (nonatomic) NSScrollView *outputScrollView;
+
+@end
+
 @implementation FinkSplitView
 
 -(instancetype)initWithFrame:(NSRect)rect
 {
 	if ((self = [super initWithFrame:rect])){
-		defaults = [NSUserDefaults standardUserDefaults];
+		_defaults = [NSUserDefaults standardUserDefaults];
 		[self setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
 		[self setDelegate:self];
 		//Register for notification that causes output to collapse when
@@ -33,13 +41,8 @@ File: FinkSplitView.m
 
 -(void)connectSubviews
 {
-	tableScrollView = [self subviews][0];
-	outputScrollView = [self subviews][1];
-}
-
--(void)setCollapseExpandMenuItem:(NSMenuItem *)item
-{
-	collapseExpandMenuItem = item; //retained by .nib file
+	[self setTableScrollView: [self subviews][0]];
+	[self setOutputScrollView: [self subviews][1]];
 }
 
 //Delegate method:
@@ -48,23 +51,23 @@ File: FinkSplitView.m
 //unless the output view height after the adjustment is 0
 -(void)splitViewDidResizeSubviews:(NSNotification *)aNotification
 {
-	NSRect oFrame = [outputScrollView frame];
+	NSRect oFrame = [[self outputScrollView] frame];
 	NSRect sFrame = [self frame];
 	
 	if (oFrame.size.height > 0.0){
-		[defaults setFloat:(float)(oFrame.size.height / sFrame.size.height)
+		[[self defaults] setFloat:(float)(oFrame.size.height / sFrame.size.height)
 				  forKey:FinkOutputViewRatio];
-		[collapseExpandMenuItem setTitle:LS_COLLAPSE];
+		[[self collapseExpandMenuItem] setTitle:LS_COLLAPSE];
 	}else{
-		[collapseExpandMenuItem setTitle:LS_EXPAND];
+		[[self collapseExpandMenuItem] setTitle:LS_EXPAND];
 	}	
 }
 
 -(void)collapseOutput:(NSNotification *)n
 {
-	if (! [self isSubviewCollapsed:outputScrollView]){
-		NSRect oFrame = [outputScrollView frame];
-		NSRect tFrame = [tableScrollView frame];
+	if (! [self isSubviewCollapsed:[self outputScrollView]]){
+		NSRect oFrame = [[self outputScrollView] frame];
+		NSRect tFrame = [[self tableScrollView] frame];
 		NSRect sFrame = [self frame];
 		CGFloat divwidth = [self dividerThickness];
 
@@ -72,8 +75,8 @@ File: FinkSplitView.m
 		oFrame.size.height = 0.0;
 		oFrame.origin.y = sFrame.size.height;
 
-		[outputScrollView setFrame: oFrame];
-		[tableScrollView setFrame: tFrame];
+		[[self outputScrollView] setFrame: oFrame];
+		[[self tableScrollView] setFrame: tFrame];
 
 		[self splitViewDidResizeSubviews:nil];
 
@@ -84,11 +87,11 @@ File: FinkSplitView.m
 //pass 0.0 as argument to expand output to last height stored in user defaults
 -(void)expandOutputToMinimumRatio:(CGFloat)r
 {
-	NSRect oFrame = [outputScrollView frame];
-	NSRect tFrame = [tableScrollView frame];
+	NSRect oFrame = [[self outputScrollView] frame];
+	NSRect tFrame = [[self tableScrollView] frame];
 	NSRect sFrame = [self frame];
 	CGFloat divwidth = [self dividerThickness];
-	CGFloat hratio = [defaults floatForKey: FinkOutputViewRatio];
+	CGFloat hratio = [[self defaults] floatForKey: FinkOutputViewRatio];
 	
 	if (r > 0.0){
 		hratio = MAX(hratio, r);
@@ -99,8 +102,8 @@ File: FinkSplitView.m
 	tFrame.size.height = sFrame.size.height - oFrame.size.height - divwidth;
 	oFrame.origin.y = tFrame.size.height + divwidth;
 
-	[outputScrollView setFrame: oFrame];
-	[tableScrollView setFrame: tFrame];
+	[[self outputScrollView] setFrame: oFrame];
+	[[self tableScrollView] setFrame: tFrame];
 
 	[self splitViewDidResizeSubviews:nil];
 
@@ -110,7 +113,7 @@ File: FinkSplitView.m
 //Connected to First Responder
 -(IBAction)collapseExpandOutput:(id)sender
 {
-	if ([outputScrollView bounds].size.height > 1.0){
+	if ([[self outputScrollView] bounds].size.height > 1.0){
 		[self collapseOutput:nil];
 	}else{
 		[self expandOutputToMinimumRatio:0.0];
@@ -120,7 +123,7 @@ File: FinkSplitView.m
 -(void)mouseDown:(NSEvent *)theEvent
 {
     if ([theEvent clickCount] == 2){
-		NSRect oFrame = [outputScrollView frame];
+		NSRect oFrame = [[self outputScrollView] frame];
 		if (oFrame.size.height < 1.0){
 			[self expandOutputToMinimumRatio:0.0]; //use value from user defaults
 		}else{

@@ -42,15 +42,12 @@
 
 @interface FinkSplitView : NSSplitView <NSSplitViewDelegate>
 {
-	NSUserDefaults *defaults;
-	NSScrollView *tableScrollView;
-	NSScrollView *outputScrollView;
-	NSMenuItem *collapseExpandMenuItem;
 }
+
+@property (nonatomic, copy) NSMenuItem *collapseExpandMenuItem;
 
 -(IBAction)collapseExpandOutput:(id)sender;
 -(void)connectSubviews;
--(void)setCollapseExpandMenuItem:(NSMenuItem *)item;
 -(void)collapseOutput:(NSNotification *)n;
 -(void)expandOutputToMinimumRatio:(CGFloat)r;
 
