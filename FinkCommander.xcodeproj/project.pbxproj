@@ -128,6 +128,7 @@
 		59E0405A09CDC73B001280FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59E0405B09CDC73B001280FD /* FinkCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinkCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E0406C09CDC73C001280FD /* Launcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Launcher; sourceTree = BUILT_PRODUCTS_DIR; };
+		653D3BCC1A5E140E008DBFD2 /* InfoPlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPlist.h; sourceTree = "<group>"; };
 		65B31CA11A4D9774002ED341 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		65B31CA21A4D978B002ED341 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		65B31CA31A4D97D8002ED341 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Toolbar.plist; sourceTree = "<group>"; };
@@ -351,6 +352,7 @@
 			children = (
 				148C8A5A10B8D8D40013C39B /* SSHAskPass.sh */,
 				59E0405A09CDC73B001280FD /* Info.plist */,
+				653D3BCC1A5E140E008DBFD2 /* InfoPlist.h */,
 				65C2500B1A4C780D00E02437 /* PackageInfo.xib */,
 				65C250071A4C780D00E02437 /* Dialogs.xib */,
 				65C250091A4C780D00E02437 /* MainMenu.xib */,
