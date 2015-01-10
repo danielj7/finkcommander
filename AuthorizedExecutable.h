@@ -72,41 +72,38 @@
 
 @end
 
-@interface AuthorizedExecutable : NSObject {
-
-    AuthorizationRef authorizationRef;
-    NSMutableArray* arguments;
-	NSDictionary* environment;
-    NSString* authExecutable;
-    id delegate;
-    bool mustBeAuthorized;
-    NSMutableString* output;
-    NSFileHandle *stdinHandle;
-    NSFileHandle *stdoutHandle;
-    NSFileHandle *stderrHandle;
-    NSTask *task;
+@interface AuthorizedExecutable : NSObject
+{
 }
+
+// The command and arguments you want to run.  This is passed
+// directly to NSTask.  The first entry is the command you want
+// to run.  Any other entries are the options you want passed
+// to the command.  Note that if an option has an associated
+// argument (-r foo), they must be specified in the array as
+// *two* entries ('-r' and 'foo'), not one.
+//
+@property (nonatomic, copy) NSMutableArray *arguments;
+
+@property (nonatomic, copy) NSDictionary *environment;
+@property (nonatomic, weak) id <AuthorizedExecutableDelegate> delegate;
 
 -(instancetype)initWithExecutable:(NSString*)exe NS_DESIGNATED_INITIALIZER;
 
 -(void)dealloc;
 
-@property (nonatomic, readonly) bool authorize;
-@property (nonatomic, readonly) bool authorizeWithQuery;
--(bool)checkAuthorizationWithFlags:(AuthorizationFlags) flags;
+-(BOOL)authorize;
+-(BOOL)authorizeWithQuery;
+-(BOOL)checkAuthorizationWithFlags:(AuthorizationFlags) flags;
 
-@property (nonatomic, getter=isAuthorized, readonly) bool authorized;
-@property (nonatomic) bool mustBeAuthorized;
+-(BOOL)isAuthorized;
 -(void)unAuthorize;
 
-@property (nonatomic, copy) NSString *authExecutable;
-@property (nonatomic, getter=isExecutable, readonly) bool executable;
-@property (nonatomic, copy) NSDictionary *environment;
-@property (nonatomic, copy) NSMutableArray *arguments;
+-(BOOL)isExecutable;
 
 -(void)captureStdOut:(NSNotification*)notification;
 -(void)captureStdErr:(NSNotification*)notification;
-@property (nonatomic, getter=isRunning, readonly) bool running;
+- (BOOL)isRunning;
 - (void)log:(NSString*)str;
 - (void)logStdOut:(NSString*)str;
 - (void)logStdErr:(NSString*)str;
@@ -114,7 +111,5 @@
 - (void)writeToStdin:(NSString*)str;
 - (void)start;
 - (void)stop;
-
-@property (nonatomic, weak) id <AuthorizedExecutableDelegate> delegate;
 
 @end

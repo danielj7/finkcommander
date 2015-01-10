@@ -13,6 +13,22 @@
 #import "FinkController.h"
 #import <Security/AuthorizationTags.h>
 
+@interface AuthorizedExecutable ()
+{
+    @protected
+    AuthorizationRef _authorizationRef;
+}
+
+@property (nonatomic, copy) NSString *authExecutable;
+@property (nonatomic) BOOL mustBeAuthorized;
+@property (nonatomic, readonly) NSMutableString* output;
+@property (nonatomic) NSFileHandle *stdinHandle;
+@property (nonatomic) NSFileHandle *stdoutHandle;
+@property (nonatomic) NSFileHandle *stderrHandle;
+@property (nonatomic) NSTask *task;
+
+@end
+
 @implementation AuthorizedExecutable
 
 // This needs to be initialized with the full path to the Launcher
@@ -26,10 +42,10 @@
     if ((self = [super init]))
     {
         NSMutableArray* args = [[NSMutableArray alloc] init];
-        [self setArguments:args];
-        output = [[NSMutableString alloc] init];
-        [self setAuthExecutable:exe];
-        [self setMustBeAuthorized:false];
+        _arguments = args;
+        _output = [[NSMutableString alloc] init];
+        _authExecutable = exe;
+        _mustBeAuthorized = NO;
     }
     return self;
 }
@@ -46,40 +62,12 @@
 }
 
 
-// The command and arguments you want to run.  This is passed
-// directly to NSTask.  The first entry is the command you want
-// to run.  Any other entries are the options you want passed 
-// to the command.  Note that if an option has an associated
-// argument (-r foo), they must be specified in the array as
-// *two* entries ('-r' and 'foo'), not one.
-//
--(NSMutableArray*)arguments
-{
-    return arguments;
-}
-
--(void)setArguments:(NSMutableArray*)args
-{
-    arguments = args;
-}
-
--(NSDictionary *)environment
-{
-	return environment;
-}
-
--(void)setEnvironment:(NSDictionary *)env
-{
-	environment = env;
-}
-
-
 // Helper routine.  Both authorize and authorizedWithQuery call
 // this routine to check the authorization.  They just use different
 // flags to determine if the 'authorization dialog' should be 
 // displayed.
 //
--(bool)checkAuthorizationWithFlags:(AuthorizationFlags)flags
+-(BOOL)checkAuthorizationWithFlags:(AuthorizationFlags)flags
 {
     AuthorizationRights rights;
     AuthorizationItem items[1];
@@ -87,13 +75,13 @@
 
     if (! [self isExecutable])
     {
-        return false;
+        return NO;
     }
 
-    if (authorizationRef == NULL)
+    if (_authorizationRef == NULL)
     {
         err = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment,
-                                  kAuthorizationFlagDefaults, &authorizationRef);
+                                  kAuthorizationFlagDefaults, &_authorizationRef);
      }
 
     if (err == errAuthorizationSuccess)
@@ -117,7 +105,7 @@
         // user isn't currently authorized to execute tools as root,
         // they won't be asked for a password and err will indicate
         // an authorization failure.
-        err = AuthorizationCopyRights(authorizationRef,&rights,
+        err = AuthorizationCopyRights(_authorizationRef,&rights,
                                       kAuthorizationEmptyEnvironment,
                                       flags, NULL);
     }
@@ -127,7 +115,7 @@
 
 // attempt to authorize the user without displaying the authorization dialog.
 //
--(bool)authorize
+-(BOOL)authorize
 {
     return [self checkAuthorizationWithFlags:kAuthorizationFlagExtendRights];
 }
@@ -136,68 +124,38 @@
 // attempt to authorize the user, displaying the authorization dialog
 // if necessary.
 //
--(bool)authorizeWithQuery
+-(BOOL)authorizeWithQuery
 {
     return [self checkAuthorizationWithFlags:kAuthorizationFlagExtendRights| kAuthorizationFlagInteractionAllowed];
 }
 
-// accessor for the Launcher program
-//
-- (NSString*)authExecutable
-{
-    return authExecutable;
-}
-
-// Helper routine which converts the current authorizionRef to its 
+// Helper routine which converts the current authorizionRef to its
 // external form.  The external form will eventually get piped
 // to the Launcher.
 //
--(bool)fillExternalAuthorizationForm:(AuthorizationExternalForm*)extAuth
+-(BOOL)fillExternalAuthorizationForm:(AuthorizationExternalForm*)extAuth
 {
-    bool result = false;
-    if (authorizationRef)
+    BOOL result = NO;
+    if (_authorizationRef)
     {
-        result = errAuthorizationSuccess != AuthorizationMakeExternalForm(authorizationRef, extAuth);
+        result = errAuthorizationSuccess != AuthorizationMakeExternalForm(_authorizationRef, extAuth);
     }
     return result;
 }
 
 // self-explanatory
 //
--(bool)isAuthorized
+-(BOOL)isAuthorized
 {
     return [self authorize];
 }
 
 // Determine if the Launcher exists and is executable.
 //
--(bool)isExecutable
+-(BOOL)isExecutable
 {
     NSString* exe = [self authExecutable];
     return exe != nil && [[NSFileManager defaultManager] isExecutableFileAtPath:exe];
-}
-
--(bool)mustBeAuthorized
-{
-    return mustBeAuthorized;
-}
-
-
-// Call this with 'true' if the user must be authorized before
-// running the command.  The default value for this is false
-//
--(void)setMustBeAuthorized:(bool)b
-{
-    mustBeAuthorized = b;
-}
-
-// deprecated (just instantiate a new AuthorizedExecutable object if you
-// want a different launcher).
-//
--(void)setAuthExecutable:(NSString*)exe
-{
-    [self unAuthorize];
-    authExecutable = exe;
 }
 
 // Free any existing authorization.  This sets the user to an unauthorized
@@ -205,23 +163,12 @@
 //
 -(void)unAuthorize
 {
-    if (authorizationRef != NULL)
+    if (_authorizationRef != NULL)
     {
-        AuthorizationFree(authorizationRef,kAuthorizationFlagDestroyRights);
-        authorizationRef = NULL;
+        AuthorizationFree(_authorizationRef,kAuthorizationFlagDestroyRights);
+        _authorizationRef = NULL;
     }
 }
-
--(void)setDelegate:(id <AuthorizedExecutableDelegate>)dgate
-{
-    delegate = dgate;
-}
-
--(id)delegate
-{
-    return delegate;
-}
-
 
 // This saves the output of the command in the output string.  A
 // delegate should implement captureOutput:forExecutable to receive
@@ -235,7 +182,7 @@
     }
     else
     {
-        [output replaceCharactersInRange:NSMakeRange([output length], 0) 
+        [[self output] replaceCharactersInRange:NSMakeRange([[self output] length], 0) 
 				withString:str];
     }
 }
@@ -278,7 +225,7 @@
 {
     if ([self isRunning])
     {
-        [stdinHandle writeData:data];
+        [[self stdinHandle] writeData:data];
     }
 }
 
@@ -315,7 +262,7 @@
     NSData *inData = [notification userInfo][NSFileHandleNotificationDataItem];
     if (inData == nil || [inData length] == 0)
     {
-        [task waitUntilExit];
+        [[self task] waitUntilExit];
         [self stop];
     }
     else
@@ -323,7 +270,7 @@
         [self logStdOut:[[NSString alloc] initWithBytes:[inData bytes]
                                                  length:[inData length]
                                                encoding:NSUTF8StringEncoding]];
-        [stdoutHandle readInBackgroundAndNotify];
+        [[self stdoutHandle] readInBackgroundAndNotify];
     }
 }
 
@@ -337,15 +284,15 @@
         [self logStdErr:[[NSString alloc] initWithBytes:[inData bytes]
                                                  length:[inData length]
                                                encoding:NSUTF8StringEncoding]];
-        [stderrHandle readInBackgroundAndNotify];
+        [[self stderrHandle] readInBackgroundAndNotify];
     }
 }
 
 // task status
 //
-- (bool)isRunning
+- (BOOL)isRunning
 {
-    return [task isRunning];
+    return [[self task] isRunning];
 }
 
 
@@ -353,7 +300,7 @@
 // this is a no-op.
 - (void)start
 {
-    if (! [task isRunning])
+    if (! [[self task] isRunning])
     {
         AuthorizationExternalForm extAuth;
         OSStatus err;
@@ -361,7 +308,7 @@
         NSPipe *stdoutPipe = nil;
         //NSPipe *stderrPipe = nil;
 
-        [output setString:@""];
+        [[self output] setString:@""];
 
         if (! [self isExecutable])
         {
@@ -376,7 +323,7 @@
 				NSLocalizedString(@"You must authorize yourself before you can run this command.\n",@"This warning is issued if the user tries to start this task when the mustBeAuthorized flag is set and the user isn't authorized")];
 			return;
 		}
-        err = AuthorizationMakeExternalForm(authorizationRef, &extAuth);
+        err = AuthorizationMakeExternalForm(_authorizationRef, &extAuth);
         if (err != errAuthorizationSuccess)
         {
             [self log:[NSString stringWithFormat:@"TODO: Unknown error in AuthorizationMakeExternalForm: (%d)\n", err]];
@@ -388,36 +335,35 @@
             stdinPipe = [NSPipe pipe];
             //stderrPipe = [NSPipe pipe];
 
-            stdinHandle = [stdinPipe fileHandleForWriting];
-            stdoutHandle = [stdoutPipe fileHandleForReading];
-            //stderrHandle = [stderrPipe fileHandleForReading];
-            //[stderrHandle retain];
+            [self setStdinHandle: [stdinPipe fileHandleForWriting]];
+            [self setStdoutHandle: [stdoutPipe fileHandleForReading]];
+            //[self setStderrHandle: [stderrPipe fileHandleForReading]];
 
             [[NSNotificationCenter defaultCenter] 
 						addObserver:self 
 						selector:@selector(captureStdOut:)
 						name:NSFileHandleReadCompletionNotification
-						object:stdoutHandle];
+						object:[self stdoutHandle]];
 #ifdef UNDEF
             [[NSNotificationCenter defaultCenter] 
 						addObserver:self selector:@selector(captureStdErr:)
 						name:NSFileHandleReadCompletionNotification
 						object:stderrHandle];
 #endif
-            [stdoutHandle readInBackgroundAndNotify];
-            //[stderrHandle readInBackgroundAndNotify];
+            [[self stdoutHandle] readInBackgroundAndNotify];
+            //[[self stderrHandle] readInBackgroundAndNotify];
 
-            task = [[NSTask alloc] init];
-            [task setStandardOutput:stdoutPipe];
-            [task setStandardInput:stdinPipe];
+            [self setTask: [[NSTask alloc] init]];
+            [[self task] setStandardOutput:stdoutPipe];
+            [[self task] setStandardInput:stdinPipe];
 			//my change:
-			[task setStandardError:stdoutPipe];
+			[[self task] setStandardError:stdoutPipe];
             //[task setStandardError:stderrPipe];
 
-            [task setLaunchPath:[self authExecutable]];
-            [task setArguments:[self arguments]];
-			[task setEnvironment:[self environment]];
-            [task launch];
+            [[self task] setLaunchPath:[self authExecutable]];
+            [[self task] setArguments:[self arguments]];
+			[[self task] setEnvironment:[self environment]];
+            [[self task] launch];
 
             [self writeData:[NSData dataWithBytes:&extAuth 
 				  length:sizeof(AuthorizationExternalForm)]];
@@ -437,35 +383,34 @@
 {
 	NSInteger status;
 
-    if (stdoutHandle)
+    if ([self stdoutHandle])
     {
         [[NSNotificationCenter defaultCenter] 
 			removeObserver:self
 			name:NSFileHandleReadCompletionNotification
-			object:stdoutHandle];
+			object:[self stdoutHandle]];
     }
-    if (stderrHandle)
+    if ([self stderrHandle])
     {
         [[NSNotificationCenter defaultCenter] 
 			removeObserver:self
 			name:NSFileHandleReadCompletionNotification
-			object:stderrHandle];
+			object:[self stderrHandle]];
     }
-    if ([task isRunning])
+    if ([[self task] isRunning])
     {
 		Dprintf(@"Task terminated");
-        [task terminate];
-		[task waitUntilExit];
+        [[self task] terminate];
+		[[self task] waitUntilExit];
     }
-	status = [task terminationStatus];
-	[stdinHandle closeFile];
-	[stdoutHandle closeFile];
-	//[stderrHandle closeFile];
-    //[stderrHandle release];
-    task = nil;
-    stdoutHandle = nil;
-    stdinHandle = nil;
-    //stderrHandle = nil;
+	status = [[self task] terminationStatus];
+	[[self stdinHandle] closeFile];
+	[[self stdoutHandle] closeFile];
+	//[[self stderrHandle] closeFile];
+    [self setTask: nil];
+    [self setStdoutHandle: nil];
+    [self setStdinHandle: nil];
+    //[self setStderrHandle: nil];
 	if ([[self delegate]
 				respondsToSelector:@selector(executableFinished:withStatus:)])
 	{
