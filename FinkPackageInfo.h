@@ -40,16 +40,14 @@
 
 @interface FinkPackageInfo : NSWindowController <NSWindowDelegate>
 {
-	IBOutlet NSTextView *textView;
-	IBOutlet NSScrollView *scrollView;
-
-	NSUserDefaults *defaults;
-	NSString *emailSig;
 }
 
--(void)displayDescriptions:(NSArray *)packages;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextView *textView;
+@property (nonatomic, weak) IBOutlet NSScrollView *scrollView;
 
--(void)setEmailSig:(NSString *)s;
+@property (nonatomic, copy) NSString *emailSig;
+
+-(void)displayDescriptions:(NSArray *)packages;
 
 -(NSURL *)mailURLForPackage:(FinkPackage *)pkg withBody:(NSString *)body;
 

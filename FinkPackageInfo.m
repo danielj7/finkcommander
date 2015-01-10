@@ -27,13 +27,20 @@
 //Localized string used twice
 #define LS_PACKAGE_INFO NSLocalizedString(@"Package Info", @"Window title")
 
+@interface FinkPackageInfo ()
+
+// FIXME: defaults isn't used
+@property (nonatomic, readonly) NSUserDefaults *defaults;
+
+@end
+
 @implementation FinkPackageInfo
 
 -(instancetype)init
 {
 	self = [super initWithWindowNibName:@"PackageInfo"];
 	if (nil != self){
-		defaults = [NSUserDefaults standardUserDefaults];
+		_defaults = [NSUserDefaults standardUserDefaults];
 		[[self window] setTitle:LS_PACKAGE_INFO];
 		[self setEmailSig:@""];
 		[self setWindowFrameAutosaveName: @"PackageInfo"];
@@ -43,18 +50,13 @@
 
 -(void)awakeFromNib
 {
-	textView = [MyTextView myTextViewToReplace:textView in:scrollView];
-	[[textView window] setDelegate:self];
+	[self setTextView: [MyTextView myTextViewToReplace:[self textView] in:[self scrollView]]];
+	[[[self textView] window] setDelegate:self];
 }
 
 
 
 //--------------------------------------------------------------->Email Methods
-
--(void)setEmailSig:(NSString *)s
-{
-	emailSig = s;
-}
 
 /* Used to set URL attribute for email addresses displayed by Package Inspector and
 	in FinkController's emailMaintainer method */
@@ -62,7 +64,7 @@
 { 
 	return [[NSString stringWithFormat: 
 						@"mailto:%@?subject=(Fink) %@-%@&body=%@\n\n%@", 
-						[pkg email], [pkg name], [pkg version], body, emailSig]
+						[pkg email], [pkg name], [pkg version], body, [self emailSig]]
 				URLByAddingPercentEscapesToString];
 }
 
@@ -186,35 +188,35 @@
 	NSString *pname;
 	NSString *psummary;
 
-	[[textView textStorage] beginEditing];
+	[[[self textView] textStorage] beginEditing];
 
-	[textView setString: @""];
+	[[self textView] setString: @""];
 	for (i = 0; i < count; i++){
 		pkg = packages[i];
 		pname = [NSString stringWithFormat:@"%@\n", [pkg name]];
 		psummary = [NSString stringWithFormat:@"%@\n", [pkg summary]];
-		[[textView textStorage] appendAttributedString:
+		[[[self textView] textStorage] appendAttributedString:
 			[[NSAttributedString alloc] 
 					initWithString: pname
 					attributes: @{NSFontAttributeName: MAINHEADINGFONT,
 										NSForegroundColorAttributeName: HEADINGCOLOR}]];
-		[[textView textStorage] appendAttributedString:
+		[[[self textView] textStorage] appendAttributedString:
 			[[NSAttributedString alloc]
 					initWithString: psummary
 						attributes: @{NSFontAttributeName: [NSFont systemFontOfSize:0],
 										NSForegroundColorAttributeName: SHORTDESCCOLOR}]];
-		[[textView textStorage] appendAttributedString:
+		[[[self textView] textStorage] appendAttributedString:
 			[self formattedVersionsForPackage:pkg]];
-		[[textView textStorage] appendAttributedString:
+		[[[self textView] textStorage] appendAttributedString:
 			[self formattedDescriptionStringforPackage: pkg]];
 		if (i != count - 1){  			//just add one newline after last package
-			[[textView textStorage] appendString:@"\n\n\n"];
+			[[[self textView] textStorage] appendString:@"\n\n\n"];
 		}else{
-			[[textView textStorage] appendString:@"\n"];
+			[[[self textView] textStorage] appendString:@"\n"];
 		}
 	}
 	
-	[[textView textStorage] endEditing];
+	[[[self textView] textStorage] endEditing];
 }
 
 
@@ -225,8 +227,8 @@
 		 defaultFrame:(NSRect)defaultFrame
 {	
 	CGFloat windowOffset = [[self window] frame].size.height
-							- [[textView superview] frame].size.height;
-	CGFloat newHeight = [textView frame].size.height;
+							- [[[self textView] superview] frame].size.height;
+	CGFloat newHeight = [[self textView] frame].size.height;
 	NSRect stdFrame = 
 		[NSWindow contentRectForFrameRect:[sender frame] 
 							 styleMask:[sender styleMask]];
@@ -257,7 +259,7 @@
 -(void)windowWillClose:(NSNotification *)n
 {
 	if ([[[n object] title] isEqualToString:LS_PACKAGE_INFO]){
-		[textView setString: @""];
+		[[self textView] setString: @""];
 	}
 }
 
