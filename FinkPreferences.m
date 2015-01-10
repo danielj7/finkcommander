@@ -25,6 +25,20 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	FINK_BASEPATH = 7
 };
 
+@interface FinkPreferences ()
+{
+    @protected
+    BOOL _pathChoiceChanged;
+    BOOL _autoExpandChanged;
+    BOOL _finkConfChanged;
+}
+
+@property (nonatomic, readonly) NSUserDefaults *defaults;
+@property (nonatomic, readonly, copy) FinkConf *conf;
+@property (nonatomic, readonly, copy) NSMutableArray *environmentArray;
+
+@end
+
 @implementation FinkPreferences
 
 //--------------------------------------------------------------------------------
@@ -35,10 +49,10 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	self = [super initWithWindowNibName:@"Preferences"];
 	if (nil != self){
-		defaults = [NSUserDefaults standardUserDefaults];
-		conf = [[FinkConf alloc] init];  //Object representing the user's fink.conf settings
+		_defaults = [NSUserDefaults standardUserDefaults];
+		_conf = [[FinkConf alloc] init];  //Object representing the user's fink.conf settings
 		[self setWindowFrameAutosaveName: @"Preferences"];
-		environmentArray = [[NSMutableArray alloc] init];
+		_environmentArray = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -46,7 +60,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(void)awakeFromNib
 {
 	//This is a bit anachronistic
-	if ([conf extendedVerboseOptions]){
+	if ([[self conf] extendedVerboseOptions]){
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Low", @"Verbosity level for Fink") atIndex:1];
 		[verboseOutputPopupButton insertItemWithTitle:NSLocalizedString(@"Medium", @"Verbosity level for Fink") atIndex:2];
 	}
@@ -63,16 +77,16 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	two-item dictionaries (name/value) and place them in environmentArray */
 -(void)readEnvironmentDefaultsIntoArray
 {
-	NSDictionary *environmentSettings = [defaults objectForKey:FinkEnvironmentSettings];
+	NSDictionary *environmentSettings = [[self defaults] objectForKey:FinkEnvironmentSettings];
 	NSEnumerator *e = [environmentSettings keyEnumerator];
 	NSString *name;
 	NSMutableDictionary *setting;
 	
-	[environmentArray removeAllObjects];
+	[[self environmentArray] removeAllObjects];
 	while (nil != (name = [e nextObject])){
 		setting = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				name, @"name", environmentSettings[name], @"value", nil];
-		[environmentArray addObject:setting];
+		[[self environmentArray] addObject:setting];
 	}
 }
 
@@ -83,20 +97,20 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		name, @"name", value, @"value", nil];
 	NSMutableDictionary *setting;
 	NSString *key;
-	NSUInteger i, limit = [environmentArray count];
+	NSUInteger i, limit = [[self environmentArray] count];
 
 	//Make sure we have no duplicate keys
 	for (i=0; i<limit; i++){
-		setting = environmentArray[i];
+		setting = [self environmentArray][i];
 		key = setting[@"name"];
 		if ([key isEqualToString:name]){
 			Dprintf(@"Found setting for %@", name);
-			[environmentArray removeObjectAtIndex:i];
+			[[self environmentArray] removeObjectAtIndex:i];
 			break;
 		}
 	}
 	
-	[environmentArray addObject:newSetting];
+	[[self environmentArray] addObject:newSetting];
 	[environmentTableView reloadData];
 }
 
@@ -105,17 +119,17 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(void)writeEnvironmentArrayIntoDefaults
 {
 	NSMutableDictionary *environmentSettings = [NSMutableDictionary dictionaryWithCapacity:
-													[environmentArray count]];
+													[[self environmentArray] count]];
 	NSDictionary *newSettings;
 	NSString *name, *value;
 	
-	for (NSMutableDictionary *setting in environmentArray){
+	for (NSMutableDictionary *setting in [self environmentArray]){
 		name = setting[@"name"];
 		value = setting[@"value"];
 		environmentSettings[name] = value;
 	}
 	newSettings = [environmentSettings copy];
-	[defaults setObject:newSettings forKey:FinkEnvironmentSettings];
+	[[self defaults] setObject:newSettings forKey:FinkEnvironmentSettings];
 }
 
 -(void)validateEnvironmentButtons
@@ -148,14 +162,14 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	/***  FinkCommander Preferences ***/
 
 	//Commander Tab
-	[warnBeforeRemovingButton setState: [defaults boolForKey: FinkWarnBeforeRemoving]];
-	[warnBeforeTerminatingButton setState: [defaults boolForKey: FinkWarnBeforeTerminating]];
-	[alwaysChooseDefaultsButton setState: [defaults boolForKey: FinkAlwaysChooseDefaults]];
-	[giveEmailCreditButton setState: [defaults boolForKey: FinkGiveEmailCredit]];
+	[warnBeforeRemovingButton setState: [[self defaults] boolForKey: FinkWarnBeforeRemoving]];
+	[warnBeforeTerminatingButton setState: [[self defaults] boolForKey: FinkWarnBeforeTerminating]];
+	[alwaysChooseDefaultsButton setState: [[self defaults] boolForKey: FinkAlwaysChooseDefaults]];
+	[giveEmailCreditButton setState: [[self defaults] boolForKey: FinkGiveEmailCredit]];
 	
 	//Paths Tab
-	pathChoiceChanged = NO;
-	basePath = [defaults objectForKey: FinkBasePath];
+	_pathChoiceChanged = NO;
+	basePath = [[self defaults] objectForKey: FinkBasePath];
 	if ([basePath isEqualToString: @"/sw"]){
 		[pathChoiceMatrix selectCellWithTag: 0];
 		[basePathTextField setStringValue: @""];
@@ -163,22 +177,22 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		[pathChoiceMatrix selectCellWithTag: 1];
 		[basePathTextField setStringValue: basePath];
 	}
-	outputPath = [defaults objectForKey: FinkOutputPath];
+	outputPath = [[self defaults] objectForKey: FinkOutputPath];
 	[outputPathButton setState: [outputPath length] > 0];
 	[outputPathTextField setStringValue: outputPath];
-	[perlPathTextField setStringValue:[defaults objectForKey:FinkPerlPath]];
+	[perlPathTextField setStringValue:[[self defaults] objectForKey:FinkPerlPath]];
 		
 	//Display Tab
-	autoExpandChanged = NO;
-	[scrollToBottomButton setState: [defaults boolForKey: FinkAlwaysScrollToBottom]];
-	[showPackagesInTitleButton setState: [defaults boolForKey: FinkPackagesInTitleBar]];
-	[autoExpandOutputButton setState: [defaults boolForKey: FinkAutoExpandOutput]];
-	[scrollToSelectionButton setState: [defaults boolForKey: FinkScrollToSelection]];
-	[allowRegexFilterButton setState: [defaults boolForKey: FinkAllowRegexFiltering]];
+	_autoExpandChanged = NO;
+	[scrollToBottomButton setState: [[self defaults] boolForKey: FinkAlwaysScrollToBottom]];
+	[showPackagesInTitleButton setState: [[self defaults] boolForKey: FinkPackagesInTitleBar]];
+	[autoExpandOutputButton setState: [[self defaults] boolForKey: FinkAutoExpandOutput]];
+	[scrollToSelectionButton setState: [[self defaults] boolForKey: FinkScrollToSelection]];
+	[allowRegexFilterButton setState: [[self defaults] boolForKey: FinkAllowRegexFiltering]];
 
-	[showRedundantPackagesButton setState: [defaults boolForKey: FinkShowRedundantPackages]];	
+	[showRedundantPackagesButton setState: [[self defaults] boolForKey: FinkShowRedundantPackages]];	
 	[self setTitleBarImage: self];  //action method
-	scrollBackLimit = [defaults integerForKey:FinkBufferLimit];
+	scrollBackLimit = [[self defaults] integerForKey:FinkBufferLimit];
 	[scrollBackLimitButton setState: scrollBackLimit];
 	if (scrollBackLimit){
 		[scrollBackLimitTextField setIntegerValue: scrollBackLimit];
@@ -186,33 +200,33 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	
 	/***  Fink Settings in fink.conf ***/
 
-	finkConfChanged = NO;
+	_finkConfChanged = NO;
 	
 	//Fink Tab
-	[useUnstableMainButton setState: [conf useUnstableMain]];
-	[useUnstableCryptoButton setState: [conf useUnstableCrypto]];
-	[verboseOutputPopupButton selectItemAtIndex:[conf verboseOutput]];
-	if ([[conf rootMethod] isEqualToString: @"sudo"]){
+	[useUnstableMainButton setState: [[self conf] useUnstableMain]];
+	[useUnstableCryptoButton setState: [[self conf] useUnstableCrypto]];
+	[verboseOutputPopupButton selectItemAtIndex:[[self conf] verboseOutput]];
+	if ([[[self conf] rootMethod] isEqualToString: @"sudo"]){
 		[rootMethodMatrix selectCellWithTag: 0];
 	}else{
 		[rootMethodMatrix selectCellWithTag: 1];
 	}
-	fetchAltDir = [conf fetchAltDir];
+	fetchAltDir = [[self conf] fetchAltDir];
 	[fetchAltDirButton setState: (fetchAltDir != nil ? YES : NO)];
 	[fetchAltDirTextField setStringValue: (fetchAltDir != nil ? fetchAltDir : @"")];
 	
 	//Download Tab
-	[passiveFTPButton setState: [conf passiveFTP]];
+	[passiveFTPButton setState: [[self conf] passiveFTP]];
 
-	httpProxy = [conf useHTTPProxy];
+	httpProxy = [[self conf] useHTTPProxy];
 	[httpProxyButton setState: ([httpProxy length] > 0 ? YES : NO)];
 	[httpProxyTextField setStringValue: httpProxy];
 	
-	ftpProxy = [conf useFTPProxy];
+	ftpProxy = [[self conf] useFTPProxy];
 	[ftpProxyButton setState: ([ftpProxy length] > 0 ? YES : NO)];
 	[ftpProxyTextField setStringValue: ftpProxy];
 
-	downloadMethod = [conf downloadMethod];
+	downloadMethod = [[self conf] downloadMethod];
 	if ([downloadMethod isEqualToString:@"curl"]){
 		[downloadMethodMatrix selectCellWithTag:0];
 	}else if ([downloadMethod isEqualToString:@"wget"]){
@@ -227,7 +241,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	[environmentTableView reloadData];
 
 	//software update tab
-	[automaticallyCheckUpdatesButton setState: [defaults boolForKey: FinkCheckForNewVersion]];
+	[automaticallyCheckUpdatesButton setState: [[self defaults] boolForKey: FinkCheckForNewVersion]];
 }
 
 //--------------------------------------------------------------------------------
@@ -239,9 +253,9 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(void)setBasePath
 {
 	if ([[pathChoiceMatrix selectedCell] tag] == 0){
-		[defaults setObject: @"/sw" forKey: FinkBasePath];
+		[[self defaults] setObject: @"/sw" forKey: FinkBasePath];
 	}else{
-		[defaults setObject: [basePathTextField stringValue] forKey: FinkBasePath];
+		[[self defaults] setObject: [basePathTextField stringValue] forKey: FinkBasePath];
 	}
 }
 
@@ -250,7 +264,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	int scrollBackLimit = [scrollBackLimitButton state] == NSOnState ?
 							[scrollBackLimitTextField intValue] : 0;
 							
-	[defaults setInteger:scrollBackLimit forKey:FinkBufferLimit];
+	[[self defaults] setInteger:scrollBackLimit forKey:FinkBufferLimit];
 }
 
 /*** Fink Settings in fink.conf ***/
@@ -258,18 +272,18 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(void)setRootMethod
 {
 	if ([[rootMethodMatrix selectedCell] tag] == 0){
-		[conf setRootMethod: @"sudo"];
+		[[self conf] setRootMethod: @"sudo"];
 	}else{
-		[conf setRootMethod: @"su"];
+		[[self conf] setRootMethod: @"su"];
 	}
 }
 
 -(void)setFetchAltDir
 {
 	if ([fetchAltDirButton state] == NSOnState){
-		[conf setFetchAltDir: [fetchAltDirTextField stringValue]];
+		[[self conf] setFetchAltDir: [fetchAltDirTextField stringValue]];
 	}else{
-		[conf setFetchAltDir: nil];
+		[[self conf] setFetchAltDir: nil];
 	}
 }
 
@@ -277,13 +291,13 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	switch ((FinkDownloaderType)[[downloadMethodMatrix selectedCell] tag]){
 		case CURL: 
-			[conf setDownloadMethod:@"curl"];
+			[[self conf] setDownloadMethod:@"curl"];
 			break;
 		case WGET:
-			[conf setDownloadMethod: @"wget"];
+			[[self conf] setDownloadMethod: @"wget"];
 			break;
 		case AXEL:
-			[conf setDownloadMethod: @"axel"];
+			[[self conf] setDownloadMethod: @"axel"];
 			break;
 	}
 }
@@ -292,9 +306,9 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	if ([httpProxyButton state] == NSOnState){
 		NSString *proxy = [httpProxyTextField stringValue];
-		[conf setUseHTTPProxy: proxy];
+		[[self conf] setUseHTTPProxy: proxy];
 	}else{
-		[conf setUseHTTPProxy: nil];
+		[[self conf] setUseHTTPProxy: nil];
 	}
 }
 
@@ -302,9 +316,9 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	if ([ftpProxyButton state] == NSOnState){
 		NSString *proxy = [ftpProxyTextField stringValue];
-		[conf setUseFTPProxy:proxy];
+		[[self conf] setUseFTPProxy:proxy];
 	}else{
-		[conf setUseFTPProxy: nil];
+		[[self conf] setUseFTPProxy: nil];
 	}
 }
 
@@ -318,32 +332,32 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	/*** FinkCommander Preferences ***/
 
 	//Commander Tab
-	[defaults setBool: (BOOL)[alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
-	[defaults setBool: (BOOL)[warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
-	[defaults setBool: (BOOL)[warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
-	[defaults setBool: (BOOL)[giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
-	[defaults setBool: (BOOL)[allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
+	[[self defaults] setBool: (BOOL)[alwaysChooseDefaultsButton state] 	forKey: FinkAlwaysChooseDefaults];
+	[[self defaults] setBool: (BOOL)[warnBeforeRemovingButton state]	 	forKey: FinkWarnBeforeRemoving];
+	[[self defaults] setBool: (BOOL)[warnBeforeTerminatingButton state]	forKey: FinkWarnBeforeTerminating];
+	[[self defaults] setBool: (BOOL)[giveEmailCreditButton state]		forKey: FinkGiveEmailCredit];
+	[[self defaults] setBool: (BOOL)[allowRegexFilterButton state] 	forKey: FinkAllowRegexFiltering];
 
 	//Paths Tab
 	[self setBasePath];
-	[defaults setObject:[outputPathTextField stringValue] forKey: FinkOutputPath];
-	[defaults setObject:[perlPathTextField stringValue] forKey:FinkPerlPath];
+	[[self defaults] setObject:[outputPathTextField stringValue] forKey: FinkOutputPath];
+	[[self defaults] setObject:[perlPathTextField stringValue] forKey:FinkPerlPath];
 		//Give manually set path a chance to work on startup
-	if (pathChoiceChanged){
-		[defaults setBool:YES forKey:FinkBasePathFound];
+	if (_pathChoiceChanged){
+		[[self defaults] setBool:YES forKey:FinkBasePathFound];
 		fixScript();
 	}
 	
 	//Display Tab
 	[self setScrollBackLimit];
-	[defaults setBool: (BOOL)[scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
-	[defaults setBool: (BOOL)[scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
-	[defaults setBool: (BOOL)[showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
-	[defaults setBool: (BOOL)[autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
-	[defaults setBool: (BOOL)[showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
+	[[self defaults] setBool: (BOOL)[scrollToSelectionButton state] 		forKey: FinkScrollToSelection];
+	[[self defaults] setBool: (BOOL)[scrollToBottomButton state] 		forKey: FinkAlwaysScrollToBottom];
+	[[self defaults] setBool: (BOOL)[showPackagesInTitleButton state] 	forKey: FinkPackagesInTitleBar];
+	[[self defaults] setBool: (BOOL)[autoExpandOutputButton state] 		forKey: FinkAutoExpandOutput];
+	[[self defaults] setBool: (BOOL)[showRedundantPackagesButton state] 	forKey: FinkShowRedundantPackages];
 		//Notify FinkController to collapse output if user chose to
 		//automatically expand and collapse
-	if (autoExpandChanged && [autoExpandOutputButton state]){
+	if (_autoExpandChanged && [autoExpandOutputButton state]){
 		[[NSNotificationCenter defaultCenter]
 			postNotificationName:FinkCollapseOutputView
 						  object:nil];
@@ -353,31 +367,31 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	[self writeEnvironmentArrayIntoDefaults];
 
 	//software update tab
-	[defaults setBool: (BOOL)[automaticallyCheckUpdatesButton state] forKey: FinkCheckForNewVersion];
+	[[self defaults] setBool: (BOOL)[automaticallyCheckUpdatesButton state] forKey: FinkCheckForNewVersion];
 
 	/***  Fink Settings in fink.conf ***/
 	
-	if (finkConfChanged){ 
+	if (_finkConfChanged){
 		//Set to yes whenever user selects a button or changes a field in the Fink or
 		//Downloads tabs
 
 		//Fink Tab
-		[conf setUseUnstableCrypto: (BOOL)[useUnstableCryptoButton state]];
-		[conf setUseUnstableMain: (BOOL)[useUnstableMainButton state]];
-		[conf setVerboseOutput: [verboseOutputPopupButton indexOfSelectedItem]];
-		[conf setKeepBuildDir: (BOOL)[keepBuildDirectoryButton state]];
-		[conf setKeepRootDir: (BOOL)[keepRootDirectoryButton state]];
+		[[self conf] setUseUnstableCrypto: (BOOL)[useUnstableCryptoButton state]];
+		[[self conf] setUseUnstableMain: (BOOL)[useUnstableMainButton state]];
+		[[self conf] setVerboseOutput: [verboseOutputPopupButton indexOfSelectedItem]];
+		[[self conf] setKeepBuildDir: (BOOL)[keepBuildDirectoryButton state]];
+		[[self conf] setKeepRootDir: (BOOL)[keepRootDirectoryButton state]];
 		[self setRootMethod];
 
 		//Download Tab
 		[self setDownloadMethod];
-		[conf setPassiveFTP: (BOOL)[passiveFTPButton state]];
+		[[self conf] setPassiveFTP: (BOOL)[passiveFTPButton state]];
 		[self setHTTPProxyVariable];
 		[self setFTPProxyVariable];
 		[self setFetchAltDir];
 
-		finkConfChanged = NO;
-		[conf writeToFile];
+		_finkConfChanged = NO;
+		[[self conf] writeToFile];
 	}
 }
 
@@ -400,20 +414,20 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 //Connected to path-to-fink matrix
 -(IBAction)setPathChoiceChanged:(id)sender
 {
-	pathChoiceChanged = YES;
+	_pathChoiceChanged = YES;
 }
 
 //Connected to all buttons in fink.conf tabs
 -(IBAction)setFinkConfChanged:(id)sender
 {
-	finkConfChanged = YES;
+	_finkConfChanged = YES;
 }
 
 //Connected to use unstable and use unstable crypto buttons
 -(IBAction)setFinkTreesChanged:(id)sender
 {
-	finkConfChanged = YES;
-	[conf setFinkTreesChanged: YES];
+	_finkConfChanged = YES;
+	[[self conf] setFinkTreesChanged: YES];
 }
 
 /*** Display Tab Buttons ***/
@@ -432,7 +446,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 {
 	//Determines whether a notification to collapse the output view
 	//is sent to FinkSplitView
-	autoExpandChanged = YES;
+	_autoExpandChanged = YES;
 }
 
 /*** Dialog Opened by Browse Buttons ***/
@@ -500,7 +514,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 -(IBAction)removeEnvironmentSettings:(id)sender
 {
     [[environmentTableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop){
-        [self->environmentArray removeObjectAtIndex:idx];
+        [[self environmentArray] removeObjectAtIndex:idx];
     }];
 	[environmentTableView reloadData];
 	[self validateEnvironmentButtons];
@@ -541,17 +555,17 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		case HTTP_PROXY:
 			[httpProxyButton setState: 
 				([[httpProxyTextField stringValue] length] > 0 ? YES : NO)];
-			finkConfChanged = YES;
+			_finkConfChanged = YES;
 			break;
 		case FTP_PROXY:
 			[ftpProxyButton setState:
 				([[ftpProxyTextField stringValue] length] > 0 ? YES : NO)];
-			finkConfChanged = YES;
+			_finkConfChanged = YES;
 			break;
 		case FETCH_ALT_DIR:
 			[fetchAltDirButton setState:
 				([[fetchAltDirTextField stringValue] length] > 0 ? YES : NO)];
-			finkConfChanged = YES;
+			_finkConfChanged = YES;
 			break;
 		case OUTPUT_PATH:
 			[outputPathButton setState:
@@ -580,7 +594,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [environmentArray count];
+	return [[self environmentArray] count];
 }
 
 -(id)tableView:(NSTableView *)aTableView
@@ -588,7 +602,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 	row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	return environmentArray[rowIndex][identifier];
+	return [self environmentArray][rowIndex][identifier];
 }
 
 -(void)tableView:(NSTableView *)aTableView 
@@ -597,7 +611,7 @@ typedef NS_ENUM(NSInteger, FinkPreferenceFieldType) {
 		row:(NSInteger)rowIndex
 {
 	NSString *identifier = [aTableColumn identifier];
-	environmentArray[rowIndex][identifier] = anObject;
+	[self environmentArray][rowIndex][identifier] = anObject;
 }
 
 -(IBAction)checkNow:(id)sender

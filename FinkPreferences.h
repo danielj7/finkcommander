@@ -89,14 +89,6 @@ File: FinkPreferences.h
 
 	//widgets used for software update
 	IBOutlet NSButton *checkNowButton;
-
-	NSUserDefaults *defaults;
-	FinkConf *conf;
-	NSMutableArray *environmentArray;
-
-	BOOL pathChoiceChanged;
-	BOOL autoExpandChanged;
-	BOOL finkConfChanged;
 }
 
 //main button actions ("Apply", "OK", "Cancel")
