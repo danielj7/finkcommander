@@ -61,6 +61,14 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 }
 
 
+@interface SBFileItemTree ()
+
+@property (nonatomic) unsigned long totalSize;
+@property (nonatomic) unsigned long itemCount;
+@property (nonatomic, readonly) NSLock *sbLock;
+
+@end
+
 @implementation SBFileItemTree
 
 //----------------------------------------------------------
@@ -71,15 +79,15 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 {
     self = [super init];
     if (nil != self){
-		[self setName:aName];
-		sbLock = [[NSLock alloc] init];
-		totalSize = 0;
-		itemCount = 0;
+		_name= aName;
+		_sbLock = [[NSLock alloc] init];
+		_totalSize = 0;
+		_itemCount = 0;
 		if (nil != flist && [flist count] > 0){
-			[self setRootItem: [[SBFileItem alloc]
-				   initWithPath:flist[0]]];
+			_rootItem = [[SBFileItem alloc]
+				   initWithPath:flist[0]];
 			//in case base path is symlink; standardizing path doesn't seem to work
-			[[self rootItem] setChildren:@[]]; 
+			[_rootItem setChildren:@[]];
 		}
     }
     return self;
@@ -89,27 +97,6 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 {
 	Dprintf(@"Deallocating %@", [self description]);
 	
-}
-
-//----------------------------------------------------------
-#pragma mark - ACCESSORS
-//----------------------------------------------------------
-
--(unsigned long)totalSize { return totalSize; }
--(unsigned long)itemCount { return itemCount; }
-
--(SBFileItem *)rootItem { return _sbrootItem; }
-
--(void)setRootItem:(SBFileItem *)newRootItem
-{
-	_sbrootItem = newRootItem;
-}
-
--(NSString *)name { return _sbName; }
-
--(void)setName:(NSString *)newName
-{
-    _sbName = newName;
 }
 
 //----------------------------------------------------------
@@ -183,21 +170,21 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
         SBFileItem *item;
 	
 	while (nil != (apath = [e nextObject]) && [apath length] > 0){
-		[sbLock lock];
+		[[self sbLock] lock];
 		item = [[SBFileItem alloc] initWithPath:apath]; //retain count = 1
 		[self addItemToTree:item];  	//adds to array, retain count = 2
 		if (nil == [item children]){ 	//not dir, so add to size and item count
-			totalSize += [item size];
-			itemCount++;
+			_totalSize += [item size];
+			_itemCount++;
 		}
 		 //retain count = 1
-		[sbLock unlock];
+		[[self sbLock] unlock];
         }
 	/*  If the item list is short enough, the DO notification is posted before the 
 		window controller has a chance to register for it!  This seems like kind
 		of an ugly hack to prevent this from happening, but it's all I can come up 
 		with for now.  */
-	if (itemCount < 200){
+	if (_itemCount < 200){
 		[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 	}
 	/* 	Let the window controller, which is running in another thread, know that
