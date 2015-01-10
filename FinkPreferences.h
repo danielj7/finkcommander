@@ -38,58 +38,59 @@ File: FinkPreferences.h
 
 @interface FinkPreferences : NSWindowController
 {
-	IBOutlet NSTabView *tabView;
-
-	//widgets used for general preference settings
-	IBOutlet NSMatrix *pathChoiceMatrix;
-	IBOutlet NSTextField *basePathTextField;
-	IBOutlet NSTextField *outputPathTextField;
-	IBOutlet NSTextField *scrollBackLimitTextField;
-	IBOutlet NSTextField *perlPathTextField;
-	IBOutlet NSButton *scrollBackLimitButton;
-	IBOutlet NSButton *outputPathButton;
-	IBOutlet NSButton *perlPathButton;
-	IBOutlet NSButton *alwaysChooseDefaultsButton;
-	IBOutlet NSButton *scrollToBottomButton;
-	IBOutlet NSButton *warnBeforeRemovingButton;
-	IBOutlet NSButton *warnBeforeTerminatingButton;
-	IBOutlet NSButton *showPackagesInTitleButton;
-	IBOutlet NSButton *autoExpandOutputButton;
-	IBOutlet NSButton *giveEmailCreditButton;
-	IBOutlet NSButton *showRedundantPackagesButton;
-	IBOutlet NSButton *automaticallyCheckUpdatesButton;
-	
-	//widgets used for environment settings
-	IBOutlet NSTableView *environmentTableView;
-	IBOutlet NSTextField *nameTextField;
-	IBOutlet NSTextField *valueTextField;
-	IBOutlet NSButton *addEnvironmentSettingButton;
-	IBOutlet NSButton *deleteEnvironmentSettingButton;
-	
-	//widgets used to alter table behavior
-	IBOutlet NSButton *scrollToSelectionButton;
-	IBOutlet NSButton *allowRegexFilterButton;
-	
-	//widgets used to alter fink.conf
-	IBOutlet NSButton *useUnstableMainButton;
-	IBOutlet NSButton *useUnstableCryptoButton;
-	IBOutlet NSPopUpButton *verboseOutputPopupButton;
-	IBOutlet NSButton *passiveFTPButton;
-	IBOutlet NSButton *keepBuildDirectoryButton;
-	IBOutlet NSButton *keepRootDirectoryButton;
-	IBOutlet NSButton *httpProxyButton;
-	IBOutlet NSTextField *httpProxyTextField;
-	IBOutlet NSButton *ftpProxyButton;
-	IBOutlet NSTextField *ftpProxyTextField;
-	IBOutlet NSButton *fetchAltDirButton;
-	IBOutlet NSTextField *fetchAltDirTextField;
-	IBOutlet NSMatrix *downloadMethodMatrix;
-	IBOutlet NSMatrix *rootMethodMatrix;
-	IBOutlet NSImageView *titleBarImageView;
-
-	//widgets used for software update
-	IBOutlet NSButton *checkNowButton;
 }
+
+@property (nonatomic, weak) IBOutlet NSTabView *tabView;
+
+//widgets used for general preference settings
+@property (nonatomic, weak) IBOutlet NSMatrix *pathChoiceMatrix;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *basePathTextField;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *outputPathTextField;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *scrollBackLimitTextField;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *perlPathTextField;
+@property (nonatomic, weak) IBOutlet NSButton *scrollBackLimitButton;
+@property (nonatomic, weak) IBOutlet NSButton *outputPathButton;
+@property (nonatomic, weak) IBOutlet NSButton *perlPathButton;
+@property (nonatomic, weak) IBOutlet NSButton *alwaysChooseDefaultsButton;
+@property (nonatomic, weak) IBOutlet NSButton *scrollToBottomButton;
+@property (nonatomic, weak) IBOutlet NSButton *warnBeforeRemovingButton;
+@property (nonatomic, weak) IBOutlet NSButton *warnBeforeTerminatingButton;
+@property (nonatomic, weak) IBOutlet NSButton *showPackagesInTitleButton;
+@property (nonatomic, weak) IBOutlet NSButton *autoExpandOutputButton;
+@property (nonatomic, weak) IBOutlet NSButton *giveEmailCreditButton;
+@property (nonatomic, weak) IBOutlet NSButton *showRedundantPackagesButton;
+@property (nonatomic, weak) IBOutlet NSButton *automaticallyCheckUpdatesButton;
+
+//widgets used for environment settings
+@property (nonatomic, weak) IBOutlet NSTableView *environmentTableView;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *nameTextField;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *valueTextField;
+@property (nonatomic, weak) IBOutlet NSButton *addEnvironmentSettingButton;
+@property (nonatomic, weak) IBOutlet NSButton *deleteEnvironmentSettingButton;
+
+//widgets used to alter table behavior
+@property (nonatomic, weak) IBOutlet NSButton *scrollToSelectionButton;
+@property (nonatomic, weak) IBOutlet NSButton *allowRegexFilterButton;
+
+//widgets used to alter fink.conf
+@property (nonatomic, weak) IBOutlet NSButton *useUnstableMainButton;
+@property (nonatomic, weak) IBOutlet NSButton *useUnstableCryptoButton;
+@property (nonatomic, weak) IBOutlet NSPopUpButton *verboseOutputPopupButton;
+@property (nonatomic, weak) IBOutlet NSButton *passiveFTPButton;
+@property (nonatomic, weak) IBOutlet NSButton *keepBuildDirectoryButton;
+@property (nonatomic, weak) IBOutlet NSButton *keepRootDirectoryButton;
+@property (nonatomic, weak) IBOutlet NSButton *httpProxyButton;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *httpProxyTextField;
+@property (nonatomic, weak) IBOutlet NSButton *ftpProxyButton;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *ftpProxyTextField;
+@property (nonatomic, weak) IBOutlet NSButton *fetchAltDirButton;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *fetchAltDirTextField;
+@property (nonatomic, weak) IBOutlet NSMatrix *downloadMethodMatrix;
+@property (nonatomic, weak) IBOutlet NSMatrix *rootMethodMatrix;
+@property (nonatomic, weak) IBOutlet NSImageView *titleBarImageView;
+
+//widgets used for software update
+@property (nonatomic, weak) IBOutlet NSButton *checkNowButton;
 
 //main button actions ("Apply", "OK", "Cancel")
 -(IBAction)setPreferences:(id)sender;
