@@ -29,7 +29,6 @@
 
 @interface SBBrowserView: NSBrowser <NSBrowserDelegate, NSDraggingSource>
 {
-    SBFileItemTree *tree;
 }
 
 /*

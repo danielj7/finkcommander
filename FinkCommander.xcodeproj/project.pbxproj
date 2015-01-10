@@ -493,8 +493,8 @@
 				F50EC36503A0559001A80165 /* SBFileItem.h */,
 				F5CC7619039F174E01A80165 /* SBOutlineViewController.h */,
 				FBCD472903C6070000A80164 /* SBOutlineView.h */,
-				FBCD472B03C6070E00A80164 /* SBBrowserCell.h */,
 				F5CC765C039F19D801A80165 /* SBDateColumnController.h */,
+				FBCD472B03C6070E00A80164 /* SBBrowserCell.h */,
 				F5CC7615039F174E01A80165 /* SBBrowserView.h */,
 				F57E59B403A998D701A80165 /* SBBrowserMatrix.h */,
 			);

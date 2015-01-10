@@ -36,20 +36,6 @@
 }
 
 //----------------------------------------------------------
-#pragma mark - ACCESSORS
-//----------------------------------------------------------
-
--(SBFileItemTree *)tree
-{
-    return tree;
-}
-
--(void)setTree:(SBFileItemTree *)newTree
-{
-    tree = newTree;
-}
-
-//----------------------------------------------------------
 #pragma mark - BROWSER DELEGATE METHODS
 //----------------------------------------------------------
 
@@ -84,7 +70,7 @@
 
     if (0 == column){
 		/* Put the root item in column 0. */
-		item = [tree rootItem];
+		item = [[self tree] rootItem];
     }else{
 		/* 	The representedObject of the selected item in the parent column
 			is the SBFileItem ancestor of the objects that will be represented

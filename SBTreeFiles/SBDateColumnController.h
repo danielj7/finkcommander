@@ -23,9 +23,6 @@
 
 @interface SBDateColumnController: NSObject
 {
-    NSTableColumn * _sbColumn;
-    NSString *_sbShortTitle;
-    NSString *_sbLongTitle;
 }
 
 -(instancetype)initWithColumn:(NSTableColumn *)myColumn;

@@ -9,10 +9,5 @@
  
 @implementation SBBrowserMatrix
 
--(void)setMyBrowser:(id)newBrowser
-{
-    myBrowser = newBrowser;  //Don't retain parent object!
-}
-
 
 @end

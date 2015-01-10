@@ -97,31 +97,6 @@
 }
 
 //----------------------------------------------------------
-#pragma mark - ACCESSORS
-//----------------------------------------------------------
-
--(NSTableColumn *)column { return _sbColumn; }
-
--(void)setColumn:(NSTableColumn *)newColumn
-{
-    _sbColumn = newColumn; //retained by outline or table view
-}
-
--(NSString *)shortTitle { return _sbShortTitle; }
-
--(void)setShortTitle:(NSString *)newShortTitle
-{
-    _sbShortTitle = newShortTitle;
-}
-
--(NSString *)longTitle { return _sbLongTitle; }
-
--(void)setLongTitle:(NSString *)newLongTitle
-{
-    _sbLongTitle = newLongTitle;
-}
-
-//----------------------------------------------------------
 #pragma mark - DISPLAY ADJUSTMENT
 //----------------------------------------------------------
 

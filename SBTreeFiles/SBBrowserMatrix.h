@@ -24,9 +24,8 @@
 
 @interface SBBrowserMatrix : NSMatrix 
 {
-	id myBrowser;
 }
 
--(void)setMyBrowser:(id)newBrowser;
+@property (nonatomic) id myBrowser;
 
 @end
