@@ -40,14 +40,12 @@ typedef NS_ENUM(NSInteger, FinkWarningCommandType) {
 
 @interface FinkWarningDialog : NSWindowController 
 {
-	IBOutlet NSButton *removeWarningButton;
-	IBOutlet NSTextField *warningMessageField;
-	IBOutlet NSButton *confirmButton;
-	IBOutlet NSButton *cancelButton;
-	
-	NSUserDefaults *defaults;
-	FinkWarningCommandType command;
 }
+
+@property (nonatomic, weak) IBOutlet NSButton *removeWarningButton;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *warningMessageField;
+@property (nonatomic, weak) IBOutlet NSButton *confirmButton;
+@property (nonatomic, weak) IBOutlet NSButton *cancelButton;
 
 @property (nonatomic, copy) NSMutableArray *arguments;
 
