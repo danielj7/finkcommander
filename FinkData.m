@@ -16,23 +16,27 @@ See the header file, FinkData.h, for interface and license information.
 #define VERSIONSTART 9
 
 @interface FinkData ()
+
 @property (nonatomic) NSArray *array;
 @property (nonatomic) NSDictionary *binaryPackages;
 @property (nonatomic) NSDate *start;
 @property (nonatomic) NSUserDefaults *defaults;
+
 @end
 
 @implementation FinkData
 
 //---------------------------------------------------------->The Usual
 
-+(FinkData *)sharedData
++(instancetype)sharedData
 {
-    static FinkData *mySharedData = nil;
-    if (nil == mySharedData){
-        mySharedData = [[FinkData alloc] init];
-    }
-    return mySharedData;
+    static FinkData *_sharedData = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedData = [[FinkData alloc] init];
+    });
+    
+    return _sharedData;
 }
 
 -(instancetype)init

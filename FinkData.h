@@ -42,7 +42,7 @@ Contact the author at sburrious@users.sourceforge.net.
 
 /* 	Singleton class method 
 	For possible use in a future multi-window version of FC */
-+(FinkData *)sharedData;
++(instancetype)sharedData;
 
 /* Public accessor -- an array of FinkPackage instances */
 @property (nonatomic, readonly) NSArray *array;
