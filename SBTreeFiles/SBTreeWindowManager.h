@@ -26,9 +26,6 @@
 
 @interface SBTreeWindowManager : NSObject
 {
-    NSString *_sbcurrentPackageName;
-	NSMutableArray *_sbWindowControllers;
-	NSMutableArray *_sbWindowTitles;
 }
 
 @property (nonatomic, copy) NSString *currentPackageName;

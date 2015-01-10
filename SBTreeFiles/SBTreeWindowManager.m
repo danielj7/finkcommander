@@ -17,27 +17,12 @@
 {
 	self = [super init];
 	if (nil != self){
-		_sbWindowControllers = [[NSMutableArray alloc] init];
-		_sbWindowTitles = [[NSMutableArray alloc] init];
+		_windowControllers = [[NSMutableArray alloc] init];
+		_windowTitles = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
 
-
-//----------------------------------------------------------
-#pragma mark - ACCESSORS
-//----------------------------------------------------------
-
--(NSString *)currentPackageName { return _sbcurrentPackageName; }
-
--(void)setCurrentPackageName:(NSString *)newCurrentPackageName
-{
-    _sbcurrentPackageName = newCurrentPackageName;
-}
-
--(NSMutableArray *)windowControllers { return _sbWindowControllers; }
-
--(NSMutableArray *)windowTitles { return _sbWindowTitles; }
 
 //----------------------------------------------------------
 #pragma mark - CREATING AND DESTROYING SBTREEWINDOWCONTROLLERS
