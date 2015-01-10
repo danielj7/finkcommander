@@ -14,6 +14,12 @@ File: FinkInstallationInfo.m
 #define DEVTOOLS_TEST_PATH1 @"/Developer/Applications/Project Builder.app/Contents/Resources/English.lproj/DevCDVersion.plist"
 #define DEVTOOLS_TEST_PATH2 @"/Developer/Applications/Interface Builder.app/Contents/version.plist"
 
+@interface FinkInstallationInfo ()
+
+@property (nonatomic, readonly) NSFileManager *manager;
+
+@end
+
 @implementation FinkInstallationInfo
 
 //------------------------------>init
@@ -31,7 +37,7 @@ File: FinkInstallationInfo.m
 -(instancetype)init
 {
 	if ((self = [super init])){
-		manager = [NSFileManager defaultManager];  //shared instance, no need to retain
+		_manager = [NSFileManager defaultManager];  //shared instance, no need to retain
 	}
 	return self;
 }
@@ -72,7 +78,7 @@ File: FinkInstallationInfo.m
 	NSFileHandle *taskStdout = [pipeFromStdout fileHandleForReading];
 	NSString *result;
 
-	if (! [manager fileExistsAtPath:path]){
+	if (! [[self manager] fileExistsAtPath:path]){
 		return nil;
 	}
 	
@@ -176,7 +182,7 @@ NSArray *versInfo;
 NSString *result;
 NSString *extraInformation;
 
-if (! [manager fileExistsAtPath: @"/usr/bin/cc"]){
+if (! [[self manager] fileExistsAtPath: @"/usr/bin/cc"]){
 return @"Developer Tools not installed";
 }
 
@@ -198,11 +204,11 @@ return [NSString stringWithFormat: @"Compiler version: %@ %@", result, extraInfo
 	NSString *error = @"Unable to determine make version";
 	NSString *result;
 
-	if ([manager fileExistsAtPath:finkMakePath]){
+	if ([[self manager] fileExistsAtPath:finkMakePath]){
 		pathToMake = finkMakePath;
-	}else if ([manager fileExistsAtPath:@"/usr/local/bin/make"]){
+	}else if ([[self manager] fileExistsAtPath:@"/usr/local/bin/make"]){
 		pathToMake = @"/usr/local/bin/make";
-	}else if ([manager fileExistsAtPath:@"/usr/bin/make"]){
+	}else if ([[self manager] fileExistsAtPath:@"/usr/bin/make"]){
 		pathToMake = @"/usr/bin/make";
 	}else{
 		return error;
@@ -222,28 +228,28 @@ return [NSString stringWithFormat: @"Compiler version: %@ %@", result, extraInfo
 	NSString *error = @"Unable to determine Developer Tools version";
 	NSString *version;
 
-    if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH]){
+    if ([[self manager] fileExistsAtPath: DEVTOOLS_TEST_PATH]){
         Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH);
         version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH][@"CFBundleShortVersionString"];
         if (! version  || [version length] < 3) return error;
         version = [@"Xcode version: " stringByAppendingString:version];
         return version;
     }
-    else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
+    else if ([[self manager] fileExistsAtPath: DEVTOOLS_TEST_PATH0]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH0);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH0][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;
 		version = [@"Xcode version: " stringByAppendingString:version];
 		return version;
 	}
-	else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
+	else if ([[self manager] fileExistsAtPath: DEVTOOLS_TEST_PATH1]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH1);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH1][@"DevCDVersion"];
 		if (! version  || [version length] < 3) return error;
 		version = [version stringByAppendingString:@" or later"];
 		return version;
 	}
-	else if ([manager fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
+	else if ([[self manager] fileExistsAtPath: DEVTOOLS_TEST_PATH2]){
 		Dprintf(@"Found file at %@", DEVTOOLS_TEST_PATH2);
 		version = [NSDictionary dictionaryWithContentsOfFile: DEVTOOLS_TEST_PATH2][@"CFBundleShortVersionString"];
 		if (! version  || [version length] < 3) return error;  //should at least be x.x

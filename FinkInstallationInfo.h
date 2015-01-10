@@ -38,7 +38,6 @@ File: FinkInstallationInfo.h
 
 @interface FinkInstallationInfo : NSObject 
 {
-	NSFileManager *manager;
 }
 
 +(FinkInstallationInfo *)sharedInfo;
