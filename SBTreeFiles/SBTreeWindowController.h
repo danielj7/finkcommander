@@ -37,22 +37,15 @@
 
 @interface SBTreeWindowController: NSObject
 {
-	IBOutlet NSWindow *sbTreeWindow;
-	IBOutlet NSTabView *tabView;
-	IBOutlet NSScrollView *outlineScrollView;
-    IBOutlet id outlineView;
-    IBOutlet NSTextField *msgTextField;
-    IBOutlet NSProgressIndicator *loadingIndicator;
-	IBOutlet NSBrowser *oldBrowser;
-
-	SBFileItemTree *sbTree;
-    SBOutlineViewController *oController;
-	SBBrowserView *sbBrowser;
-    SBDateColumnController *mDateColumnController;
-    NSMutableArray *fileList;
-	NSString  *_sbActiveView;
-	BOOL treeBuildingThreadIsFinished;
 }
+
+@property (nonatomic, strong) IBOutlet NSWindow *sbTreeWindow;
+@property (nonatomic, weak) IBOutlet NSTabView *tabView;
+@property (nonatomic, weak) IBOutlet NSScrollView *outlineScrollView;
+@property (nonatomic, weak) IBOutlet id outlineView;
+@property (nonatomic, unsafe_unretained) IBOutlet NSTextField *msgTextField;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator *loadingIndicator;
+@property (nonatomic, weak) IBOutlet NSBrowser *oldBrowser;
 
 -(instancetype)initWithFileList:(NSMutableArray *)fList;
 -(instancetype)initWithFileList:(NSMutableArray *)fList

@@ -34,20 +34,27 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 #define MEGABYTE_FORMAT NSLocalizedStringFromTable(@"%u items, %.1f MB", @"SBTree", \
 												   "Formatter for browser window")
 
+@interface SBTreeWindowController ()
+
+@property (nonatomic) SBFileItemTree *sbTree;
+@property (nonatomic) SBOutlineViewController *oController;
+@property (nonatomic) SBBrowserView *sbBrowser;
+@property (nonatomic) SBDateColumnController *mDateColumnController;
+// FIXME: not used
+@property (nonatomic, copy) NSMutableArray *fileList;
+// FIXME: not used
+@property (nonatomic, copy) NSString *activeView;
+@property (nonatomic, getter=isTreeBuildingThreadFinished) BOOL treeBuildingThreadFinished;
+
+@end
+
 @implementation SBTreeWindowController
 
 //----------------------------------------------------------
 #pragma mark - ACCESSORS
 //----------------------------------------------------------
 
--(NSString *)activeView { return _sbActiveView; }
-
--(void)setActiveView:(NSString *)newActiveView
-{
-	_sbActiveView = newActiveView;
-}
-
--(NSWindow *)window { return sbTreeWindow; }
+-(NSWindow *)window { return [self sbTreeWindow]; }
 
 //----------------------------------------------------------
 #pragma mark - OBJECT CREATION
@@ -59,40 +66,40 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 -(void)setupViews
 {
     NSTableColumn *mdateColumn;
-    NSRect browserFrame = [oldBrowser frame];
-	NSView *browserSuperview = [oldBrowser superview];
+    NSRect browserFrame = [[self oldBrowser] frame];
+	NSView *browserSuperview = [[self oldBrowser] superview];
 
 	/* Set up the custom outline view */
-	outlineView = [[SBOutlineView alloc] 
-					initAsSubstituteForOutlineView:outlineView];  //RC == 1
-	[outlineScrollView setDocumentView:outlineView];              //RC == 2
+	[self setOutlineView: [[SBOutlineView alloc] 
+					initAsSubstituteForOutlineView:[self outlineView]]];  //RC == 1
+	[[self outlineScrollView] setDocumentView:[self outlineView]];              //RC == 2
 	   									                          //RC == 1
-	[outlineView sizeLastColumnToFit];
+	[[self outlineView] sizeLastColumnToFit];
 
 	/* Set up the outline view controller */
-    oController = [[SBOutlineViewController alloc] initWithTree:sbTree
-													view:outlineView];
+    [self setOController: [[SBOutlineViewController alloc] initWithTree:[self sbTree]
+													view:[self outlineView]]];
 
 	/* Set up the controller for the date column */
-	mdateColumn = [outlineView tableColumnWithIdentifier:@"mdate"];
-    mDateColumnController =
+	mdateColumn = [[self outlineView] tableColumnWithIdentifier:@"mdate"];
+    [self setMDateColumnController:
 		[[SBDateColumnController alloc]
 		initWithColumn:mdateColumn
 			shortTitle:@"Modified"
-			longTitle:@"Date Modified"];
-    [outlineView setIndicatorImage: [NSImage imageNamed:@"NSAscendingSortIndicator"]
-				inTableColumn:[outlineView tableColumnWithIdentifier:@"filename"]];
+			longTitle:@"Date Modified"]];
+    [[self outlineView] setIndicatorImage: [NSImage imageNamed:@"NSAscendingSortIndicator"]
+				inTableColumn:[[self outlineView] tableColumnWithIdentifier:@"filename"]];
 
 	/* Substitute SBBrowserView with drag and drop for nib version */
-    sbBrowser = [[SBBrowserView alloc] initWithFrame:browserFrame];
-	[sbBrowser setAutoresizingMask:[oldBrowser autoresizingMask]];
-	[sbBrowser setMaxVisibleColumns:[oldBrowser maxVisibleColumns]];
-	[oldBrowser removeFromSuperview];
-	[browserSuperview addSubview:sbBrowser];
-    [sbBrowser setTree:sbTree];
+    [self setSbBrowser: [[SBBrowserView alloc] initWithFrame:browserFrame]];
+	[[self sbBrowser] setAutoresizingMask:[[self oldBrowser] autoresizingMask]];
+	[[self sbBrowser] setMaxVisibleColumns:[[self oldBrowser] maxVisibleColumns]];
+	[[self oldBrowser] removeFromSuperview];
+	[browserSuperview addSubview:[self sbBrowser]];
+    [[self sbBrowser] setTree:[self sbTree]];
 	
-	[loadingIndicator setStyle:NSProgressIndicatorSpinningStyle];
-	[loadingIndicator setDisplayedWhenStopped:NO];
+	[[self loadingIndicator] setStyle:NSProgressIndicatorSpinningStyle];
+	[[self loadingIndicator] setDisplayedWhenStopped:NO];
 }
 
 -(instancetype)initWithFileList:(NSMutableArray *)fList
@@ -108,12 +115,12 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
     self = [super init];
     if (nil != self){
 	
-		sbTree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
+		_sbTree = [[SBFileItemTree alloc] initWithFileArray:fList name:wName];
 		/*	Building the file tree can take some time; run in a separate
 			thread to avoid tying up the rest of the app */
-		treeBuildingThreadIsFinished = NO;
+		_treeBuildingThreadFinished = NO;
 		[NSThread detachNewThreadSelector:@selector(buildTreeFromFileList:)
-									toTarget:sbTree
+									toTarget:_sbTree
 								  withObject:fList];		
 
 		[[NSBundle mainBundle] loadNibNamed:@"TreeView" owner:self topLevelObjects:nil];
@@ -126,8 +133,8 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 
 		[[self window] makeKeyAndOrderFront:self];
 		
-		[loadingIndicator setUsesThreadedAnimation:YES];
-		[loadingIndicator startAnimation:self];
+		[[self loadingIndicator] setUsesThreadedAnimation:YES];
+		[[self loadingIndicator] startAnimation:self];
 		[self setActiveView:@"outline"];
 
 		[[NSDistributedNotificationCenter defaultCenter]
@@ -146,11 +153,11 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 
 -(BOOL)windowShouldClose:(id)sender
 {
-	if (! treeBuildingThreadIsFinished){
+	if (! [self isTreeBuildingThreadFinished]){
 		NSBeep();
 		return NO;
 	}
-    [oController collapseItemAndChildren:[sbTree rootItem]];
+    [[self oController] collapseItemAndChildren:[[self sbTree] rootItem]];
     return YES;
 }
 
@@ -187,7 +194,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 			identifier = @"outline";
 			break;
 	}
-	[tabView selectTabViewItemWithIdentifier:identifier];
+	[[self tabView] selectTabViewItemWithIdentifier:identifier];
     [self setActiveView:identifier];
 }
 
@@ -197,11 +204,11 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 
 -(void)finishedLoading:(NSNotification *)n
 {
-	treeBuildingThreadIsFinished = YES;
-    if (nil == [sbTree rootItem]){
-		[msgTextField setStringValue:@"Error:  No such package installed"];
+	[self setTreeBuildingThreadFinished: YES];
+    if (nil == [[self sbTree] rootItem]){
+		[[self msgTextField] setStringValue:@"Error:  No such package installed"];
     }else{
-		double size = (float)[sbTree totalSize];
+		double size = (float)[[self sbTree] totalSize];
 		NSString *formatString = BYTE_FORMAT;
 		if (size > MEGABYTE){
 			size /= MEGABYTE;
@@ -210,13 +217,13 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 			size /= KILOBYTE;
 			formatString = KILOBYTE_FORMAT;
 		}
-		[msgTextField setStringValue:
+		[[self msgTextField] setStringValue:
 			[NSString stringWithFormat:formatString,
-				[sbTree itemCount], size]];
+				[[self sbTree] itemCount], size]];
     }
-    [outlineView reloadItem:[sbTree rootItem] reloadChildren:YES];
-	[sbBrowser reloadColumn:0];
-	[loadingIndicator stopAnimation:self];
+    [[self outlineView] reloadItem:[[self sbTree] rootItem] reloadChildren:YES];
+	[[self sbBrowser] reloadColumn:0];
+	[[self loadingIndicator] stopAnimation:self];
     //[loadingIndicator removeFromSuperview];
 }
 
@@ -228,15 +235,15 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 {
 	double newWidth = [[aNotification object] frame].size.width;
 	if (newWidth >= FIVE_COLUMN_WIDTH){
-		[sbBrowser setMaxVisibleColumns:5];
+		[[self sbBrowser] setMaxVisibleColumns:5];
 	}else if (newWidth >= FOUR_COLUMN_WIDTH){
-		[sbBrowser setMaxVisibleColumns:4];
+		[[self sbBrowser] setMaxVisibleColumns:4];
 	}else if (newWidth >= THREE_COLUMN_WIDTH){
-		[sbBrowser setMaxVisibleColumns:3];
+		[[self sbBrowser] setMaxVisibleColumns:3];
 	}else{
-		[sbBrowser setMaxVisibleColumns:2];
+		[[self sbBrowser] setMaxVisibleColumns:2];
 	}
-	[outlineView sizeLastColumnToFit];
+	[[self outlineView] sizeLastColumnToFit];
 }
 
 /* 	Resize window vertically but not horizontally when zoom button is clicked in 
