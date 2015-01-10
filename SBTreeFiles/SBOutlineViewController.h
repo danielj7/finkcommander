@@ -31,16 +31,10 @@ extern NSString *sbDescending;
 
 @interface SBOutlineViewController: NSObject <NSOutlineViewDelegate,NSOutlineViewDataSource>
 {
-    NSOutlineView *outlineView;
-    SBFileItemTree *tree;
-    NSMutableDictionary *columnStateDictionary;
-    NSString *previousColumnIdentifier;
 }
 
 -(instancetype)initWithTree:(SBFileItemTree *)aTree
 			 view:(NSOutlineView *)oView NS_DESIGNATED_INITIALIZER;
-
-@property (nonatomic, copy) NSString *previousColumnIdentifier;
 
 	
 

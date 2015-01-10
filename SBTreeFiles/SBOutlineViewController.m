@@ -7,6 +7,15 @@
 
 #import "SBOutlineViewController.h"
 
+@interface SBOutlineViewController ()
+
+@property (nonatomic, readonly) NSOutlineView *outlineView;
+@property (nonatomic, readonly) SBFileItemTree *tree;
+@property (nonatomic, readonly) NSMutableDictionary *columnStateDictionary;
+@property (nonatomic, copy) NSString *previousColumnIdentifier;
+
+@end
+
 @implementation SBOutlineViewController
 
 //----------------------------------------------------------
@@ -21,16 +30,16 @@
 //      NSTableColumn *aColumn;
 //		NSEnumerator *e;
 
-		outlineView = oView;  //retained by superview
-		tree = aTree;
+		_outlineView = oView;  //retained by superview
+		_tree = aTree;
 //		e = [[outlineView tableColumns] objectEnumerator];
-		[self setPreviousColumnIdentifier:@"filename"];
+		_previousColumnIdentifier = @"filename";
 		
-		[outlineView setDelegate:self];
-		[outlineView setDataSource:self];
-		[outlineView setIntercellSpacing:NSMakeSize(4.0, 2.0)];
-		[outlineView setTarget:outlineView];
-		[outlineView setDoubleAction:@selector(openSelectedFiles:)];
+		[_outlineView setDelegate:self];
+		[_outlineView setDataSource:self];
+		[_outlineView setIntercellSpacing:NSMakeSize(4.0, 2.0)];
+		[_outlineView setTarget:_outlineView];
+		[_outlineView setDoubleAction:@selector(openSelectedFiles:)];
 
         // FIXME: The sortByColumn: selector isn't defined anywhere.
         // There is a commented out IBAction in the header file.
@@ -38,24 +47,14 @@
 //			[[aColumn headerCell] setTarget:self];
 //			[[aColumn headerCell] setAction:@selector(sortByColumn:)];
 //		}
-		columnStateDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		_columnStateDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 			SBAscendingOrder, @"filename",
 			SBAscendingOrder, @"size",
 			SBAscendingOrder, @"mdate", nil];
-		[outlineView setHighlightedTableColumn:	
-			[outlineView tableColumnWithIdentifier:@"filename"]];
+		[_outlineView setHighlightedTableColumn:
+			[_outlineView tableColumnWithIdentifier:@"filename"]];
 	}
 	return self;
-}
-
-//----------------------------------------------------------
-#pragma mark - ACCESSORS
-//----------------------------------------------------------
-
--(NSString *)previousColumnIdentifier { return previousColumnIdentifier; }
-
--(void)setPreviousColumnIdentifier:(NSString *)newPreviousColumnIdentifier{
-	previousColumnIdentifier = newPreviousColumnIdentifier;
 }
 
 //----------------------------------------------------------
@@ -78,7 +77,7 @@
 		   child:(NSInteger)index
 		  ofItem:(id)item 
 {
-    return (nil == item) ? (id)[tree rootItem] : [item childAtIndex:index];
+    return (nil == item) ? (id)[[self tree] rootItem] : [item childAtIndex:index];
 }
 
 -(id)outlineView:(NSOutlineView *)outlineView 
@@ -88,13 +87,13 @@
     NSString *identifier = [tableColumn identifier];
     if ([identifier isEqualToString:@"size"]){
 		unsigned long itemSize = (nil == item) 	? 
-			[[[tree rootItem] valueForKey:identifier] unsignedLongValue] :
+			[[[[self tree] rootItem] valueForKey:identifier] unsignedLongValue] :
 			[[item valueForKey:identifier] unsignedLongValue];
 		itemSize = itemSize / 1024 + 1;
 		return [NSString stringWithFormat:@"%lu KB", itemSize];
     }
     return (nil == item) ? 
-		(id)[[tree rootItem] valueForKey:identifier] : 
+		(id)[[[self tree] rootItem] valueForKey:identifier] : 
 		(id)[item valueForKey:identifier];
 }
 
@@ -146,18 +145,18 @@
     NSString *order;
     NSImage *triangle;
 	
-    [outlineView setIndicatorImage:nil 
-			inTableColumn:[outlineView tableColumnWithIdentifier:[self previousColumnIdentifier]]];
+    [[self outlineView] setIndicatorImage:nil 
+			inTableColumn:[[self outlineView] tableColumnWithIdentifier:[self previousColumnIdentifier]]];
 
     //If user clicks same column header twice in a row, change sort order
     if ([identifier isEqualToString:[self previousColumnIdentifier]]){
-		order = [columnStateDictionary[identifier] isEqualToString:SBAscendingOrder]
+		order = [[self columnStateDictionary][identifier] isEqualToString:SBAscendingOrder]
 			? SBDescendingOrder : SBAscendingOrder;
 		//Record new state for next click on this column
-		columnStateDictionary[identifier] = order;
+		[self columnStateDictionary][identifier] = order;
 		//Otherwise, return sort order to previous state for selected column
     }else{
-		order = columnStateDictionary[identifier];
+		order = [self columnStateDictionary][identifier];
     }
     [self setPreviousColumnIdentifier:identifier];
 
@@ -165,11 +164,11 @@
     triangle = [order isEqualToString:SBAscendingOrder]   		?
 		[NSImage imageNamed:@"NSAscendingSortIndicator"]   		:
 		[NSImage imageNamed:@"NSDescendingSortIndicator"];
-    [outlineView setIndicatorImage:triangle inTableColumn:tableColumn];
+    [[self outlineView] setIndicatorImage:triangle inTableColumn:tableColumn];
 
-    [tree sortTreeByElement:identifier inOrder:order];
-    [outlineView reloadItem:[tree rootItem] reloadChildren:YES];
-	[outlineView setHighlightedTableColumn:tableColumn];
+    [[self tree] sortTreeByElement:identifier inOrder:order];
+    [[self outlineView] reloadItem:[[self tree] rootItem] reloadChildren:YES];
+	[[self outlineView] setHighlightedTableColumn:tableColumn];
 	return NO;
 }
 
@@ -185,7 +184,7 @@
 			[self collapseItemAndChildren:child];
 		}
 	}
-	[outlineView collapseItem:item];
+	[[self outlineView] collapseItem:item];
 }
 
 @end
