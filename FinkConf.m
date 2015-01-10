@@ -7,6 +7,18 @@ File: FinkConf.m
 
 #import "FinkConf.h"
 
+@interface FinkConf ()
+{
+    BOOL _finkTreesChanged;
+}
+
+@property (nonatomic, readonly) NSMutableDictionary *finkConfDict;
+@property (nonatomic, readonly) NSUserDefaults *defaults;
+// FIXME: not actually used?
+@property (nonatomic, copy) NSString *proxyHTTP;
+
+@end
+
 @implementation FinkConf
 
 //--------------------------------------------------->Startup and Shutdown
@@ -14,8 +26,8 @@ File: FinkConf.m
 -(instancetype)init
 {
 	if ((self = [super init])){
-		finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
-		defaults = [NSUserDefaults standardUserDefaults];
+		_finkConfDict = [[NSMutableDictionary alloc] initWithCapacity: 20];
+		_defaults = [NSUserDefaults standardUserDefaults];
 		
 		[self readFinkConf];
 		[self setFinkTreesChanged: NO];
@@ -40,7 +52,7 @@ File: FinkConf.m
     NSError *err;
     // fink.conf should be plain ASCII but use UTF8 since it's a superset.
     NSString *fconfString = [NSString stringWithContentsOfFile:
-                             [[defaults objectForKey: FinkBasePath]
+                             [[[self defaults] objectForKey: FinkBasePath]
                               stringByAppendingPathComponent: @"/etc/fink.conf"]
                                                       encoding: NSUTF8StringEncoding
                                                          error: &err];
@@ -51,11 +63,11 @@ File: FinkConf.m
 	for (NSString *line in fconfArray){
 		if ([line contains: @":"]){
 			split = [line rangeOfString: @":"].location;
-			finkConfDict[[line substringToIndex: split]] = [line substringFromIndex: split + 2];
+			[self finkConfDict][[line substringToIndex: split]] = [line substringFromIndex: split + 2];
 		}
 	}
-	finkConfDict[@"Trees"] = [NSMutableArray arrayWithArray:
-								[finkConfDict[@"Trees"] 
+	[self finkConfDict][@"Trees"] = [NSMutableArray arrayWithArray:
+								[[self finkConfDict][@"Trees"] 
 									componentsSeparatedByString: @" "]];
 }
 
@@ -68,7 +80,7 @@ File: FinkConf.m
 
 -(BOOL)useUnstableMain
 {
-	if ([finkConfDict[@"Trees"] 
+	if ([[self finkConfDict][@"Trees"] 
 			indexOfObject: @"unstable/main"] == NSNotFound){
 		return NO;
 	}
@@ -80,22 +92,22 @@ File: FinkConf.m
 -(void)setUseUnstableMain:(BOOL)shouldUseUnstable
 {
 	if (shouldUseUnstable){
-		if ([finkConfDict[@"Trees"]
+		if ([[self finkConfDict][@"Trees"]
 				indexOfObject: @"unstable/main"] == NSNotFound){
-			[finkConfDict[@"Trees"] 
+			[[self finkConfDict][@"Trees"] 
 				addObject: @"unstable/main"];
 		}
 	}else{
-		if ([finkConfDict[@"Trees"]
+		if ([[self finkConfDict][@"Trees"]
 			indexOfObject: @"unstable/main"] != NSNotFound){
-			[finkConfDict[@"Trees"] removeObject:@"unstable/main"];
+			[[self finkConfDict][@"Trees"] removeObject:@"unstable/main"];
 		}
 	}
 }
 
 -(BOOL)useUnstableCrypto
 {
-	if ([finkConfDict[@"Trees"]
+	if ([[self finkConfDict][@"Trees"]
 		indexOfObject: @"unstable/crypto"] == NSNotFound){
 		return NO;
 	}
@@ -105,15 +117,15 @@ File: FinkConf.m
 -(void)setUseUnstableCrypto:(BOOL)shouldUseUnstable
 {
 	if (shouldUseUnstable){
-		if ([finkConfDict[@"Trees"]
+		if ([[self finkConfDict][@"Trees"]
 			indexOfObject: @"unstable/crypto"] == NSNotFound){
-			[finkConfDict[@"Trees"] 
+			[[self finkConfDict][@"Trees"] 
 				addObject: @"unstable/crypto"];
 		}
 	}else{
-		if ([finkConfDict[@"Trees"]
+		if ([[self finkConfDict][@"Trees"]
 			indexOfObject: @"unstable/crypto"] != NSNotFound){
-			[finkConfDict[@"Trees"] removeObject:@"unstable/crypto"];
+			[[self finkConfDict][@"Trees"] removeObject:@"unstable/crypto"];
 		}
 	}
 }
@@ -121,7 +133,7 @@ File: FinkConf.m
 //Flag whether fink index needs to be run in order to update the table
 -(void)setFinkTreesChanged:(BOOL)b
 {
-	finkTreesChanged = b;
+	_finkTreesChanged = b;
 }
 
 /*
@@ -132,7 +144,7 @@ File: FinkConf.m
 //additional verbosity options?
 -(BOOL)extendedVerboseOptions
 {
-	if ([defaults boolForKey:FinkExtendedVerbosity]){
+	if ([[self defaults] boolForKey:FinkExtendedVerbosity]){
 		return YES;
 	}else{
 		NSString *fversion = [[FinkInstallationInfo sharedInfo] finkVersion];
@@ -144,7 +156,7 @@ File: FinkConf.m
 		[vscan scanString:@"0." intoString:nil];
 		[vscan scanInt:&vnum];
 		if (vnum > 9){
-			[defaults setBool:YES forKey:FinkExtendedVerbosity];
+			[[self defaults] setBool:YES forKey:FinkExtendedVerbosity];
 			return YES;
 		}
 	}
@@ -153,7 +165,7 @@ File: FinkConf.m
 
 -(NSInteger)verboseOutput
 {
-	NSString *verbose = finkConfDict[@"Verbose"];
+	NSString *verbose = [self finkConfDict][@"Verbose"];
 	
 	if ([self extendedVerboseOptions]){
 		return [verbose intValue];
@@ -175,7 +187,7 @@ File: FinkConf.m
 	}else{
 		loquacity = @"false";
 	}
-	finkConfDict[@"Verbose"] = loquacity;
+	[self finkConfDict][@"Verbose"] = loquacity;
 }
 
 /*
@@ -184,7 +196,7 @@ File: FinkConf.m
 
 -(BOOL)keepBuildDir
 {
-	if ([finkConfDict[@"KeepBuildDir"] isEqualToString: @"true"]){
+	if ([[self finkConfDict][@"KeepBuildDir"] isEqualToString: @"true"]){
 		return YES;
 	}
 	return NO;
@@ -193,15 +205,15 @@ File: FinkConf.m
 -(void)setKeepBuildDir:(BOOL)keep
 {
 	if (keep){
-		finkConfDict[@"KeepBuildDir"] = @"true";
+		[self finkConfDict][@"KeepBuildDir"] = @"true";
 	}else{
-		finkConfDict[@"KeepBuildDir"] = @"false";
+		[self finkConfDict][@"KeepBuildDir"] = @"false";
 	}
 }
 
 -(BOOL)keepRootDir
 {
-	if ([finkConfDict[@"KeepRootDir"] isEqualToString: @"true"]){
+	if ([[self finkConfDict][@"KeepRootDir"] isEqualToString: @"true"]){
 		return YES;
 	}
 	return NO;
@@ -211,9 +223,9 @@ File: FinkConf.m
 -(void)setKeepRootDir:(BOOL)keep
 {
 	if (keep){
-		finkConfDict[@"KeepRootDir"] = @"true";
+		[self finkConfDict][@"KeepRootDir"] = @"true";
 	}else{
-		finkConfDict[@"KeepRootDir"] = @"false";
+		[self finkConfDict][@"KeepRootDir"] = @"false";
 	}
 	
 }
@@ -224,7 +236,7 @@ File: FinkConf.m
 
 -(BOOL)passiveFTP
 {
-	if ([finkConfDict[@"ProxyPassiveFTP"] isEqualToString: @"true"]){
+	if ([[self finkConfDict][@"ProxyPassiveFTP"] isEqualToString: @"true"]){
 		return YES;
 	}
 	return NO;
@@ -233,15 +245,15 @@ File: FinkConf.m
 -(void)setPassiveFTP:(BOOL)passiveFTP
 {
 	if (passiveFTP){
-		finkConfDict[@"ProxyPassiveFTP"] = @"true";
+		[self finkConfDict][@"ProxyPassiveFTP"] = @"true";
 	}else{
-		finkConfDict[@"ProxyPassiveFTP"] = @"false";
+		[self finkConfDict][@"ProxyPassiveFTP"] = @"false";
 	}
 }
 
 -(NSString *)useHTTPProxy
 {
-	NSString *proxy = finkConfDict[@"ProxyHTTP"];
+	NSString *proxy = [self finkConfDict][@"ProxyHTTP"];
 
 	if (proxy != nil){
 		return proxy;
@@ -253,15 +265,15 @@ File: FinkConf.m
 -(void)setUseHTTPProxy:(NSString *)s
 {
 	if (s != nil){
-		finkConfDict[@"ProxyHTTP"] = s;
+		[self finkConfDict][@"ProxyHTTP"] = s;
 	}else{
-		[finkConfDict removeObjectForKey: @"ProxyHTTP"];
+		[[self finkConfDict] removeObjectForKey: @"ProxyHTTP"];
 	}
 }
 
 -(NSString *)useFTPProxy
 {
-	NSString *proxy = finkConfDict[@"ProxyFTP"];
+	NSString *proxy = [self finkConfDict][@"ProxyFTP"];
 
 	if (proxy != nil){
 		return proxy;
@@ -273,15 +285,15 @@ File: FinkConf.m
 -(void)setUseFTPProxy:(NSString *)s
 {
 	if (s != nil){
-		finkConfDict[@"ProxyFTP"] = s;
+		[self finkConfDict][@"ProxyFTP"] = s;
 	}else{
-		[finkConfDict removeObjectForKey: @"ProxyFTP"];
+		[[self finkConfDict] removeObjectForKey: @"ProxyFTP"];
 	}
 }
 
 -(NSString *)downloadMethod
 {
-	NSString *method = finkConfDict[@"DownloadMethod"];
+	NSString *method = [self finkConfDict][@"DownloadMethod"];
 	if (method != nil){
 		return method;
 	}
@@ -290,20 +302,20 @@ File: FinkConf.m
 
 -(void)setDownloadMethod:(NSString *)s
 {
-	finkConfDict[@"DownloadMethod"] = s;
+	[self finkConfDict][@"DownloadMethod"] = s;
 }
 
 -(NSString *)fetchAltDir
 {
-	return finkConfDict[@"FetchAltDir"];
+	return [self finkConfDict][@"FetchAltDir"];
 }
 
 -(void)setFetchAltDir:(NSString *)s
 {
 	if (s != nil){
-		finkConfDict[@"FetchAltDir"] = s;
+		[self finkConfDict][@"FetchAltDir"] = s;
 	}else{
-		[finkConfDict removeObjectForKey: @"FetchAltDir"];
+		[[self finkConfDict] removeObjectForKey: @"FetchAltDir"];
 	}
 }
 
@@ -313,7 +325,7 @@ File: FinkConf.m
 
 -(NSString *)rootMethod
 {
-	NSString *method = finkConfDict[@"RootMethod"];
+	NSString *method = [self finkConfDict][@"RootMethod"];
 	if (method != nil){
 		return method;
 	}
@@ -322,12 +334,12 @@ File: FinkConf.m
 
 -(void)setRootMethod:(NSString *)s
 {
-	finkConfDict[@"RootMethod"] = s;
+	[self finkConfDict][@"RootMethod"] = s;
 }
 
 -(NSString *)distribution
 {
-	NSString *d = finkConfDict[@"Distribution"];
+	NSString *d = [self finkConfDict][@"Distribution"];
 	if (d != nil) {
 		return d;
 	}
@@ -347,19 +359,19 @@ File: FinkConf.m
 	NSString *v;
 	
 	//turn tree list into string
-    finkConfDict[@"Trees"] = [finkConfDict[@"Trees"] 
+    [self finkConfDict][@"Trees"] = [[self finkConfDict][@"Trees"] 
 								componentsJoinedByString: @" "];
 
 	//get string from dictionary of fink.conf values
-    e = [finkConfDict keyEnumerator];
+    e = [[self finkConfDict] keyEnumerator];
     while ((k = [e nextObject])){
-		v = finkConfDict[k];
+		v = [self finkConfDict][k];
 		[fconfString appendString: 
 		   [NSString stringWithFormat: @"%@: %@\n", k, v]];
     }
 
 	//turn tree list back into an array for additional changes
-    finkConfDict[@"Trees"] = [finkConfDict[@"Trees"]
+    [self finkConfDict][@"Trees"] = [[self finkConfDict][@"Trees"]
 								componentsSeparatedByString: @" "];
 	
     return fconfString;
@@ -374,7 +386,7 @@ File: FinkConf.m
 	NSMutableArray *writeFinkConfArray = 
 		[NSMutableArray arrayWithObjects:
 			@"--write_fconf",
-			[defaults objectForKey: FinkBasePath],
+			[[self defaults] objectForKey: FinkBasePath],
 			nil];
 	NSDictionary *d = @{FinkRunProgressIndicator: [NSNumber numberWithInt:YES]};
 	BOOL success;
@@ -394,9 +406,9 @@ File: FinkConf.m
 //Notifies FinkController to run fink index if necessary to update table info
 -(void)completeFinkConfUpdate:(NSNotification *)n
 {
-	if (finkTreesChanged){
+	if (_finkTreesChanged){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-		NSString *basePath = [defaults objectForKey: FinkBasePath];
+		NSString *basePath = [[self defaults] objectForKey: FinkBasePath];
 		NSDictionary *d = @{FinkRunProgressIndicator: [NSNumber numberWithInt:YES]};
 		NSMutableArray *indexCommandArray =
 			[NSMutableArray arrayWithObjects:

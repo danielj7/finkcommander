@@ -42,10 +42,6 @@ File: FinkConf.h
 
 @interface FinkConf : NSObject 
 {
-	NSMutableDictionary *finkConfDict;
-	NSUserDefaults *defaults;
-	NSString *proxyHTTP;
-	BOOL finkTreesChanged;
 }
 
 //Get settings from the fink.conf file
