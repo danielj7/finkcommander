@@ -44,7 +44,7 @@
 {
 }
 
-@property (nonatomic, copy) NSMenuItem *collapseExpandMenuItem;
+@property (nonatomic) NSMenuItem *collapseExpandMenuItem;
 
 -(IBAction)collapseExpandOutput:(id)sender;
 -(void)connectSubviews;

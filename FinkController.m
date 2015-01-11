@@ -367,10 +367,11 @@ typedef NS_ENUM(NSInteger, FinkFeedbackType) {
     NSArray *columnNameArray = [[self defaults] objectForKey:FinkTableColumnsArray];
     NSView *splitSuperview = [[self splitView] superview];
     NSSize tableContentSize = [[self tableScrollView] contentSize];
-
+    NSRect frameRect = self.splitView.frame;
+    
     //Substitute FinkScrollView for NSScrollView
     [[self splitView] removeFromSuperview];
-    [self setSplitView: [[FinkSplitView alloc] initWithFrame:[[self splitView] frame]]];
+    [self setSplitView: [[FinkSplitView alloc] initWithFrame:frameRect]];
     [splitSuperview addSubview:[self splitView]];
     [[self splitView] addSubview:[self tableScrollView]];
     [[self splitView] addSubview:[self outputScrollView]];

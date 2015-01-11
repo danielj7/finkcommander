@@ -103,11 +103,11 @@ Contact the author at sburrious@users.sourceforge.net.
 // Top level outlets should be strong, all else weak.
 // NSTextView can't be weak, however, and has to be unsafe_unretained.
 @property (nonatomic, strong) IBOutlet NSWindow *window;
-@property (nonatomic, weak) IBOutlet FinkTableView *tableView;
-@property (nonatomic, weak) IBOutlet id tableViewController;
-@property (nonatomic, weak) IBOutlet NSScrollView *tableScrollView;
-@property (nonatomic, weak) IBOutlet NSScrollView *outputScrollView;
-@property (nonatomic, weak) IBOutlet FinkSplitView *splitView;
+@property (nonatomic, strong) IBOutlet FinkTableView *tableView;
+@property (nonatomic, strong) IBOutlet id tableViewController;
+@property (nonatomic, strong) IBOutlet NSScrollView *tableScrollView;
+@property (nonatomic, strong) IBOutlet NSScrollView *outputScrollView;
+@property (nonatomic, strong) IBOutlet FinkSplitView *splitView;
 @property (nonatomic, unsafe_unretained) IBOutlet NSTextView *textView;
 @property (nonatomic, weak) IBOutlet NSCell *msgText;
 @property (nonatomic, weak) IBOutlet NSView *progressViewHolder;

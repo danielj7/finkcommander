@@ -21,8 +21,8 @@ File: FinkTextViewController.m
 	 forScrollView:(NSScrollView *)aScrollView
 {
 	if ((self = [super init])){
-		[self setTextView:aTextView];
-		[self setScrollView:aScrollView];
+		_textView = aTextView;
+		_scrollView = aScrollView;
 		[_textView setDelegate:self];
 		[_textView setFont:[NSFont userFixedPitchFontOfSize:0.0]];
 	}
