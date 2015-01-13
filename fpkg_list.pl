@@ -93,7 +93,6 @@ if (-f $configpath) {
 }
 
 Fink::Package->require_packages();
-Fink::Package->update_db(no_load => 1, no_fastload => 1);
 
 ### Try to cache the results
 my $use_cache = Fink::Package->can('db_valid_since'); # Can we try caching?
@@ -140,7 +139,8 @@ if (!$cache_ok) { # Don't calculate anything if the cache is ok
 		} else {
 		$lversion = &Fink::Services::latest_version($package->list_versions());
 		$lvstable = &latest_version_for_tree($package, "stable") || " ";
-		$lvunstable = &latest_version_for_tree($package, "unstable") || " ";
+#        $lvunstable = &latest_version_for_tree($package, "unstable") || " ";
+        $lvunstable = " "; # Unstable tree no longer used.
 		$lvlocal = &latest_version_for_tree($package, "local") || " ";
 		$lvinstalled = &latest_installed_version($package) || " ";
 		$vo = $package->get_version($lversion) || " ";
