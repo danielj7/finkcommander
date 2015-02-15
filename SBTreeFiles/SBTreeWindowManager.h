@@ -29,8 +29,8 @@
 }
 
 @property (nonatomic, copy) NSString *currentPackageName;
-@property (nonatomic, readonly, copy) NSMutableArray *windowControllers;
-@property (nonatomic, readonly, copy) NSMutableArray *windowTitles;
+@property (nonatomic, readonly) NSMutableArray *windowControllers;
+@property (nonatomic, readonly) NSMutableArray *windowTitles;
 -(void)openNewWindowForPackageName:(NSString *)pkgName;
 -(void)closingTreeWindowWithController:(id)sender;
 
