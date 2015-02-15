@@ -99,6 +99,11 @@ NSInteger sortBySize(id firstItem, id secondItem, void *direction)
 	
 }
 
+-(NSString *)description
+{
+    return [self name];
+}
+
 //----------------------------------------------------------
 #pragma mark - TREE BUILDING METHODS
 //----------------------------------------------------------
