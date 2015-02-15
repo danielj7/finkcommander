@@ -10,8 +10,8 @@
 
 //Constants matching tags in selection matrix
 typedef NS_ENUM(NSInteger, FinkTreeViewType) {
-	SB_BROWSER = 0,
-	SB_OUTLINE = 1
+	SB_OUTLINE = 0,
+    SB_BROWSER = 1
 };
 
 //Other constants
@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger, FinkTreeViewType) {
 
 -(IBAction)switchViews:(id)sender
 {	
-	FinkTreeViewType selection = [[sender selectedCell] tag];
+	FinkTreeViewType selection = [sender selectedSegment];
 	NSString *identifier;
 	switch (selection){
 		case SB_BROWSER:
